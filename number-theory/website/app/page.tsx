@@ -6,8 +6,8 @@ type EuclidRow = { a: number; b: number; q: number; r: number };
 
 const chapters = [
   { n: "01", title: "The algorithm in a rectangle", topic: "Euclid · Bézout · Diophantine equations", accent: "teal", blurb: "Turn repeated division into a proof-producing machine." },
-  { n: "02", title: "Every integer has an address", topic: "Primes · Euclid’s lemma · Unique factorization", accent: "gold", blurb: "Build arithmetic from the indivisible pieces." },
-  { n: "03", title: "Fractions inside fractions", topic: "Convergents · Approximation · Pell equations", accent: "coral", blurb: "Read Euclid’s quotients as exceptional approximations." },
+  { n: "02", title: "Every integer has an address", topic: "Unique factorization · √2 irrational · Eratosthenes", accent: "gold", blurb: "Use prime exponents for proof, then uncover primes with the sieve." },
+  { n: "03", title: "Fractions inside fractions", topic: "Extended Euclid · Alternating convergents · Pell", accent: "coral", blurb: "Read Euclid’s quotients as coefficients and two-sided bounds." },
   { n: "04", title: "Arithmetic on a clock", topic: "Congruences · Inverses · Chinese remainders", accent: "teal", blurb: "Forget complete turns and preserve arithmetic structure." },
   { n: "05", title: "A theorem you can rotate", topic: "Necklace orbits · Fermat’s little theorem", accent: "gold", blurb: "Watch divisibility emerge from cyclic symmetry." },
   { n: "06", title: "The reusable machine", topic: "Groups · Cosets · Lagrange · Euler", accent: "coral", blurb: "Name the structure shared by clocks and rotations." },
@@ -61,7 +61,8 @@ function continuedFraction(value: number, depth: number) {
     const p = a * pm1 + pm2, q = a * qm1 + qm2;
     [pm2, pm1] = [pm1, p];
     [qm2, qm1] = [qm1, q];
-    return { p, q, error: Math.abs(value - p / q) };
+    const delta = value - p / q;
+    return { p, q, error: Math.abs(delta), side: delta > 1e-13 ? "below" : delta < -1e-13 ? "above" : "exact" };
   });
   return { coeffs, convergents };
 }
@@ -103,6 +104,8 @@ function EuclidLab() {
   const rows = useMemo(() => euclidRows(a, b), [a, b]);
   const [d, x, y] = useMemo(() => extendedGcd(a, b), [a, b]);
   const big = Math.max(a, b), small = Math.min(a, b), ratio = small / big;
+  const partialQuotients = rows.map(row => row.q);
+  const cfLabel = partialQuotients.length > 1 ? `${partialQuotients[0]}; ${partialQuotients.slice(1).join(", ")}` : `${partialQuotients[0]}`;
   return (
     <article className="lab-card" id="euclid">
       <LabHeader index="01" eyebrow="Algorithm lab" title="Tile the rectangle" text="Change the side lengths. The picture and proof trace update together." />
@@ -120,6 +123,7 @@ function EuclidLab() {
           <div className="bezout"><span>Bézout certificate</span><strong>{d} = {x}({a}) + {y}({b})</strong></div>
         </div>
       </div>
+      <p className="observation"><b>The same data, read forward:</b> {big}/{small} = [{cfLabel}]. These partial quotients generate convergents whose signed coefficients reproduce the Euclidean remainders.</p>
     </article>
   );
 }
@@ -140,9 +144,10 @@ function ContinuedFractionLab() {
       <div className="convergents">
         {convergents.map((c, i) => {
           const quality = Math.max(3, Math.min(100, -Math.log10(Math.max(c.error, 1e-15)) * 13));
-          return <div className="convergent" key={i}><div><strong>{c.p}<i />{c.q}</strong><span>error {c.error.toExponential(1)}</span></div><div className="error-track"><span style={{ width: `${quality}%` }} /></div></div>;
+          return <div className={`convergent ${c.side}`} key={i}><div><strong>{c.p}<i />{c.q}</strong><span>{c.side} · error {c.error.toExponential(1)}</span></div><div className="error-track"><span style={{ width: `${quality}%` }} /></div></div>;
         })}
       </div>
+      <p className="observation"><b>The alternating trap:</b> the 1st, 3rd, 5th, … convergents rise below the target; the 2nd, 4th, 6th, … converge downward from above.</p>
     </article>
   );
 }
@@ -258,12 +263,16 @@ function PrimePlot({ max, count }: { max: number; count: number[] }) {
 
 function PrimeLab() {
   const [max, setMax] = useState(1000);
-  const { count } = useMemo(() => sieve(max), [max]);
+  const { prime, count } = useMemo(() => sieve(max), [max]);
   const approx = max / Math.log(max), lower = (Math.log(2) / 2) * approx, upper = 4 * approx;
   return (
     <article className="lab-card" id="primes">
-      <LabHeader index="06" eyebrow="Prime-counting lab" title="How crowded are the primes?" text="Compare exact counting with the scale predicted by Chebyshev and the prime number theorem." />
+      <LabHeader index="06" eyebrow="Sieve and prime-counting lab" title="Cross out composites, then count" text="Begin with Eratosthenes, then compare exact prime counts with the scale predicted by Chebyshev." />
       <label className="field range-wide"><span>Explore up to x = {max.toLocaleString()}</span><input type="range" min="50" max="5000" step="50" value={max} onChange={e => setMax(Number(e.target.value))} /></label>
+      <div className="sieve-mini" aria-label="Sieve of Eratosthenes through 50">
+        {Array.from({ length: 49 }, (_, i) => i + 2).map(n => <span className={prime[n] ? "survivor" : "crossed"} key={n}>{n}</span>)}
+      </div>
+      <p className="observation"><b>Sieve through 50:</b> boxed numbers survive. Crossing out multiples of 2, 3, 5, and 7 is enough because every composite has a prime factor no larger than its square root.</p>
       <div className="prime-stats"><div><span>π(x)</span><strong>{count[max]}</strong><em>exact</em></div><div><span>x / log x</span><strong>{approx.toFixed(1)}</strong><em>prediction</em></div><div><span>ratio</span><strong>{(count[max] / approx).toFixed(3)}</strong><em>π(x) ÷ prediction</em></div></div>
       <div className="plot-shell"><PrimePlot max={max} count={count} /><div className="legend"><span className="exact">π(x)</span><span className="estimate">x / log x</span></div></div>
       <div className="cheb-strip"><span>Chebyshev’s deliberately broad proved interval</span><strong>{lower.toFixed(1)} ≤ π({max}) ≤ {upper.toFixed(1)}</strong></div>
@@ -291,7 +300,7 @@ export default function Home() {
       <section className="section course-section" id="course">
         <div className="section-heading"><div><p className="eyebrow">The course</p><h2>One idea unlocks the next.</h2></div><p>The sequence is a proof journey, not a catalogue: algorithms become structures, structures become symmetry, and symmetry becomes information about primes.</p></div>
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
-        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 39-page packet</a></div>
+        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 43-page packet</a></div>
       </section>
 
       <section className="section labs-section" id="labs">
