@@ -7,7 +7,7 @@ type EuclidRow = { a: number; b: number; q: number; r: number };
 const chapters = [
   { n: "01", title: "The algorithm in a rectangle", topic: "Euclid · Bézout · Diophantine equations", accent: "teal", blurb: "Turn repeated division into a proof-producing machine." },
   { n: "02", title: "Every integer has an address", topic: "Unique factorization · √2 irrational · Eratosthenes", accent: "gold", blurb: "Use prime exponents for proof, then uncover primes with the sieve." },
-  { n: "03", title: "Fractions inside fractions", topic: "Extended Euclid · Alternating convergents · Pell", accent: "coral", blurb: "Read Euclid’s quotients as coefficients and two-sided bounds." },
+  { n: "03", title: "Fractions inside fractions", topic: "Matrices · Extended Euclid · Quadratic surds", accent: "coral", blurb: "Turn digit matrices into convergents, bounds, and periodicity." },
   { n: "04", title: "Arithmetic on a clock", topic: "Congruences · Inverses · Chinese remainders", accent: "teal", blurb: "Forget complete turns and preserve arithmetic structure." },
   { n: "05", title: "A theorem you can rotate", topic: "Necklace orbits · Fermat’s little theorem", accent: "gold", blurb: "Watch divisibility emerge from cyclic symmetry." },
   { n: "06", title: "The reusable machine", topic: "Groups · Cosets · Lagrange · Euler", accent: "coral", blurb: "Name the structure shared by clocks and rotations." },
@@ -148,6 +148,8 @@ function ContinuedFractionLab() {
         })}
       </div>
       <p className="observation"><b>The alternating trap:</b> the 1st, 3rd, 5th, … convergents rise below the target; the 2nd, 4th, 6th, … converge downward from above.</p>
+      <p className="observation"><b>The matrix spine:</b> multiplying the digit matrices [[a, 1], [1, 0]] places consecutive convergents in its columns. Every product has determinant ±1, so it can be reversed over the integers.</p>
+      <p className="observation"><b>Why quadratic surds repeat:</b> Lagrange’s theorem says their continued fractions are eventually periodic; Galois’s criterion identifies exactly when the period begins immediately.</p>
     </article>
   );
 }
@@ -300,7 +302,7 @@ export default function Home() {
       <section className="section course-section" id="course">
         <div className="section-heading"><div><p className="eyebrow">The course</p><h2>One idea unlocks the next.</h2></div><p>The sequence is a proof journey, not a catalogue: algorithms become structures, structures become symmetry, and symmetry becomes information about primes.</p></div>
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
-        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 43-page packet</a></div>
+        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 49-page packet</a></div>
       </section>
 
       <section className="section labs-section" id="labs">
