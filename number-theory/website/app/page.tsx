@@ -150,11 +150,104 @@ function ContinuedFractionLab() {
       <p className="observation"><b>The alternating trap:</b> the 1st, 3rd, 5th, … convergents rise below the target; the 2nd, 4th, 6th, … converge downward from above.</p>
       <p className="observation"><b>The matrix spine:</b> multiplying the digit matrices [[a, 1], [1, 0]] places consecutive convergents in its columns. Every product has determinant ±1, so it can be reversed over the integers.</p>
       <p className="observation"><b>A calendar is an approximation:</b> the tropical year has about 0.2422 extra days. Its convergents begin 1/4, 7/29, 8/33, 31/128. The Julian rule is 1/4; after requiring a cycle of whole centuries, the convergent 97/4 to the per-century excess 100 × 0.2422 becomes the Gregorian rate 97/400.</p>
-      <p className="observation"><b>Venus writes Euclid in the sky:</b> about 13 Venus orbits fit into 8 Earth years, leaving 5 relative conjunction cycles; Euclid continues 13, 8, 5, 3, 2, 1. The Dresden Codex turns a rounded 584-day Venus cycle into exact calendar arithmetic: 5 × 584 = 8 × 365 = 2,920, and 13 such blocks align with the 260-day calendar after 37,960 days.</p>
       <p className="observation"><b>Almost base 11:</b> the Khinchin–Lévy law gives a typical precision factor of e<sup>π²/(6 log 2)</sup> ≈ 10.731 per continued-fraction term—about 1.03 decimal digits.</p>
       <p className="observation"><b>π looks typical; e does not:</b> for the first 100,000 partial quotients of π, the geometric mean is 2.67956 and q<sub>n</sub><sup>2/n</sup> is 10.67835, close to the generic targets 2.68545 and 10.73102—but no limiting theorem is known for π. Euler’s patterned expansion of e instead makes both statistics diverge.</p>
       <p className="observation"><b>Continued fractions can calculate:</b> Gosper’s homographic and bihomographic algorithms absorb input terms and emit certified output terms using only integer matrices. A modern interval-valued refinement prevents exact boundary cases—such as √2 × √2 = 2—from stalling forever.</p>
       <p className="observation"><b>Periodicity meets Pell:</b> Lagrange and Galois explain the repeating surd; its period matrices generate Pell solutions. In reverse, Legendre’s criterion recognizes every ±1 Pell solution as a convergent.</p>
+    </article>
+  );
+}
+
+const earthPeriod = 365.256;
+const venusPeriod = 224.7;
+const venusSynodic = 1 / (1 / venusPeriod - 1 / earthPeriod);
+const venusDemoDays = 8 * earthPeriod;
+const conjunctionPoints = Array.from({ length: 5 }, (_, i) => {
+  const angle = (-90 + i * 216) * Math.PI / 180;
+  return { x: 50 + 40 * Math.cos(angle), y: 50 + 40 * Math.sin(angle) };
+});
+
+function VenusOrbitLab() {
+  const [days, setDays] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [speed, setSpeed] = useState(1);
+  const lastFrame = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPlaying(false);
+  }, []);
+
+  useEffect(() => {
+    if (!playing) { lastFrame.current = null; return; }
+    let frame = 0;
+    const tick = (now: number) => {
+      if (lastFrame.current === null) lastFrame.current = now;
+      const elapsed = now - lastFrame.current;
+      lastFrame.current = now;
+      setDays(current => {
+        const next = current + elapsed * venusDemoDays / 24000 * speed;
+        return Math.min(next, venusDemoDays);
+      });
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(frame); lastFrame.current = null; };
+  }, [playing, speed]);
+
+  useEffect(() => { if (days >= venusDemoDays) setPlaying(false); }, [days]);
+
+  const earthTurns = days / earthPeriod;
+  const venusTurns = days / venusPeriod;
+  const relativeTurns = venusTurns - earthTurns;
+  const completedAlignments = Math.min(5, Math.floor(relativeTurns + 0.002));
+  const earthAngle = -90 + earthTurns * 360;
+  const venusAngle = -90 + venusTurns * 360;
+  const earthRad = earthAngle * Math.PI / 180;
+  const venusRad = venusAngle * Math.PI / 180;
+  const nearestGain = Math.round(relativeTurns);
+  const atAlignment = Math.abs(relativeTurns - nearestGain) < 0.022;
+  const nextAlignment = Math.min(5, Math.floor(relativeTurns) + 1);
+  const segmentStyle = (i: number) => {
+    const from = conjunctionPoints[i], to = conjunctionPoints[(i + 1) % 5];
+    const dx = to.x - from.x, dy = to.y - from.y;
+    return { left: `${from.x}%`, top: `${from.y}%`, width: `${Math.hypot(dx, dy)}%`, transform: `rotate(${Math.atan2(dy, dx) * 180 / Math.PI}deg)` };
+  };
+  const reset = () => { setPlaying(false); setDays(0); };
+
+  return (
+    <article className="lab-card venus-lab" id="venus">
+      <LabHeader index="03" eyebrow="Astronomy and approximation lab" title="Watch Venus gain five laps" text="Follow two planets for eight Earth years. Each time Venus gains one complete lap, a new conjunction draws the next edge of the star." />
+      <div className="venus-controls">
+        <button className="orbit-button primary" onClick={() => { if (days >= venusDemoDays) { setDays(0); setPlaying(true); } else setPlaying(value => !value); }}>{playing ? "Pause" : days >= venusDemoDays ? "Replay" : "Play"}</button>
+        <button className="orbit-button" onClick={reset}>Reset</button>
+        <label className="field grow"><span>Time: day {Math.round(days).toLocaleString()} of {Math.round(venusDemoDays).toLocaleString()}</span><input aria-label="Time through the eight-year Venus demonstration" type="range" min="0" max={venusDemoDays} step="1" value={days} onChange={e => { setPlaying(false); setDays(Number(e.target.value)); }} /></label>
+        <label className="field speed-field"><span>Animation speed</span><select value={speed} onChange={e => setSpeed(Number(e.target.value))}><option value="0.5">½×</option><option value="1">1×</option><option value="2">2×</option></select></label>
+      </div>
+
+      <div className="venus-layout">
+        <div className="venus-stage" role="img" aria-label={`At day ${Math.round(days)}, Earth has made ${earthTurns.toFixed(2)} laps, Venus has made ${venusTurns.toFixed(2)} laps, and Venus has gained ${relativeTurns.toFixed(2)} laps.`}>
+          <div className="planet-orbit earth-orbit" /><div className="planet-orbit venus-orbit" />
+          <div className={`alignment-ray ${atAlignment ? "active" : ""}`} style={{ transform: `rotate(${earthAngle}deg)` }} />
+          {conjunctionPoints.map((point, i) => <span key={`point-${i}`} className={`conjunction-point ${i === 0 || completedAlignments >= i ? "revealed" : ""}`} style={{ left: `${point.x}%`, top: `${point.y}%` }}><b>C<sub>{i}</sub></b></span>)}
+          {conjunctionPoints.map((_, i) => <i key={`segment-${i}`} className={`venus-star-segment ${completedAlignments > i ? "revealed" : ""}`} style={segmentStyle(i)} />)}
+          <span className="sun-body"><b>Sun</b></span>
+          <span className="planet-body earth-body" style={{ left: `${50 + 42 * Math.cos(earthRad)}%`, top: `${50 + 42 * Math.sin(earthRad)}%` }}><b>Earth</b></span>
+          <span className="planet-body venus-body" style={{ left: `${50 + 27 * Math.cos(venusRad)}%`, top: `${50 + 27 * Math.sin(venusRad)}%` }}><b>Venus</b></span>
+          <span className="orbit-label earth-label">Earth lap · 365.256 days</span>
+          <span className="orbit-label venus-label">Venus lap · 224.7 days</span>
+        </div>
+
+        <div className="venus-explainer">
+          <div className={`alignment-status ${atAlignment ? "active" : ""}`} aria-live="polite"><span>{atAlignment ? "Alignment now" : `Next alignment: gain ${nextAlignment} laps`}</span><strong>{atAlignment ? `Venus has gained ${nearestGain} whole ${nearestGain === 1 ? "lap" : "laps"}` : `Current gain ${relativeTurns.toFixed(2)} laps`}</strong><em>“Conjunction” is simply the astronomical word for this alignment.</em></div>
+          <div className="venus-counts">
+            <div><span>Earth’s laps</span><strong>{earthTurns.toFixed(2)}</strong><em>approaches 8</em></div>
+            <div><span>Venus’s laps</span><strong>{venusTurns.toFixed(2)}</strong><em>approaches 13</em></div>
+            <div><span>Venus’s gain</span><strong>{relativeTurns.toFixed(2)}</strong><em>approaches 5</em></div>
+          </div>
+          <div className="venus-equations"><p><b>Why the alignment repeats</b><span>faster lap rate − slower lap rate = overtaking rate</span></p><strong>1/S = 1/224.7 − 1/365.256</strong><span>so S ≈ {venusSynodic.toFixed(2)} days</span><p><b>Why a star appears</b><span>one repeat takes about 8/5 Earth laps, leaving a 3/5-turn step</span></p><strong>13 − 8 = 5</strong></div>
+        </div>
+      </div>
+      <p className="observation"><b>Approximation, not clockwork:</b> the animation uses modern mean periods. The fifth return misses the starting ray slightly because 13 Venus laps are only approximately 8 Earth laps. The Dresden Codex uses a different, exact calendar model: 5 × 584 = 8 × 365 = 2,920.</p>
     </article>
   );
 }
@@ -166,7 +259,7 @@ function ModularLab() {
   const multiplier = units.find(u => u > 1) ?? 1;
   return (
     <article className="lab-card" id="modular">
-      <LabHeader index="03" eyebrow="Congruence lab" title="Wind around a clock" text="Explore residues, units, and the permutation hiding inside a finite group." />
+      <LabHeader index="04" eyebrow="Congruence lab" title="Wind around a clock" text="Explore residues, units, and the permutation hiding inside a finite group." />
       <div className="control-row"><NumberField label="Modulus" value={mod} setValue={setMod} min={3} max={20} /><NumberField label="Start" value={start} setValue={setStart} min={0} max={99} /><NumberField label="Add" value={step} setValue={setStep} min={0} max={99} /></div>
       <div className="clock-layout">
         <div className="clock" aria-label={`Clock modulo ${mod}`}>
@@ -199,7 +292,7 @@ function NecklaceLab() {
   const cycleBead = (i: number) => setWord(w => w.map((v, j) => j === i ? (v + 1) % colors : v));
   return (
     <article className="lab-card" id="necklaces">
-      <LabHeader index="04" eyebrow="Symmetry lab" title="Rotate a theorem" text="Color the beads, inspect the orbit, and see why prime length forces equal packets." />
+      <LabHeader index="05" eyebrow="Symmetry lab" title="Rotate a theorem" text="Color the beads, inspect the orbit, and see why prime length forces equal packets." />
       <div className="control-row">
         <label className="field"><span>Prime length</span><select value={p} onChange={e => setP(Number(e.target.value))}><option>3</option><option>5</option><option>7</option><option>11</option></select></label>
         <label className="field"><span>Colors</span><select value={colors} onChange={e => setColors(Number(e.target.value))}><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
@@ -235,7 +328,7 @@ function PascalLab() {
   const hue = ["#0f2438", "#16888c", "#e1a52c", "#dc684b", "#815ac7", "#3c78d8", "#72a85a"];
   return (
     <article className="lab-card" id="pascal">
-      <LabHeader index="05" eyebrow="Divisibility lab" title="Color Pascal’s triangle" text="Reduce every entry modulo a prime. Base-p carries become a fractal you can see." />
+      <LabHeader index="06" eyebrow="Divisibility lab" title="Color Pascal’s triangle" text="Reduce every entry modulo a prime. Base-p carries become a fractal you can see." />
       <div className="control-row wrap">
         <label className="field"><span>Prime</span><select value={prime} onChange={e => setPrime(Number(e.target.value))}><option>2</option><option>3</option><option>5</option><option>7</option></select></label>
         <label className="field grow"><span>Rows: {rows}</span><input type="range" min="8" max="36" value={rows} onChange={e => setRows(Number(e.target.value))} /></label>
@@ -274,7 +367,7 @@ function PrimeLab() {
   const approx = max / Math.log(max), lower = (Math.log(2) / 2) * approx, upper = 4 * approx;
   return (
     <article className="lab-card" id="primes">
-      <LabHeader index="06" eyebrow="Sieve and prime-counting lab" title="Cross out composites, then count" text="Begin with Eratosthenes, then compare exact prime counts with the scale predicted by Chebyshev." />
+      <LabHeader index="07" eyebrow="Sieve and prime-counting lab" title="Cross out composites, then count" text="Begin with Eratosthenes, then compare exact prime counts with the scale predicted by Chebyshev." />
       <label className="field range-wide"><span>Explore up to x = {max.toLocaleString()}</span><input type="range" min="50" max="5000" step="50" value={max} onChange={e => setMax(Number(e.target.value))} /></label>
       <div className="sieve-mini" aria-label="Sieve of Eratosthenes through 50">
         {Array.from({ length: 49 }, (_, i) => i + 2).map(n => <span className={prime[n] ? "survivor" : "crossed"} key={n}>{n}</span>)}
@@ -299,7 +392,7 @@ export default function Home() {
       </nav>
 
       <header className="hero" id="top">
-        <div className="hero-copy"><p className="kicker">An interactive introduction to number theory</p><h1>Patterns,<br />Proofs, <span>and Primes</span></h1><p className="lede">Start with a rectangle. Rotate a necklace. Color Pascal’s triangle. Then follow the patterns all the way to a proof.</p><div className="hero-actions"><a className="button primary" href="#labs">Open the math lab</a><a className="button quiet" href="#course">See the 14-week course</a></div><div className="hero-meta"><span>8 chapters</span><span>6 live explorations</span><span>70+ exercises</span></div></div>
+        <div className="hero-copy"><p className="kicker">An interactive introduction to number theory</p><h1>Patterns,<br />Proofs, <span>and Primes</span></h1><p className="lede">Start with a rectangle. Follow Venus around the Sun. Rotate a necklace. Then carry the patterns all the way to a proof.</p><div className="hero-actions"><a className="button primary" href="#labs">Open the math lab</a><a className="button quiet" href="#course">See the 14-week course</a></div><div className="hero-meta"><span>8 chapters</span><span>7 live explorations</span><span>70+ exercises</span></div></div>
         <div className="hero-orbits" aria-hidden="true"><div className="orbit o1" /><div className="orbit o2" /><div className="orbit o3" /><div className="orbit o4" />{Array.from({ length: 12 }, (_, i) => <i key={i} style={{ transform: `rotate(${i * 30}deg) translateY(-154px)` }} />)}<div className="hero-formula">a<sup>p</sup> ≡ a <span>(mod p)</span></div></div>
       </header>
 
@@ -308,12 +401,12 @@ export default function Home() {
       <section className="section course-section" id="course">
         <div className="section-heading"><div><p className="eyebrow">The course</p><h2>One idea unlocks the next.</h2></div><p>The sequence is a proof journey, not a catalogue: algorithms become structures, structures become symmetry, and symmetry becomes information about primes.</p></div>
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
-        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 64-page packet</a></div>
+        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 68-page packet</a></div>
       </section>
 
       <section className="section labs-section" id="labs">
         <div className="section-heading light"><div><p className="eyebrow">Interactive companion</p><h2>Touch the structure.</h2></div><p>Every experiment is paired with a proof question. Computation is the microscope—not the oracle.</p></div>
-        <div className="labs-stack"><EuclidLab /><ContinuedFractionLab /><ModularLab /><NecklaceLab /><PascalLab /><PrimeLab /></div>
+        <div className="labs-stack"><EuclidLab /><ContinuedFractionLab /><VenusOrbitLab /><ModularLab /><NecklaceLab /><PascalLab /><PrimeLab /></div>
       </section>
 
       <section className="section practice-section" id="practice">
