@@ -152,6 +152,7 @@ function ContinuedFractionLab() {
       <p className="observation"><b>A calendar is an approximation:</b> the tropical year has about 0.2422 extra days. Its convergents begin 1/4, 7/29, 8/33, 31/128. The Julian rule is 1/4; after requiring a cycle of whole centuries, the convergent 97/4 to the per-century excess 100 × 0.2422 becomes the Gregorian rate 97/400.</p>
       <p className="observation"><b>Almost base 11:</b> the Khinchin–Lévy law gives a typical precision factor of e<sup>π²/(6 log 2)</sup> ≈ 10.731 per continued-fraction term—about 1.03 decimal digits.</p>
       <p className="observation"><b>π looks typical; e does not:</b> for the first 100,000 partial quotients of π, the geometric mean is 2.67956 and q<sub>n</sub><sup>2/n</sup> is 10.67835, close to the generic targets 2.68545 and 10.73102—but no limiting theorem is known for π. Euler’s patterned expansion of e instead makes both statistics diverge.</p>
+      <p className="observation"><b>Continued fractions can calculate:</b> Gosper’s homographic and bihomographic algorithms absorb input terms and emit certified output terms using only integer matrices. A modern interval-valued refinement prevents exact boundary cases—such as √2 × √2 = 2—from stalling forever.</p>
       <p className="observation"><b>Periodicity meets Pell:</b> Lagrange and Galois explain the repeating surd; its period matrices generate Pell solutions. In reverse, Legendre’s criterion recognizes every ±1 Pell solution as a convergent.</p>
     </article>
   );
