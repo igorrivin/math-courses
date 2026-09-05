@@ -150,6 +150,7 @@ function ContinuedFractionLab() {
       <p className="observation"><b>The alternating trap:</b> the 1st, 3rd, 5th, … convergents rise below the target; the 2nd, 4th, 6th, … converge downward from above.</p>
       <p className="observation"><b>The matrix spine:</b> multiplying the digit matrices [[a, 1], [1, 0]] places consecutive convergents in its columns. Every product has determinant ±1, so it can be reversed over the integers.</p>
       <p className="observation"><b>A calendar is an approximation:</b> the tropical year has about 0.2422 extra days. Its convergents begin 1/4, 7/29, 8/33, 31/128. The Julian rule is 1/4; after requiring a cycle of whole centuries, the convergent 97/4 to the per-century excess 100 × 0.2422 becomes the Gregorian rate 97/400.</p>
+      <p className="observation"><b>Venus writes Euclid in the sky:</b> about 13 Venus orbits fit into 8 Earth years, leaving 5 relative conjunction cycles; Euclid continues 13, 8, 5, 3, 2, 1. The Dresden Codex turns a rounded 584-day Venus cycle into exact calendar arithmetic: 5 × 584 = 8 × 365 = 2,920, and 13 such blocks align with the 260-day calendar after 37,960 days.</p>
       <p className="observation"><b>Almost base 11:</b> the Khinchin–Lévy law gives a typical precision factor of e<sup>π²/(6 log 2)</sup> ≈ 10.731 per continued-fraction term—about 1.03 decimal digits.</p>
       <p className="observation"><b>π looks typical; e does not:</b> for the first 100,000 partial quotients of π, the geometric mean is 2.67956 and q<sub>n</sub><sup>2/n</sup> is 10.67835, close to the generic targets 2.68545 and 10.73102—but no limiting theorem is known for π. Euler’s patterned expansion of e instead makes both statistics diverge.</p>
       <p className="observation"><b>Continued fractions can calculate:</b> Gosper’s homographic and bihomographic algorithms absorb input terms and emit certified output terms using only integer matrices. A modern interval-valued refinement prevents exact boundary cases—such as √2 × √2 = 2—from stalling forever.</p>
@@ -307,7 +308,7 @@ export default function Home() {
       <section className="section course-section" id="course">
         <div className="section-heading"><div><p className="eyebrow">The course</p><h2>One idea unlocks the next.</h2></div><p>The sequence is a proof journey, not a catalogue: algorithms become structures, structures become symmetry, and symmetry becomes information about primes.</p></div>
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
-        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 60-page packet</a></div>
+        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 64-page packet</a></div>
       </section>
 
       <section className="section labs-section" id="labs">
