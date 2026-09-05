@@ -279,6 +279,7 @@ function PrimeLab() {
         {Array.from({ length: 49 }, (_, i) => i + 2).map(n => <span className={prime[n] ? "survivor" : "crossed"} key={n}>{n}</span>)}
       </div>
       <p className="observation"><b>Sieve through 50:</b> boxed numbers survive. Crossing out multiples of 2, 3, 5, and 7 is enough because every composite has a prime factor no larger than its square root.</p>
+      <p className="observation"><b>Existence versus a witness:</b> the classical argument with x = (√2)<sup>√2</sup> proves by cases that some pair of irrationals has a rational power, but does not say which pair. The explicit choice a = √2 and b = log<sub>√2</sub>3 gives a<sup>b</sup> = 3; unique factorization proves that b is irrational.</p>
       <div className="prime-stats"><div><span>π(x)</span><strong>{count[max]}</strong><em>exact</em></div><div><span>x / log x</span><strong>{approx.toFixed(1)}</strong><em>prediction</em></div><div><span>ratio</span><strong>{(count[max] / approx).toFixed(3)}</strong><em>π(x) ÷ prediction</em></div></div>
       <div className="plot-shell"><PrimePlot max={max} count={count} /><div className="legend"><span className="exact">π(x)</span><span className="estimate">x / log x</span></div></div>
       <div className="cheb-strip"><span>Chebyshev’s deliberately broad proved interval</span><strong>{lower.toFixed(1)} ≤ π({max}) ≤ {upper.toFixed(1)}</strong></div>
@@ -306,7 +307,7 @@ export default function Home() {
       <section className="section course-section" id="course">
         <div className="section-heading"><div><p className="eyebrow">The course</p><h2>One idea unlocks the next.</h2></div><p>The sequence is a proof journey, not a catalogue: algorithms become structures, structures become symmetry, and symmetry becomes information about primes.</p></div>
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
-        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 51-page packet</a></div>
+        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 60-page packet</a></div>
       </section>
 
       <section className="section labs-section" id="labs">
