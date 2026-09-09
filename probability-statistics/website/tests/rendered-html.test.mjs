@@ -43,6 +43,15 @@ test("new labs have addressable sections, labeled controls, and initial model re
   assert.match(html, /Predict the result, then run the experiment\./);
 });
 
+test("the ten-chapter course includes the exchangeability capstone", () => {
+  assert.equal((html.match(/<article class="chapter-card /g) ?? []).length, 10);
+  for (const text of ["10 chapters", "Exchangeability: when symmetry produces a parameter", "de Finetti", "Pólya", "Random limiting frequencies", "nine exercises", "birthday-collision proof"]) {
+    assert.ok(html.includes(text), "Missing capstone content: " + text);
+  }
+  assert.doesNotMatch(html, />9 chapters</);
+  assert.ok(html.includes('class="chapter-card violet capstone"'));
+});
+
 test("student-facing downloads are PDFs and do not expose the instructor key", async () => {
   const publicDir = new URL("../public/", import.meta.url);
   for (const name of ["course-packet.pdf", "problem-set-02.pdf"]) {

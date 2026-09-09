@@ -4,6 +4,13 @@ This site is the interactive companion to the probability and statistics course 
 
 It includes nine browser-based labs, the expanded printable PDF edition, a student problem set, and four downloadable Jupyter notebooks. The site uses the OpenAI Sites starter runtime.
 
+The ten-chapter PDF now includes an optional exchangeability capstone:
+de Finetti's Bernoulli representation, a shared hidden coin, Pólya's urn,
+random limiting frequencies, finite counterexamples, and nine exercises.
+The optional proof connects finite sampling to the birthday-collision
+bound. A short Chapter 3 preview prepares the distinction from independence.
+The existing nine labs and four notebooks are unchanged by this addition.
+
 The early-course labs cover permutations and combinations, Pascal's triangle,
 cardinality and probabilistic inclusion-exclusion, and the birthday paradox.
 The birthday model assumes independent, uniformly distributed birthdays;
