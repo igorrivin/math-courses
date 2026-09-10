@@ -1,0 +1,398 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=0.68in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{booktabs,array}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{violet}{HTML}{6857B2}
+\definecolor{mint}{HTML}{2B9B82}
+\definecolor{amber}{HTML}{D99A28}
+\definecolor{rose}{HTML}{CF5D75}
+\definecolor{paper}{HTML}{FAF8F3}
+\definecolor{ink}{HTML}{222834}
+\definecolor{muted}{HTML}{687080}
+
+\hypersetup{colorlinks=true,linkcolor=violet,urlcolor=violet}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{muted}Chance, Data, and Decisions}
+\fancyfoot[R]{\footnotesize\color{muted}Quiz \thequiznum\ of 10}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=4pt}
+\newcounter{quiznum}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\edition}{\ifanswers Instructor Key\else Student Edition\fi}
+\newcommand{\points}[1]{\hfill{\small\color{rose}\textbf{[#1 points]}}}
+
+\newcommand{\quizheading}[1]{%
+  \clearpage\stepcounter{quiznum}%
+  \begin{tcolorbox}[
+    enhanced,colback=paper,colframe=indigo,boxrule=1.1pt,arc=2mm,
+    left=4mm,right=4mm,top=2.5mm,bottom=2.5mm,
+    borderline west={4pt}{0pt}{violet}]
+    {\Large\bfseries\color{indigo}Weekly Quiz \thequiznum}\hfill
+    {\bfseries\color{violet}\edition}\\[-1pt]
+    {\large\color{ink}#1}\\[2pt]
+    {\small\color{muted}20 minutes \quad $\bullet$ \quad 10 points \quad $\bullet$ \quad Show the essential steps.}
+    \ifanswers\else
+      \\[5pt]\textbf{Name:}\ \rule{0.48\linewidth}{0.4pt}\hfill
+      \textbf{Date:}\ \rule{0.20\linewidth}{0.4pt}
+    \fi
+  \end{tcolorbox}
+}
+
+\NewDocumentEnvironment{solution}{O{1.05in}+b}{%
+  \ifanswers
+    \begin{tcolorbox}[enhanced,breakable,colback=mint!4,colframe=mint!45,
+      boxrule=0.55pt,arc=1mm,left=2.5mm,right=2.5mm,top=1.5mm,bottom=1.5mm,
+      title={\small\bfseries Solution},fonttitle=\small\bfseries,coltitle=indigo]
+      \small #2
+    \end{tcolorbox}
+  \else
+    \par\vspace{#1}
+  \fi
+}{}
+
+\begin{document}
+
+\quizheading{Sets, diagrams, and counting}
+\begin{enumerate}
+  \item Express ``$A$ or $B$, but not both'' using unions, intersections, and
+  complements. \points{3}
+  \begin{solution}[1.05in]
+    The event is the symmetric difference
+    \[
+       (A\cap B^c)\cup(A^c\cap B),
+    \]
+    equivalently $(A\cup B)\setminus(A\cap B)$.
+  \end{solution}
+
+  \item A fair coin is tossed three times. Find the probability of exactly two
+  heads. \points{3}
+  \begin{solution}[1.2in]
+    There are $2^3=8$ equally likely strings. Choose the two positions occupied by
+    heads in $\binom32=3$ ways, so the probability is $3/8$.
+  \end{solution}
+
+  \item In a group of $70$ students, $38$ study French, $27$ study Spanish, and
+  $12$ study both. How many study neither language? \points{4}
+  \begin{solution}[1.45in]
+    Inclusion--exclusion gives
+    \[
+      |F\cup S|=|F|+|S|-|F\cap S|=38+27-12=53.
+    \]
+    Therefore $70-53=17$ students study neither.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Probability spaces and events}
+\begin{enumerate}
+  \item Two fair dice are rolled. Find the probability that the maximum is $4$.
+  \points{4}
+  \begin{solution}[1.4in]
+    There are $4^2=16$ outcomes with both dice at most $4$, and $3^2=9$ with both
+    at most $3$. Thus $16-9=7$ of the $36$ outcomes have maximum $4$, giving
+    probability $7/36$.
+  \end{solution}
+
+  \item Find the probability of at least one six in four independent rolls of a
+  fair die. \points{3}
+  \begin{solution}[1.15in]
+    The complement is no six in all four rolls, which has probability $(5/6)^4$.
+    Therefore
+    \[
+       \Prob(\text{at least one six})=1-\left(\frac56\right)^4=\frac{671}{1296}.
+    \]
+  \end{solution}
+
+  \item Derive $\Prob(A\cup B)=\Prob(A)+\Prob(B)-\Prob(A\cap B)$ by splitting
+  events into disjoint pieces. \points{3}
+  \begin{solution}[1.35in]
+    The union is the disjoint union $A\cup(B\setminus A)$, so
+    $\Prob(A\cup B)=\Prob(A)+\Prob(B\setminus A)$. Also
+    $B=(B\setminus A)\cup(A\cap B)$ disjointly, hence
+    $\Prob(B\setminus A)=\Prob(B)-\Prob(A\cap B)$. Substitution gives the formula.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Conditional probability and Bayes' rule}
+\begin{enumerate}
+  \item An urn contains $3$ red and $2$ blue balls. Two are drawn without
+  replacement. Find the probability that the second ball is red. \points{3}
+  \begin{solution}[1.25in]
+    By conditioning on the first draw,
+    \[
+    \Prob(R_2)=\frac35\frac24+\frac25\frac34=\frac{6+6}{20}=\frac35.
+    \]
+    (Symmetry also says every draw position is red with probability $3/5$.)
+  \end{solution}
+
+  \item A condition has prevalence $2\%$. A test has sensitivity $90\%$ and
+  specificity $95\%$. Find the probability that a person who tests positive has
+  the condition. \points{4}
+  \begin{solution}[1.55in]
+    For a random person,
+    \[
+      \Prob(D\cap +)=0.02(0.90)=0.018,
+    \]
+    while the false-positive probability is $0.98(0.05)=0.049$. Bayes' rule gives
+    \[
+      \Prob(D\mid +)=\frac{0.018}{0.018+0.049}=\frac{18}{67}\approx0.269.
+    \]
+  \end{solution}
+
+  \item Suppose $\Prob(A)=0.4$, $\Prob(B)=0.5$, and $\Prob(A\cap B)=0.2$.
+  Are $A$ and $B$ independent? Find $\Prob(A\mid B)$. \points{3}
+  \begin{solution}[1.2in]
+    Since $\Prob(A)\Prob(B)=0.4(0.5)=0.2=\Prob(A\cap B)$, the events are
+    independent. Also $\Prob(A\mid B)=0.2/0.5=0.4$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Random variables, PMFs, densities, and CDFs}
+\begin{enumerate}
+  \item A random variable $X$ takes values $0,1,2$ with probabilities
+  $0.2,0.5,0.3$. Write its CDF $F(x)=\Prob(X\le x)$ piecewise. \points{4}
+  \begin{solution}[1.55in]
+    \[
+    F(x)=
+    \begin{cases}
+      0,&x<0,\\
+      0.2,&0\le x<1,\\
+      0.7,&1\le x<2,\\
+      1,&x\ge2.
+    \end{cases}
+    \]
+  \end{solution}
+
+  \item Let $f(x)=cx$ for $0\le x\le2$ and $f(x)=0$ otherwise. Find $c$ and
+  $\Prob(X>1)$. \points{4}
+  \begin{solution}[1.45in]
+    Normalization gives $1=\int_0^2cx\,dx=2c$, so $c=1/2$. Then
+    \[
+      \Prob(X>1)=\int_1^2\frac{x}{2}\,dx
+      =\left.\frac{x^2}{4}\right|_1^2=\frac34.
+    \]
+  \end{solution}
+
+  \item If $X$ has a continuous distribution, what is $\Prob(X=1)$? Why?
+  \points{2}
+  \begin{solution}[0.9in]
+    It is $0$: a single point has zero width, so its probability is
+    $\int_1^1 f(x)\,dx=0$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Expectation, variance, and moments}
+\begin{enumerate}
+  \item For $X$ with probabilities $0.2,0.5,0.3$ at $0,1,2$, compute
+  $\E[X]$ and $\Var(X)$. \points{4}
+  \begin{solution}[1.45in]
+    \[
+      \E[X]=0(0.2)+1(0.5)+2(0.3)=1.1,
+    \]
+    and $\E[X^2]=0+1(0.5)+4(0.3)=1.7$. Therefore
+    $\Var(X)=\E[X^2]-\E[X]^2=1.7-1.21=0.49$.
+  \end{solution}
+
+  \item If $X\sim\operatorname{Bin}(20,0.3)$, find its mean and variance. Explain
+  briefly using indicators. \points{3}
+  \begin{solution}[1.3in]
+    Write $X=I_1+\cdots+I_{20}$, where each $I_i$ is Bernoulli$(0.3)$. Then
+    \[
+      \E[X]=20(0.3)=6,
+      \qquad \Var(X)=20(0.3)(0.7)=4.2,
+    \]
+    using independence for the variance sum.
+  \end{solution}
+
+  \item Given $\E[X]=4$ and $\E[Y]=-1$, find $\E[3X-2Y+5]$. Is independence
+  needed? \points{3}
+  \begin{solution}[1.1in]
+    By linearity,
+    $\E[3X-2Y+5]=3(4)-2(-1)+5=19$. Independence is not needed for linearity of
+    expectation.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Standard probability distributions}
+\begin{enumerate}
+  \item If $X\sim\operatorname{Bin}(5,0.4)$, find $\Prob(X=2)$. \points{3}
+  \begin{solution}[1.15in]
+    \[
+      \Prob(X=2)=\binom52(0.4)^2(0.6)^3
+      =10(0.16)(0.216)=0.3456.
+    \]
+  \end{solution}
+
+  \item A waiting time is exponential with mean $4$ minutes. Find the probability
+  that the wait exceeds $6$ minutes. \points{3}
+  \begin{solution}[1.2in]
+    The rate is $\lambda=1/4$ per minute. Therefore
+    \[
+      \Prob(X>6)=e^{-\lambda6}=e^{-3/2}\approx0.223.
+    \]
+  \end{solution}
+
+  \item Suppose $X\sim N(100,15^2)$. Express $\Prob(X\le130)$ using the standard
+  normal CDF $\Phi$, and evaluate using $\Phi(2)\approx0.9772$. \points{4}
+  \begin{solution}[1.4in]
+    Standardizing,
+    \[
+      \Prob(X\le130)=\Prob\left(Z\le\frac{130-100}{15}\right)
+      =\Prob(Z\le2)=\Phi(2)\approx0.9772.
+    \]
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Joint, marginal, and conditional distributions}
+For the next three questions, use the joint probability table
+\[
+\begin{array}{c|cc|c}
+ &Y=0&Y=1&\Prob(X=x)\\ \hline
+X=0&0.10&0.20& \\
+X=1&0.30&0.40& \\ \hline
+\Prob(Y=y)&&&1
+\end{array}
+\]
+\begin{enumerate}
+  \item Find both marginal distributions. \points{3}
+  \begin{solution}[0.9in]
+    Row sums give $\Prob(X=0)=0.30$ and $\Prob(X=1)=0.70$. Column sums give
+    $\Prob(Y=0)=0.40$ and $\Prob(Y=1)=0.60$.
+  \end{solution}
+
+  \item Find $\Prob(X=1\mid Y=0)$ and decide whether $X$ and $Y$ are independent.
+  \points{3}
+  \begin{solution}[1.05in]
+    $\Prob(X=1\mid Y=0)=0.30/0.40=0.75$. They are not independent: for example,
+    $\Prob(X=1,Y=0)=0.30\ne0.70(0.40)=0.28$.
+  \end{solution}
+
+  \item Compute $\Cov(X,Y)$. \points{4}
+  \begin{solution}[1.15in]
+    Since $X,Y$ are indicators, $\E[X]=0.70$, $\E[Y]=0.60$, and
+    $\E[XY]=\Prob(X=1,Y=1)=0.40$. Thus
+    \[
+      \Cov(X,Y)=0.40-(0.70)(0.60)=-0.02.
+    \]
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Sampling distributions, the LLN, and the CLT}
+\begin{enumerate}
+  \item A population has standard deviation $12$. For samples of size $64$, find
+  the standard error of the sample mean. \points{3}
+  \begin{solution}[1.0in]
+    \[
+      \operatorname{SE}(\bar X)=\frac{\sigma}{\sqrt n}
+      =\frac{12}{\sqrt{64}}=1.5.
+    \]
+  \end{solution}
+
+  \item In one sentence each, distinguish the law of large numbers from the central
+  limit theorem. \points{3}
+  \begin{solution}[1.4in]
+    The law of large numbers says the sample mean converges to the population mean
+    as the sample grows. The central limit theorem says the standardized sampling
+    distribution of the sample mean becomes approximately normal (under its usual
+    conditions), describing the shape and scale of its fluctuations.
+  \end{solution}
+
+  \item If $100$ independent Bernoulli trials have success probability $0.4$, give
+  the approximate mean and standard deviation of the sample proportion. Standardize
+  the event $\hat p\le0.50$. \points{4}
+  \begin{solution}[1.5in]
+    \[
+      \E[\hat p]=0.4,\qquad
+      \operatorname{SD}(\hat p)=\sqrt{\frac{0.4(0.6)}{100}}\approx0.0490.
+    \]
+    Thus
+    \[
+      \Prob(\hat p\le0.50)\approx
+      \Phi\left(\frac{0.50-0.40}{0.0490}\right)=\Phi(2.04).
+    \]
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Estimation, confidence intervals, and tests}
+\begin{enumerate}
+  \item In a random sample, $330$ of $600$ respondents answer yes. Compute the
+  usual approximate $95\%$ confidence interval for the population proportion,
+  using $z^*=1.96$. \points{4}
+  \begin{solution}[1.55in]
+    $\hat p=330/600=0.55$ and
+    \[
+      \operatorname{SE}=\sqrt{\frac{0.55(0.45)}{600}}\approx0.02031.
+    \]
+    Thus $0.55\pm1.96(0.02031)=0.55\pm0.0398$, or approximately
+    $(0.510,0.590)$.
+  \end{solution}
+
+  \item Give a correct repeated-sampling interpretation of a $95\%$ confidence
+  procedure. \points{3}
+  \begin{solution}[1.35in]
+    If we repeatedly sampled by the same design and built an interval by this same
+    procedure, about $95\%$ of those intervals would contain the fixed population
+    parameter. The $95\%$ describes the procedure's long-run coverage, not a random
+    probability assigned to the parameter after this interval is observed.
+  \end{solution}
+
+  \item A valid test returns $p=0.03$. State an appropriate conclusion at level
+  $\alpha=0.05$, and name one conclusion the $p$-value does \emph{not} justify.
+  \points{3}
+  \begin{solution}[1.3in]
+    Since $0.03<0.05$, reject the null hypothesis at the $5\%$ level; the data are
+    relatively incompatible with the null model. The result does not say that the
+    null hypothesis has probability $0.03$, nor does it by itself establish a large
+    or practically important effect.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Bayesian inference and prediction}
+\begin{enumerate}
+  \item A Bernoulli success probability has prior $p\sim\operatorname{Beta}(2,2)$.
+  After observing $8$ successes and $2$ failures, find the posterior distribution.
+  \points{4}
+  \begin{solution}[1.25in]
+    Beta--Bernoulli conjugacy adds successes to the first shape and failures to the
+    second. Hence
+    \[
+      p\mid\text{data}\sim\operatorname{Beta}(2+8,2+2)
+      =\operatorname{Beta}(10,4).
+    \]
+  \end{solution}
+
+  \item Find the posterior mean and the posterior predictive probability that the
+  next trial is a success. \points{3}
+  \begin{solution}[1.15in]
+    For $\operatorname{Beta}(10,4)$ the posterior mean is
+    $10/(10+4)=5/7$. The posterior predictive success probability is also
+    $\E[p\mid\text{data}]=5/7$.
+  \end{solution}
+
+  \item Contrast a $95\%$ Bayesian credible interval with a $95\%$ frequentist
+  confidence interval in one or two sentences. \points{3}
+  \begin{solution}[1.4in]
+    Given the prior and model, a $95\%$ credible interval contains $95\%$ of the
+    posterior probability for the parameter. A $95\%$ confidence interval comes
+    from a procedure that covers the fixed parameter in $95\%$ of repeated samples;
+    it does not assign posterior probability without additional assumptions.
+  \end{solution}
+\end{enumerate}
+
+\end{document}

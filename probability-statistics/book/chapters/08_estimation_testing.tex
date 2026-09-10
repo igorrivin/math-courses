@@ -1,0 +1,70 @@
+\chapter{Learning from a sample}
+\chaptertag{Estimation, confidence intervals, and hypothesis tests}
+
+\begin{question}
+How can a random sample support a calibrated statement about an unknown population?
+\end{question}
+
+An estimator $T=T(X_1,\ldots,X_n)$ targets a parameter $\theta$. Its bias, variance, and mean squared error are
+\[
+\operatorname{Bias}_\theta(T)=\E_\theta[T]-\theta,
+\qquad
+\operatorname{MSE}_\theta(T)=\Var_\theta(T)+\operatorname{Bias}_\theta(T)^2.
+\]
+Unbiasedness is attractive, but MSE captures the bias--variance tradeoff.
+
+\section{Method of moments and likelihood}
+
+The method of moments matches sample moments to model moments. Maximum likelihood chooses the parameter under which the observed data have greatest likelihood.
+
+For Bernoulli observations $x_1,\ldots,x_n$, the likelihood is
+\[
+L(p)=p^{\sum x_i}(1-p)^{n-\sum x_i},
+\]
+and the maximizer is $\hat p=\bar x$.
+
+\section{Confidence intervals}
+
+An approximate $95\%$ interval for a mean with known or well-estimated standard error is
+\[
+\text{estimate}\ \pm\ 1.96\times\text{standard error}.
+\]
+The confidence level refers to the long-run success rate of the procedure, not a posterior probability that a fixed parameter lies in one realized interval.
+
+\begin{center}
+\begin{tikzpicture}[x=1.25cm,y=.55cm]
+  \draw[rose,very thick] (4,-.5)--(4,6.5) node[above] {true $\theta$};
+  \foreach \y/\a/\b in {0/2.7/4.7,1/3.1/5.0,2/1.8/3.8,3/3.4/5.2,4/2.9/4.4,5/4.2/5.8,6/2.4/4.2}{
+    \draw[indigo,thick] (\a,\y)--(\b,\y);
+    \fill[indigo] ({(\a+\b)/2},\y) circle (1.6pt);
+  }
+  \node[left] at (1.7,2) {miss};
+\end{tikzpicture}
+\end{center}
+
+\section{Tests and $p$-values}
+
+A hypothesis test specifies a null model $H_0$, a test statistic, and a rejection rule. The $p$-value is the probability, assuming $H_0$, of a result at least as incompatible with $H_0$ as the observed one.
+
+It is not the probability that $H_0$ is true. A Type I error rejects a true null; a Type II error fails to reject a false null. Power is the probability of rejecting under a specified alternative.
+
+\begin{warningbox}
+Statistical significance is not practical importance. With enough data, a tiny effect can yield a tiny $p$-value; with too little data, an important effect can be missed.
+\end{warningbox}
+
+\section{Model checking and design}
+
+Random sampling supports generalization; random assignment supports causal comparison. No inferential formula compensates for selection bias, poorly measured outcomes, hidden multiplicity, or a model contradicted by the data.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Show that the sample mean is unbiased for $\mu$. \exlevel{Reasoning}
+  \item Find the Bernoulli maximum-likelihood estimator. \exlevel{Fluency}
+  \item Compare two estimators when one has small bias but much smaller variance. \exlevel{Reasoning}
+  \item Construct a $95\%$ normal interval for a proportion from 600 observations with 330 successes. \exlevel{Fluency}
+  \item Explain the repeated-sampling meaning of that interval without saying there is a $95\%$ chance the fixed parameter is inside. \exlevel{Reasoning}
+  \item A test reports $p=.03$. List three claims that do not follow. \exlevel{Reasoning}
+  \item Simulate confidence-interval coverage and test power as functions of sample size. \exlevel{Exploration}
+  \item Describe how optional stopping or multiple testing can inflate false discoveries. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

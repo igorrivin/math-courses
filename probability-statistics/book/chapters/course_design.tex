@@ -1,0 +1,113 @@
+\chapter*{How to use this course}
+\addcontentsline{toc}{chapter}{How to use this course}
+
+\begin{bigidea}
+Probability starts with a model of what might happen; statistics works backward from what did happen. The course repeatedly follows one cycle:
+\[
+\text{model} \longrightarrow \text{simulate} \longrightarrow \text{observe} \longrightarrow \text{infer} \longrightarrow \text{check}.
+\]
+The point is not merely to calculate a probability or a confidence interval, but to understand which assumptions made that calculation meaningful.
+\end{bigidea}
+
+\section*{Audience and prerequisites}
+
+This packet is designed for a first undergraduate course or a mathematically ambitious secondary course. Students should be comfortable with algebra, functions, summation notation, and basic differentiation and integration. Multivariable calculus is not required. Proofs are included, but the emphasis is on modeling, interpretation, and the disciplined use of computation.
+
+\section*{Learning goals}
+
+By the end, students should be able to:
+\begin{enumerate}
+  \item translate verbal questions into sets, events, and probability models;
+  \item use counting, conditioning, independence, and Bayes' rule correctly;
+  \item distinguish permutations from combinations, prove basic binomial identities, and apply inclusion--exclusion to both counts and probabilities;
+  \item derive the birthday-paradox formula from an explicit probability space and distinguish any-pair matches from matches with one designated person;
+  \item move fluently among CDFs, probability masses, and densities;
+  \item compute and interpret expectation, variance, covariance, and correlation;
+  \item recognize standard distributions and justify an appropriate model;
+  \item obtain marginal and conditional distributions from a joint model;
+  \item explain the law of large numbers and central limit theorem through both mathematics and simulation;
+  \item evaluate estimators by bias, standard error, and mean squared error;
+  \item construct and interpret basic confidence intervals and hypothesis tests;
+  \item perform a simple Bayesian update and compare credible and confidence intervals;
+  \item distinguish exchangeability from independence and explain how a shared random parameter produces dependence and a random limiting frequency.
+\end{enumerate}
+
+\section*{A 14-week route}
+
+The design assumes two 75-minute meetings per week. ``Lab'' means that students make a prediction, run an experiment or simulation, and explain a discrepancy.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{.07\textwidth}p{.41\textwidth}X}
+\toprule
+Week & Core mathematics & Suggested lab or assessment \\
+\midrule
+1 & Sets, events, Venn diagrams, counting & Inclusion--exclusion gallery \\
+2 & Probability spaces and axioms & Build and critique sample spaces \\
+3 & Conditional probability and trees & Medical-test simulation \\
+4 & Independence, total probability, Bayes & Monty Hall and base-rate lab \\
+5 & Random variables, CDFs, PMFs, densities & One distribution in three representations \\
+6 & Expectation, variance, moments & Indicator-variable studio \\
+7 & Bernoulli, binomial, geometric, Poisson & Rare-event approximation lab \\
+8 & Uniform, exponential, normal, beta & Memorylessness and normal areas \\
+9 & Joint, marginal, conditional laws & Heat maps and independence \\
+10 & Covariance, correlation, conditional expectation & Correlation counterexamples \\
+11 & Laws of large numbers; Monte Carlo & Running-average experiment \\
+12 & Central limit theorem; sampling distributions & Visual CLT; Problem Set 5 \\
+13 & Estimation, confidence intervals, tests & Coverage and power simulation \\
+14 & Bayesian inference and synthesis & Prior-to-posterior capstone \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section*{Assessment design}
+
+\textbf{Optional synthesis.} Chapter~\ref{ch:exchangeability} follows Bayesian inference as an exchangeability capstone. Its coin and urn examples can anchor a week-14 synthesis session; the optional proof is extension reading, not an added prerequisite for the first weeks. A short preview in Chapter~3 plants the distinction between symmetry and independence.
+
+\textbf{Early-course companion.} Chapters 1 and 2 now provide a fuller
+development of permutations, combinations, binomial coefficients, both forms
+of inclusion--exclusion, finite probability spaces, and the birthday paradox.
+The companion Problem Set 2 revisits the probability spaces introduced in
+week two and connects them to this counting material. Its worked solutions
+are supplied separately for the instructor.
+
+One workable balance is 35\% problem sets, 20\% short quizzes, 20\% computational labs, and 25\% a modeling capstone. Exercises use three labels:
+\begin{itemize}
+  \item \textbf{Fluency}: calculations and translations that make later reasoning automatic.
+  \item \textbf{Reasoning}: derivations, short proofs, and careful interpretation.
+  \item \textbf{Exploration}: simulation, visualization, model criticism, or open-ended comparison.
+\end{itemize}
+
+\section*{Dependency map}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=8mm and 10mm,
+  box/.style={draw=indigo!55,rounded corners=2mm,fill=white,minimum height=9mm,align=center,font=\small,inner xsep=4mm},
+  arr/.style={-{Stealth[length=2mm]},thick,mint}
+]
+\node[box] (sets) {Sets and\\counting};
+\node[box,right=of sets] (spaces) {Probability\\spaces};
+\node[box,right=of spaces] (cond) {Conditioning\\and Bayes};
+\node[box,below=of spaces] (rv) {Random\\variables};
+\node[box,right=of rv] (mom) {Moments and\\standard laws};
+\node[box,below=of rv] (joint) {Joint\\distributions};
+\node[box,right=of joint] (limit) {LLN and\\CLT};
+\node[box,right=of limit] (infer) {Sampling and\\inference};
+\node[box,below=of infer] (bayes) {Bayesian\\inference};
+\draw[arr] (sets)--(spaces);
+\draw[arr] (spaces)--(cond);
+\draw[arr] (spaces)--(rv);
+\draw[arr] (rv)--(mom);
+\draw[arr] (rv)--(joint);
+\draw[arr] (mom)--(joint);
+\draw[arr] (joint)--(limit);
+\draw[arr] (limit)--(infer);
+\draw[arr] (cond) to[bend left=18] (bayes);
+\draw[arr] (infer)--(bayes);
+\end{tikzpicture}
+\end{center}
+
+\begin{checkpoint}
+\textbf{A good opening prompt.} A family has two children and at least one is a girl. What is the probability that both are girls? Ask students to defend not just an answer, but a sample space. Then change how the information was obtained and ask whether the answer changes.
+\end{checkpoint}

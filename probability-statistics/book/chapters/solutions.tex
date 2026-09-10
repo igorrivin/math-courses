@@ -1,0 +1,123 @@
+\chapter{Selected hints and solutions}
+
+\section*{Chapter 1}
+For the at-least-one-ace problem, count the complement: $\binom{52}{5}-\binom{48}{5}$. For divisibility by 2, 3, or 5, inclusion--exclusion gives
+\[
+500+333+200-166-100-66+33=734.
+\]
+The four-person selection counts from nine students are
+$\binom94=126$, $(9)_4=3024$, and $4\binom94=504$.
+The repeated-letter count for $\texttt{LEVEL}$ is $5!/(2!2!)=30$.
+The coefficient of $x^2$ in $(1+3x)^5$ is $\binom52 3^2=90$.
+The length-five strings using all three symbols number
+$3^5-3\cdot2^5+3=150$.
+
+\section*{Chapter 2}
+For the maximum of two dice to equal 4, both dice must be at most 4 but not both at most 3, giving $(4^2-3^2)/36=7/36$. For two uniform points $X,Y$, the band $|X-Y|<.1$ has area $1-2(.9)^2/2=.19$.
+For the weighted four-outcome space, the probability of an even outcome
+is $(2+4)/10=3/5$, not $2/4$.
+On a 30-day calendar, the birthday collision probability is about
+$.41356$ for six people and $.53084$ for seven; thus the first size above
+$1/2$ is seven. For four people on five days, there are
+$5\cdot4\cdot3\cdot2=120$ distinct-birthday lists among $5^4=625$ lists,
+so the collision probability is $1-120/625=101/125$.
+The quantity $\binom n2/d$ sums probabilities of overlapping events.
+It is an upper bound, not necessarily a probability.
+
+\section*{Chapter 3}
+For the coin problem,
+\[
+\P(D\mid HHH)=\frac{1\cdot .2}{1\cdot .2+(1/2)^3\cdot .8}=\frac23.
+\]
+A pairwise-not-mutual example: flip two fair coins; let $A$ be first-heads, $B$ second-heads, and $C$ equal-results.
+
+\section*{Chapter 4}
+For fixed points, write $N=\sum_{i=1}^n I_i$. Since $\P(I_i=1)=1/n$, linearity gives $\E N=1$. The variance identity follows by expanding $(X-\mu)^2$.
+
+\section*{Chapter 5}
+For an exponential variable, $\P(X>m)=e^{-\lambda m}=1/2$, hence $m=(\log2)/\lambda$. For $X\sim\Normal(10,9)$,
+\[
+\P(8<X<13)=\Phi(1)-\Phi(-2/3).
+\]
+
+\section*{Chapter 6}
+For $X$ uniform on $\{-1,0,1\}$ and $Y=X^2$, symmetry gives $\E X=\E[XY]=0$, hence covariance zero, but knowing $X$ determines $Y$. For the tower property, take the weighted average of group means; each observation receives exactly its population weight.
+
+\section*{Chapter 7}
+If $\sigma=12,n=64$, then $\operatorname{SE}(\bar X)=12/8=1.5$. The weak law follows from $\Var(\bar X_n)=\sigma^2/n$ and Chebyshev.
+
+\section*{Chapter 8}
+For 330 successes in 600 trials, $\hat p=.55$ and the plug-in standard error is
+\[
+\sqrt{.55(.45)/600}\approx .0203.
+\]
+The approximate $95\%$ interval is $.55\pm1.96(.0203)$, or about $(.510,.590)$.
+
+\section*{Chapter 9}
+Beta$(2,2)$ updated with 8 successes and 2 failures becomes Beta$(10,4)$, with posterior mean $10/14\approx.714$. The posterior predictive success probability equals the posterior mean $\alpha'/ (\alpha'+\beta')$.
+
+\clearpage
+\section*{Chapter 10}
+The numbering here matches Section~\ref{sec:df-exercises}.
+\begin{enumerate}
+  \item The posterior probability of bias $3/4$ is
+  $3^3/(3^3+3^1)=9/10$. The predictive chance of heads is
+  $(1/4)(1/10)+(3/4)(9/10)=7/10$. Reordering the observed string does
+  not change either calculation.
+  \item Let the newly chosen biases be independent variables
+  $\Theta_1,\ldots,\Theta_n$. For any specified bits,
+  \[
+  \P(X_1=x_1,\ldots,X_n=x_n)
+  =\E\prod_{i=1}^n\Theta_i^{x_i}(1-\Theta_i)^{1-x_i}
+  =\prod_{i=1}^n\frac12=2^{-n}.
+  \]
+  Here the tosses are generated independently given all the biases.
+  The expectation factors because the biases are independent; it does
+  not factor this way when a single shared $\Theta$ is reused.
+  \item The ordered path has probability
+  $4!1!/6!=1/30$. There are $\binom54=5$ such paths, so exactly four
+  reds has probability $1/6$. After the path, the urn contains five
+  red and two blue balls; the next-red probability is $5/7$.
+  \item Initially $\Theta\sim\operatorname{Beta}(2,3)$. The posterior
+  is Beta$(6,5)$ and the predictive probability is $6/11$.
+  The updated urn also contains six red and five blue balls.
+  \item Write $Y=S_n/n$ and $m=\E\Theta$. Expand
+  $Y-m=(Y-\Theta)+(\Theta-m)$. The cross term has expectation zero
+  because $\E[Y-\Theta\mid\Theta]=0$. Therefore
+  \[
+  \Var(Y)=\E[\Var(Y\mid\Theta)]+\Var(\Theta)
+  =\frac{\E[\Theta(1-\Theta)]}{n}+\Var(\Theta).
+  \]
+  Under uniform mixing, $\E\Theta=1/2$, $\E\Theta^2=1/3$,
+  so the two terms are $1/(6n)$ and $1/12$. This gives
+  $\Var(S_{10}/10)=1/10$ and $\Var(S_{100}/100)=17/200$.
+  The expression $1/(4n)$ wrongly treats the trials as independent
+  Bernoulli$(1/2)$ variables; it misses the between-run variance.
+  \item Pairwise independence implies $\Cov(X_1,X_2)=0$, hence
+  $\Var(\Theta)=0$ by the representation theorem. Thus
+  $\Theta=p_0$ almost surely for some constant $p_0$, and
+  \eqref{eq:df} is the i.i.d.\ Bernoulli$(p_0)$ product law.
+  Infinite exchangeability is the additional hypothesis. An arbitrary
+  finite collection of pairwise independent events need not have it.
+  \item Nonnegativity of variance gives
+  \[
+  0\le\Var\left(\sum_{i=1}^N X_i\right)=Nv+N(N-1)c.
+  \]
+  Divide by $N(N-1)$ to obtain the bound. The always-disagreeing
+  pair has $v=1/4,c=-1/4$, so an exchangeable extension would require
+  $-1/4\ge-1/[4(N-1)]$, possible only for $N\le2$.
+  \item Fair-toss frequencies cluster near $1/2$; shared-coin
+  frequencies cluster near $1/4$ and $3/4$; urn frequencies spread
+  across $[0,1]$. Finite simulations fluctuate, and 100 runs will not
+  give a perfectly flat histogram. The theorem identifies the limiting
+  laws as $\delta_{1/2}$, $\tfrac12\delta_{1/4}+\tfrac12\delta_{3/4}$,
+  and the uniform law, respectively.
+  \item Conditional on the total number of ones, compare sampling
+  without replacement with independent sampling at that population's
+  success proportion; then average over the total. For any event,
+  the absolute probability error is at most
+  $\binom52/1000=.01$. With 100 draws the union bound is
+  $\binom{100}{2}/1000=4.95$; capped at one, it is only the trivial
+  bound. This does not say the approximation error actually equals
+  one. The collision argument is useful when $n^2/N$ is small.
+\end{enumerate}

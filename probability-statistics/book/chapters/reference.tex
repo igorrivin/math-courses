@@ -1,0 +1,118 @@
+\chapter{Reference sheets}
+
+\section*{Counting and overlap corrections}
+For $0\le k\le n$, ordered selections without replacement number
+$(n)_k=n!/(n-k)!$; unordered selections number
+$\binom nk=n!/[k!(n-k)!]$. Ordered $k$-term lists with replacement number
+$n^k$. Here $0!=1$.
+\begin{align*}
+\binom nk&=\binom n{n-k},\\
+\binom nk&=\binom{n-1}{k-1}+\binom{n-1}{k},\\
+(x+y)^n&=\sum_{k=0}^n\binom nk x^{n-k}y^k,\\
+|A\cup B\cup C|&=|A|+|B|+|C|-|A\cap B|-|A\cap C|\\
+&\quad-|B\cap C|+|A\cap B\cap C|.
+\end{align*}
+The same alternating formula holds for event probabilities, without an
+independence assumption. Pairwise intersections include the triple region.
+
+\section*{Finite probability spaces and birthdays}
+For finite $\Omega$, assign weights $w_\omega\ge0$ summing to one;
+then $\P(A)=\sum_{\omega\in A}w_\omega$. Only in the uniform case does
+this simplify to $|A|/|\Omega|$.
+
+For $n$ independent uniform birthdays on $d$ days,
+\[
+\P(\text{some birthday match})=
+\begin{cases}
+1-\displaystyle\prod_{j=0}^{n-1}(1-j/d),&0\le n\le d,\\
+1,&n>d.
+\end{cases}
+\]
+For a designated person among $n\ge1$, the probability of a match with
+someone else is $1-(1-1/d)^{n-1}$, taking it to be zero when $n=1$.
+For 365 days, the any-pair probability first exceeds $1/2$ at 23 people.
+
+\section*{Core probability identities}
+\begin{align*}
+\P(A^c)&=1-\P(A),\\
+\P(A\cup B)&=\P(A)+\P(B)-\P(A\cap B),\\
+\P(A\mid B)&=\frac{\P(A\cap B)}{\P(B)},\\
+\P(A)&=\sum_i\P(A\mid B_i)\P(B_i),\\
+\P(B_j\mid A)&=\frac{\P(A\mid B_j)\P(B_j)}{\sum_i\P(A\mid B_i)\P(B_i)}.
+\end{align*}
+
+\section*{Moments and dependence}
+\begin{align*}
+\E[aX+bY]&=a\E X+b\E Y,\\
+\Var(X)&=\E[X^2]-(\E X)^2,\\
+\Cov(X,Y)&=\E[XY]-\E X\E Y,\\
+\Var(X+Y)&=\Var X+\Var Y+2\Cov(X,Y),\\
+\rho_{X,Y}&=\Cov(X,Y)/(\sigma_X\sigma_Y).
+\end{align*}
+
+\section*{Common distributions}
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Distribution & Support & Mean & Variance \\
+\midrule
+Bernoulli$(p)$ & $\{0,1\}$ & $p$ & $p(1-p)$ \\
+Binomial$(n,p)$ & $0,\ldots,n$ & $np$ & $np(1-p)$ \\
+Geometric$(p)$ & $1,2,\ldots$ & $1/p$ & $(1-p)/p^2$ \\
+Poisson$(\lambda)$ & $0,1,\ldots$ & $\lambda$ & $\lambda$ \\
+Uniform$(a,b)$ & $[a,b]$ & $(a+b)/2$ & $(b-a)^2/12$ \\
+Exponential$(\lambda)$ & $[0,\infty)$ & $1/\lambda$ & $1/\lambda^2$ \\
+Normal$(\mu,\sigma^2)$ & $\R$ & $\mu$ & $\sigma^2$ \\
+Beta$(\alpha,\beta)$ & $[0,1]$ & $\alpha/(\alpha+\beta)$ & $\alpha\beta/[(\alpha+\beta)^2(\alpha+\beta+1)]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Inference checklist}
+\begin{enumerate}
+  \item What is the target population and parameter?
+  \item How were units sampled or assigned?
+  \item What model connects observations to the parameter?
+  \item What is the estimator and its sampling uncertainty?
+  \item Which assumptions are needed for the interval or test?
+  \item Is the effect practically meaningful?
+  \item What diagnostic or predictive check could reveal model failure?
+\end{enumerate}
+
+\clearpage
+\section*{Exchangeability and a shared random bias}
+For an \emph{infinite} exchangeable zero--one sequence, de Finetti's
+theorem gives a unique mixing law $\mu$ on $[0,1]$. Choose
+$\Theta\sim\mu$ once; conditional on $\Theta$, the trials are i.i.d.\
+Bernoulli$(\Theta)$. For a specified string with $s$ ones,
+\begin{align*}
+\P(X_1=x_1,\ldots,X_n=x_n)&=\int p^s(1-p)^{n-s}\,\mu(dp),\\
+\P(S_n=s)&=\binom ns\int p^s(1-p)^{n-s}\,\mu(dp),\\
+\Cov(X_i,X_j)&=\Var(\Theta)\quad(i\ne j),\\
+\Var(S_n/n)&=\frac{\E[\Theta(1-\Theta)]}{n}+\Var(\Theta),\\
+S_n/n&\longrightarrow\Theta\quad\text{with probability one}.
+\end{align*}
+The predictive success probability is the posterior mean of $\Theta$.
+With a Beta$(a,b)$ mixing law and $s$ successes in $n$ trials,
+\[
+\Theta\mid\text{data}\sim\operatorname{Beta}(a+s,b+n-s),
+\qquad
+\P(X_{n+1}=1\mid\text{data})=\frac{a+s}{a+b+n}.
+\]
+P\'olya's urn, with one-ball reinforcement and $a,b$ initial balls of
+the two colors, realizes this model for positive integer $a,b$.
+For $a=b=1$, the mixing law is uniform and $S_n$ is uniform on
+$\{0,\ldots,n\}$.
+
+\begin{warningbox}
+Finite exchangeability alone does not imply a mixture of i.i.d.\
+trials. Sampling without replacement can have negative covariance.
+Exchangeability also does not choose a particular prior or identify
+a unique physical mechanism.
+\end{warningbox}
+
+For a prefix of length $n\le N$ from an exchangeable zero--one vector
+of length $N$, the finite-mixture approximation using bias $S_N/N$
+has absolute probability error at most
+$\min\{1,\binom n2/N\}$ for any event on that prefix.
+See Chapter~\ref{ch:exchangeability} for the coupling proof.

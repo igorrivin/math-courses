@@ -1,0 +1,107 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.85in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,mathtools,amssymb,booktabs,xcolor}
+\usepackage{hyperref,xurl,fancyhdr,needspace}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\definecolor{muted}{HTML}{5D6B78}
+\color{ink}
+\hypersetup{colorlinks=true,urlcolor=teal,linkcolor=teal,
+pdftitle={Presenter notes for two continued-fraction lectures},pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Continued fractions: presenter notes}
+\fancyhead[R]{\small Two 50-minute lectures}
+\fancyfoot[C]{\thepage}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\mat}[4]{\begin{pmatrix}#1&#2\\#3&#4\end{pmatrix}}
+\newcounter{slide}
+\newcounter{elapsed}
+\newcounter{backup}
+\newcommand{\teachslide}[4]{%
+  \stepcounter{slide}\Needspace{9\baselineskip}
+  \subsection*{\theslide.\ #1}
+  {\small\color{teal}\textbf{Minutes \theelapsed\ to \number\numexpr\value{elapsed}+#2\relax}\par}
+  \addtocounter{elapsed}{#2}
+  #4\par}
+\let\teachcover\teachslide
+\newcommand{\backups}{%
+  \typeout{LECTURE DURATION: \theelapsed\space minutes; CORE SLIDES: \theslide}
+  \ifnum\value{elapsed}=50\else\errmessage{Lecture timing is not 50 minutes}\fi
+  \setcounter{backup}{0}
+  \Needspace{10\baselineskip}\section*{Optional slides after the 50-minute stopping point}}
+\newcommand{\backupslide}[3]{%
+  \stepcounter{backup}\Needspace{9\baselineskip}
+  \subsection*{Backup \thebackup.\ #1}
+  #3\par}
+\begin{document}
+{\huge\bfseries Continued fractions\par}
+{\Large Presenter notes for two 50-minute lectures\par}
+\vspace{10pt}
+The slides follow Chapter 3 of \emph{Patterns, Proofs, and Primes}.
+Each lecture has its own 50-minute route. The suggested times include
+student calculation and discussion. Answer slides follow question slides,
+so advancing the PDF provides a simple reveal without animation software.
+The optional slides come after the exit question.
+
+\textbf{Before the first lecture.}
+Students should know how to multiply and invert a $2\times2$ matrix,
+how a simple continued fraction is written, and what its convergents are.
+Lecture 1 reviews the transformation rules.
+For Lecture 2, recall that the convergents tend to the original
+irrational number and their denominators are eventually unbounded.
+No calculus or abstract algebra is needed for these proofs.
+
+\textbf{Using the files.}
+Share only the slide PDF window in Zoom and keep this notes document
+separate. If you have one screen, practice switching to the notes
+without changing the shared window. The editable LaTeX sources are
+included in the source bundle. No live web services or fonts need to
+download during the lectures.
+
+\textbf{Pacing.}
+Lecture 1 reaches the prefix-conjugation identity at minute 29 and
+finishes that argument by minute 35.
+Lecture 2 completes Lagrange's converse at minute 24, begins the
+Galois discussion at minute 30, and completes its proof at minute 41.
+If discussion runs long, shorten the final comparison examples.
+Keep the student calculation breaks whenever possible.
+
+\section*{Lecture 1: Continued fractions and matrix fixed points}
+\input{lecture-1-content}
+\clearpage
+\setcounter{slide}{0}\setcounter{elapsed}{0}
+\section*{Lecture 2: Lagrange, Galois, and reduced surds}
+\input{lecture-2-content}
+\clearpage
+\section*{Sources and notation}
+The primary source for these lectures is the expanded course book:
+Chapter 3, especially Sections 3.2 and 3.7--3.10, together with
+Appendix A. The printed book numbers its three central identities
+as (3.3), prefix conjugation; (3.4), the quadratic-state recurrence;
+and (3.6), the unique reduced predecessor.
+
+The notation $T_M(t)$ means the fractional action of a matrix,
+not ordinary multiplication by a scalar. The prime on a quadratic
+irrational denotes its algebraic conjugate, not a derivative.
+Every continued fraction in the lectures is simple, with positive
+digits after its integer part.
+
+Robert M. Corless, \emph{Continued Fractions and Chaos},
+\href{https://www.cecm.sfu.ca/organics/papers/corless/confrac/html/node6-an.shtml}{Periodic and Fixed Points of the Gauss Map},
+states the Lagrange and Galois characterizations.
+Giovanni Panti, \href{https://arxiv.org/abs/0712.2996}{A general Lagrange Theorem}
+(2007), gives a broader setting for periodicity results beyond
+ordinary simple continued fractions. The lectures need none of
+those generalizations.
+
+For a presentation setup reference, Zoom documents
+\href{https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068635}{sharing a slide-show window}.
+The lecture PDFs themselves do not depend on Zoom.
+\end{document}

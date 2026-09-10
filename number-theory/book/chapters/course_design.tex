@@ -1,0 +1,119 @@
+\chapter*{How to use this course}
+\addcontentsline{toc}{chapter}{How to use this course}
+
+\begin{bigidea}
+Number theory is an unusually good place to learn what proof feels like. The objects are familiar, experiments are cheap, and elementary questions quickly demand new ways of thinking. This course repeatedly follows the same rhythm:
+\[
+\text{compute} \longrightarrow \text{notice} \longrightarrow \text{conjecture} \longrightarrow \text{prove} \longrightarrow \text{reuse}.
+\]
+\end{bigidea}
+
+\section*{Audience and prerequisites}
+
+This packet is designed for a first proof-oriented course: strong secondary students, first- or second-year undergraduates, or mathematically mature non-majors. Students should be comfortable with algebra, functions, and mathematical induction. No calculus or abstract algebra is required. A short ``proof studio'' in the first week can supply any missing experience with direct proof, contradiction, and induction.
+
+\section*{Learning goals}
+
+By the end, students should be able to:
+\begin{enumerate}
+  \item use the Euclidean algorithm both computationally and as a source of proofs;
+  \item prove unique factorization from Euclid's lemma and use prime exponents to prove $\sqrt2$ irrational;
+  \item generate primes with the sieve of Eratosthenes and justify its stopping rule;
+  \item encode continued-fraction convergents by unimodular $2\times2$ matrix products, connect them to extended-Euclidean coefficients, and use them as alternating bounds;
+  \item explain rational base-$b$ periodicity and prove the Lagrange--Galois characterization of periodic continued fractions using fixed points, conjugation, and reduced surds;
+  \item calculate in $\Z/n\Z$, solve linear congruences, and use the Chinese remainder theorem;
+  \item explain Fermat's little theorem through cyclic symmetry and through finite groups;
+  \item prove basic identities and divisibility statements for binomial coefficients;
+  \item understand why central binomial coefficients control the density of primes;
+  \item write short proofs that clearly separate evidence, claim, and justification.
+\end{enumerate}
+
+\section*{A 14-week route}
+
+The design assumes two 75-minute meetings per week. ``Studio'' means that at least half the meeting is devoted to student work at boards or in small groups.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{.07\textwidth}p{.39\textwidth}X}
+\toprule
+Week & Core mathematics & Suggested studio or assessment \\
+\midrule
+1 & Divisibility; gcd; Euclidean algorithm & Tiling model; proof diagnostic \\
+2 & B\'ezout identity; linear Diophantine equations & Extended Euclid relay \\
+3 & Primes; unique factorization; $\sqrt2\notin\Q$; the sieve & Sieve studio; repair a flawed proof; Problem Set 1 \\
+4 & Finite continued fractions; matrix products; extended Euclid; calendar design & Match remainders with convergent coefficients \\
+5 & Alternating convergents; Lagrange and Galois; Pell equations & Fixed points and reduced-state cycles; Problem Set 2 \\
+6 & Congruences; units; linear congruences & Clock arithmetic and affine ciphers \\
+7 & Chinese remainder theorem & CRT construction studio; short quiz \\
+8 & Necklace colorings and Fermat's theorem & Orbit counting with physical beads; Problem Set 3 \\
+9 & Groups, subgroups, cyclic groups & Cayley-table investigation \\
+10 & Lagrange's theorem; group proof of Fermat & Compare two proofs; Problem Set 4 \\
+11 & Binomial coefficients and Pascal's triangle & Identity stations \\
+12 & $p$-adic valuations; Kummer's carry idea & Color divisibility patterns; Problem Set 5 \\
+13 & Central binomial coefficient; Chebyshev functions & Prime-counting proof workshop \\
+14 & Chebyshev estimate; synthesis & Capstone presentations or oral exam \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Chapter~3 now gives full elementary periodicity proofs. A compact lecture
+route is to introduce linear fractional transformations alongside the
+matrix recurrence, do the fixed-point and prefix-conjugation calculations
+in class, and assign the three-step finite-state argument as guided reading.
+Return to the reduced-predecessor formula to prove Galois's criterion;
+Exercises~20--26 provide practice. The metric-theory and astronomical
+asides remain optional.
+
+\section*{Assessment design}
+
+One workable balance is 45\% problem sets, 20\% two short proof interviews, 15\% computational or visual labs, and 20\% capstone. Problem sets should mix three modes:
+\begin{itemize}
+  \item \textbf{Fluency}: focused calculations that make later proofs readable.
+  \item \textbf{Reasoning}: multi-step proofs, often with a hint or intermediate claim.
+  \item \textbf{Exploration}: generate data, state a conjecture, then test its limits.
+\end{itemize}
+
+The exercises in each chapter carry these labels. A typical weekly assignment is two fluency problems, two reasoning problems, and one exploration. The appendices supply a short matrix toolkit, continued-fraction arithmetic, an astronomical Venus case study, selected hints and solutions, and reference sheets. An instructor can remove the solution pages when distributing assignments.
+
+\section*{Teaching principles}
+
+\begin{itemize}
+  \item \textbf{Let the picture precede the notation.} Tiling, winding around a clock, rotating a necklace, and counting lattice paths give students something to reason about before symbols compress the idea.
+  \item \textbf{Prove one theorem twice.} Fermat's little theorem is the deliberate centerpiece: orbit counting supplies a concrete proof, while groups reveal the reusable structure.
+  \item \textbf{Make proof choices visible.} Ask not only ``Is this correct?'' but ``Why did this definition unlock that step?''
+  \item \textbf{Use computation as a microscope, not an oracle.} The optional Sage notebook helps students find examples and conjectures; written work must still explain why a pattern continues.
+\end{itemize}
+
+\section*{Dependency map}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=8mm and 11mm,
+  box/.style={draw=navy!55,rounded corners=2mm,fill=white,minimum height=9mm,align=center,font=\small,inner xsep=4mm},
+  arr/.style={-{Stealth[length=2mm]},thick,teal}
+]
+\node[box] (euclid) {Euclidean\\algorithm};
+\node[box,right=of euclid] (fta) {Unique\\factorization};
+\node[box,below=of euclid] (cf) {Continued\\fractions};
+\node[box,right=of fta] (mod) {Modular\\arithmetic};
+\node[box,below=of mod] (neck) {Necklace\\orbits};
+\node[box,right=of mod] (group) {Finite\\groups};
+\node[box,right=of neck] (flt) {Fermat's little\\theorem};
+\node[box,below=of fta] (binom) {Binomial\\coefficients};
+\node[box,below=of flt] (cheb) {Chebyshev's\\estimate};
+\draw[arr] (euclid)--(fta);
+\draw[arr] (euclid)--(cf);
+\draw[arr] (fta)--(mod);
+\draw[arr] (mod)--(neck);
+\draw[arr] (mod)--(group);
+\draw[arr] (neck)--(flt);
+\draw[arr] (group)--(flt);
+\draw[arr] (fta)--(binom);
+\draw[arr] (binom)--(cheb);
+\draw[arr] (fta) to[bend left=18] (cheb);
+\end{tikzpicture}
+\end{center}
+
+\begin{checkpoint}
+\textbf{A good opening prompt.} Write $391$ and $299$ on the board. Ask: ``What is the largest square tile that covers a $391\times299$ rectangle without cutting? How could you be certain?'' Do not define gcd until the class has invented the subtraction or division process.
+\end{checkpoint}

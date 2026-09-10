@@ -1,0 +1,266 @@
+\chapter{Venus writes Euclid in the sky}
+\chaptertag{Three clocks, five alignments, and the Dresden Codex}
+\label{app:venus}
+
+Continued fractions are useful whenever two repeating motions almost return to
+their starting arrangement at the same time.  Venus gives a particularly
+visible example.  Small Fibonacci numbers describe a near-repeat of the modern
+planetary motions, while related integers organize an exact calendar table in
+the Dresden Codex.  We will build the astronomical vocabulary from scratch and
+keep the approximate observation separate from the exact calendar arithmetic.
+
+\section{Begin with two runners on circular tracks}
+
+Imagine Earth and Venus as two runners circling the Sun.  Venus uses the inner
+track and completes a lap sooner, so it repeatedly catches and passes Earth.
+At the instant shown below, the Sun, Venus, and Earth lie on the same ray.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.15]
+  \draw[navy!28,line width=.9pt] (0,0) circle (1.25);
+  \draw[navy!28,line width=.9pt] (0,0) circle (2.15);
+  \draw[navy!22,dashed] (0,0)--(2.55,0);
+  \fill[gold] (0,0) circle (4pt) node[below left=3pt,text=ink] {Sun};
+  \fill[coral] (1.25,0) circle (4pt) node[below=4pt,text=ink] {Venus};
+  \fill[teal] (2.15,0) circle (4.5pt) node[above=4pt,text=ink] {Earth};
+  \draw[-{Stealth[length=2.2mm]},coral,line width=1.1pt]
+    (120:1.25) arc[start angle=120,end angle=200,radius=1.25];
+  \draw[-{Stealth[length=2.2mm]},teal,line width=1.1pt]
+    (120:2.15) arc[start angle=120,end angle=180,radius=2.15];
+  \node[coral,align=center] at (-1.55,-1.45) {shorter lap\\faster runner};
+  \node[teal,align=center] at (-2.45,1.65) {longer lap\\slower runner};
+  \node[text=muted,align=center] at (4.0,.05)
+    {an alignment\\(a conjunction)};
+  \draw[-{Stealth[length=2mm]},muted] (3.25,.05)--(2.35,.05);
+\end{tikzpicture}
+\end{center}
+
+Here are the three time intervals we need.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{.16\textwidth}p{.30\textwidth}X}
+\toprule
+Symbol & Everyday meaning & Astronomical name and approximate value \\
+\midrule
+$E$ & time for Earth to make one Sun-centered lap
+& Earth's \emph{sidereal period}: $365.256$ days \\
+$V$ & time for Venus to make one Sun-centered lap
+& Venus's \emph{sidereal period}: $224.7$ days \\
+$S$ & time from one Earth--Venus alignment to the next
+& Venus's \emph{synodic period}: $583.92$ days \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+``Sidereal'' means that a full lap is measured relative to the distant stars.
+A ``conjunction'' is an alignment; in the alignment drawn above, Venus lies
+between Earth and the Sun, so astronomers call it an \emph{inferior
+conjunction}.  ``Synodic period'' simply means the waiting time until the same
+kind of alignment occurs again.\footnote{For the modern mean values, see NASA,
+\href{https://eclipse.gsfc.nasa.gov/OH/transit12.html}{\emph{2012 Transit of
+Venus}} and \href{https://history.arc.nasa.gov/hist_pdfs/nasa_sp461.pdf}{NASA
+SP--461, \emph{Pioneer Venus}}.  The real orbits are neither perfectly circular
+nor perfectly uniform; rounded mean periods are all we need here.}
+
+\section{The overtaking clock}
+
+Earth completes $1/E$ laps per day, while Venus completes $1/V$.  Because Venus
+is faster, it gains on Earth at the rate
+\[
+  \frac1V-\frac1E\quad\hbox{laps per day}.
+\]
+The next alignment occurs when Venus has gained exactly one whole lap.  Hence
+\begin{equation}
+  \frac1S=\frac1V-\frac1E.                         \label{eq:venus-beat}
+\end{equation}
+This is the same ``lapping time'' calculation used for two runners on a track.
+
+Put $r=E/V$: it compares the length of an Earth lap in time with a Venus lap.
+Multiplying \eqref{eq:venus-beat} by $E$ gives
+\begin{equation}
+  \frac SE=\frac1{r-1}=:T(r).                      \label{eq:venus-mobius}
+\end{equation}
+The measured ratio $E/V\approx1.6255$ has the simple, very accurate fraction
+$13/8$ nearby.  If we replace the measured ratio temporarily by this ideal one,
+then
+\[
+  T\!\left(\frac{13}{8}\right)=\frac85.
+\]
+In plain language:
+\begin{itemize}
+  \item during about eight Earth laps, Venus makes about thirteen laps; and
+  \item in that time Venus gains $13-8=5$ laps on Earth, producing about five
+  repeat alignments.
+\end{itemize}
+None of these counts is exact for the physical planets.  Their usefulness is
+that $13/8$ is an excellent approximation with a tiny denominator.
+
+\begin{checkpoint}[title={Why the golden ratio appears}]
+The positive fixed point of the overtaking map $T(r)=1/(r-1)$ satisfies
+\[
+  r=\frac1{r-1},\qquad r^2-r-1=0,
+\]
+so it is $\varphi=(1+\sqrt5)/2$.  More generally,
+\[
+  T\!\left(\frac{F_{n+1}}{F_n}\right)
+  =\frac{F_n}{F_{n-1}}.
+\]
+The calculation of one lapping time walks backward through consecutive
+Fibonacci ratios.
+\end{checkpoint}
+
+\section{Why five alignments draw a star}
+
+During one alignment-to-alignment interval, Earth travels about
+$S/E\approx8/5$ laps.  One complete lap returns to the same direction, so only
+the leftover $3/5$ of a lap changes the direction of the alignment ray.  The
+five successive directions are therefore approximately
+\[
+  0,\quad \frac35,\quad \frac15,\quad \frac45,\quad \frac25
+  \pmod 1.
+\]
+Connecting those directions in time order draws a five-pointed star.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+  \coordinate (v0) at (90:2);
+  \coordinate (v1) at (162:2);
+  \coordinate (v2) at (234:2);
+  \coordinate (v3) at (306:2);
+  \coordinate (v4) at (18:2);
+  \draw[navy!30,line width=.8pt] (0,0) circle (2);
+  \draw[navy!20,dashed] (0,0) -- (v0);
+  \draw[coral,line width=1.8pt]
+    (v0) -- (v3) -- (v1) -- (v4) -- (v2) -- cycle;
+  \fill[gold] (0,0) circle (3pt) node[below=4pt,text=muted] {Sun};
+  \foreach \v/\lab/\pos in {
+    v0/$C_0$/above,
+    v3/$C_1$/below right,
+    v1/$C_2$/above left,
+    v4/$C_3$/above right,
+    v2/$C_4$/below left}
+    \fill[teal] (\v) circle (2.7pt) node[\pos,text=ink] {\lab};
+\end{tikzpicture}
+
+\small\color{muted}Each $C_j$ marks the direction of an alignment, not the
+path traveled by Venus.  The actual fifth return misses the starting direction
+slightly.
+\end{center}
+
+The geometry of a perfectly regular pentagram contains the golden ratio
+exactly.  The planetary star is only approximate: because $13/8$ is not the
+exact period ratio, the alignment points drift and the whole pattern slowly
+turns over repeated eight-year cycles.\footnote{The European Southern
+Observatory's educational note
+\href{https://www.eso.org/public/outreach/eduoff/vt-2004/Education/edu1app5.html}{\emph{The
+Pentagram of Venus}} illustrates the five alignments and the small miss after
+eight years.}
+
+\section{The Euclidean algorithm inside \texorpdfstring{$13:8$}{13:8}}
+
+The approximation contains the short Euclidean chain
+\[
+\begin{aligned}
+  13&=1\cdot8+5, & 8&=1\cdot5+3,\\
+   5&=1\cdot3+2, & 3&=1\cdot2+1,\\
+   2&=2\cdot1.
+\end{aligned}
+\]
+Consequently
+\[
+  \frac{13}{8}=[1;1,1,1,2]=[1;1,1,1,1,1],
+  \qquad
+  \frac85=[1;1,1,2]=[1;1,1,1,1].
+\]
+These are consecutive convergents of
+$\varphi=[1;\overline1]$.  The orbit ratio $13/8$, the difference $5$, the
+step $3/5$, and the pentagram are not independent coincidences: they are
+different consequences of one good rational approximation.
+
+\section{The Dresden Codex: an exact calendar model}
+
+The modern calculation above starts with measured periods and obtains
+approximations.  The Maya Venus Table in the Dresden Codex instead uses chosen
+whole-day counts for calendrical bookkeeping.  In particular:
+\begin{itemize}
+  \item $584$ days is the table's rounded alignment-to-alignment Venus cycle;
+  \item $365$ days is one \emph{Haab}, the Maya solar-year calendar; and
+  \item $260$ days is one Tzolk'in, a repeating named-day cycle.
+\end{itemize}
+
+Five pages of the table present one $584$-day Venus cycle apiece.  The five
+cycles make an eight-Haab block because
+\begin{equation}
+  5\cdot584=8\cdot365=2920.                         \label{eq:dresden-block}
+\end{equation}
+This equality is exact arithmetic inside the calendar model, not an assertion
+that the physical Venus cycle is exactly $584$ days.\footnote{See the Saxon
+State and University Library Dresden's description of the
+\href{https://www.slub-dresden.de/en/explore/manuscripts/the-dresden-maya-codex/content}{Dresden
+Maya Codex}, especially the Venus pages 24 and 46--50.  For the page structure
+and cumulative day counts, see Akira Kaneko,
+\href{https://classic.scielo.org.mx/scielo.php?pid=S0185-25742010000100002&script=sci_arttext}{``Identification
+of Postclassic Maya Constellations from the Venus Pages of the Dresden
+Codex,''} \emph{Estudios de Cultura Maya} \textbf{35} (2010).}
+
+To make the $2920$-day block agree again with the $260$-day named-day cycle,
+take a least common multiple.  Since $\gcd(2920,260)=20$,
+\[
+  \operatorname{lcm}(2920,260)=\frac{2920\cdot260}{20}=37960.
+\]
+At that common return,
+\begin{equation}
+  65\cdot584=104\cdot365=146\cdot260
+  =13\cdot2920=37960.                              \label{eq:dresden-long}
+\end{equation}
+
+\begin{labbox}[title={The same numbers are doing different jobs}]
+In the modern orbital approximation, $13$ counts Venus's Sun-centered laps in
+about eight Earth laps.  In \eqref{eq:dresden-long}, $13$ counts complete
+$2920$-day calendar blocks in a $37960$-day table.  The identity $13=8+5$ is a
+delightful number-theoretic lens, but the manuscript alone does not show that
+Maya astronomers formulated their table using Fibonacci numbers or continued
+fractions.
+\end{labbox}
+
+Finally, rounding has a cost.  The modern mean alignment cycle is about
+$583.92$ days, so the calendar value $584$ gains roughly
+\[
+  65(584-583.92)\approx5.2\text{ days}
+\]
+over $65$ cycles.  Scholars study correction schemes in the table.  Our exact
+identity \eqref{eq:dresden-long} describes its integer framework, not a
+perfectly uniform planet.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item In your own words, distinguish a planet's Sun-centered lap time from
+  the waiting time between two Earth--planet alignments.  Which are $E$, $V$,
+  and $S$? \exlevel{Fluency}
+
+  \item Derive \eqref{eq:venus-beat} by comparing lap rates.  Then derive
+  \eqref{eq:venus-mobius} and verify that $T(13/8)=8/5$.
+  \exlevel{Reasoning}
+
+  \item Starting from a step of $3/5$ of a turn, list the first five positions
+  modulo $1$.  Why does joining them chronologically make a star rather than
+  the boundary of a pentagon? \exlevel{Reasoning}
+
+  \item Run the Euclidean algorithm on $(13,8)$.  Read its quotients as the
+  continued fraction of $13/8$, and explain why replacing the final $2$ by
+  $1,1$ gives the same rational number. \exlevel{Reasoning}
+
+  \item Factor $2920$ and $260$, compute their gcd and lcm, and recover every
+  multiplier in \eqref{eq:dresden-long}. \exlevel{Fluency}
+
+  \item Prove $T(F_{n+1}/F_n)=F_n/F_{n-1}$.  Show that the positive fixed point
+  of $T$ is $\varphi$, and connect this with $[1;\overline1]$.
+  \exlevel{Reasoning}
+
+  \item Using $583.92$ days as the modern mean alignment cycle, compare the
+  elapsed time for $5$, $65$, and $650$ cycles with the nominal $584$-day
+  count.  Which error is negligible for a sketch but serious for a long
+  calendar? \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

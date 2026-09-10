@@ -1,0 +1,413 @@
+\chapter{Selected hints and solutions}
+\chaptertag{For checking arguments, not replacing them}
+
+Only selected exercises are treated here. A useful routine is: write a complete attempt, mark the exact step where you are stuck, then consult only the first relevant sentence below.
+
+\section*{Chapter 1}
+
+\textbf{1.} Euclid gives
+\[
+2024=2(748)+528,\quad748=528+220,\quad528=2(220)+88,
+\]
+\[
+220=2(88)+44,\quad88=2(44),
+\]
+so the gcd is $44$.
+
+\textbf{2.} The divisions are $527=341+186$, $341=186+155$, $186=155+31$, $155=5\cdot31$. Reverse:
+\[
+31=186-155=2(186)-341=2(527-341)-341=2\cdot527-3\cdot341.
+\]
+
+\textbf{4.} One solution is $35(-5)+22(8)=1$. All solutions are
+\[
+x=-5+22t,\qquad y=8-35t\qquad(t\in\Z).
+\]
+To prove completeness, subtract two solutions and use $35(x-x')=-22(y-y')$ with $\gcd(35,22)=1$.
+
+\section*{Chapter 2}
+
+\textbf{3.} Write $c=ar=bs$. Since $a\divides bs$ and $\gcd(a,b)=1$, repeated Euclid's lemma (or B\'ezout) gives $a\divides s$. Thus $s=at$ and $c=abt$.
+
+\textbf{4.} If $\sqrt p=a/b$ in lowest terms, then $a^2=pb^2$. The exponent of $p$ on the left is even; on the right it is odd. Unique factorization forbids this.
+
+\textbf{6.} The primes at most $100$ are
+\[
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97.
+\]
+Every composite at most $100$ has a prime factor at most $\sqrt{100}=10$, so
+sieving by the primes $2,3,5,7$ crosses out every composite.
+
+\textbf{7.} No: $5!+1=121=11^2$. Euclid's number only needs a prime divisor outside the proposed list; it need not itself be prime.
+
+\textbf{9.} We already know that $a=\sqrt2$ is irrational. By the definition
+of the logarithm, $a^b=3$. If $b=p/q$ were rational with $q>0$, then
+$(\sqrt2)^{p/q}=3$; raising both sides to $2q$ would give
+$2^p=3^{2q}$, contrary to unique factorization. Hence $b$ is irrational.
+Unlike the proof by cases, this argument names a particular pair and proves
+that it works; it does not leave the witness dependent on an undecided
+alternative.
+
+\section*{Chapter 3}
+
+\textbf{1.} Euclid gives
+\[
+355/113=[3;7,16],
+\]
+with convergents $3$, $22/7$, and $355/113$.
+
+\textbf{2.} The convergents are
+\[
+1,\;2,\;\frac32,\;\frac53,\;\frac85,\;\frac{13}{8}.
+\]
+Numerators and denominators are consecutive Fibonacci numbers; the recurrence with every $a_k=1$ proves it.
+
+\textbf{4.} Since $a_n=(a_n-1)+1/1$ at the bottom level,
+\[
+[a_0;\dots,a_n]=[a_0;\dots,a_n-1,1].
+\]
+Requiring the last partial quotient to exceed $1$ selects a unique finite expansion.
+
+\textbf{6.} With $\alpha\approx0.2421988$, the continued fraction begins
+\[
+ \alpha=[0;4,7,1,3,5,\dots],
+\]
+so its first four nonzero convergents are
+\[
+ \frac14,\qquad\frac7{29},\qquad\frac8{33},\qquad\frac{31}{128}.
+\]
+The Julian calendar uses $1/4$ leap day per year. A century-based cycle has
+$q=100Q$, so we instead approximate
+\[
+ 100\alpha\approx24.21988=[24;4,1,1,4,\dots].
+\]
+Its first nonintegral convergent is $97/4$; dividing the denominator scale by
+$100$ gives $97/400$, the Gregorian rate. The corresponding mean years are
+\[
+ 365+\frac14=365.25,
+ \qquad 365+\frac{97}{400}=365.2425,
+ \qquad 365+\frac{31}{128}=365.2421875.
+\]
+Relative to the fixed approximation $365.2421988$, their annual errors in days
+are about $7.80\times10^{-3}$, $3.01\times10^{-4}$, and
+$-1.13\times10^{-5}$, respectively. Thus $31/128$ is numerically better,
+whereas $97/400$ fits a convenient rule organized by fours and centuries.
+
+\textbf{8.} Euclid gives $527/341=[1;1,1,5]$, whose convergents are
+$1,2,3/2,17/11$. The penultimate convergent is $p_2/q_2=3/2$, so the
+remainder formula gives
+\[
+  \gcd(527,341)=r_2=2\cdot527-3\cdot341=31.
+\]
+
+\textbf{9.} The first six convergents of $\sqrt3=[1;\overline{1,2}]$ are
+\[
+1,\quad 2,\quad \frac53,\quad \frac74,\quad \frac{19}{11},\quad \frac{26}{15}.
+\]
+They satisfy
+\[
+1<\frac53<\frac{19}{11}<\sqrt3
+<\frac{26}{15}<\frac74<2.
+\]
+For even $k$, $M_k'(t)<0$, so the finite-tail value lies above
+$M_k(\infty)=c_k$; for odd $k$, the derivative is positive and the inequality
+reverses. Applying this once to $x$ and once to $c_{k+2}$ gives the two chains.
+
+\textbf{10.} For $k=0$ the formula is just
+$D(a_0)=\begin{psmallmatrix}p_0&p_{-1}\\q_0&q_{-1}\end{psmallmatrix}$.
+If it holds at $k$, right multiplication by $D(a_{k+1})$ replaces the first
+column by $a_{k+1}(p_k,q_k)^T+(p_{k-1},q_{k-1})^T$ and moves the old first
+column into second place. These are exactly the recurrences. The determinant
+is $(-1)^{k+1}$, so the inverse formula introduces no denominators.
+
+\textbf{11.} For $1/7$, the remainders are
+$1,3,2,6,4,5,1,\dots$, producing $0.\overline{142857}$. For $5/12$, they are
+$5,2,8,8,\dots$, producing $0.41\overline6$. The first repeated remainder
+marks the start and length of the repeating block.
+
+\textbf{15.} Since
+\[
+D(1)D(2)=\begin{pmatrix}3&1\\2&1\end{pmatrix},
+\]
+the repeating tail obeys $t=(3t+1)/(2t+1)$. Hence
+$2t^2-2t-1=0$, and positivity selects $t=(1+\sqrt3)/2$.
+
+\textbf{16.} For $x=1+\sqrt2$, the conjugate $x'=1-\sqrt2$ lies in
+$(-1,0)$; for $x=(1+\sqrt5)/2$, the conjugate is $(1-\sqrt5)/2$, again in
+$(-1,0)$. Both numbers exceed $1$, so Galois's criterion applies. Indeed their
+expansions are $[\overline2]$ and $[\overline1]$, respectively.
+
+\textbf{17.} Factoring the difference of squares gives
+\[
+ \abs{\sqrt D-p/q}
+ =\frac{\abs{D-p^2/q^2}}{\sqrt D+p/q}
+ =\frac{1}{q^2(\sqrt D+p/q)}.
+\]
+The denominator factor $\sqrt D+p/q$ exceeds $2$, so Legendre's criterion
+forces $p/q$ to be a convergent of $\sqrt D$.
+
+\textbf{18.} We have $\sqrt3=[1;\overline{1,2}]$, of even period length $2$;
+one period therefore gives the $+1$ solution $2^2-3(1)^2=1$. The first columns
+of the first three powers of
+$\begin{psmallmatrix}2&3\\1&2\end{psmallmatrix}$ are
+\[
+ \begin{pmatrix}2\\1\end{pmatrix},\qquad
+ \begin{pmatrix}7\\4\end{pmatrix},\qquad
+ \begin{pmatrix}26\\15\end{pmatrix},
+\]
+and each satisfies $p^2-3q^2=1$.
+
+\textbf{19.} A finite computation verifies only the displayed finite averages;
+an asymptotic conclusion requires control of every later partial quotient.
+Khinchin's theorem excludes only a measure-zero exceptional set and supplies no
+known test proving that a named constant such as $\pi$ lies outside it. For $e$,
+the repeating pattern of positions gives
+\[
+ a_{3j-2}=1,\qquad a_{3j-1}=2j,\qquad a_{3j}=1,
+\]
+so $a_1\cdots a_{3m}=2^m m!$. Taking the $(3m)$th root and applying
+$m!\sim\sqrt{2\pi m}(m/e)^m$ yields
+\[
+ G_{3m}(e)=(2^m m!)^{1/(3m)}\sim(2m/e)^{1/3}\to\infty.
+\]
+The denominator recurrence gives
+$q_{3m}\geq a_1\cdots a_{3m}=2^m m!$, so $q_{3m}^{2/(3m)}\to\infty$ too.
+Thus $e$ is provably on the exceptional side of both laws.
+
+\textbf{20.} The two matrices and their maps are
+\[
+ D(1)D(2)=\begin{pmatrix}3&1\\2&1\end{pmatrix},
+ \quad t\longmapsto\frac{3t+1}{2t+1};
+ \qquad
+ D(2)D(1)=\begin{pmatrix}3&2\\1&1\end{pmatrix},
+ \quad t\longmapsto\frac{3t+2}{t+1}.
+\]
+The rightmost matrix acts first. The fixed-point equations are
+$2t^2-2t-1=0$ and $t^2-2t-2=0$, with positive roots
+$(1+\sqrt3)/2$ and $1+\sqrt3$, respectively.
+
+\textbf{21.} For $j=1$ and $j=2$, respectively,
+\[
+ MNM^{-1}
+ =\begin{pmatrix}2&3\\1&2\end{pmatrix},
+ \qquad
+ MNM^{-1}
+ =\begin{pmatrix}3&2\\1&1\end{pmatrix}.
+\]
+The positive fixed points are $\sqrt3$ and $1+\sqrt3$.
+Only the second is reduced, since $-\sqrt3<-1$ but
+$-1<1-\sqrt3<0$. Its pure period is $[\overline{2,1}]$.
+
+\textbf{22.} A pole $ct+d=0$ would make $t$ rational if $c\ne0$;
+if $c=0$, invertibility implies $d\ne0$. If $T_M(t)=r\in\Q$,
+then $(a-rc)t=rd-b$. The coefficient $a-rc$ cannot vanish:
+together with the equality it would force $ad-bc=0$.
+Thus $t=(rd-b)/(a-rc)$ would be rational, a contradiction.
+The fixed-point assertion must exclude scalar matrices.
+For example, $T_I(t)=t$ for every $t$, including $\sqrt[3]{2}$,
+which is not quadratic: $X^3-2$ has no rational root and is an
+irreducible cubic over $\Q$.
+
+\textbf{23.} Precisely $1+\sqrt2$, $(1+\sqrt5)/2$, and
+$(1+\sqrt3)/2$ are reduced, so those three are purely periodic.
+The conjugate of $\sqrt2$ is less than $-1$, and the last two
+numbers fail $x>1$. All six are real quadratic irrationals, so
+Lagrange's theorem makes all their continued fractions eventually
+periodic, including the one with negative initial digit.
+
+\textbf{24.} The successive triples are
+\[
+ (0,1,3),\ (3,4,1),\ (1,3,1),\ (2,3,1),\
+ (1,4,1),\ (3,1,6),\ (3,4,1).
+\]
+Thus $\sqrt{13}=[3;\overline{1,1,1,1,6}]$.
+After the first step, $|P_n|\le3<\sqrt{13}$ and
+$0<Q_n\le4<2\sqrt{13}$; each corresponding surd exceeds $1$
+and has conjugate in $(-1,0)$.
+
+\textbf{25.} Here $-1/z'=1+\sqrt3$, whose floor is $2$.
+The predecessor is $2+1/z=1+\sqrt3$.
+The bounds allow $P=-1,0,1$ and $Q=1,2,3$, but the
+divisibility condition and both reduced inequalities leave only
+$(P,Q)=(1,1),(1,2)$. They represent $1+\sqrt3$ and
+$(1+\sqrt3)/2$, and the algorithm interchanges them.
+A finite map can have an initial segment before its cycle:
+$0\mapsto1$, $1\mapsto1$. Unique reduced predecessors exclude
+that behavior in the continued-fraction argument.
+
+\textbf{26.} The period matrix and equation are
+\[
+ N=\begin{pmatrix}10&3\\7&2\end{pmatrix},
+ \qquad 7x^2-8x-3=0,\qquad x=\frac{4+\sqrt{37}}7.
+\]
+Transposition gives $3z^2-8z-7=0$, with positive root
+$z=(4+\sqrt{37})/3$. Finally,
+$-1/x'=7/(\sqrt{37}-4)=(4+\sqrt{37})/3$, as predicted.
+
+\section*{Chapter 4}
+
+\textbf{1.} Extended Euclid yields
+\[
+1=11\cdot101-30\cdot37,
+\]
+so $37^{-1}\congr-30\congr71\pmod{101}$.
+
+\textbf{2.} Divide $18x\congr30\pmod{42}$ by $6$ while reducing the modulus: $3x\congr5\pmod7$. Since $3^{-1}\congr5$, $x\congr4\pmod7$. Modulo $42$ the six solutions are $4,11,18,25,32,39$.
+
+\textbf{5.} Here $N=504$. One convenient construction is
+\[
+x=2(72)(4)+3(63)(7)+4(56)(5)=3019\congr499\pmod{504}.
+\]
+The multipliers $4,7,5$ invert $72,63,56$ modulo $7,8,9$, respectively.
+
+\section*{Chapter 5}
+
+\textbf{1.} The binary length-$3$ words form four orbits:
+\[
+\{000\},\quad\{111\},\quad\{001,010,100\},\quad\{011,110,101\}.
+\]
+
+\textbf{3.} If $ik\congr jk\pmod p$, then $p\divides k(i-j)$. As $p\ndivides k$, Euclid's lemma gives $p\divides i-j$. For $0\le i,j<p$, this forces $i=j$.
+
+\textbf{5.} Orbit sizes divide $6$, and binary examples realize $1,2,3,6$: $000000$, $010101$, $001001$, and $000001$.
+
+\section*{Chapter 6}
+
+\textbf{1.} $(\Z/12\Z)^\times=\{1,5,7,11\}$. Every nonidentity element squares to $1$, so their orders are $2$; the identity has order $1$.
+
+\textbf{4.} If $aH\cap bH$ contains $x$, write $x=ah_1=bh_2$. Then $a=b h_2h_1^{-1}$, so every $ah\in aH$ equals $b(h_2h_1^{-1}h)\in bH$. Thus $aH\subseteq bH$; symmetry gives equality.
+
+\textbf{5.} For $g\ne e$, the order of $g$ divides the prime $\abs G$, so it is $\abs G$. Hence $G=\angles g$.
+
+\section*{Chapter 7}
+
+\textbf{2.} Legendre gives
+\[
+v_2(100!)=50+25+12+6+3+1=97,
+\]
+\[
+v_5(100!)=20+4=24.
+\]
+Each trailing zero consumes one $2$ and one $5$, so there are $24$.
+
+\textbf{4.} Choose $n$ objects from two disjoint groups of $n$. If $k$ come from the first group, then $n-k$ come from the second. Summing over $k$ gives
+\[
+\sum_k\binom nk\binom n{n-k}=\binom{2n}{n}.
+\]
+
+\textbf{7.} Legendre gives
+\[
+v_p\binom{2n}{n}=\sum_{j\ge1}\left(\floor{\frac{2n}{p^j}}-2\floor{\frac n{p^j}}\right).
+\]
+Each summand is $0$ or $1$, and there are at most $\floor{\log_p(2n)}$ nonzero candidates. This is the exponent of $p$ in the lcm, so the valuation of the binomial coefficient is no larger for every prime $p$.
+
+\section*{Chapter 8}
+
+\textbf{2.} The sum of the $2n+1$ coefficients in row $2n$ is $4^n$. The central coefficient is largest, so it is at least the average $4^n/(2n+1)$ and strictly below the whole sum.
+
+\textbf{3.} For $n<p\le2n$, the numerator $(n+1)\cdots(2n)$ contains exactly one multiple of $p$, while $n!$ contains none. Because $p^2>2n$ for $p>n\ge1$, the valuation is exactly one.
+
+\textbf{7 (hint).} Insert $x=p_n$ into both Chebyshev bounds to compare $n$ with $p_n/\log p_n$. First obtain coarse polynomial bounds on $p_n$ so that $\log p_n$ can be compared with $\log n$, then substitute back.
+
+\section*{Appendix B: continued-fraction arithmetic}
+
+\textbf{1.} With $t_2\in[1,\infty]$,
+\[
+ x=2+\frac1{3+1/t_2}.
+\]
+This expression increases with $t_2$.  At $t_2=1$ it is $9/4$; as
+$t_2\to\infty$ it approaches $7/3$.  For an infinite continued fraction the
+second endpoint is not attained, so $x\in[9/4,7/3)$.
+
+\textbf{2.} The denominator is positive for $t\geq1$, and
+\[
+ F'(t)=\frac{22\cdot2-3\cdot14}{(14t+2)^2}
+       =\frac2{(14t+2)^2}>0.
+\]
+Thus the range is determined by the endpoint values
+$F(1)=25/16$ and $F(\infty)=11/7$.  The whole interval lies in $[1,2)$, so
+the certified output digit is $1$.
+
+\textbf{3.} Substituting $t=m+1/u$ into
+$F_M(t)=(At+B)/(Ct+D)$ and clearing the factor $u$ gives
+\[
+ \frac{(Am+B)u+A}{(Cm+D)u+C},
+\]
+which is represented by $MD(m)$.  After emitting $k$, the unread output is
+$1/(F_M-k)$, represented by
+$\begin{psmallmatrix}0&1\\1&-k\end{psmallmatrix}M$.
+
+\textbf{4.} From $M=\begin{psmallmatrix}2&0\\0&1\end{psmallmatrix}$,
+absorption gives
+\[
+ MD(15)=\begin{pmatrix}30&2\\1&0\end{pmatrix},
+ \qquad
+ MD(15)D(1)=\begin{pmatrix}32&30\\1&1\end{pmatrix}.
+\]
+The latter map has range $[31,32)$ on $[1,\infty)$, so the next output digit
+is $31$.
+
+\textbf{5.} For each fixed $v$, the map in $u$ is linear fractional and hence
+monotone unless it is constant; its extrema on a horizontal slice occur on the
+two vertical edges.  On either edge, the remaining function of $v$ is again
+linear fractional, so its extrema occur at the two endpoints.  Therefore all
+global extrema are corner values.  If the denominator vanishes inside the
+rectangle, the map is not continuous there and can become unbounded, so corner
+values alone give no range certificate.
+
+\textbf{7.} Treating the two copies as independent discards the relation
+$x=y$.  Every finite continued-fraction prefix gives a nontrivial interval
+containing $\sqrt2$, so the product box permits values slightly below and
+slightly above $2$.  Since the floor jumps at $2$, it is never certified from
+such boxes.  Retaining the dependency $x=y$ changes the expression to $x^2$;
+using the known equation $x^2=2$ resolves it immediately.  Without that extra
+algebraic relation, an interval-valued output can still certify arbitrarily
+small numerical error.
+
+\section*{Appendix C: Venus and astronomical cycles}
+
+\textbf{1.} $E$ is Earth's Sun-centered lap time and $V$ is Venus's
+Sun-centered lap time.  The quantity $S$ measures something different: the
+waiting time between successive Earth--Venus alignments.
+
+\textbf{2.} Venus and Earth move through $1/V$ and $1/E$ laps per day.
+Their relative phase therefore increases at $1/V-1/E$ revolutions per day, so
+one relative revolution takes $S$ days with $1/S=1/V-1/E$.  If $r=E/V$,
+then
+\[
+  \frac ES=\frac EV-1=r-1,
+  \qquad \frac SE=\frac1{r-1}.
+\]
+Substitution gives $T(13/8)=1/(13/8-1)=8/5$.
+
+\textbf{3.} Repeated addition of $3/5$ modulo $1$ gives
+\[
+  0,\ \frac35,\ \frac65\congr\frac15,\
+  \frac45,\ \frac75\congr\frac25,
+\]
+then returns to $0$.  Each step skips one neighboring vertex of the regular
+pentagon, so the chronological edges are the diagonals and form a pentagram.
+
+\textbf{5.} The factorizations are
+\[
+  2920=2^3\cdot5\cdot73,
+  \qquad 260=2^2\cdot5\cdot13.
+\]
+Thus the gcd is $20$ and the lcm is
+$2^3\cdot5\cdot13\cdot73=37960$.  Division by $584,365,260,$ and $2920$
+gives the multipliers $65,104,146,$ and $13$.
+
+\textbf{6.} The Fibonacci recurrence gives
+\[
+ T\!\left(\frac{F_{n+1}}{F_n}\right)
+ =\frac{1}{F_{n+1}/F_n-1}
+ =\frac{F_n}{F_{n+1}-F_n}
+ =\frac{F_n}{F_{n-1}}.
+\]
+The positive solution of $r=1/(r-1)$ is
+$r=(1+\sqrt5)/2=\varphi$.  Its identity
+$\varphi=1+1/\varphi$ is exactly the infinite continued fraction
+$[1;\overline1]$.
+
+\textbf{7.} The nominal count gains $0.08$ day per cycle, hence $0.4$ day
+after $5$ cycles, $5.2$ days after $65$, and $52$ days after $650$.

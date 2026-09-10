@@ -1,0 +1,90 @@
+\chapter{Numbers attached to outcomes}
+\chaptertag{Random variables, distributions, expectation, and moments}
+
+\begin{question}
+How can one function compress a complicated experiment into a numerical quantity of interest?
+\end{question}
+
+\begin{definition}
+A random variable is a function $X:\Omega\to\R$. Its cumulative distribution function is
+\[
+F_X(x)=\P(X\le x).
+\]
+\end{definition}
+
+Every CDF is nondecreasing, right-continuous, approaches 0 to the left and 1 to the right. For a discrete variable, jumps encode probabilities. For a continuous variable with density $f$, areas encode probabilities:
+\[
+F_X(x)=\int_{-\infty}^x f(t)\,dt,
+\qquad
+\P(a<X\le b)=\int_a^b f(t)\,dt.
+\]
+
+\section{Expectation}
+
+For discrete $X$ with values $x_i$,
+\[
+\E[X]=\sum_i x_i\P(X=x_i).
+\]
+For continuous $X$ with density $f$,
+\[
+\E[X]=\int_{-\infty}^{\infty}x f(x)\,dx.
+\]
+Expectation is a center of mass, not necessarily a possible value.
+
+\begin{theorem}[LOTUS]
+For a suitable function $g$,
+\[
+\E[g(X)]=\sum_x g(x)\P(X=x)
+\quad\text{or}\quad
+\E[g(X)]=\int g(x)f_X(x)\,dx.
+\]
+\end{theorem}
+
+\begin{theorem}[Linearity]
+For constants $a,b$ and integrable random variables $X,Y$,
+\[
+\E[aX+bY]=a\E[X]+b\E[Y],
+\]
+whether or not $X$ and $Y$ are independent.
+\end{theorem}
+
+\section{Variance and moments}
+
+\[
+\Var(X)=\E[(X-\E X)^2]=\E[X^2]-(\E X)^2.
+\]
+Standard deviation has the same units as $X$. The $k$th raw moment is $\E[X^k]$; the $k$th central moment is $\E[(X-\E X)^k]$. The moment-generating function, when finite near zero, is $M_X(t)=\E[e^{tX}]$ and satisfies $M_X^{(k)}(0)=\E[X^k]$.
+
+\begin{proposition}
+For constants $a,b$,
+\[
+\Var(aX+b)=a^2\Var(X).
+\]
+\end{proposition}
+
+\section{Indicator variables}
+
+For an event $A$, let $\ind_A=1$ on $A$ and $0$ otherwise. Then $\E[\ind_A]=\P(A)$. If $N=\sum_i\ind_{A_i}$ counts occurrences, linearity gives
+\[
+\E[N]=\sum_i\P(A_i)
+\]
+without independence.
+
+\begin{theorem}[Markov and Chebyshev]
+If $X\ge0$, then $\P(X\ge a)\le \E[X]/a$. Consequently,
+\[
+\P(|X-\E X|\ge k\sigma)\le \frac1{k^2}.
+\]
+\end{theorem}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Find the CDF of the number of heads in two fair flips. \exlevel{Fluency}
+  \item A density is proportional to $x$ on $[0,2]$. Normalize it and find its mean. \exlevel{Fluency}
+  \item Prove $\Var(X)=\E[X^2]-(\E X)^2$. \exlevel{Reasoning}
+  \item Find the expected number of fixed points in a random permutation of $n$ objects. \exlevel{Reasoning}
+  \item Show that a fair lottery can still have a large variance. Interpret. \exlevel{Exploration}
+  \item Use Chebyshev's inequality to bound the chance that a variable lies at least three standard deviations from its mean. Compare with the normal distribution. \exlevel{Reasoning}
+  \item Construct two different distributions with the same mean and variance. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

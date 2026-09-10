@@ -1,0 +1,135 @@
+\chapter{Arithmetic in Pascal's triangle}
+\chaptertag{Binomial coefficients and divisibility}
+
+\begin{definition}
+For $0\le k\le n$,
+\[
+\binom nk=\frac{n!}{k!(n-k)!}.
+\]
+It counts the $k$-element subsets of an $n$-element set.
+\end{definition}
+
+The counting meaning proves integrality without asking the fraction to look integral. It also makes identities visible.
+
+\begin{proposition}[Pascal and symmetry]
+\[
+\binom nk=\binom n{n-k},\qquad
+\binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}.
+\]
+\end{proposition}
+
+For Pascal's identity, distinguish $k$-subsets that contain a chosen element from those that do not.
+
+\begin{center}
+\begin{tikzpicture}[x=.92cm,y=.70cm]
+\foreach \n in {0,...,6}{
+  \foreach \k in {0,...,\n}{
+    \pgfmathtruncatemacro{\val}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+    \node[font=\small] (p\n-\k) at ({\k-\n/2},-\n) {$\val$};
+  }
+}
+\draw[teal,thick,rounded corners] ($(p4-1)+(-.3,.28)$) rectangle ($(p4-1)+(.3,-.28)$);
+\draw[teal,thick,rounded corners] ($(p4-2)+(-.3,.28)$) rectangle ($(p4-2)+(.3,-.28)$);
+\draw[coral,thick,rounded corners] ($(p5-2)+(-.34,.28)$) rectangle ($(p5-2)+(.34,-.28)$);
+\draw[-{Stealth},teal] (p4-1)--(p5-2);
+\draw[-{Stealth},teal] (p4-2)--(p5-2);
+\node[coral,right=15mm of p5-2] {$4+6=10$};
+\end{tikzpicture}
+\end{center}
+
+\section{Three ways to see the binomial theorem}
+
+\begin{theorem}[Binomial theorem]
+\[
+(x+y)^n=\sum_{k=0}^n\binom nk x^{n-k}y^k.
+\]
+\end{theorem}
+
+In expanding $(x+y)^n$, choose which $k$ of the $n$ factors contribute $y$. This proof also explains why the coefficients are integers and why their sum is $2^n$.
+
+\begin{proposition}[Vandermonde]
+For nonnegative integers $r,s,n$,
+\[
+\sum_k\binom rk\binom s{n-k}=\binom{r+s}{n}.
+\]
+\end{proposition}
+
+Count $n$-person committees from two groups: either all at once, or according to how many come from the first group.
+
+\section{Prime rows}
+
+\begin{theorem}
+If $p$ is prime and $1\le k\le p-1$, then
+\[
+p\divides\binom pk.
+\]
+\end{theorem}
+
+\begin{proof}
+The identity $k\binom pk=p\binom{p-1}{k-1}$ shows $p$ divides $k\binom pk$. Since $p\ndivides k$, Euclid's lemma gives $p\divides\binom pk$.
+\end{proof}
+
+Thus the $p$th row of Pascal's triangle becomes $1,0,\dots,0,1$ modulo $p$, which again yields
+\[
+(x+y)^p\congr x^p+y^p\pmod p.
+\]
+
+\section{Measuring divisibility one prime at a time}
+
+\begin{definition}
+For nonzero integer $m$, $v_p(m)$ is the exponent of $p$ in its prime factorization. Thus $v_2(40)=3$.
+\end{definition}
+
+Valuations turn multiplication into addition:
+\[
+v_p(ab)=v_p(a)+v_p(b),\qquad
+v_p\!\left(\frac ab\right)=v_p(a)-v_p(b)
+\]
+when the quotient is an integer.
+
+\begin{theorem}[Legendre]
+\[
+v_p(n!)=\floor{\frac np}+\floor{\frac n{p^2}}+\floor{\frac n{p^3}}+\cdots.
+\]
+\end{theorem}
+
+\begin{proof}
+Among $1,\dots,n$, exactly $\floor{n/p}$ contribute at least one $p$; $\floor{n/p^2}$ contribute one additional $p$; and so on.
+\end{proof}
+
+Consequently,
+\[
+v_p\binom nk=\sum_{j\ge1}\left(\floor{\frac n{p^j}}-\floor{\frac k{p^j}}-\floor{\frac{n-k}{p^j}}\right).
+\]
+Each parenthesis is $0$ or $1$: it records whether adding $k$ and $n-k$ creates a carry at the $p^j$ place.
+
+\begin{theorem}[Kummer's carry rule]
+$v_p\binom nk$ equals the number of carries when $k$ and $n-k$ are added in base $p$.
+\end{theorem}
+
+The formula above is already the proof once carries are read from right to left. It gives a remarkable visual test: $\binom nk$ is not divisible by $p$ precisely when subtracting $k$ from $n$ in base $p$ needs no borrowing.
+
+\begin{example}
+To find $v_2\binom{10}{3}$, add $3=0011_2$ and $7=0111_2$:
+\[
+\begin{array}{r}0011\\+0111\\\hline1010\end{array}
+\]
+There are three carries, so $v_2\binom{10}{3}=3$. Indeed, $\binom{10}{3}=120=2^3\cdot15$.
+\end{example}
+
+\begin{labbox}
+Color entry $\binom nk$ when it is nonzero modulo $2$, then modulo $3$. Zoom out. The self-similar patterns are the visual shadow of base-$p$ digits and lead to Lucas's theorem.
+\end{labbox}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Prove $\sum_k\binom nk=2^n$ and $\sum_k(-1)^k\binom nk=0$ for $n>0$. \exlevel{Fluency}
+  \item Compute $v_2(100!)$, $v_5(100!)$, and the number of trailing zeros of $100!$. \exlevel{Fluency}
+  \item Give a counting proof of $k\binom nk=n\binom{n-1}{k-1}$. \exlevel{Reasoning}
+  \item Use Vandermonde's identity to prove $\sum_k\binom nk^2=\binom{2n}{n}$. \exlevel{Reasoning}
+  \item Determine all $n$ for which every interior entry of row $n$ is even. Use Kummer's rule. \exlevel{Reasoning}
+  \item For a fixed prime $p$, explore the first $p^2$ rows of Pascal's triangle modulo $p$. State a digit-based conjecture for when $\binom nk\not\congr0\pmod p$. \exlevel{Exploration}
+  \item Prove that $\operatorname{lcm}(1,2,\dots,2n)$ is divisible by $\binom{2n}{n}$ by comparing $p$-adic valuations. \exlevel{Bridge}
+\end{enumerate}
+\end{exercisebox}
+

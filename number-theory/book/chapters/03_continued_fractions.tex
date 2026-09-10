@@ -1,0 +1,655 @@
+\chapter{Fractions inside fractions}
+\chaptertag{Continued fractions and best approximations}
+
+The quotients from Euclid's algorithm are not bookkeeping debris. Read them forward and they produce a new numerical language.
+
+\section{Euclid, folded up}
+
+From
+\[
+415=4\cdot93+43,\quad 93=2\cdot43+7,\quad
+43=6\cdot7+1,\quad 7=7\cdot1,
+\]
+we obtain
+\[
+\frac{415}{93}=4+\cfrac1{2+\cfrac1{6+\cfrac1{7}}}=[4;2,6,7].
+\]
+
+\begin{definition}
+A finite simple continued fraction is
+\[
+[a_0;a_1,\dots,a_n]
+=a_0+\cfrac1{a_1+\cfrac1{\ddots+\cfrac1{a_n}}},
+\]
+where $a_0\in\Z$ and $a_i\in\N$ for $i\ge1$.
+\end{definition}
+
+The truncations $[a_0;\dots,a_k]=p_k/q_k$ are called \emph{convergents}. They can be computed without rebuilding the nested fraction:
+\[
+p_k=a_kp_{k-1}+p_{k-2},\qquad q_k=a_kq_{k-1}+q_{k-2},
+\]
+with $p_{-2}=0,p_{-1}=1,q_{-2}=1,q_{-1}=0$.
+
+\section{Linear fractional transformations}
+\label{sec:mobius}
+
+A \emph{linear fractional transformation}, also called a M\"obius
+transformation, is a function of the form
+\[
+ T_M(t)=\frac{at+b}{ct+d},
+ \qquad M=\begin{pmatrix}a&b\\c&d\end{pmatrix},
+ \qquad ad-bc\ne0.
+\]
+We will use integer or rational coefficients. The formula is defined when
+$ct+d\ne0$. The determinant condition excludes a constant function and
+ensures that the transformation can be undone.
+
+Why does a $2\times2$ matrix act on a single number? Represent $t$ by the
+column $(t,1)^T$, multiply, and take the ratio of the two coordinates:
+\[
+ \begin{pmatrix}a&b\\c&d\end{pmatrix}
+ \begin{pmatrix}t\\1\end{pmatrix}
+ =\begin{pmatrix}at+b\\ct+d\end{pmatrix}
+ \quad\longmapsto\quad \frac{at+b}{ct+d}.
+\]
+Thus multiplying $M$ by any nonzero scalar does not change $T_M$. In this
+chapter, $T_M(t)$ means this ratio, not ordinary multiplication of a matrix
+by a scalar. One may also include a point $\infty$: when $c\ne0$,
+$T_M(\infty)=a/c$ and $T_M(-d/c)=\infty$; when $c=0$, $\infty$ stays fixed.
+
+\begin{proposition}[Composition is matrix multiplication]
+For invertible $2\times2$ matrices $M,N$,
+\[
+ T_M\circ T_N=T_{MN},\qquad (T_M)^{-1}=T_{M^{-1}}.
+\]
+\end{proposition}
+\begin{proof}
+If $N=\begin{psmallmatrix}e&f\\g&h\end{psmallmatrix}$, substitution gives
+\[
+ T_M(T_N(t))
+ =\frac{a(et+f)+b(gt+h)}{c(et+f)+d(gt+h)}
+ =\frac{(ae+bg)t+(af+bh)}{(ce+dg)t+(cf+dh)}.
+\]
+These four coefficients are the entries of $MN$. Taking $N=M^{-1}$
+proves the inverse rule. Explicitly, solving $y=(at+b)/(ct+d)$ gives
+$t=(dy-b)/(a-cy)$.
+\end{proof}
+
+As with functions, the rightmost factor acts first. In particular,
+\[
+ D(a)=\begin{pmatrix}a&1\\1&0\end{pmatrix}
+ \quad\text{acts by}\quad T_{D(a)}(t)=a+\frac1t.
+\]
+Therefore
+\[
+ [a_0;a_1,\ldots,a_k,t]=T_{D(a_0)D(a_1)\cdots D(a_k)}(t).
+\]
+Here the final entry $t$ is an entire remaining tail, not necessarily an
+integer. The nesting of a continued fraction has become a product of
+matrices.
+
+\section{The matrix engine}
+
+Package one continued-fraction digit into the matrix
+\[
+  D(a)=\begin{pmatrix}a&1\\1&0\end{pmatrix}.
+\]
+Repeated matrix multiplication stores every convergent at once:
+\begin{equation}\label{eq:cf-matrix-product}
+ D(a_0)D(a_1)\cdots D(a_k)
+ =\begin{pmatrix}p_k&p_{k-1}\\q_k&q_{k-1}\end{pmatrix}.
+\end{equation}
+Indeed, multiplying the right-hand side by $D(a_{k+1})$ produces exactly the
+two convergent recurrences. The first column advances to the next convergent,
+while the old first column becomes the second.
+
+Each digit matrix has determinant $-1$, not $+1$. Thus it lies in
+$\operatorname{GL}_2(\Z)$, and a product with an even number of factors lies
+in $\operatorname{SL}_2(\Z)$. More important than the sign is
+\emph{unimodularity}: every product has determinant $\pm1$ and therefore has
+an inverse with integer entries. Appendix~\ref{app:matrices} develops the
+small amount of matrix algebra behind this observation.  Appendix~\ref{app:gosper}
+then uses the same M\"obius machinery to perform exact arithmetic directly on
+continued-fraction streams.
+
+For example,
+\[
+ D(4)D(2)D(6)D(7)
+ =\begin{pmatrix}415&58\\93&13\end{pmatrix},\qquad
+ \begin{pmatrix}415&58\\93&13\end{pmatrix}^{-1}
+ =\begin{pmatrix}13&-58\\-93&415\end{pmatrix}.
+\]
+The entries of the inverse already display the certificate
+$1=13\cdot415-58\cdot93$. This is the first payoff of invertibility; the next
+section explains why it is exactly the extended Euclidean algorithm.
+
+\section{Extended Euclid in the convergents}
+
+The convergents do not merely reuse Euclid's quotients: their numerators and
+denominators are exactly the coefficients produced by the extended Euclidean
+algorithm.
+
+\begin{theorem}[Remainders from convergents]
+Let $A>B>0$, and write the Euclidean divisions as
+\[
+ r_{-2}=A,\qquad r_{-1}=B,\qquad
+ r_{k-2}=a_k r_{k-1}+r_k\quad(k=0,1,\dots,n),
+\]
+where $r_{n-1}=\gcd(A,B)$ and $r_n=0$. If
+\[
+  \frac AB=[a_0;a_1,\dots,a_n]
+  \quad\text{and}\quad
+  \frac{p_k}{q_k}=[a_0;a_1,\dots,a_k],
+\]
+then
+\[
+  \boxed{r_k=(-1)^k(q_kA-p_kB)}\qquad(0\le k\le n).
+\]
+In particular, the penultimate convergent gives a B\'ezout identity for the gcd.
+\end{theorem}
+
+\begin{proof}
+For $k=0$, the formula reads $r_0=A-a_0B$, the first Euclidean division. For
+$k=1$,
+\[
+  r_1=B-a_1r_0=-a_1A+(a_0a_1+1)B=-q_1A+p_1B.
+\]
+If the formula holds for the preceding two remainders, then
+\begin{align*}
+r_k&=r_{k-2}-a_kr_{k-1}\\
+&=(-1)^k\bigl((a_kq_{k-1}+q_{k-2})A
+ -(a_kp_{k-1}+p_{k-2})B\bigr)\\
+&=(-1)^k(q_kA-p_kB),
+\end{align*}
+using the convergent recurrences. This proves the formula by induction.
+\end{proof}
+
+For $A/B=415/93$, the two algorithms can be read in the same table:
+\begin{center}
+\small
+\begin{tabular}{cccc}
+\toprule
+$k$ & $a_k$ & convergent $p_k/q_k$ & signed linear combination $r_k$ \\
+\midrule
+$0$ & $4$ & $4/1$ & $415-4(93)=43$ \\
+$1$ & $2$ & $9/2$ & $-(2(415)-9(93))=7$ \\
+$2$ & $6$ & $58/13$ & $13(415)-58(93)=1$ \\
+$3$ & $7$ & $415/93$ & $-(93(415)-415(93))=0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the convergent just before $415/93$ contains the certificate
+\[
+  1=13\cdot415-58\cdot93.
+\]
+
+\begin{center}
+\begin{tikzpicture}[node distance=11mm and 8mm]
+\tikzset{term/.style={draw=teal,rounded corners,fill=mist,minimum width=12mm,minimum height=8mm,font=\small},
+arrow/.style={-{Stealth},navy!65,thick}}
+\node[term] (a0) {$4$};
+\node[term,right=of a0] (a1) {$2$};
+\node[term,right=of a1] (a2) {$6$};
+\node[term,right=of a2] (a3) {$7$};
+\node[below=13mm of a0] (c0) {$4/1$};
+\node[below=13mm of a1] (c1) {$9/2$};
+\node[below=13mm of a2] (c2) {$58/13$};
+\node[below=13mm of a3] (c3) {$415/93$};
+\draw[arrow] (a0)--(c0); \draw[arrow] (a1)--(c1);
+\draw[arrow] (a2)--(c2); \draw[arrow] (a3)--(c3);
+\draw[teal!55,thick] (c0)--(c1)--(c2)--(c3);
+\node[muted,below=6mm of c2] {Each convergent remembers all earlier partial quotients.};
+\end{tikzpicture}
+\end{center}
+
+\begin{theorem}[Determinant identity]
+Consecutive convergents satisfy
+\[
+p_kq_{k-1}-p_{k-1}q_k=(-1)^{k-1}.
+\]
+Consequently, each $p_k/q_k$ is in lowest terms and
+\[
+\abs{\frac{p_k}{q_k}-\frac{p_{k-1}}{q_{k-1}}}=\frac1{q_kq_{k-1}}.
+\]
+\end{theorem}
+
+\begin{proof}
+Take determinants in \eqref{eq:cf-matrix-product}. The determinant on the
+left is $(-1)^{k+1}$, while the determinant on the right is
+$p_kq_{k-1}-p_{k-1}q_k$. Since $(-1)^{k+1}=(-1)^{k-1}$, the identity follows.
+\end{proof}
+
+\section{Infinite continued fractions}
+
+For an irrational real number $x$, repeatedly take integer parts:
+\[
+a_0=\floor{x},\qquad x_1=\frac1{x-a_0},\qquad a_1=\floor{x_1},\quad\dots
+\]
+This produces $x=[a_0;a_1,a_2,\dots]$.
+
+\begin{example}[The silver staircase]
+Let $x=\sqrt2$. Since
+\[
+\frac1{\sqrt2-1}=\sqrt2+1=2+(\sqrt2-1),
+\]
+the same remainder repeats, so
+\[
+\sqrt2=[1;\overline{2}]=[1;2,2,2,\dots].
+\]
+Its first convergents are
+\[
+1,\quad \frac32,\quad\frac75,\quad\frac{17}{12},\quad\frac{41}{29},\dots
+\]
+They alternately fall below and above $\sqrt2$.
+\end{example}
+
+\begin{theorem}[The alternating squeeze]
+Let $c_k=p_k/q_k$ be the zero-indexed convergents of an irrational number
+$x=[a_0;a_1,a_2,\dots]$. Then
+\[
+  c_0<c_2<c_4<\cdots<x<\cdots<c_5<c_3<c_1.
+\]
+Thus, when the convergents are counted starting with the first, the odd-numbered
+ones increase and stay below $x$, while the even-numbered ones decrease and
+stay above $x$.
+\end{theorem}
+
+\begin{proof}[The M\"obius derivative trick]
+Fix $k$ and leave the tail variable. The continued fraction with prefix through
+$a_k$ is the fractional linear, or M\"obius, map
+\[
+  M_k(t)=[a_0;a_1,\dots,a_k,t]
+  =\frac{p_kt+p_{k-1}}{q_kt+q_{k-1}}.
+\]
+The determinant identity gives
+\[
+  M_k'(t)=
+  \frac{p_kq_{k-1}-p_{k-1}q_k}{(q_kt+q_{k-1})^2}
+  =\frac{(-1)^{k+1}}{(q_kt+q_{k-1})^2}.
+\]
+The complete tail $\alpha_{k+1}=[a_{k+1};a_{k+2},\dots]$ is finite and positive,
+and
+\[
+  x=M_k(\alpha_{k+1}),\qquad c_k=M_k(\infty).
+\]
+When $k$ is even, $M_k$ is decreasing, so $c_k<x$; when $k$ is odd,
+$M_k$ is increasing, so $x<c_k$. The same comparison with
+$c_{k+2}=M_k([a_{k+1};a_{k+2}])$ shows that $c_k<c_{k+2}$ for even $k$ and
+$c_{k+2}<c_k$ for odd $k$. These are exactly the two monotone chains displayed
+above.
+\end{proof}
+
+\begin{bigidea}
+Every new convergent switches sides, but every second convergent moves inward.
+Continued fractions therefore trap $x$ between a rising sequence of lower
+bounds and a falling sequence of upper bounds.
+\end{bigidea}
+
+\begin{center}
+\begin{tikzpicture}[x=.95cm,y=1cm]
+  \draw[-{Stealth},navy] (-.3,0)--(8.05,0);
+  \foreach \x/\lab/\col in {0/1/teal,1.3/{7/5}/teal,2.6/{41/29}/teal,
+    3.8/{\sqrt2}/gold,5.0/{99/70}/coral,6.3/{17/12}/coral,7.6/{3/2}/coral}{
+    \draw[\col,thick] (\x,-.11)--(\x,.11);
+    \node[\col!80!black,above=2pt] at (\x,.11) {$\lab$};
+  }
+  \draw[-{Stealth},teal,thick] (0,-.42)--(1.18,-.42);
+  \draw[-{Stealth},teal,thick] (1.3,-.42)--(2.48,-.42);
+  \draw[-{Stealth},coral,thick] (7.6,-.42)--(6.42,-.42);
+  \draw[-{Stealth},coral,thick] (6.3,-.42)--(5.12,-.42);
+\end{tikzpicture}
+
+\small Schematic, not to scale: both parity subsequences move inward toward $\sqrt2$.
+\end{center}
+
+\begin{theorem}[Approximation by convergents]
+If $p_k/q_k$ is a convergent of an irrational $x$, then
+\[
+\abs{x-\frac{p_k}{q_k}}<\frac1{q_kq_{k+1}}<\frac1{q_k^2}.
+\]
+Moreover, if $0<q<q_{k+1}$, then no fraction $p/q$ is closer to $x$ than both neighboring convergents in the appropriate interval. In this precise sense, convergents are best approximations with small denominators.
+\end{theorem}
+
+The determinant identity is the engine: distinct reduced fractions $a/b,c/d$ are at least $1/(bd)$ apart. There is simply not enough room for another small-denominator fraction between a convergent and $x$.
+
+\begin{theorem}[Legendre's approximation criterion]
+Let $x$ be irrational and let $p/q$ be in lowest terms with $q>0$. If
+\[
+  \abs{x-\frac pq}<\frac{1}{2q^2},
+\]
+then $p/q$ is a convergent of $x$.
+\end{theorem}
+
+The theorem is a partial converse to the approximation theorem: an
+\emph{exceptionally} good rational approximation cannot have arisen by
+accident. A standard proof chooses the two consecutive convergents whose
+denominators surround $q$ and writes the integer vector $(p,q)$ in their
+unimodular basis. If $(p,q)$ is not one of the basis vectors, the determinant
+$\pm1$ forces it to be at least $1/(2q^2)$ away from $x$. This is another place
+where the integral inverse of the convergent matrix does real work.
+
+\begin{labbox}[title={Aside: continued fractions keep the calendar},breakable=false]
+A calendar must use whole days. Write the tropical year as $365+\alpha$ days,
+where $\alpha\approx0.2421988$. A $q$-year cycle with $p$ leap days therefore
+asks for $p/q\approx\alpha$. Now
+\[
+ \alpha=[0;4,7,1,3,5,\dots],
+ \qquad\text{with convergents}\qquad
+ \frac14,\ \frac7{29},\ \frac8{33},\ \frac{31}{128},\
+ \frac{163}{673},\dots
+\]
+The first convergent is the Julian rule: one leap day every four years. The
+convergent $31/128=0.2421875$ is remarkably accurate, but a $128$-year civil
+cycle is awkward.
+
+The Gregorian rule adds a practical constraint: organize corrections by
+centuries. Writing $q=100Q$ changes the approximation problem:
+\[
+ q=100Q:\qquad \frac pQ\approx100\alpha\approx24.21988,
+ \qquad [24;4]=\frac{97}{4}.
+\]
+Thus the first nonintegral convergent of $100\alpha$ gives $97$ leap days in
+$400$ years and the mean length
+\[
+  365+\frac{97}{400}=365.2425.
+\]
+Operationally, the rule counts $100$ multiples of $4$, removes the four
+century years, and restores the one multiple of $400$: $100-4+1=97$.
+
+Notice that $97/400$ is not a convergent of $\alpha$ itself; it emerges after
+the century constraint. This is a mathematical reconstruction, not a claim
+about the reformers' historical method. It shows that ``best'' depends on which
+denominators an application permits.
+\end{labbox}
+
+\begin{labbox}[title={Aside: continued fractions are roughly ``base 11''}]
+Khinchin's theorem says that for almost every real number,
+\[
+  (a_1a_2\cdots a_n)^{1/n}\longrightarrow
+  K_0\approx2.685452,
+\]
+the universal \emph{Khinchin constant}. For efficiency, L\'evy's companion
+theorem is more direct:
+\[
+ q_n^{1/n}\longrightarrow
+ L=e^{\pi^2/(12\log2)}\approx3.275823.
+\]
+Since convergent error is on the scale $q_n^{-2}$, it follows that
+\[
+ \abs{x-p_n/q_n}^{-1/n}\longrightarrow
+ L^2=e^{\pi^2/(6\log2)}\approx10.731.
+\]
+That is the ``base 11'' joke: one generic continued-fraction term buys about
+$\log_{10}(10.731)\approx1.0306$ decimal digits. Lochs' theorem makes the
+comparison exact: $N$ known decimal digits determine about
+$(6\log2\log10/\pi^2)N\approx0.97027N$ continued-fraction terms.
+
+``Almost every'' matters: a partial quotient is not literally a fixed-base
+digit, and quadratic surds such as $\sqrt2$ have exceptional periodic growth.
+\end{labbox}
+
+\begin{checkpoint}[title={Experiment: $\pi$ looks typical; $e$ does not},breakable=false]
+Write
+\[
+ G_n(x)=(a_1a_2\cdots a_n)^{1/n},
+ \qquad B_n(x)=q_n^{2/n}.
+\]
+Khinchin and L\'evy predict, for almost every $x$, that
+$G_n(x)\to2.685452\dots$ and $B_n(x)\to10.731016\dots$. For
+\[
+ \pi=[3;7,15,1,292,1,1,1,2,1,3,\dots],
+\]
+a computation gives the following rounded values:
+\begin{center}
+\small
+\begin{tabular}{rccc}
+\toprule
+$n$ & $G_n(\pi)$ & $B_n(\pi)$ & $\log_{10}B_n(\pi)$ \\
+\midrule
+$100$     & $2.68315$ & $10.68768$ & $1.02888$ \\
+$1{,}000$ & $2.66270$ & $10.54434$ & $1.02302$ \\
+$10{,}000$ & $2.66320$ & $10.57847$ & $1.02442$ \\
+$100{,}000$ & $2.67956$ & $10.67835$ & $1.02850$ \\
+\midrule
+almost-everywhere target & $2.68545$ & $10.73102$ & $1.03064$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The wobble is real: rare large partial quotients, such as the early $292$,
+produce visible jumps. A published computation using $17{,}001{,}303$ terms
+found $G_n(\pi)=2.686393$. This is compelling evidence, but no theorem is known
+that $\pi$ satisfies either limiting law.
+
+The number $e$ is a useful contrast, not a second generic-looking example:
+\[
+ e=[2;1,2,1,1,4,1,1,6,1,1,8,\dots].
+\]
+For $n=3m$, its first $n$ noninitial partial quotients have product $2^m m!$.
+Stirling's formula therefore gives
+\[
+ G_{3m}(e)=(2^m m!)^{1/(3m)}\sim(2m/e)^{1/3}\longrightarrow\infty.
+\]
+Also $q_{3m}\geq a_1\cdots a_{3m}=2^m m!$, so $B_{3m}(e)\to\infty$ as well.
+Thus $e$ is provably exceptional for both laws, while $\pi$ is numerically
+persuasive but theoretically mysterious.
+\end{checkpoint}
+
+\begin{warningbox}[breakable=false]
+Legendre, Lagrange, and Galois all appear in this subject. Legendre's theorem
+recognizes very good rational approximations. Lagrange's theorem characterizes
+eventually periodic continued fractions of quadratic irrationals; Galois's
+refinement says exactly when the period begins immediately.
+\end{warningbox}
+
+\section{A parallel periodicity: digits in base \texorpdfstring{$b$}{b}}
+
+Continued fractions are not the first place students meet repeating expansions.
+Let $0<m<q$ and write $x=m/q$ in base $b\ge2$. Long division produces digits
+$d_1,d_2,\dots$ and remainders $r_0,r_1,\dots$ by
+\[
+  r_0=m,\qquad br_n=qd_{n+1}+r_{n+1},\qquad 0\le r_{n+1}<q.
+\]
+There are only $q$ possible remainders. If a remainder becomes $0$, the
+expansion terminates; otherwise some remainder repeats, and from that point
+the deterministic long-division process repeats. Thus every rational number
+has an eventually periodic base-$b$ expansion.
+
+The converse uses only a geometric series. If a block of $\ell$ digits with
+integer value $N$ repeats immediately, then
+\[
+  0.\overline{d_1\cdots d_\ell}_b
+  =\frac{N}{b^\ell}+\frac{N}{b^{2\ell}}+\cdots
+  =\frac{N}{b^\ell-1}.
+\]
+An initial nonrepeating block only adds a rational number with denominator a
+power of $b$.
+
+\begin{theorem}[When the repeating block begins immediately]
+If the reduced fraction $m/q$ has a purely periodic base-$b$ expansion, then
+$\gcd(q,b)=1$. Conversely, if $\gcd(q,b)=1$, its expansion is purely periodic.
+\end{theorem}
+
+\begin{proof}[The direction available now]
+A purely periodic expansion has the form $N/(b^\ell-1)$. Its reduced
+denominator divides $b^\ell-1$, which is relatively prime to $b$.
+\end{proof}
+
+The reverse implication is deliberately postponed until Chapter~6. Euler's
+theorem will give
+\[
+  b^{\varphi(q)}\congr1\pmod q,
+\]
+so $q\divides b^{\varphi(q)}-1$; rewriting $m/q$ with that denominator creates
+a repeating block (possibly with leading zeros). In decimal, for example,
+\[
+  \frac17=0.\overline{142857},\qquad
+  \frac18=0.125000\dots.
+\]
+The first expansion is purely periodic because $\gcd(7,10)=1$; the second is
+only eventually periodic.
+
+\input{chapters/cf_periodicity}
+
+\section{Periodicity meets Pell's equation}
+
+The preceding theorems and Pell's equation fit together in both directions.
+Suppose $D\ge2$ is not a square and
+\[
+  p^2-Dq^2=\pm1,
+  \qquad p,q>0.
+\]
+Then
+\begin{equation}\label{eq:pell-error}
+ \abs{\sqrt D-\frac pq}
+ =\frac{1}{q^2(\sqrt D+p/q)}
+ <\frac{1}{2q^2}.
+\end{equation}
+Legendre's criterion therefore says that $p/q$ must be a convergent of
+$\sqrt D$. Pell solutions are not merely good approximations; continued
+fractions are forced to find them.
+
+In the other direction, Lagrange says
+\[
+ \sqrt D=[a_0;\overline{a_1,\dots,a_L}].
+\]
+Galois explains why the repeating part starts after $a_0$: the first complete
+quotient $1/(\sqrt D-a_0)$ is reduced. A classical consequence of the matrix
+recurrence is
+\[
+ p_{L-1}^2-Dq_{L-1}^2=(-1)^L.
+\]
+Thus one trip through an even-length period gives a solution of the $+1$
+equation. If $L$ is odd, one trip gives $-1$ and two trips give $+1$.
+
+\begin{bigidea}
+\[
+\begin{array}{ccccc}
+\text{periodic surd}&\Longrightarrow&\text{period matrix}
+&\Longrightarrow&\text{Pell solutions},\\[2mm]
+\text{Pell solution}&\Longrightarrow&\text{error below }1/(2q^2)
+&\xLongrightarrow{\text{Legendre}}&\text{convergent}.
+\end{array}
+\]
+Periodicity produces the solutions, and exceptional approximation recognizes
+them.
+\end{bigidea}
+
+For the convergents $p/q$ to $\sqrt2$, direct computation gives
+\[
+p^2-2q^2=\pm1.
+\]
+Here the period has odd length $1$: $1/1$ solves the $-1$ equation, while two
+copies of the period produce $3/2$ and the $+1$ equation. The positive
+solutions to $p^2-2q^2=1$ begin $(3,2),(17,12),(99,70)$.
+
+There is also a direct matrix generator. Whenever $u^2-Dv^2=1$,
+\[
+ U=\begin{pmatrix}u&Dv\\v&u\end{pmatrix}\in\operatorname{SL}_2(\Z).
+\]
+If $(p,q)^T$ represents $p+q\sqrt D$, then $U(p,q)^T$ represents
+$(u+v\sqrt D)(p+q\sqrt D)$. Hence powers of $U$ generate new Pell solutions.
+For $D=2$ the fundamental solution $(u,v)=(3,2)$ gives
+\[
+ \begin{pmatrix}3&4\\2&3\end{pmatrix}^n
+ \begin{pmatrix}1\\0\end{pmatrix}
+ =\begin{pmatrix}p_n\\q_n\end{pmatrix},
+ \qquad p_n^2-2q_n^2=1.
+\]
+
+\begin{checkpoint}
+Compute $99/70$ as a decimal. The striking accuracy is not a floating-point accident: $99^2-2\cdot70^2=1$ forces
+\[
+\abs{\sqrt2-99/70}=\frac1{70^2(\sqrt2+99/70)}.
+\]
+\end{checkpoint}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Find the continued fraction of $355/113$. List all convergents. \exlevel{Fluency}
+  \item Compute the first six convergents of $[1;\overline{1}]$. What familiar sequence appears? \exlevel{Fluency}
+  \item Prove the determinant identity by induction. Use it to prove $\gcd(p_k,q_k)=1$. \exlevel{Reasoning}
+  \item Show that $[a_0;\dots,a_n]=[a_0;\dots,a_n-1,1]$ when $a_n>1$. Explain the only ambiguity in finite expansions. \exlevel{Reasoning}
+  \item Derive $\sqrt3=[1;\overline{1,2}]$ and compute four convergents. \exlevel{Reasoning}
+  \item Write the tropical year as $365+\alpha$ with
+  $\alpha\approx0.2421988$. Compute the first four nonzero convergents of
+  $\alpha$ and identify the Julian rule. Then impose a century-based cycle by
+  approximating $100\alpha$; explain how $97/4$ becomes the Gregorian rule
+  $97/400$. Compare it with $31/128$. \exlevel{Exploration}
+  \item Investigate which convergents to $\sqrt2$ solve $p^2-2q^2=1$ and which solve $-1$. State and prove a pattern using the recurrence. \exlevel{Challenge}
+  \item Let $A/B=[a_0;\dots,a_n]$ and use the convergent recurrences to prove
+  $r_k=(-1)^k(q_kA-p_kB)$. Apply the penultimate convergent of $527/341$ to
+  recover a B\'ezout identity for $\gcd(527,341)$. \exlevel{Reasoning}
+  \item For $x=\sqrt3$, compute enough convergents to display three lower
+  bounds and three upper bounds. Verify that the lower bounds increase and the
+  upper bounds decrease, then explain why the M\"obius derivative has the sign
+  needed for each chain. \exlevel{Reasoning}
+  \item Prove the matrix product formula \eqref{eq:cf-matrix-product} by
+  induction. Explain why its inverse always has integer entries. \exlevel{Reasoning}
+  \item Long-divide $1/7$ and $5/12$ in base $10$, recording the remainder at
+  every step. Use repeated remainders to predict the preperiod and period.
+  \exlevel{Fluency}
+  \item Prove directly from a geometric series that every eventually periodic
+  base-$b$ expansion is rational. \exlevel{Reasoning}
+  \item After studying Euler's theorem, return to prove that $\gcd(q,b)=1$
+  implies the base-$b$ expansion of $m/q$ is purely periodic. Give an explicit
+  upper bound for a period length. \exlevel{Reasoning}
+  \item Verify that $355/113$ satisfies Legendre's inequality for $\pi$ using
+  a calculator value of $\pi$. What conclusion does the theorem certify?
+  \exlevel{Exploration}
+  \item Let $t=[\overline{1,2}]$. Use the matrix $D(1)D(2)$ to find a quadratic
+  equation for $t$, and identify the positive root. \exlevel{Reasoning}
+  \item Check Galois's inequalities for $1+\sqrt2$ and
+  $(1+\sqrt5)/2$. Explain why their continued fractions are purely periodic.
+  \exlevel{Reasoning}
+  \item Let $p^2-Dq^2=\pm1$ with $p,q>0$. Derive
+  \eqref{eq:pell-error}, verify its strict Legendre bound, and conclude that
+  $p/q$ is a convergent of $\sqrt D$. \exlevel{Reasoning}
+  \item Compute the period of $\sqrt3$. Use its length to predict whether one
+  period solves the $+1$ or $-1$ Pell equation. Then use powers of
+  $\begin{psmallmatrix}2&3\\1&2\end{psmallmatrix}$ to generate three solutions
+  of $p^2-3q^2=1$. \exlevel{Exploration}
+  \item Define $G_n(x)=(a_1\cdots a_n)^{1/n}$ and $B_n(x)=q_n^{2/n}$.
+  Use the Sage notebook to reproduce several rows of the $\pi$ table above.
+  Explain why agreement with the Khinchin--L\'evy constants is evidence but
+  not proof. Then derive the displayed formula for $G_{3m}(e)$ directly from
+  the pattern in the continued fraction of $e$. \exlevel{Exploration}
+  \item Compute $D(1)D(2)$ and $D(2)D(1)$, and write the linear
+  fractional transformation associated to each. Explain the order of
+  composition and find each transformation's positive fixed point.
+  \exlevel{Fluency}
+  \item Let $x=[\overline{1,2}]$ and $N=D(1)D(2)$. For $j=1,2$, set
+  $M=D(j)$ and compute $MNM^{-1}$. Use its fixed-point equation to
+  identify $y=[j;\overline{1,2}]$. Which of these numbers is purely
+  periodic? Write its period without an initial prefix.
+  \exlevel{Reasoning}
+  \item Prove that an invertible rational linear fractional transformation
+  sends every irrational real number to an irrational real number.
+  Explain why a pole cannot occur at an irrational input. Then identify
+  the missing hypothesis in the assertion that $t=T_M(t)$ always makes
+  $t$ quadratic. Give a counterexample. \exlevel{Reasoning}
+  \item Use Galois's criterion to decide which of
+  \[
+   \sqrt2,\quad 1+\sqrt2,\quad \frac{1+\sqrt5}{2},\quad
+   \frac{1+\sqrt3}{2},\quad \frac{\sqrt2}{2},\quad -\sqrt2
+  \]
+  have purely periodic continued fractions. Explain why all six are
+  eventually periodic. \exlevel{Fluency}
+  \item Starting from $D=13$ and $(P_0,Q_0)=(0,1)$, use
+  \eqref{eq:quadratic-state-recurrence} to compute the continued fraction
+  of $\sqrt{13}$. Record $(P_n,Q_n,a_n)$ until a state first repeats,
+  and verify the reduced-state bounds after the first step.
+  \exlevel{Exploration}
+  \item Recover the unique reduced predecessor of
+  $z=(1+\sqrt3)/2$ using \eqref{eq:reduced-predecessor}.
+  For $D=3$, enumerate the integer pairs satisfying
+  \eqref{eq:reduced-state-bounds} that actually represent reduced surds
+  and satisfy $Q\divides3-P^2$. Show how the continued-fraction step
+  permutes them. Why would finiteness without reversibility not suffice
+  to prove pure periodicity? \exlevel{Reasoning}
+  \item Let $x=[\overline{1,2,3}]$. Compute its period matrix and its
+  positive fixed point. Transpose the matrix to obtain the equation for
+  $[\overline{3,2,1}]$, and verify directly that this number is $-1/x'$.
+  \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}

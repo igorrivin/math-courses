@@ -1,0 +1,80 @@
+\chapter{Variables together}
+\chaptertag{Joint, marginal, and conditional distributions}
+
+\begin{question}
+How do we describe dependence without confusing association, causation, and prediction?
+\end{question}
+
+For discrete variables, a joint mass function $p(x,y)=\P(X=x,Y=y)$ is a table whose entries sum to one. Marginals are obtained by summing:
+\[
+p_X(x)=\sum_y p(x,y),\qquad p_Y(y)=\sum_x p(x,y).
+\]
+For a continuous joint density $f(x,y)$, replace sums with integrals.
+
+\begin{center}
+\begin{tikzpicture}[scale=.75]
+  \foreach \i in {0,...,4}{\foreach \j in {0,...,4}{
+    \pgfmathsetmacro{\op}{15+12*\i+8*\j}
+    \fill[violet!\op] (\i,\j) rectangle +(1,1);
+    \draw[white] (\i,\j) rectangle +(1,1);
+  }}
+  \draw[->,indigo,thick] (0,-.25)--(5.5,-.25) node[right] {$x$};
+  \draw[->,indigo,thick] (-.25,0)--(-.25,5.5) node[above] {$y$};
+  \node[right] at (5.6,3.8) {color = joint probability};
+\end{tikzpicture}
+\end{center}
+
+\section{Conditional laws and independence}
+
+For $p_Y(y)>0$,
+\[
+p_{X\mid Y}(x\mid y)=\frac{p(x,y)}{p_Y(y)}.
+\]
+Variables are independent when their joint law factors:
+\[
+p(x,y)=p_X(x)p_Y(y)
+\]
+or $f(x,y)=f_X(x)f_Y(y)$ throughout the support.
+
+\section{Covariance and correlation}
+
+\[
+\Cov(X,Y)=\E[(X-\E X)(Y-\E Y)]
+=\E[XY]-\E[X]\E[Y].
+\]
+Correlation is the dimensionless quantity
+\[
+\rho_{X,Y}=\frac{\Cov(X,Y)}{\sigma_X\sigma_Y}.
+\]
+It lies between $-1$ and $1$. Independence implies zero covariance when moments exist, but zero covariance does not generally imply independence.
+
+\begin{theorem}
+\[
+\Var(X+Y)=\Var(X)+\Var(Y)+2\Cov(X,Y).
+\]
+For independent variables, the covariance term vanishes.
+\end{theorem}
+
+\section{Conditional expectation}
+
+$\E[X\mid Y]$ is itself a random variable: for each observed value of $Y$, it gives the mean of the corresponding conditional distribution. The tower property says
+\[
+\E[\E[X\mid Y]]=\E[X].
+\]
+The conditional mean is also the best mean-square predictor of $X$ using only $Y$.
+
+\begin{warningbox}
+Correlation measures linear association. A perfect U-shaped relationship can have correlation zero. And neither correlation nor conditioning alone establishes causation.
+\end{warningbox}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Given a $2\times3$ joint probability table, compute both marginals and one conditional distribution. \exlevel{Fluency}
+  \item Prove that independence implies $\E[XY]=\E[X]\E[Y]$. \exlevel{Reasoning}
+  \item Let $X$ be uniform on $\{-1,0,1\}$ and $Y=X^2$. Show $\Cov(X,Y)=0$ although $X,Y$ are dependent. \exlevel{Reasoning}
+  \item Derive the variance-of-a-sum identity. \exlevel{Reasoning}
+  \item If $X,Y$ are independent Poisson variables, use generating functions to show $X+Y$ is Poisson. \exlevel{Reasoning}
+  \item Create three scatterplots with correlations near $-1$, $0$, and $1$, then create a nonlinear plot with correlation near zero. \exlevel{Exploration}
+  \item Explain the tower property using a population divided into groups. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

@@ -1,0 +1,104 @@
+\chapter{Arithmetic on a clock}
+\chaptertag{Congruences, inverses, and the Chinese remainder theorem}
+
+\begin{definition}
+For $n\ge2$, we write $a\congr b\pmod n$ if $n\divides(a-b)$. The equivalence class of $a$ is written $[a]$ or $\bar a$.
+\end{definition}
+
+Congruence remembers the remainder and forgets the number of complete turns around the clock.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[navy!35,thick] (0,0) circle (1.65);
+  \foreach \k in {0,...,11}{
+    \coordinate (P\k) at ({90-30*\k}:1.65);
+    \fill[teal] (P\k) circle (2pt);
+    \node at ({90-30*\k}:1.94) {$\k$};
+  }
+  \draw[-{Stealth[length=3mm]},coral,line width=1.5pt] (P9) arc[start angle=180,end angle=-60,radius=1.65];
+  \node[coral,align=center] at (3.2,.2) {$9+5\congr2\pmod{12}$\\one complete turn disappears};
+\end{tikzpicture}
+\end{center}
+
+\section{Legal arithmetic}
+
+If $a\congr b\pmod n$ and $c\congr d\pmod n$, then
+\[
+a+c\congr b+d\pmod n,\qquad ac\congr bd\pmod n.
+\]
+Powers are therefore legal too. Division is different.
+
+\begin{definition}
+A residue $a$ is a \emph{unit modulo $n$} if there exists $b$ with $ab\congr1\pmod n$. Such a $b$ is an inverse of $a$.
+\end{definition}
+
+\begin{theorem}[Invertibility criterion]
+$a$ has an inverse modulo $n$ exactly when $\gcd(a,n)=1$.
+\end{theorem}
+
+\begin{proof}
+The congruence $ab\congr1\pmod n$ means $ab+nk=1$ for some $k$. This is precisely a B\'ezout identity. Such an identity exists exactly when $\gcd(a,n)=1$.
+\end{proof}
+
+\begin{warningbox}
+Cancellation can fail. Modulo $6$, $2\cdot1\congr2\cdot4$, but $1\not\congr4$. You may cancel $a$ modulo $n$ only when $a$ is a unit, or after carefully reducing the modulus.
+\end{warningbox}
+
+\begin{proposition}[Linear congruence]
+The congruence $ax\congr b\pmod n$ has a solution exactly when $d=\gcd(a,n)$ divides $b$. When it does, there are exactly $d$ incongruent solutions modulo $n$.
+\end{proposition}
+
+\section{Reassembling remainders}
+
+Suppose a number leaves remainder $2$ modulo $3$ and remainder $3$ modulo $5$. Listing possibilities gives $8$ modulo $15$. The Chinese remainder theorem says this always works for coprime clocks.
+
+\begin{theorem}[Chinese remainder theorem]
+If $n_1,\dots,n_r$ are pairwise coprime, then for any $a_1,\dots,a_r$, the system
+\[
+x\congr a_i\pmod{n_i}\qquad(i=1,\dots,r)
+\]
+has a solution, unique modulo $N=n_1\cdots n_r$.
+\end{theorem}
+
+\begin{proof}[Construction]
+Set $N_i=N/n_i$. Since $\gcd(N_i,n_i)=1$, choose $M_i$ with $N_iM_i\congr1\pmod{n_i}$. Then
+\[
+x=\sum_{i=1}^r a_iN_iM_i
+\]
+has every prescribed remainder: modulo $n_i$, its $i$th term is $a_i$ and every other term is $0$. If $x,y$ both work, each $n_i$ divides $x-y$; coprimality makes $N\divides x-y$.
+\end{proof}
+
+\begin{center}
+\begin{tikzpicture}[node distance=8mm]
+\node[draw=teal,fill=mist,rounded corners,minimum width=21mm] (z15) {$\Z/15\Z$};
+\node[draw=navy!55,fill=white,rounded corners,below left=of z15,minimum width=21mm] (z3) {$\Z/3\Z$};
+\node[draw=navy!55,fill=white,rounded corners,below right=of z15,minimum width=21mm] (z5) {$\Z/5\Z$};
+\draw[-{Stealth},thick,teal] (z15)--(z3) node[midway,left,font=\scriptsize] {$x\mapsto x\bmod3$};
+\draw[-{Stealth},thick,teal] (z15)--(z5) node[midway,right,font=\scriptsize] {$x\mapsto x\bmod5$};
+\node[below=12mm of z15,muted] {One clock of size $15$ is equivalent to two independent clocks.};
+\end{tikzpicture}
+\end{center}
+
+\section{Fast powers and patterns}
+
+Modular reduction prevents numbers from exploding. To compute $7^{222}\pmod{13}$, square and reduce:
+\[
+7^2\congr10,\quad 7^4\congr9,\quad7^8\congr3,\quad7^{16}\congr9\pmod{13},
+\]
+then use the binary expansion $222=128+64+16+8+4+2$. Later, Fermat's theorem will make this even faster.
+
+\begin{labbox}
+Make a multiplication table modulo $n$ and highlight the rows that are permutations of all residues. Conjecture which row labels have inverses. Then compare with the gcd criterion.
+\end{labbox}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Find the inverse of $37$ modulo $101$ using extended Euclid. \exlevel{Fluency}
+  \item Solve $18x\congr30\pmod{42}$ and list all solutions modulo $42$. \exlevel{Fluency}
+  \item Prove that congruence modulo $n$ is an equivalence relation. \exlevel{Reasoning}
+  \item Show that an integer is divisible by $9$ exactly when its decimal digit sum is divisible by $9$. \exlevel{Reasoning}
+  \item Solve $x\congr2\pmod7$, $x\congr3\pmod8$, $x\congr4\pmod9$ by the constructive CRT proof. \exlevel{Reasoning}
+  \item Determine every possible last two digits of a square. Explain how CRT can split the work into moduli $4$ and $25$. \exlevel{Exploration}
+  \item Prove that $x^2\congr1\pmod p$ has only the solutions $x\congr\pm1$ when $p$ is prime. Find a composite modulus where there are more than two solutions. \exlevel{Challenge}
+\end{enumerate}
+\end{exercisebox}

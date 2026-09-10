@@ -1,0 +1,264 @@
+\chapter{A measure of possibility}
+\chaptertag{Probability spaces, inclusion--exclusion, and the birthday paradox}
+
+\begin{question}
+What rules must any coherent numerical description of uncertainty obey?
+\end{question}
+
+\section{The axioms}
+
+\begin{definition}
+A \emph{probability space} is a triple $(\Omega,\mathcal F,\P)$: a sample space $\Omega$, a collection $\mathcal F$ of events containing $\Omega$ and closed under complements and countable unions, and a function $\P:\mathcal F\to[0,1]$ satisfying
+\begin{enumerate}
+  \item $\P(\Omega)=1$;
+  \item if $A_1,A_2,\ldots$ are pairwise disjoint, then
+  \[
+  \P\!\left(\bigcup_i A_i\right)=\sum_i\P(A_i).
+  \]
+\end{enumerate}
+\end{definition}
+
+The collection $\mathcal F$ is called a \emph{sigma-algebra}. For a finite
+sample space we usually take $\mathcal F=2^\Omega$, the collection of all
+subsets of $\Omega$. The more careful notation becomes important for
+continuous spaces.
+
+\section{Building a finite probability space}
+
+Choose nonnegative numbers $w_\omega$ for the individual outcomes such that
+$\sum_{\omega\in\Omega}w_\omega=1$, and define
+\[
+  \P(A)=\sum_{\omega\in A}w_\omega.
+\]
+The total mass is one; for disjoint events, the sums use disjoint outcomes,
+which gives additivity. Since $\Omega$ is finite, only finitely many events
+in a disjoint family can be nonempty, so countable additivity also follows.
+This construction gives every probability measure on a finite space with
+all subsets measurable. The uniform model is the special choice
+$w_\omega=1/|\Omega|$ for each outcome.
+
+\begin{example}[Unequal weights]
+Let $\Omega=\{a,b,c,d\}$ have masses $1/10,2/10,3/10,4/10$.
+For $A=\{a,b\}$ and $B=\{b,d\}$,
+\[
+\P(A)=\frac3{10},\quad \P(B)=\frac6{10},\quad
+\P(A\cap B)=\frac2{10},\quad \P(A\cup B)=\frac7{10}.
+\]
+Although $A$ contains half the outcomes, it does not have probability
+$1/2$. Counting outcomes and adding their probability masses are different
+operations unless all outcomes have equal mass.
+\end{example}
+
+\begin{proposition}
+For events $A,B$,
+\[
+\P(A^c)=1-\P(A),\qquad
+\P(A\cup B)=\P(A)+\P(B)-\P(A\cap B).
+\]
+If $A\subseteq B$, then $\P(A)\le \P(B)$.
+\end{proposition}
+
+Each statement follows by splitting a set into disjoint pieces. This is the basic proof move in probability.
+
+\begin{proof}[The two-event formula]
+Write $A\cup B=A\sqcup(B\setminus A)$, where $\sqcup$ denotes disjoint
+union. Also $B=(A\cap B)\sqcup(B\setminus A)$. Additivity gives
+$\P(A\cup B)=\P(A)+\P(B\setminus A)$ and
+$\P(B\setminus A)=\P(B)-\P(A\cap B)$; substitute the second identity
+into the first.
+\end{proof}
+
+\section{Inclusion--exclusion for probabilities}
+
+For any three events, the same overlap correction gives
+\begin{align*}
+\P(A\cup B\cup C)
+&=\P(A)+\P(B)+\P(C)\\
+&\quad-\P(A\cap B)-\P(A\cap C)-\P(B\cap C)
+  +\P(A\cap B\cap C).
+\end{align*}
+No independence or equal-likelihood assumption is needed.
+One proof applies the two-event formula to $(A\cup B)\cup C$, then
+to $(A\cap C)\cup(B\cap C)=(A\cup B)\cap C$.
+
+\begin{theorem}[Finite probabilistic inclusion--exclusion]
+For events $A_1,\ldots,A_r$ in any probability space,
+\[
+\P\!\left(\bigcup_{i=1}^r A_i\right)
+=\sum_{\varnothing\ne J\subseteq\{1,\ldots,r\}}
+(-1)^{|J|+1}\P\!\left(\bigcap_{j\in J}A_j\right).
+\]
+\end{theorem}
+\begin{proof}
+Partition the sample space by the exact list of events that occur.
+There are at most $2^r$ such disjoint measurable regions. A region in
+exactly $t\ge1$ events contributes its probability mass with coefficient
+$\sum_{k=1}^t(-1)^{k+1}\binom tk=1$ on the right. The region in no event
+contributes zero. Finite additivity therefore gives the probability of
+the union, even when the original sample space is infinite.
+\end{proof}
+
+\begin{example}[Counts become probabilities under a uniform model]
+Choose a student uniformly from the 100 students in the activity example
+in Chapter 1. Dividing all its counts by 100 gives
+\[
+\P(A\cup B\cup C)=.39+.29+.25-.13-.11-.09+.05=.65.
+\]
+The eight disjoint regions have probabilities
+$.20,.12,.10,.08,.06,.04,.05,.35$ (the three single-only regions,
+three pair-only regions, triple region, and outside region).
+They are nonnegative and sum to one, so they also specify a valid
+eight-outcome probability space with \emph{unequal} outcome weights.
+\end{example}
+
+\begin{warningbox}
+Inclusion--exclusion always uses the \emph{actual} intersection
+probabilities. Replacing $\P(A\cap B)$ with $\P(A)\P(B)$ requires an
+additional independence assumption. The formula itself makes no such
+assumption. Likewise, counts divided by a total give probabilities only
+for a justified uniform model.
+\end{warningbox}
+
+\section{Equally likely is an assumption}
+
+If a finite sample space has $N$ equally likely outcomes and $A$ contains $m$, then $\P(A)=m/N$. But equality of probabilities is part of the model, not a consequence of counting.
+
+\begin{example}
+For two independent fair dice, the ordered-pair space has 36 equally likely outcomes. The possible sums $2,3,\ldots,12$ are not equally likely: sum 7 has six representations, while sum 2 has one.
+\end{example}
+
+Recording a coarser outcome carries its probabilities along: for a recorded
+value $s$, add the masses of all original outcomes producing $s$.
+Replacing the resulting weights by equal weights changes the experiment.
+
+\section{The birthday paradox: count the complement}
+\label{sec:birthday}
+
+\begin{question}
+How large must a class be before a shared birthday is more likely than not?
+\end{question}
+
+State the model first. There are $n$ labeled people and $d\ge1$ possible days.
+Their birthdays are independent and uniform on those days. Thus
+\[
+\Omega=\{1,\ldots,d\}^n,\qquad \mathcal F=2^\Omega,
+\qquad \P(\{\omega\})=d^{-n}.
+\]
+For the usual classroom model set $d=365$: ignore leap days and seasonal
+variation. Independence and equal daily probabilities are modeling
+assumptions, not claims about every real class.
+
+\begin{proposition}[Exact collision probability]
+For $0\le n\le d$, the probability $q_d(n)$ of at least one shared
+birthday is
+\[
+q_d(n)=1-\frac{d(d-1)\cdots(d-n+1)}{d^n}
+      =1-\prod_{j=0}^{n-1}\left(1-\frac jd\right).
+\]
+The empty product is one, so $q_d(0)=q_d(1)=0$.
+For $n>d$, $q_d(n)=1$ by the pigeonhole principle.
+\end{proposition}
+\begin{proof}
+Count the complement: all birthdays are distinct. There are $d$ choices
+for the first birthday, $d-1$ for the second, and so on, yielding $(d)_n$
+ordered birthday lists. All $d^n$ lists are equally likely, so divide and
+subtract from one. Counting \emph{at least one} matching pair directly is
+harder because different matching-pair events overlap.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+Class size $n$ & 10 & 20 & 22 & 23 & 30 \\
+\midrule
+$q_{365}(n)$ & .11695 & .41144 & .47570 & .50730 & .70632 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Adding a person cannot destroy an existing match, so the probability is
+nondecreasing. Since $q_{365}(22)<1/2<q_{365}(23)$, the first class size
+above $50\%$ is $23$.
+
+\begin{checkpoint}[title={Any pair versus one particular person}]
+In a class of $n\ge1$ people, the probability that someone else shares one
+\emph{designated} person's birthday is
+\[
+1-\left(1-\frac1d\right)^{n-1}.
+\]
+For $d=365,n=23$, this is about $.05857$, much smaller than $.50730$.
+The designated-person question compares that person with 22 others;
+the any-pair question considers $\binom{23}{2}=253$ possible pairs.
+\end{checkpoint}
+
+\section{Birthday matches meet inclusion--exclusion}
+
+For three people, let $E_{12},E_{13},E_{23}$ be the events that the
+indicated people have the same birthday. Each event has probability $1/d$.
+Any two of these events force all three birthdays to agree, so each
+pairwise intersection has probability $1/d^2$. The triple intersection
+is the \emph{same event}, with probability $1/d^2$, not $1/d^3$.
+Therefore inclusion--exclusion gives
+\[
+q_d(3)=\frac3d-\frac3{d^2}+\frac1{d^2}
+       =\frac3d-\frac2{d^2},
+\]
+agreeing with $1-(1-1/d)(1-2/d)$. This illustrates why treating all
+matching-pair events as independent gives a wrong answer.
+
+More generally there are $\binom n2$ matching-pair events, each with
+probability $1/d$. The union bound gives the useful check
+\[
+q_d(n)\le\min\!\left(1,\frac{\binom n2}{d}\right).
+\]
+The sum $\binom n2/d$ counts overlapping pair events; it is not itself
+the collision probability. Later, linearity of expectation will identify
+it as the expected number of matching pairs.
+
+\begin{labbox}[title={The birthday experiment}]
+Use the website to compare the exact product, the designated-person
+probability, and the union bound. Predict the $50\%$ threshold, then
+simulate classes. Change the calendar from 365 days to 30 or 10 days.
+Separate sampling fluctuations from changes in the underlying model.
+\end{labbox}
+
+\section{Continuity and geometry}
+
+Choose a point uniformly from $[0,1]$. Every individual point has probability zero, yet the entire interval has probability one. Probabilities attach to regions: $\P([a,b])=b-a$. Zero probability does not mean impossible; it means negligible under the model.
+
+\begin{center}
+\begin{tikzpicture}[x=10cm,y=1cm]
+  \draw[indigo,thick] (0,0)--(1,0);
+  \draw[mint,line width=5pt] (.24,0)--(.71,0);
+  \foreach \x/\lab in {0/0,.24/a,.71/b,1/1}{\draw (\x,-.10)--(\x,.10) node[below=4pt]{\small $\lab$};}
+  \node[above=6pt,mint!70!black] at (.475,0) {$\P([a,b])=b-a$};
+\end{tikzpicture}
+\end{center}
+
+\section{Simulation and the model--world gap}
+
+A probability model is a deliberate simplification. Simulation samples from the model; data come from the world. Agreement between simulation and data supports a model, but never proves it uniquely correct.
+
+\begin{theorem}[Union bound]
+For any events $A_1,\ldots,A_n$,
+\[
+\P\!\left(\bigcup_{i=1}^n A_i\right)\le \sum_{i=1}^n\P(A_i).
+\]
+\end{theorem}
+
+The events need not be disjoint. Double counting makes the right side larger, which is harmless for an upper bound.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Derive $\P(\varnothing)=0$ from the axioms. \exlevel{Reasoning}
+  \item Two independent fair dice are rolled. Find the probability that the maximum is 4. \exlevel{Fluency}
+  \item Prove the union bound for three events. \exlevel{Reasoning}
+  \item A point is chosen uniformly from the unit square. Find the probability that $x+y<1$. \exlevel{Fluency}
+  \item Give an event with probability zero that is not logically impossible. \exlevel{Reasoning}
+  \item Estimate by simulation the probability that two random points in $[0,1]$ are within $0.1$ of each other; then derive it geometrically. \exlevel{Exploration}
+  \item On $\Omega=\{1,2,3,4\}$, set $\P(\{i\})=i/10$. Compute the probability of an even outcome and compare it with the fraction of outcomes that are even. \exlevel{Fluency}
+  \item Prove three-event probabilistic inclusion--exclusion using only the two-event formula. \exlevel{Reasoning}
+  \item With independent uniform birthdays on 30 days, find the first class size whose collision probability exceeds $1/2$. \exlevel{Fluency}
+  \item For four people and a five-day calendar, count the no-collision lists and calculate the collision probability. \exlevel{Fluency}
+  \item Explain why $\binom n2/d$ can exceed one without contradicting the probability axioms. \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}

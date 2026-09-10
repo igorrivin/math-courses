@@ -1,0 +1,405 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.78in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb}
+\usepackage{xcolor,booktabs,array}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,needspace,hyperref}
+
+\definecolor{ink}{HTML}{162332}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\definecolor{mist}{HTML}{EDF5F4}
+\definecolor{muted}{HTML}{5D6B78}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,
+  pdfauthor={Igor Rivin},
+  pdftitle={Number Theory: Week 2 Problem Set},
+  pdfsubject={Continued fractions, the Euclidean algorithm, unique factorization, and the sieve of Eratosthenes}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist[enumerate]{label=(\alph*),leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\pts}[1]{\hfill\textcolor{muted}{\small[#1 points]}}
+\newcommand{\partpts}[1]{\textcolor{muted}{\small(#1)}}
+\newcommand{\edition}{\ifsolutions Instructor solutions\else Student handout\fi}
+\newcounter{problem}
+\newcommand{\problem}[2]{%
+  \par\addvspace{11pt}\Needspace{6\baselineskip}%
+  \stepcounter{problem}{\bfseries\color{navy}\theproblem.\ #1}\pts{#2}\par\nobreak}
+\newcommand{\topic}[1]{\par\addvspace{9pt}\Needspace{10\baselineskip}{\large\bfseries\color{teal}#1}\par\nobreak}
+\newcommand{\studentbreak}{\ifsolutions\else\newpage\fi}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Week 2 \textbar\ Problem Set 2}
+\fancyhead[R]{\small\color{muted}Patterns, Proofs, and Primes}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\small\color{teal}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\NewDocumentEnvironment{solution}{+b}{%
+  \ifsolutions
+  \begin{tcolorbox}[enhanced,breakable,colback=mist!45,colframe=teal!45,
+    boxrule=0.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+    before skip=7pt,after skip=7pt,
+    title={Solution},title after break={Solution (continued)},
+    colbacktitle=mist,coltitle=teal,fonttitle=\small\bfseries]
+  \small #1
+  \end{tcolorbox}
+  \fi
+}{}
+
+\begin{document}
+{\LARGE\bfseries\color{navy}Problem Set 2}\hfill
+{\small\color{teal}\edition}\\[4pt]
+{\large Euclid, continued fractions, and prime factorization}\\[4pt]
+{\small\color{muted}Week 2 \textbar\ 100 points + 10 optional challenge points}
+
+\ifsolutions
+\medskip
+\textbf{Teaching note.} Estimated working time is 2--3 hours, excluding the
+challenge. The continued fractions
+require only finite nesting and exact arithmetic. Subpart scores appear in
+parentheses. Award proof credit for the reasoning, including a valid alternative
+argument; avoid repeatedly penalizing a carried arithmetic error.
+\else
+\medskip
+\textbf{Name:}\ \rule{0.46\linewidth}{0.4pt}\hfill
+\textbf{Due:}\ \rule{0.20\linewidth}{0.4pt}
+\fi
+
+\medskip
+\textbf{Instructions.} Show your divisions and use exact fractions. Justify
+every proof or counterexample. You may use the division algorithm, B\'ezout's
+identity, and Euclid's lemma. You may use the fundamental theorem of arithmetic
+except when proving it in Problem 4.
+
+\textbf{Notation.} A finite simple continued fraction is
+\[
+  [a_0;a_1,\ldots,a_n]
+  =a_0+\cfrac{1}{a_1+\cfrac{1}{\ddots+\cfrac{1}{a_n}}},
+  \qquad [a_0]=a_0.
+\]
+Here $a_0$ is an integer and $a_i$ is a positive integer for $i\ge1$.
+Unless otherwise requested, use $a_n\ge2$ when $n\ge1$.
+
+\topic{I. Euclid and continued fractions}
+
+\problem{One calculation, two readings}{14}
+\begin{enumerate}
+  \item Use the Euclidean algorithm to compute $\gcd(301,133)$. \partpts{5}
+  \item Work backward to find integers $x,y$ such that
+  $301x+133y=\gcd(301,133)$. Check your answer by substitution. \partpts{4}
+  \item Use the quotients from (a) to express $301/133$ as a simple continued
+  fraction. Reduce $301/133$ to lowest terms and explain why this does not
+  change its continued-fraction expansion. \partpts{5}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item The divisions are
+  \[
+  \begin{aligned}
+  301&=2\cdot133+35,&133&=3\cdot35+28,\\
+  35&=1\cdot28+7,&28&=4\cdot7+0.
+  \end{aligned}
+  \]
+  Thus the gcd is $7$.
+  \item Reverse the divisions:
+  \[
+  7=35-28=35-(133-3\cdot35)
+    =4(301-2\cdot133)-133=4\cdot301-9\cdot133.
+  \]
+  Hence $(x,y)=(4,-9)$; indeed $1204-1197=7$.
+  \item Dividing each line in (a) by its divisor gives the nested expression
+  \[
+  \frac{301}{133}=2+\cfrac1{3+\cfrac1{1+\cfrac14}}
+    =[2;3,1,4]=\frac{43}{19}.
+  \]
+  Dividing every entry in the Euclidean divisions by $7$ leaves the
+  quotients $2,3,1,4$ unchanged. Equivalently, the continued-fraction
+  procedure acts on the value of the rational number, which is unchanged
+  by reduction.
+\end{enumerate}
+\end{solution}
+
+\problem{Unfolding a continued fraction}{12}
+\begin{enumerate}
+  \item Evaluate $[2;3,4]$ and $[0;2,1,3]$ as fractions in lowest terms. \partpts{4}
+  \item For $n\ge1$ and $a_n\ge2$, prove the identity
+  \[
+  [a_0;a_1,\ldots,a_n]
+    =[a_0;a_1,\ldots,a_{n-1},a_n-1,1].
+  \]
+  Explain the equality by looking at the end of the nested fraction. \partpts{4}
+  \item Give a second expansion, ending in $1$, for each number in (a). \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Working from the inside outward,
+  \[
+  [2;3,4]=2+\frac{1}{3+1/4}
+   =2+\frac4{13}=\frac{30}{13},\qquad
+  [0;2,1,3]=\frac{1}{2+1/(1+1/3)}
+   =\frac{1}{2+3/4}=\frac4{11}.
+  \]
+  The displayed fractions are reduced: $30=2\cdot13+4$, $13=3\cdot4+1$,
+  and $\gcd(4,11)=1$.
+  \item The final tail has the same value because
+  $[a_n-1;1]=(a_n-1)+1/1=a_n$. Substituting equal tails into the same
+  preceding nesting gives equal fractions. The assumption $a_n\ge2$
+  ensures that the new entry $a_n-1$ is positive.
+  \item The second expansions are
+  $30/13=[2;3,3,1]$ and $4/11=[0;2,1,2,1]$.
+\end{enumerate}
+\end{solution}
+
+\problem{Bounding a square root with fractions}{12}
+Consider the four truncations
+\[
+  c_0=[1],\qquad c_1=[1;2],\qquad c_2=[1;2,2],\qquad c_3=[1;2,2,2].
+\]
+Such truncations are called \emph{convergents}.
+\begin{enumerate}
+  \item Compute the four fractions in lowest terms. \partpts{4}
+  \item Decide which are below $\sqrt2$ and which are above it by comparing
+  their squares with $2$. Do not use decimal approximations. \partpts{4}
+  \item Using these values, give the narrowest interval you can with a lower
+  endpoint below $\sqrt2$ and an upper endpoint above it. Find its exact
+  width. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Direct nesting gives $c_0=1$, $c_1=3/2$, $c_2=7/5$, and $c_3=17/12$.
+  \item For a positive fraction $p/q$, the sign of $(p/q)^2-2$ is the
+  sign of $p^2-2q^2$:
+  \begin{center}
+  \begin{tabular}{@{}cccr@{}}
+  \toprule
+  Truncation & $p/q$ & $p^2-2q^2$ & Comparison \\
+  \midrule
+  $c_0$ & $1/1$ & $-1$ & $c_0<\sqrt2$ \\
+  $c_1$ & $3/2$ & $1$ & $c_1>\sqrt2$ \\
+  $c_2$ & $7/5$ & $-1$ & $c_2<\sqrt2$ \\
+  $c_3$ & $17/12$ & $1$ & $c_3>\sqrt2$ \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  Squaring preserves inequalities between positive numbers, so these
+  comparisons prove the asserted bounds.
+  \item The larger lower bound is $7/5$, and the smaller upper bound is
+  $17/12$. Hence
+  \[
+  \frac75<\sqrt2<\frac{17}{12},\qquad
+  \frac{17}{12}-\frac75=\frac{85-84}{60}=\frac1{60}.
+  \]
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{II. Unique factorization and its consequences}
+
+\problem{Why factorization exists and is unique}{14}
+Prove the fundamental theorem of arithmetic in the following steps.
+\begin{enumerate}
+  \item Use strong induction to prove that every integer $n>1$ is a product
+  of primes. Treat the prime and composite cases separately. \partpts{6}
+  \item Suppose $p_1\cdots p_r=q_1\cdots q_s$, where all factors are prime.
+  Use Euclid's lemma to match and cancel prime factors. Explain why this
+  process proves uniqueness up to order, including why one side cannot have
+  factors left over. \partpts{6}
+  \item Why would allowing $1$ as a prime destroy this uniqueness statement? \partpts{2}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item The base case $n=2$ is prime. Assume all integers $m$ with
+  $2\le m<n$ are products of primes. If $n$ is prime, it already is such
+  a product. If $n$ is composite, then $n=ab$ for integers $1<a,b<n$.
+  By the inductive hypothesis, each of $a,b$ is a product of primes;
+  multiplying those products gives a prime factorization of $n$.
+  \item Since $p_1$ divides $q_1\cdots q_s$, repeated use of Euclid's lemma
+  shows that $p_1\mid q_j$ for some $j$. Because $q_j$ is prime and
+  $p_1>1$, it follows that $p_1=q_j$. Reorder the $q$'s and cancel this
+  factor. Repeat the same argument with the shorter products. The number
+  of factors decreases at every step, so the process terminates. If only
+  one side had remaining factors, their product would be greater than $1$,
+  while the empty product on the other side would equal $1$.
+  This is impossible. Thus $r=s$ and the factors agree up to order.
+  \item Inserting arbitrarily many $1$'s would give, for example,
+  $6=2\cdot3=1\cdot2\cdot3=1\cdot1\cdot2\cdot3$. These lists differ
+  in length and cannot be obtained from each other by reordering.
+\end{enumerate}
+\end{solution}
+
+\problem{Completing a square or a cube}{14}
+Let $N=5400$.
+\begin{enumerate}
+  \item Find the prime factorization of $N$. \partpts{4}
+  \item Find the least positive integer $k$ for which $Nk$ is a perfect
+  square. Give the square root of $Nk$ and prove that your $k$ is least. \partpts{5}
+  \item Find the least positive integer $\ell$ for which $N\ell$ is a
+  perfect cube. Give the cube root of $N\ell$ and prove minimality. \partpts{5}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item $5400=54\cdot100=2^3\cdot3^3\cdot5^2$.
+  \item A square has an even exponent at every prime. The exponents of $2$
+  and $3$ in $N$ are odd, so any working multiplier must contain at least
+  one factor of $2$ and one of $3$. Thus $6\mid k$ and $k\ge6$.
+  Taking $k=6$ works:
+  \[
+  5400\cdot6=2^4\cdot3^4\cdot5^2
+    =(2^2\cdot3^2\cdot5)^2=180^2=32400.
+  \]
+  \item In a cube, every prime exponent is divisible by $3$.
+  The exponents of $2$ and $3$ already satisfy this; the exponent $2$ of
+  $5$ needs at least one additional factor of $5$. Therefore every
+  working $\ell$ is divisible by $5$ and is at least $5$. This is attained:
+  \[
+  5400\cdot5=2^3\cdot3^3\cdot5^3=30^3=27000.
+  \]
+  The exponent tests in both parts follow from uniqueness of prime
+  factorization, since taking a square or cube doubles or triples each exponent.
+\end{enumerate}
+\end{solution}
+
+\problem{True, false, or missing a hypothesis?}{12}
+All variables below are positive integers.
+\begin{enumerate}
+  \item Prove or disprove: if $a^2\mid b^2$, then $a\mid b$. \partpts{3}
+  \item Prove or disprove: if $a\mid b^2$, then $a\mid b$. \partpts{3}
+  \item Give a counterexample to the claim that $a\mid c$ and $b\mid c$
+  imply $ab\mid c$. Then prove that the claim becomes true when
+  $\gcd(a,b)=1$. \partpts{6}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item True. For any prime $p$, let $\alpha$ be its exponent in $a$
+  and $\beta$ its exponent in $b$, allowing zero exponents. Divisibility
+  $a^2\mid b^2$ gives $2\alpha\le2\beta$, hence $\alpha\le\beta$.
+  This holds for every prime, so $a\mid b$ by unique factorization.
+  \item False. Take $a=4$ and $b=2$: $4\mid2^2$, but $4\nmid2$.
+  A prime dividing a square must divide its base, but a composite divisor
+  can require more copies of a prime than the base contains.
+  \item Take $a=4$, $b=6$, and $c=12$. Both $4$ and $6$ divide $12$,
+  whereas $24$ does not. Now assume $\gcd(a,b)=1$. No prime occurs in
+  both $a$ and $b$. At any prime, its exponent in $ab$ is therefore its
+  exponent in one of the factors (or zero). Since each factor divides
+  $c$, that exponent is at most the exponent in $c$. Hence $ab\mid c$.
+  Alternatively, write $c=au$ and use B\'ezout for $(a,b)$ to deduce
+  $b\mid u$, yielding $c=abv$.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{III. Finding primes and knowing when to stop}
+
+\problem{The sieve of Eratosthenes}{12}
+\begin{enumerate}
+  \item Use the grid to sieve the integers from $2$ through $120$. Mark $1$
+  as neither prime nor composite. Process primes in increasing order,
+  crossing out their multiples beginning at their squares. List all primes
+  that remain and give their total number. \partpts{8}
+  \item The numbers $91$ and $119$ survive the passes for $2,3,5$.
+  Explain why they are nevertheless composite and identify the pass that
+  removes them. \partpts{4}
+\end{enumerate}
+
+\ifsolutions\else
+\begin{center}
+\small
+\setlength{\tabcolsep}{0pt}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{|*{10}{>{\centering\arraybackslash}p{0.088\linewidth}|}}
+\hline
+1&2&3&4&5&6&7&8&9&10\\\hline
+11&12&13&14&15&16&17&18&19&20\\\hline
+21&22&23&24&25&26&27&28&29&30\\\hline
+31&32&33&34&35&36&37&38&39&40\\\hline
+41&42&43&44&45&46&47&48&49&50\\\hline
+51&52&53&54&55&56&57&58&59&60\\\hline
+61&62&63&64&65&66&67&68&69&70\\\hline
+71&72&73&74&75&76&77&78&79&80\\\hline
+81&82&83&84&85&86&87&88&89&90\\\hline
+91&92&93&94&95&96&97&98&99&100\\\hline
+101&102&103&104&105&106&107&108&109&110\\\hline
+111&112&113&114&115&116&117&118&119&120\\\hline
+\end{tabular}
+\end{center}
+\fi
+\begin{solution}
+\begin{enumerate}
+  \item Since $10^2<120<11^2$, the required sieving primes are $2,3,5,7$.
+  Starting at $4,9,25,49$, respectively, and crossing out multiples leaves
+  the following $30$ primes:
+  \[
+  \begin{gathered}
+  2,3,5,7,11,13,17,19,23,29,\\
+  31,37,41,43,47,53,59,61,67,71,\\
+  73,79,83,89,97,101,103,107,109,113.
+  \end{gathered}
+  \]
+  For checking a student's grid, the numbers of composites first removed
+  in the four passes are $59,19,7,4$, totaling $89$.
+  Thus $1+89+30=120$, including the separate entry for $1$.
+  \item $91=7\cdot13$ and $119=7\cdot17$. Both are removed by the pass
+  for $7$. Failure to have a factor among $2,3,5$ does not rule out a
+  factor of $7$.
+\end{enumerate}
+\end{solution}
+
+\ifsolutions\newpage\fi
+\problem{Why the sieve works}{10}
+\begin{enumerate}
+  \item Prove that every composite integer $n>1$ has a prime divisor at
+  most $\sqrt n$. Deduce that sieving by all primes $p\le\sqrt N$ removes
+  every composite integer at most $N$. \partpts{4}
+  \item Explain why the pass for a prime $p$ may begin at $p^2$:
+  every multiple $mp$ with $2\le m<p$ has already been removed.
+  Your argument must also cover composite $m$. \partpts{4}
+  \item Would the sieve always work if we used only primes
+  $p<\sqrt N$? Give a counterexample showing why the equality matters. \partpts{2}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Write $n=ab$ with $1<a\le b$. If $a>\sqrt n$, then also
+  $b>\sqrt n$, so $ab>n$, a contradiction. Therefore $a\le\sqrt n$.
+  Existence of prime factorization gives a prime divisor $p$ of $a$;
+  then $p\mid n$ and $p\le a\le\sqrt n$. For $n\le N$ this yields
+  $p\le\sqrt N$, so a processed prime removes $n$. No prime is removed,
+  because every crossed-out number has a proper prime divisor.
+  \item Every integer $m\ge2$ has a prime divisor $q\le m$.
+  When $m<p$, this gives $q<p$. Thus $q\mid mp$, and the earlier
+  pass for $q$ already removed $mp$. Even when the earlier pass began
+  at $q^2$, it reaches $mp$ because $m\ge q$ and $p>q$ give
+  $mp>q^2$. This reasoning does not assume that $m$ itself is prime.
+  \item Take $N=49$. The primes strictly below $\sqrt{49}=7$ are
+  $2,3,5$; none divides $49$. The composite $49=7^2$ survives unless
+  the pass for $7$ is included. More generally, $N=p^2$ for any prime
+  $p$ illustrates the same issue.
+\end{enumerate}
+\end{solution}
+
+\par\addvspace{12pt}\Needspace{7\baselineskip}
+{\bfseries\color{teal}Optional challenge: a square equals a cube}
+\pts{10 extra}
+
+Let $a,b$ be positive integers satisfying $a^2=b^3$. Prove that there is a
+positive integer $t$ such that $a=t^3$ and $b=t^2$.
+\emph{Hint:} compare the exponents of a fixed prime on the two sides.
+\begin{solution}
+Let the exponents of a prime $p$ in $a$ and $b$ be $\alpha_p$ and
+$\beta_p$. Uniqueness of prime factorization gives
+$2\alpha_p=3\beta_p$. Since $3\mid2\alpha_p$ and $3\nmid2$,
+Euclid's lemma gives $3\mid\alpha_p$. Write $\alpha_p=3\gamma_p$;
+the equality then gives $\beta_p=2\gamma_p$.
+Set $t=\prod_p p^{\gamma_p}$, a finite product. Its cube is $a$ and its
+square is $b$. If $a=b=1$, take $t=1$ (the empty product).
+Conversely, any $a=t^3$, $b=t^2$ satisfies $a^2=b^3=t^6$.
+
+\textbf{Suggested credit:} exponent equation (3), divisibility of the
+exponents (3), construction and verification of $t$ (4).
+\end{solution}
+
+\end{document}

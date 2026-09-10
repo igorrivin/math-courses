@@ -1,0 +1,574 @@
+\teachcover{Continued fractions\\and matrix fixed points}{1}{
+One repeating block, one quadratic equation
+\[
+  x=\frac{ax+b}{cx+d}
+\]
+}{
+Open with the question: why should repeating continued fractions know
+anything about quadratic equations? Students have already met linear
+fractional transformations. Treat the first few slides as a review,
+not a new chapter of prerequisites. Today's destination is the
+prefix-conjugation argument. Source: course book, Sections 3.2 and 3.7.
+}
+
+\teachslide{A repeating pattern}{2}{
+\[
+ \sqrt2=[1;2,2,2,\ldots]=[1;\overline2]
+\]
+\[
+ 1+\sqrt2=[2;2,2,2,\ldots]=[\overline2]
+\]
+\spacer
+The first expansion is \key{eventually periodic}.
+
+The second is \key{purely periodic}.
+}{
+Ask students which digit belongs to the repeating block in each
+expression. Explain that pure periodicity includes the integer part.
+A bar over the block means to repeat it indefinitely. The original
+number and its complete quotient can have different kinds of
+periodicity. Recall that rational simple continued fractions terminate.
+In these lectures, a finite rational expansion does not count as
+eventually periodic. Source: course book, Section 3.7.
+}
+
+\teachslide{The two periodicity theorems}{2}{
+A \key{quadratic irrational} is an irrational real root of an integer quadratic.
+\spacer
+\textbf{Lagrange}
+\[
+ \text{eventually periodic}
+ \quad\Longleftrightarrow\quad
+ \text{quadratic irrational}
+\]
+\spacer
+\textbf{Galois}
+
+A quadratic irrational $x$ is purely periodic exactly when
+\[
+ \key{x>1\qquad\text{and}\qquad -1<x'<0.}
+\]
+Here $x'$ is the other root of its quadratic equation.
+}{
+State the destination, without trying to prove both results now.
+Use $\sqrt2$ as the simplest example of a quadratic irrational.
+Today proves the forward direction of Lagrange. Lecture 2 proves the
+converse and both directions of Galois. Clarify the names gently:
+Legendre's continued-fraction theorem concerns exceptionally good
+rational approximations. Lagrange is the eventual-periodicity theorem.
+The theorem statements use simple continued fractions. Source:
+course book, Sections 3.7--3.9. External cross-check: Corless,
+\href{https://www.cecm.sfu.ca/organics/papers/corless/confrac/html/node6-an.shtml}{Periodic and Fixed Points of the Gauss Map}.
+}
+
+\teachslide{A M\"obius transformation}{2}{
+\[
+ M=\mat abcd,\qquad
+ \key{T_M(t)=\frac{at+b}{ct+d}}
+\]
+\[
+ a,b,c,d\in\Q,\qquad ad-bc\ne0
+\]
+\spacer
+We use the formula where $ct+d\ne0$.
+
+The determinant condition makes the transformation invertible.
+}{
+Use the notation from your preceding lecture, while making clear that
+$T_M(t)$ is a fractional action rather than ordinary matrix
+multiplication by a scalar. The denominator condition is essential.
+With rational coefficients, any finite pole is rational, so an
+irrational input never hits a pole. Infinity is a convenient optional
+convention, not a prerequisite for today's proofs. Source: book 3.2.
+}
+
+\teachslide{Why a matrix acts on a number}{2}{
+\[
+ \mat abcd\begin{pmatrix}t\\1\end{pmatrix}
+   =\begin{pmatrix}at+b\\ct+d\end{pmatrix}
+\]
+\spacer
+Take the ratio of the two output coordinates.
+\[
+ t\ \longmapsto\ \frac{at+b}{ct+d}
+\]
+\spacer
+Multiplying every entry of $M$ by the same nonzero number
+leaves $T_M$ unchanged.
+}{
+This is the projective viewpoint without projective-space terminology.
+Emphasize the ratio. The columns are ordinary vectors, and the
+fractional transformation records their coordinate ratio.
+Ask why $M$ and $-M$ produce the same map. The identity matrix and
+all its nonzero scalar multiples therefore represent the identity
+transformation. We will need that observation when excluding
+degenerate fixed-point equations. Source: book 3.2 and Appendix A.2.
+}
+
+\teachslide{Composition}{3}{
+\[
+ \key{T_M\circ T_N=T_{MN}}
+\]
+\spacer
+The rightmost matrix acts first.
+\[
+ M=\mat1101,\qquad N=\mat0110
+\]
+\[
+ T_M(T_N(t))=1+\frac1t,\qquad
+ MN=\mat1110
+\]
+}{
+Here $M$ is translation by 1 and $N$ is inversion. Compute the
+product with the class, then compare it with the nested function.
+If students already remember the general substitution proof,
+do not repeat its four coefficients. The first backup slide
+contains that calculation if requested. Ask what happens in the
+opposite order: $NM=\mat0111$ acts by $1/(t+1)$.
+This makes the order of multiplication memorable. Source: book 3.2.
+}
+
+\teachslide{An inverse, by solving for $t$}{2}{
+\[
+ y=\frac{at+b}{ct+d}
+ \qquad\Longrightarrow\qquad
+ \key{t=\frac{dy-b}{a-cy}}
+\]
+\spacer
+\[
+ M^{-1}=\frac1{ad-bc}\mat d{-b}{-c}a
+\]
+\[
+ (T_M)^{-1}=T_{M^{-1}}
+\]
+The scalar factor disappears when we take a coordinate ratio.
+}{
+Let students supply the rearrangement
+$(a-cy)t=dy-b$. An important corollary is that an invertible
+rational M\"obius transformation preserves irrationality:
+if its output were rational, its inverse would make the input
+rational. There is no hidden pole in this argument.
+For $y=T_M(t)$, $a-cy=(ad-bc)/(ct+d)\ne0$.
+We use this fact later to rule out a merely linear equation.
+Source: book 3.2 and the proof in 3.7.
+}
+
+\teachslide{One continued-fraction digit}{2}{
+\[
+ \key{D(a)=\mat a110}
+\]
+\[
+ T_{D(a)}(t)=a+\frac1t
+\]
+\spacer
+The matrix inserts one digit before the remaining tail.
+\[
+ \det D(a)=-1,\qquad D(a)^{-1}=\mat011{-a}
+\]
+}{
+The tail $t$ here is a whole remaining continued fraction.
+The letter $D$ in $D(a)$ means a digit matrix. In Lecture 2,
+the plain letter $D$ will instead denote a discriminant under
+a square root; point out the contextual distinction if needed.
+All finite digit products have determinant $\pm1$ and integer
+inverses. This is the exact sense in which we can undo a prefix.
+Source: book 3.2--3.3.
+}
+
+\teachslide{A block of digits}{2}{
+\[
+ [a_0;a_1,\ldots,a_{r-1},t]
+ =T_{D(a_0)D(a_1)\cdots D(a_{r-1})}(t)
+\]
+\spacer
+For the block $1,2$,
+\[
+ D(1)D(2)=\mat3121
+\]
+\[
+ 1+\frac1{2+1/t}=\frac{3t+1}{2t+1}.
+\]
+}{
+Translate the displayed continued fraction back into nested
+functions. All digits after the integer part are positive.
+The last entry $t$ is the tail, so it need not be an integer.
+The example fixes the period matrix that will run through the
+rest of the lecture. Have students keep $\mat3121$ on their
+paper. Source: book 3.2 and the worked example in 3.7.
+}
+
+\teachslide{A repeating tail}{2}{
+\[
+ x=[\overline{b_0,\ldots,b_{\ell-1}}],
+ \qquad b_i\ge1
+\]
+\[
+ N=D(b_0)\cdots D(b_{\ell-1})
+   =\mat ABC{D_0}
+\]
+\spacer
+Removing one whole period leaves the same tail.
+\[
+ \key{x=T_N(x)=\frac{Ax+B}{Cx+D_0}}
+\]
+Here $B,C>0$ and $\det N=(-1)^\ell$.
+}{
+This is the central idea. Pause before showing the fixed-point
+equation and ask what remains after removing a complete block.
+An infinite simple continued fraction has a well-defined
+irrational limit; this follows from the convergent bounds
+already developed in class. A backup gives the short
+irrationality argument. Positivity of the period digits makes
+$B,C$ strictly positive, even for a one-digit period.
+Source: book 3.7.
+}
+
+\teachslide{A fixed point gives an equation}{2}{
+\[
+ x=\frac{Ax+B}{Cx+D_0}
+\]
+\[
+ Cx^2+D_0x=Ax+B
+\]
+\[
+ \key{Cx^2+(D_0-A)x-B=0}
+\]
+\spacer
+Since $C>0$, this is a genuine quadratic equation.
+
+Thus a purely periodic simple continued fraction is quadratic.
+}{
+Keep this algebraic step brief.
+The nontrivial part will be understanding exactly which
+quadratics repeat. At this point the number is irrational
+because the continued fraction is infinite, so it is a
+quadratic irrational, not merely some root of a reducible
+quadratic. Contrast the period matrix with the identity:
+$t=T_I(t)$ only yields $0=0$. Source: book 3.7.
+}
+
+\teachslide{Your turn: the block $1,2$}{3}{
+\[
+ x=[\overline{1,2}],\qquad N=\mat3121
+\]
+\spacer
+Find a quadratic equation for $x$.
+
+Find both roots.
+
+Which root can be the continued fraction?
+\spacer
+\key{Take one minute before we compare answers.}
+}{
+Give students a real minute of silence, then ask for a
+quadratic before asking for its roots. Expected equation:
+$2x^2-2x-1=0$. Expected roots: $(1\pm\sqrt3)/2$.
+The continued fraction exceeds 1, so it is the positive root.
+If someone takes the negative root, ask which interval contains
+$1+1/(2+1/(\cdots))$. Advance only after discussion.
+This is book Exercise 15, expanded into a classroom prompt.
+}
+
+\teachslide{The periodic root}{2}{
+\[
+ 2x^2-2x-1=0
+\]
+\[
+ \key{x=[\overline{1,2}]=\frac{1+\sqrt3}{2}}
+\]
+\spacer
+The other root is
+\[
+ x'=\frac{1-\sqrt3}{2},\qquad -1<x'<0.
+\]
+}{
+The prime denotes the other algebraic root, not a derivative.
+Do not yet explain the significance of the interval $(-1,0)$.
+Point out the pattern and promise that Lecture 2 will
+explain it exactly. One can check the value by substituting
+it into $(3x+1)/(2x+1)$. Source: book 3.7.
+}
+
+\teachslide{A finite prefix}{2}{
+\[
+ x=T_N(x),\qquad y=T_M(x)
+\]
+\spacer
+The original number $y$ may have extra digits before the period.
+\[
+ y=[1;\overline{1,2}]=1+\frac1x,
+ \qquad M=D(1).
+\]
+\spacer
+Which transformation fixes \key{$y$}?
+}{
+Emphasize the distinction between a periodic tail and the original
+number. We know a quadratic equation for the tail
+$x$, but must produce one for the number $y$ with its prefix.
+Let students suggest substitution or inversion.
+Direct substitution works, but conjugation packages it into
+one reusable identity. Source: book 3.7, equation (3.3).
+}
+
+\teachslide{The prefix conjugation identity}{3}{
+\[
+ \begin{aligned}
+ y&=T_M(x)\\[3pt]
+  &=T_M\bigl(T_N(x)\bigr)\\[3pt]
+  &=T_M\bigl(T_N(T_{M^{-1}}(y))\bigr).
+ \end{aligned}
+\]
+\spacer
+\[
+ \key{y=T_{MNM^{-1}}(y)}
+\]
+Attaching a prefix conjugates the transformation that fixes the tail.
+}{
+Read the composition from right to left: remove the prefix,
+apply the period to its fixed tail, and put the prefix back.
+Spend the full three minutes on why each equality holds.
+For students comfortable with function notation, write
+$MNM^{-1}$ directly while saying that the matrices act
+fractionally. An empty prefix means $M=I$.
+Source: book 3.7, equation (3.3).
+}
+
+\teachslide{Why the new equation is genuinely quadratic}{3}{
+Put $K=MNM^{-1}$.
+
+\spacer
+$K$ has integer entries and determinant $\pm1$.
+
+$K$ is nonscalar, since conjugating a scalar matrix gives a scalar matrix.
+
+$y$ is irrational, since $T_{M^{-1}}(y)=x$.
+\spacer
+For $K=\mat abcd$,
+\[
+ \key{cy^2+(d-a)y-b=0.}
+\]
+This polynomial is nonzero and cannot be merely linear.
+}{
+This is the rigor checkpoint. If $K=\lambda I$, then
+$N=M^{-1}KM=\lambda I$, contradicting the positive
+lower-left entry of the period matrix. Thus the three
+coefficients $c,d-a,-b$ are not all zero.
+If $c=0$, a nonzero rational linear polynomial would vanish
+at the irrational $y$, which is impossible.
+Rationality of a M\"obius image would also imply rationality
+of its inverse image. The backup fixed-point lemma gives
+this argument in isolation. Source: book 3.7.
+}
+
+\teachslide{The equation for $\sqrt3$}{3}{
+\[
+ M=\mat1110,\qquad
+ N=\mat3121,\qquad
+ M^{-1}=\mat011{-1}
+\]
+\[
+ MNM^{-1}=\mat2312
+\]
+\[
+ y=\frac{2y+3}{y+2}
+ \qquad\Longrightarrow\qquad y^2=3
+\]
+\[
+ \key{[1;\overline{1,2}]=\sqrt3}
+\]
+}{
+Have students check at least one row of the matrix product.
+For an intermediate check, $MN=\mat5231$.
+The positive sign follows from $y=1+1/x>0$.
+This example both verifies the familiar continued fraction
+of $\sqrt3$ and shows what conjugation actually does to
+the quadratic equation. Source: book 3.7 and Exercise 21.
+}
+
+\teachslide{Your turn: a different prefix}{3}{
+Keep $x=[\overline{1,2}]$, but use $M=D(2)$.
+\[
+ y=[2;\overline{1,2}]=2+\frac1x
+\]
+\spacer
+Compute $MNM^{-1}$ and identify $y$.
+
+Can you write its digits with a bar starting at the first digit?
+\spacer
+\key{A written prefix need not be a genuine preperiod.}
+}{
+Allow about 90 seconds for the calculation.
+Students who know $1/x=\sqrt3-1$ can immediately identify
+$y=1+\sqrt3$, but ask them to check the conjugated matrix too.
+The result is $\mat3211$, giving $y^2-2y-2=0$.
+The digit stream is $2,1,2,1,\ldots$, so its pure period
+is $[\overline{2,1}]$. Source: book Exercise 21.
+}
+
+\teachslide{A prefix that disappears}{2}{
+\[
+ D(2)ND(2)^{-1}=\mat3211
+\]
+\[
+ y^2-2y-2=0,\qquad y=1+\sqrt3
+\]
+\spacer
+\[
+ \key{[2;\overline{1,2}]=[\overline{2,1}]}
+\]
+\spacer
+The digits repeat from the beginning after all.
+}{
+Distinguish a particular written decomposition into prefix
+and period from the shortest possible preperiod of the
+actual digit sequence. Here the first digit already belongs
+to a cycle of length two. This is an important example to
+bring back after Galois's criterion, since the conjugate
+$1-\sqrt3$ lies in $(-1,0)$. Source: book 3.9.
+}
+
+\teachslide{Quadratic conjugates}{2}{
+\[
+ x=u+v\sqrt D,\qquad
+ \key{x'=u-v\sqrt D}\qquad (u,v\in\Q,\ v\ne0)
+\]
+\spacer
+Replacing $\sqrt D$ by $-\sqrt D$ respects rational arithmetic.
+\[
+ \bigl(T_M(x)\bigr)'=T_M(x')
+\]
+\spacer
+For example,
+\[
+ (\sqrt2)'=-\sqrt2,\qquad
+ (1+\sqrt2)'=1-\sqrt2.
+\]
+}{
+Assume $D$ is a positive nonsquare integer.
+Clarify again that the prime is algebraic conjugation,
+not differentiation. All we need is that changing the
+sign of $\sqrt D$ commutes with adding, multiplying,
+and taking reciprocals when the denominators are nonzero.
+The complete quotients are rational transformations of
+the original surd, so their conjugates follow the same
+algebra. Source: book 3.7--3.8.
+}
+
+\teachslide{Reduced surds}{3}{
+A quadratic irrational is \key{reduced} when
+\[
+ \key{x>1\qquad\text{and}\qquad -1<x'<0.}
+\]
+\spacer
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lll}
+\toprule
+$x$ & $x'$ & Reduced?\\
+\midrule
+$\sqrt2$ & $-\sqrt2$ & No\\
+$1+\sqrt2$ & $1-\sqrt2$ & Yes\\
+$\sqrt2/2$ & $-\sqrt2/2$ & No\\
+\bottomrule
+\end{tabular}
+\end{center}
+}{
+Ask which inequality fails in each of the two negative
+examples. For $\sqrt2$ it is the lower bound on the
+conjugate. For $\sqrt2/2$ it is $x>1$.
+Galois says that this definition is exactly the right
+one for pure periodicity. Today students need the definition
+and examples; Lecture 2 explains the mechanism.
+Source: book 3.8--3.9.
+}
+
+\teachslide{What we have proved}{2}{
+\[
+ \key{\text{eventually periodic}\quad\Longrightarrow\quad
+ \text{quadratic irrational}}
+\]
+\spacer
+A periodic tail satisfies a fixed-point equation.
+
+A finite prefix changes $N$ to $MNM^{-1}$.
+\spacer
+Next lecture: why every quadratic irrational repeats,
+and why reduced surds repeat immediately.
+\spacer
+\textbf{Exit question:} Why does $t=T_I(t)$ prove nothing?
+}{
+Expected exit answer: the identity transformation fixes
+every real number, so the resulting polynomial is $0=0$.
+We needed a nonscalar transformation, supplied by the
+positive lower-left entry of the period matrix.
+Stop here at 50 minutes. The remaining slides are backups,
+not part of the planned lecture. Suggested preparation:
+review complete quotients and the fact that convergents
+$p_k/q_k$ tend to the original irrational.
+}
+
+\backups
+
+\backupslide{Composition in coordinates}{
+\[
+ M=\mat abcd,\qquad N=\mat efgh
+\]
+\[
+ \begin{aligned}
+ T_M(T_N(t))
+ &=\frac{a(et+f)+b(gt+h)}{c(et+f)+d(gt+h)}\\[8pt]
+ &=\frac{(ae+bg)t+(af+bh)}{(ce+dg)t+(cf+dh)}.
+ \end{aligned}
+\]
+\spacer
+These are exactly the four entries of $MN$.
+}{
+Use only if students request the general composition
+calculation. The equation holds wherever the displayed
+finite formulas are defined, and globally if infinity
+is included in the projective convention. Source: book 3.2.
+}
+
+\backupslide{The nonscalar fixed-point lemma}{
+Let $M=\mat abcd$ be an invertible rational matrix.
+\[
+ t=T_M(t)\quad\Longrightarrow\quad
+ ct^2+(d-a)t-b=0.
+\]
+If all coefficients vanish, then $M=aI$.
+
+If $c=0$ and the polynomial is nonzero, its root is rational.
+\spacer
+Therefore an irrational fixed point of a nonscalar rational
+matrix is a quadratic irrational.
+}{
+This separates the elementary lemma from any special
+continued-fraction properties. Note that being invertible
+does not by itself exclude the identity transformation.
+One needs the nonscalar assumption as well as an
+irrational fixed point. Source: book Lemma 3.12.
+}
+
+\backupslide{Why an infinite simple continued fraction is irrational}{
+The convergents are in lowest terms, $q_k\to\infty$, and
+\[
+ \left|x-\frac{p_k}{q_k}\right|
+ \le\frac1{q_kq_{k+1}}.
+\]
+If $x=p/q$ were rational, then eventually $p_k/q_k\ne p/q$,
+and
+\[
+ \left|\frac pq-\frac{p_k}{q_k}\right|
+ \ge\frac1{qq_k}.
+\]
+For $q_{k+1}>q$, these inequalities contradict each other.
+}{
+The alternating-convergent argument produces a limit
+for any infinite positive digit sequence, not just
+for the expansion of a number already known to be irrational.
+For a rational candidate $p/q$ in lowest terms, increasing
+denominators ensure that the convergents eventually
+differ from it. The integer numerator of their difference
+then has absolute value at least one. A weak upper bound
+is enough here. Source: book 3.7.
+}

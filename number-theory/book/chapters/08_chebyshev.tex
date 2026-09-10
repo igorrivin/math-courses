@@ -1,0 +1,143 @@
+\chapter{How crowded are the primes?}
+\chaptertag{Chebyshev's estimate from the middle of Pascal's triangle}
+
+Euclid proved that the primes never end. A sharper question asks how many lie below $x$:
+\[
+\pi(x)=\#\{p\le x:p\text{ prime}\}.
+\]
+The prime number theorem says $\pi(x)\sim x/\log x$, but its proof lies beyond this course. Chebyshev's elementary argument already captures the correct scale.
+
+\section{The central binomial squeeze}
+
+The largest coefficient in $(1+1)^{2n}$ is central. Since there are $2n+1$ nonnegative coefficients with sum $4^n$,
+\begin{equation}\label{eq:central-squeeze}
+\frac{4^n}{2n+1}\le\binom{2n}{n}<4^n.
+\end{equation}
+This elementary inequality contains surprising information about primes.
+
+Define two weighted prime counts:
+\[
+\vartheta(x)=\sum_{p\le x}\log p,
+\qquad
+\psi(x)=\sum_{p^k\le x}\log p.
+\]
+The first logs the product of primes at most $x$; the second logs the least common multiple:
+\[
+\psi(x)=\log\operatorname{lcm}(1,2,\dots,\floor x).
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=.075cm,y=1cm]
+  \draw[-{Stealth},navy] (0,0)--(105,0) node[right] {$x$};
+  \foreach \p in {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97}{
+    \pgfmathsetmacro{\h}{.35+ln(\p)/2.3}
+    \draw[teal,line width=1.2pt] (\p,0)--(\p,\h);
+  }
+  \draw[coral,decorate,decoration={brace,amplitude=5pt}] (50,-.28)--(100,-.28)
+    node[midway,below=6pt] {primes in $(n,2n]$ divide $\binom{2n}{n}$};
+  \node[muted,above] at (50,2.45) {A logarithmic weight turns products into sums.};
+\end{tikzpicture}
+\end{center}
+
+\section{An upper bound for the prime product}
+
+Every prime $n<p\le2n$ occurs in the numerator $(n+1)(n+2)\cdots(2n)$ and not in $n!$. Therefore it divides $\binom{2n}{n}$, and
+\[
+\vartheta(2n)-\vartheta(n)
+\le\log\binom{2n}{n}
+<2n\log2.
+\]
+Adding these inequalities over dyadic intervals gives the following deliberately non-optimized bound.
+
+\begin{lemma}\label{lem:theta-upper}
+For $x\ge2$,
+\[
+\vartheta(x)\le 2(\log2)x.
+\]
+\end{lemma}
+
+\begin{proof}
+Split $(1,x]$ into $(x/2,x],(x/4,x/2],\dots$ and apply the preceding estimate, with integer endpoints rounded outward. The resulting geometric series is bounded by
+\[
+x\log2+\frac{x}{2}\log2+\frac{x}{4}\log2+\cdots=2x\log2.
+\]
+Endpoint rounding can only add primes already included in the neighboring interval.
+\end{proof}
+
+\section{A lower bound from an lcm}
+
+The bridge exercise in the last chapter showed
+\[
+\binom{2n}{n}\divides\operatorname{lcm}(1,2,\dots,2n).
+\]
+Taking logarithms and using \eqref{eq:central-squeeze},
+\begin{equation}\label{eq:psi-lower}
+\psi(2n)\ge\log\binom{2n}{n}\ge2n\log2-\log(2n+1).
+\end{equation}
+
+Prime powers make $\psi$ larger than $\vartheta$, but not by too much:
+\[
+\psi(x)=\vartheta(x)+\vartheta(x^{1/2})+\vartheta(x^{1/3})+\cdots.
+\]
+By Lemma~\ref{lem:theta-upper}, all terms after the first contribute at most
+\[
+2\sqrt{x}\log x
+\]
+for $x\ge4$: there are at most $\log_2x$ terms, and every argument is at most $\sqrt x$. Combining this with \eqref{eq:psi-lower} shows that, once $x$ is sufficiently large,
+\begin{equation}\label{eq:theta-lower}
+\vartheta(x)\ge \frac{\log2}{2}x.
+\end{equation}
+The constant $1/2$ is chosen for convenience; better bookkeeping improves it.
+
+\section{From weighted primes to ordinary counting}
+
+The lower bound is immediate because every term in $\vartheta(x)$ is at most $\log x$:
+\[
+\vartheta(x)\le\pi(x)\log x
+\quad\Longrightarrow\quad
+\pi(x)\ge\frac{\log2}{2}\frac{x}{\log x}.
+\]
+For the upper bound, primes between $\sqrt x$ and $x$ each contribute at least $\tfrac12\log x$:
+\[
+\vartheta(x)\ge\bigl(\pi(x)-\pi(\sqrt x)\bigr)\frac{\log x}{2}.
+\]
+Using $\pi(\sqrt x)\le\sqrt x$ and Lemma~\ref{lem:theta-upper} gives
+\[
+\pi(x)\le4\log2\,\frac{x}{\log x}+\sqrt x
+\le4\frac{x}{\log x}
+\]
+for all sufficiently large $x$.
+
+\begin{theorem}[Chebyshev estimate]
+For all sufficiently large $x$,
+\[
+\boxed{
+\frac{\log2}{2}\frac{x}{\log x}
+\le \pi(x)\le
+4\frac{x}{\log x}}
+\]
+In particular, $\pi(x)\asymp x/\log x$: their ratio stays between two positive constants.
+\end{theorem}
+
+\begin{warningbox}
+The symbol $\asymp$ does not mean $\sim$. Chebyshev's estimate gets the correct order of magnitude. The prime number theorem makes the much stronger claim
+\[
+\lim_{x\to\infty}\frac{\pi(x)}{x/\log x}=1.
+\]
+\end{warningbox}
+
+\begin{bigidea}
+Why did binomial coefficients see primes? Factorials contain every integer up to a boundary. Dividing $(2n)!$ by two copies of $n!$ cancels most small-scale information while exposing primes that cross the boundary from $n$ to $2n$. The central coefficient is both arithmetically rich and analytically easy to estimate.
+\end{bigidea}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Compute $\pi(10^k)$ and $10^k/\log(10^k)$ for $k=1,2,3,4$. Track the ratio. \exlevel{Fluency}
+  \item Prove both sides of the central binomial squeeze \eqref{eq:central-squeeze}. \exlevel{Reasoning}
+  \item Prove that every prime $p$ with $n<p\le2n$ divides $\binom{2n}{n}$ exactly once. \exlevel{Reasoning}
+  \item Fill in the valuation proof that $\binom{2n}{n}$ divides $\operatorname{lcm}(1,\dots,2n)$. \exlevel{Reasoning}
+  \item Starting from the dyadic inequality, write a fully detailed proof of Lemma~\ref{lem:theta-upper}, including floors and ceilings. \exlevel{Challenge}
+  \item Use a computer to graph $\pi(x)$, $x/\log x$, and the two Chebyshev bounds. Which statement is visible at moderate $x$, and which remains too coarse? \exlevel{Exploration}
+  \item Show that Chebyshev's estimate implies the $n$th prime $p_n$ has order of magnitude $n\log n$. \exlevel{Synthesis}
+\end{enumerate}
+\end{exercisebox}

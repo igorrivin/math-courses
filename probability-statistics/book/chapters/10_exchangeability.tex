@@ -1,0 +1,322 @@
+\chapter[Exchangeability]{Exchangeability: when symmetry produces a parameter}
+\label{ch:exchangeability}
+\chaptertag{A capstone on dependence, learning, and long-run frequency}
+
+\begin{question}
+If the order of observations carries no information, must the observations be independent?
+\end{question}
+
+No. But for an \emph{infinite} sequence of zeros and ones, a remarkably precise substitute is available: the sequence behaves as though a success probability were chosen once, and independent trials were then run with that probability. This is de Finetti's representation theorem.
+
+This chapter joins three earlier ideas: conditioning can remove dependence, Bayes' rule updates an unknown parameter, and repeated observations reveal a long-run frequency. Read the examples first. Section~\ref{sec:df-proof} is an optional proof, using a birthday-collision bound and one explicitly stated compactness fact from analysis.
+
+\section{Symmetry is weaker than independence}
+
+\begin{definition}
+A finite random vector $(X_1,\ldots,X_n)$ is \emph{exchangeable} if permuting its coordinates does not change its joint distribution. An infinite sequence $X_1,X_2,\ldots$ is exchangeable if every finite prefix is exchangeable.
+\end{definition}
+
+For a zero--one vector, the definition says that two particular strings with the same number of ones have the same probability. Thus $1100$, $1010$, and $0011$ must be equally likely. It does \emph{not} say that $1100$ and $1111$ are equally likely, or that the coordinates are independent.
+
+Independent and identically distributed (i.i.d.) variables are exchangeable: permuting a product of identical marginal laws changes nothing. Exchangeability also implies identical marginal distributions, because we can swap any two positions. Neither implication reverses in general.
+
+\begin{example}[One coin, chosen once]\label{ex:hidden-coin}
+Choose a coin with heads probability $1/4$ or $3/4$, each with probability $1/2$. Keep the chosen coin and toss it repeatedly, independently \emph{given the choice}. Write $X_i=1$ for heads.
+
+For a specified length-$n$ string containing $s$ heads, its probability is
+\[
+\frac12\left(\frac14\right)^s\left(\frac34\right)^{n-s}
++\frac12\left(\frac34\right)^s\left(\frac14\right)^{n-s}.
+\]
+Only the count $s$ matters, so the sequence is exchangeable. Nevertheless,
+\[
+\P(X_1=1)=\frac12,\qquad
+\P(X_1=X_2=1)=\frac12\frac1{16}+\frac12\frac9{16}
+=\frac5{16}\ne\frac14.
+\]
+Seeing a head makes the high-bias coin more plausible, and therefore makes another head more likely. The tosses are dependent when the coin's identity is unknown.
+\end{example}
+
+\begin{checkpoint}
+If we independently choose a fresh coin before \emph{each} toss, the results are instead i.i.d.\ fair bits. Sharing one random choice across all trials is the source of dependence in Example~\ref{ex:hidden-coin}.
+\end{checkpoint}
+
+\section{The Bernoulli representation theorem}
+
+\begin{theorem}[de Finetti, Bernoulli case]\label{thm:df}
+An infinite zero--one sequence is exchangeable if and only if there is a probability measure $\mu$ on $[0,1]$ such that, for every $n\ge1$ and every $(x_1,\ldots,x_n)\in\{0,1\}^n$ with $s=\sum_i x_i$,
+\begin{equation}\label{eq:df}
+\P(X_1=x_1,\ldots,X_n=x_n)
+=\int_{[0,1]} p^s(1-p)^{n-s}\,\mu(dp).
+\end{equation}
+The measure $\mu$ is unique. Equivalently, the sequence has the law of conditionally i.i.d.\ Bernoulli$(\Theta)$ trials, where $\Theta$ is chosen once with distribution $\mu$.
+\end{theorem}
+
+An exponent zero contributes a factor of one, including at $p=0$ or $1$. The integral averages over a probability \emph{measure}: $\mu$ may have a density, point masses, or both. It need not be a beta distribution. We call $\mu$ the \emph{mixing law} or \emph{de Finetti measure}.
+
+\begin{bigidea}[title={Two levels of randomness}]
+First choose $\Theta\sim\mu$. Conditional on $\Theta=p$, generate $X_1,X_2,\ldots$ independently with success probability $p$. Conditional independence concerns the second level; exchangeability describes the joint law after averaging over the first.
+\end{bigidea}
+
+The easy direction is worth proving now: every integrand in \eqref{eq:df} depends on the string only through $s$, so every mixture is exchangeable. The difficult direction says that \emph{every infinite exchangeable Bernoulli law} admits such a representation.
+
+Let $S_n=X_1+\cdots+X_n$. There are $\binom ns$ strings with $s$ ones, so
+\begin{equation}\label{eq:df-count}
+\P(S_n=s)=\binom ns\int_{[0,1]}p^s(1-p)^{n-s}\,\mu(dp).
+\end{equation}
+The binomial coefficient belongs to the \emph{count} probability, not the probability of one specified ordered string. This distinction is exactly the permutations-and-combinations distinction from Chapter~1.
+
+Ordinary i.i.d.\ Bernoulli$(p_0)$ trials correspond to $\mu=\delta_{p_0}$, a point mass at $p_0$. At the other extreme, choose a fair bit $Z$ and put $X_i=Z$ for every $i$. The sequence is exchangeable, all trials agree, and $\mu=\tfrac12\delta_0+\tfrac12\delta_1$.
+
+\begin{warningbox}[title={What the theorem does not choose}]
+Exchangeability specifies a class of models, not a particular prior. Uniqueness means that the \emph{entire infinite joint law} determines $\mu$; it does not mean that finitely many observations determine it. Nor does the representation prove that nature literally selected a hidden coin. Different mechanisms can have exactly the same observable law.
+\end{warningbox}
+
+\section{Learning about the shared coin}
+
+Return to Example~\ref{ex:hidden-coin}. After a specified string with $s$ heads in $n$ tosses, Bayes' rule gives
+\[
+q_{n,s}:=\P\left(\Theta=\frac34\given X_1=x_1,\ldots,X_n=x_n\right)
+=\frac{3^s}{3^s+3^{n-s}}.
+\]
+The probability of heads on the next toss is therefore
+\[
+\P(X_{n+1}=1\mid X_1=x_1,\ldots,X_n=x_n)
+=\frac14(1-q_{n,s})+\frac34 q_{n,s}.
+\]
+After two heads, $q_{2,2}=9/10$ and the predictive probability is $7/10$. After a head and a tail, $q_{2,1}=1/2$ and it is $1/2$. The order $HT$ versus $TH$ does not affect either answer.
+
+For an arbitrary mixing law, the same calculation gives
+\begin{equation}\label{eq:df-predict}
+\P(X_{n+1}=1\mid X_1=x_1,\ldots,X_n=x_n)
+=\frac{\int p^{s+1}(1-p)^{n-s}\,\mu(dp)}
+{\int p^s(1-p)^{n-s}\,\mu(dp)},
+\end{equation}
+provided the observed string has positive probability. This is the posterior mean of $\Theta$. Conditioning on the count $S_n=s$ gives the same result, since the factor $\binom ns$ cancels.
+
+There is no conflict between exchangeability and learning. Exchangeability says that the \emph{order} of the observed bits carries no additional information beyond their count. It does not say that the count carries no information about future bits.
+
+\section{P\'olya's urn: reinforcement becomes a mixture}
+\label{sec:polya}
+
+Start with one red and one blue ball. Draw a ball uniformly, replace it, and add one extra ball of the same color. Repeat. Let $X_i=1$ mean that draw $i$ is red. After $s$ red draws among $n$ draws, the next draw is red with probability
+\begin{equation}\label{eq:polya-predict}
+\frac{s+1}{n+2}.
+\end{equation}
+This mechanism seems to remember its past: drawing red makes future reds more likely. Yet its sequence is exchangeable.
+
+\begin{example}[Calculate an ordered path]
+The path $RRRB$ has probability
+\[
+\frac12\cdot\frac23\cdot\frac34\cdot\frac15=\frac1{20}.
+\]
+The path $RBRR$ has probability $\tfrac12\cdot\tfrac13\cdot\tfrac24\cdot\tfrac35=1/20$ as well. These calculations are not the probability of getting three reds in four draws: there are four possible positions for the blue draw, giving $4/20=1/5$ for that event.
+\end{example}
+
+For any specified path with $s$ red and $n-s$ blue draws, the red numerators, in their order of appearance, are $1,2,\ldots,s$; the blue numerators are $1,2,\ldots,n-s$. The denominators are $2,3,\ldots,n+1$. Consequently
+\begin{equation}\label{eq:polya-word}
+\P(X_1=x_1,\ldots,X_n=x_n)=\frac{s!(n-s)!}{(n+1)!}.
+\end{equation}
+The order changes where the factors appear, but not their product.
+
+Repeated integration by parts gives the elementary beta integral
+\[
+\int_0^1p^s(1-p)^{n-s}\,dp=\frac{s!(n-s)!}{(n+1)!}.
+\]
+Comparing this with \eqref{eq:df} identifies the mixing law: $\Theta$ is uniform on $[0,1]$. Thus two different descriptions generate the same law of observed colors:
+\begin{enumerate}
+  \item reinforce the color just drawn, using the urn rule;
+  \item choose one uniform random bias $\Theta$, then generate conditionally independent Bernoulli$(\Theta)$ draws.
+\end{enumerate}
+This is equality of joint distributions, not a claim that the physical urn contains a concealed coin.
+
+An especially striking consequence is
+\[
+\P(S_n=s)=\binom ns\frac{s!(n-s)!}{(n+1)!}=\frac1{n+1},
+\qquad s=0,\ldots,n.
+\]
+The \emph{count} is uniform, even though the individual strings are not. For four draws, all five counts $0,1,2,3,4$ have probability $1/5$. Compare independent fair tosses, whose count probabilities are $1,4,6,4,1$, divided by $16$.
+
+\subsection*{Other starting compositions}
+With $a$ red and $b$ blue balls initially, where $a,b$ are positive integers, define the rising factorial $a^{\overline r}=a(a+1)\cdots(a+r-1)$ and $a^{\overline0}=1$. It is different from the falling factorial used to count ordered selections without replacement. The path probability becomes
+\[
+\frac{a^{\overline s}b^{\overline{n-s}}}{(a+b)^{\overline n}}
+=\int_0^1 p^s(1-p)^{n-s}
+\frac{p^{a-1}(1-p)^{b-1}}{B(a,b)}\,dp,
+\]
+where $B(a,b)=\int_0^1p^{a-1}(1-p)^{b-1}\,dp$. The mixing law is Beta$(a,b)$.
+
+The Bayesian model also makes sense for arbitrary real $a,b>0$, whether or not we picture whole balls. After $s$ successes in $n$ trials, the posterior is Beta$(a+s,b+n-s)$ and the predictive success probability is $(a+s)/(a+b+n)$. For the one-red, one-blue urn, this reproduces \eqref{eq:polya-predict}. Chapter~9's beta update now has a concrete reinforcement interpretation.
+
+\Needspace{11\baselineskip}
+\section{A law of large numbers with a random limit}
+\label{sec:df-limit}
+
+For fixed $p$, the strong law for independent Bernoulli$(p)$ trials says $S_n/n\to p$ with probability one. This means that the set of infinite sample paths where convergence fails has probability zero; it is stronger than convergence in probability in Chapter~7. A short proof of this special strong law appears in Section~\ref{sec:df-proof}.
+
+Apply the strong law conditional on the shared bias. It gives
+\begin{equation}\label{eq:df-limit}
+\frac{S_n}{n}\longrightarrow\Theta\qquad\text{with probability one}.
+\end{equation}
+In particular, the mixing law is the distribution of the limiting empirical frequency. The parameter is not merely an algebraic trick: it can be recovered from the infinite sequence itself.
+
+\begin{example}[Same marginal, different limits]
+In each of these models $\P(X_i=1)=1/2$:
+\begin{center}
+\small
+\begin{tabularx}{.98\linewidth}{lX}
+\toprule
+Model & Limit of $S_n/n$ \\
+\midrule
+Independent fair tosses & $1/2$, with probability one \\
+One coin of bias $1/4$ or $3/4$ & $1/4$ or $3/4$, each with probability $1/2$ \\
+One-red, one-blue P\'olya urn & A uniform random value in $[0,1]$ \\
+One fair bit repeated forever & $0$ or $1$, each with probability $1/2$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Identical one-trial probabilities tell us very little about the behavior of a long sequence.
+\end{example}
+
+We can see the persistent variation without invoking a limit theorem. Conditional independence and the tower property give, for $i\ne j$,
+\[
+\E X_i=\E\Theta,\qquad
+\E[X_iX_j]=\E[\Theta^2],\qquad
+\boxed{\Cov(X_i,X_j)=\Var(\Theta)\ge0.}
+\]
+Also, conditional on $\Theta$, the sample mean has variance $\Theta(1-\Theta)/n$ and mean $\Theta$. Taking expectations in the decomposition into within-group and between-group variation gives
+\begin{equation}\label{eq:df-variance}
+\boxed{\Var(S_n/n)=\frac{\E[\Theta(1-\Theta)]}{n}+\Var(\Theta).}
+\end{equation}
+For the two-coin model this is $3/(16n)+1/16$; for the one-red, one-blue urn it is $1/(6n)+1/12$.
+
+Increasing the number of observations reduces the sampling noise \emph{within a run}. It does not remove the variation of the shared bias \emph{between runs}. In the urn example, for instance, $\P(\lim S_n/n>3/4)=1/4$, despite the perfectly symmetric starting urn.
+
+\begin{labbox}[title={Explore: one long run versus many runs}]
+Simulate 100 independent copies of the one-red, one-blue urn, each for 5,000 draws. Plot a few running red frequencies; then make a histogram of the 100 final frequencies. Compare with 100 runs of independent fair tosses and with 100 runs of the two-coin model. Predict all three histograms before simulating. A single long trajectory estimates its own shared bias, not the distribution of biases across runs.
+\end{labbox}
+
+\Needspace{14\baselineskip}
+\section{Why infinity is essential}
+
+\begin{example}[A symmetric pair that cannot continue]
+Let $(X_1,X_2)$ be $(1,0)$ or $(0,1)$, each with probability $1/2$. This pair is exchangeable, but
+\[
+\Cov(X_1,X_2)=0-\frac12\frac12=-\frac14.
+\]
+It cannot be a mixture of conditionally i.i.d.\ Bernoulli trials, since every such mixture has nonnegative covariance. In fact, it cannot even be the first two coordinates of an exchangeable triple: all three pairs would have to disagree with probability one, which three bits cannot do.
+\end{example}
+
+More generally, sample without replacement from $N$ balls, $M$ red and $N-M$ blue. The $N$ color indicators are exchangeable, but for $i\ne j$ and $p=M/N$,
+\[
+\P(X_i=X_j=1)=\frac{M(M-1)}{N(N-1)},\qquad
+\Cov(X_i,X_j)=-\frac{p(1-p)}{N-1}\quad(N>1).
+\]
+For $0<M<N$, exhausting red balls creates negative dependence. Finite symmetry is real, but it need not be the symmetry of an infinite sequence.
+
+\begin{bigidea}[title={The finite bridge}]
+Conditional on its total number of ones, every finite exchangeable zero--one vector is a uniform arrangement of those ones and zeros. It is therefore a mixture of sampling-without-replacement models. For a short sample from a large population, replacement makes little difference. This observation is the bridge to de Finetti's theorem.
+\end{bigidea}
+
+\section{Beyond coins, and the limits of symmetry}
+
+The corresponding theorem for an infinite exchangeable sequence of \emph{real-valued} random variables replaces the random number $\Theta$ by a random probability distribution $Q$ on $\R$. Conditional on $Q$, the variables are i.i.d.\ with law $Q$. For Borel sets $A_1,\ldots,A_n$,
+\[
+\P(X_1\in A_1,\ldots,X_n\in A_n)
+=\E\left[\prod_{i=1}^n Q(A_i)\right].
+\]
+This general result is stated for perspective, not proved here. The real-valued setting matters: unrestricted measurable spaces require additional care.
+
+For example, let $M$ be a random group mean and let $X_i=M+\varepsilon_i$, where the $\varepsilon_i$ are i.i.d.\ $\Normal(0,1)$ and independent of $M$. Conditional on $M$, the observations are i.i.d.\ $\Normal(M,1)$; unconditionally, they are exchangeable and, when $\Var(M)>0$ is finite, have covariance $\Var(M)>0$. Here $Q=\Normal(M,1)$ is a random distribution.
+
+Exchangeability is a modeling assumption to defend. Time trends, different treatment groups, and changing sampling protocols can make permutations inappropriate. Declaring observations exchangeable does not erase such structure. Its value is to make a precise connection: \emph{a symmetry of the observable law can justify a conditional i.i.d.\ representation, without assuming unconditional independence.}
+
+\section{Exercises}
+\label{sec:df-exercises}
+\begin{exercisebox}[title={Exchangeability practice}]
+\begin{enumerate}
+  \item In the two-coin model, observe three heads and one tail. Find the posterior probability that the bias is $3/4$ and the predictive probability of another head. Would $HTHH$ give a different answer? \exlevel{Fluency}
+  \item Prove that independently selecting a fresh bias from $\{1/4,3/4\}$ before every toss produces i.i.d.\ fair bits. Identify which part of the shared-coin model has changed. \exlevel{Reasoning}
+  \item For the one-red, one-blue urn, find the probability of the specified path $RRBRR$, and then the probability of exactly four reds in five draws. Given this path, find the probability of a red next. \exlevel{Fluency}
+  \item An urn starts with two red and three blue balls and uses P\'olya reinforcement. After four red and two blue draws, identify the mixing law before observing data, the posterior law, and the next-red probability. \exlevel{Fluency}
+  \item Derive \eqref{eq:df-variance}. Under uniform mixing, compute $\Var(S_{10}/10)$ and $\Var(S_{100}/100)$. Explain why neither should be approximated by $1/(4n)$. \exlevel{Reasoning}
+  \item Suppose an infinite exchangeable Bernoulli sequence is pairwise independent. Prove that it is i.i.d. What hypothesis prevents this from contradicting Chapter~3's pairwise-independence warning? \exlevel{Reasoning}
+  \item Let an exchangeable vector of length $N\ge2$ have common finite variance $v$ and common pairwise covariance $c$. Prove $c\ge-v/(N-1)$. Use this to rule out an exchangeable extension of the always-disagreeing pair to any length $N>2$. \exlevel{Reasoning}
+  \item Run the experiment in the Explore box. For each model, state whether final frequencies from many independent runs should cluster near one point, two points, or across an interval. Separate a simulation observation from a theorem that explains it. \exlevel{Exploration}
+  \item Use the coupling in Section~\ref{sec:df-proof} to bound the error for \emph{any event} concerning the first five draws from an exchangeable zero--one population of size 1,000. Explain why the same bound need not be informative for 100 draws. \exlevel{Optional proof}
+\end{enumerate}
+\end{exercisebox}
+
+\subsection*{Sources and a next step}
+The representation theorem is due to Bruno de Finetti. For another elementary Bernoulli proof, using moments, see \href{https://arxiv.org/abs/1809.00882}{Werner Kirsch, \emph{An elementary proof of de Finetti's Theorem} (2018)}. Finite exchangeability and sampling approximations are treated systematically in \href{https://doi.org/10.1214/aop/1176994663}{Persi Diaconis and David Freedman, \emph{Finite Exchangeable Sequences} (1980)}.
+
+\clearpage
+\section{Optional proof: finite urns and birthday collisions}
+\label{sec:df-proof}
+
+Here is a proof of the Bernoulli representation, its uniqueness, and the random-frequency interpretation. The finite approximation is elementary. We isolate the one compactness input rather than conceal it in a limit.
+
+\subsection*{Step 1: condition on the finite total}
+Fix $n\le N$ and a particular length-$n$ string with $s$ ones. Conditional on $S_N=k$, exchangeability makes all $\binom Nk$ length-$N$ strings with $k$ ones equally likely, whenever $\P(S_N=k)>0$. Hence
+\[
+\P(X_1=x_1,\ldots,X_n=x_n\mid S_N=k)
+=\frac{\binom{N-n}{k-s}}{\binom Nk}.
+\]
+A binomial coefficient is zero when its lower argument is outside its allowed range. This is precisely the probability of that ordered color string when sampling without replacement from $k$ ones and $N-k$ zeros.
+
+\subsection*{Step 2: allow replacement and bound the error}
+Draw $n$ independent uniform labels $J_1,\ldots,J_n$ from $\{1,\ldots,N\}$. If no label repeats, use these same labels as the without-replacement sample. If a label repeats, generate a new uniform ordered sample of distinct labels for the without-replacement sample. This construction has the correct marginal sampling laws and makes their color strings identical whenever the original labels are distinct.
+
+For each pair $i<j$, $\P(J_i=J_j)=1/N$. The union bound from the birthday problem gives
+\begin{equation}\label{eq:df-collision}
+\P(\text{a repeated label})\le
+\min\left\{1,\frac{\binom n2}{N}\right\}.
+\end{equation}
+Two coupled random strings that agree except on an event of probability $\varepsilon$ assign probabilities differing by at most $\varepsilon$ to \emph{any} event: their event indicators differ only when the strings differ. With replacement, the colors are independent Bernoulli$(k/N)$. Thus, writing $\mu_N$ for the distribution of $S_N/N$, and averaging over $k$,
+\begin{equation}\label{eq:df-approx}
+\left|\P(X_1=x_1,\ldots,X_n=x_n)
+-\int p^s(1-p)^{n-s}\,\mu_N(dp)\right|
+\le\frac{\binom n2}{N}.
+\end{equation}
+The left-hand probability is fixed as $N$ grows: all prefixes belong to the \emph{same} infinite sequence.
+
+\subsection*{Step 3: take a subsequence of probability laws}
+\begin{lemma}[Compactness on a closed bounded interval]\label{lem:df-compact}
+Every sequence of probability measures on $[0,1]$ has a subsequence $\nu_j$ and a probability measure $\nu$ on $[0,1]$ such that $\int f\,d\nu_j\to\int f\,d\nu$ for every continuous function $f:[0,1]\to\R$. Also, two probability measures with equal integrals against all such functions are equal.
+\end{lemma}
+
+This is the analysis input, also called weak sequential compactness. One route to its proof selects convergent subsequences of distribution functions at each rational point, then uses monotonicity to obtain a limiting distribution function at its continuity points. Compact support prevents probability from escaping to infinity. We use the lemma here without developing that analysis.
+
+Apply the lemma to $\mu_N$. Along one subsequence, $\mu_{N_j}$ converges weakly to some $\mu$. For fixed $n$ and $s$, the function $p^s(1-p)^{n-s}$ is continuous, so \eqref{eq:df-approx} yields \eqref{eq:df}. The same subsequence works for every continuous test function, hence for every finite string. This proves existence.
+
+\subsection*{Step 4: show that the mixing law is unique}
+Under \emph{any} candidate mixture, conditional on $\Theta=p$, $S_n\sim\Bin(n,p)$. Chebyshev gives the uniform bound
+\[
+\P\bigl(|S_n/n-p|>\delta\mid\Theta=p\bigr)
+\le\frac{1}{4n\delta^2}\qquad(\delta>0).
+\]
+For a continuous $f$ on $[0,1]$, let $K=\sup|f|$ and $\omega_f(\delta)=\sup_{|x-y|\le\delta}|f(x)-f(y)|$. Split according to whether $|S_n/n-\Theta|\le\delta$ to get
+\[
+\left|\E f(S_n/n)-\E f(\Theta)\right|
+\le \omega_f(\delta)+\frac{2K}{4n\delta^2}.
+\]
+First let $n\to\infty$, then $\delta\downarrow0$; uniform continuity makes the right-hand side vanish. Thus the distribution of $S_n/n$ converges weakly to the mixing law. The observable finite-dimensional laws already determine the left-hand side, so two candidate mixing laws have equal continuous-function integrals and are equal by Lemma~\ref{lem:df-compact}.
+
+\subsection*{Step 5: justify the almost-sure random limit}
+We first prove the strong law for fixed $p$ without assuming it. For i.i.d.\ Bernoulli$(p)$ trials, Chebyshev along square indices gives
+\[
+\P\left(\left|\frac{S_{m^2}}{m^2}-p\right|>\varepsilon\right)
+\le\frac{1}{4m^2\varepsilon^2}.
+\]
+The probability that at least one such deviation occurs for some $m\ge M$ is at most $\sum_{m\ge M}(4m^2\varepsilon^2)^{-1}$, which tends to zero. Therefore only finitely many deviations occur with probability one. Intersecting these probability-one conclusions for $\varepsilon=1,1/2,1/3,\ldots$ proves $S_{m^2}/m^2\to p$ almost surely.
+
+Since the partial sums are nondecreasing, for $m^2\le n\le(m+1)^2$,
+\[
+\frac{S_{m^2}}{(m+1)^2}\le\frac{S_n}{n}
+\le\frac{S_{(m+1)^2}}{m^2}.
+\]
+Both bounds tend to $p$, proving $S_n/n\to p$ almost surely.
+
+Now construct the mixture by choosing $\Theta\sim\mu$ and then the conditionally independent trials. The fixed-$p$ result has conditional probability one for every $p$, so averaging gives $S_n/n\to\Theta$ with probability one. The constructed sequence has the same finite-string probabilities as the original sequence. These determine the probability law on infinite zero--one sequences (including convergence events, which use countable unions and intersections). Thus the original sequence also has an almost-sure empirical limit, distributed as $\mu$.
+
+Taking that limit as the original sequence's $\Theta$ transfers the conditional-i.i.d.\ representation as well: the pair consisting of the sequence and its empirical limit has the same law in the two descriptions. This completes the promised interpretation of the theorem.

@@ -1,0 +1,166 @@
+\documentclass[11pt,oneside]{book}
+
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{mathtools,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,patterns,positioning,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{booktabs,tabularx,array,multicol}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\definecolor{ink}{HTML}{162332}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\definecolor{gold}{HTML}{D69E2E}
+\definecolor{coral}{HTML}{D8664A}
+\definecolor{mist}{HTML}{EDF5F4}
+\definecolor{paper}{HTML}{FBFAF7}
+\definecolor{muted}{HTML}{5D6B78}
+
+\pagecolor{paper}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=coral,citecolor=teal,pdfauthor={Course design by OpenAI Codex},pdftitle={Patterns, Proofs, and Primes}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=5pt}
+\setlist[enumerate,1]{label=\textbf{\arabic*.},leftmargin=*}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{muted}Patterns, Proofs, and Primes}
+\fancyfoot[C]{\color{teal}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\newtheoremstyle{course}{6pt}{6pt}{\itshape}{} {\bfseries\color{navy}}{.}{.5em}{}
+\theoremstyle{course}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Guiding question}
+
+\newtcolorbox{bigidea}[1][]{enhanced,breakable,colback=mist,colframe=teal,boxrule=.8pt,arc=2mm,left=5mm,borderline west={3pt}{0pt}{teal},title={Big idea},fonttitle=\bfseries,#1}
+\newtcolorbox{checkpoint}[1][]{enhanced,breakable,colback=white,colframe=gold,boxrule=.7pt,arc=2mm,title={Checkpoint},fonttitle=\bfseries\color{ink},#1}
+\newtcolorbox{warningbox}[1][]{enhanced,breakable,colback=coral!5,colframe=coral,boxrule=.7pt,arc=2mm,title={Common trap},fonttitle=\bfseries,#1}
+\newtcolorbox{labbox}[1][]{enhanced,breakable,colback=navy!4,colframe=navy,boxrule=.7pt,arc=2mm,title={Explore},fonttitle=\bfseries,#1}
+\newtcolorbox{exercisebox}[1][]{enhanced,breakable,colback=white,colframe=navy!45,boxrule=.6pt,arc=1mm,title={Exercises},fonttitle=\bfseries\color{navy},#1}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\divides}{\mid}
+\newcommand{\ndivides}{\nmid}
+\newcommand{\congr}{\equiv}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\angles}[1]{\left\langle #1\right\rangle}
+\newcommand{\exlevel}[1]{\hfill\textcolor{teal}{\small[#1]}}
+\newcommand{\chaptertag}[1]{\par\vspace{-1.4em}{\color{teal}\large\sffamily #1}\par\vspace{1em}}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[navy] (current page.south west) rectangle (current page.north east);
+  \foreach \r in {1.2,2.0,2.8,3.6,4.4}{
+    \draw[teal!55,line width=1.2pt] ($(current page.north east)+(-3.2,-3.0)$) circle (\r cm);
+  }
+  \foreach \a in {0,30,...,330}{
+    \fill[gold] ($(current page.north east)+(-3.2,-3.0)+(\a:2.8)$) circle (2.2pt);
+  }
+  \draw[coral,line width=3pt] ($(current page.south west)+(0,2.0)$) -- ($(current page.south east)+(0,2.0)$);
+\end{tikzpicture}
+\vspace*{4.2cm}
+{\color{gold}\sffamily\bfseries\Large AN INTRODUCTION TO NUMBER THEORY\par}
+\vspace{.5cm}
+{\color{white}\fontsize{36}{42}\selectfont\bfseries Patterns, Proofs,\par and Primes\par}
+\vspace{1cm}
+{\color{white!78}\Large A visual, inquiry-driven course with exercises\par}
+\vfill
+{\color{white!75}\large One-semester course packet\par}
+{\color{white!55}\normalsize Euclid $\to$ continued fractions $\to$ congruences $\to$ groups $\to$ prime counting\par}
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\frontmatter
+\input{chapters/course_design}
+\tableofcontents
+
+\mainmatter
+\input{chapters/01_euclid}
+\input{chapters/02_fta}
+\input{chapters/03_continued_fractions}
+\input{chapters/04_modular}
+\input{chapters/05_necklaces}
+\input{chapters/06_groups}
+\input{chapters/07_binomial}
+\input{chapters/08_chebyshev}
+\input{chapters/09_capstone}
+
+\appendix
+\input{chapters/matrix_algebra}
+\input{chapters/cf_arithmetic}
+\input{chapters/astronomical_cycles}
+\input{chapters/solutions}
+\input{chapters/reference}
+
+\backmatter
+\chapter*{Further reading}
+\addcontentsline{toc}{chapter}{Further reading}
+\markboth{Further reading}{}
+\begin{itemize}[parsep=0pt,itemsep=2pt,topsep=4pt]
+  \item G. H. Hardy and E. M. Wright, \emph{An Introduction to the Theory of Numbers}.
+  \item I. Niven, H. Zuckerman, and H. Montgomery, \emph{An Introduction to the Theory of Numbers}.
+  \item J. Stillwell, \emph{Elements of Number Theory}.
+  \item R. M. Corless,
+  \href{https://www.cecm.sfu.ca/organics/papers/corless/confrac/html/node6-an.shtml}{\emph{Continued Fractions and Chaos}, section on periodic continued fractions}
+  (the distinction between Lagrange's theorem and Galois's criterion).
+  \item G. Panti,
+  \href{https://arxiv.org/abs/0712.2996}{\emph{A General Lagrange Theorem}}
+  (2007; a broader perspective beyond simple continued fractions).
+  \item A. Ya. Khinchin, \emph{Continued Fractions} (for the metric theory behind the ``base 11'' aside).
+  \item P. L\'evy, ``Sur le d\'eveloppement en fraction continue d'un nombre choisi au hasard,'' \emph{Compositio Mathematica} \textbf{3} (1936), 286--303.
+  \item G. Lochs, ``Vergleich der Genauigkeit von Dezimalbruch und Kettenbruch,'' \emph{Abh. Math. Sem. Univ. Hamburg} \textbf{27} (1964), 142--144.
+  \item D. H. Bailey, J. M. Borwein, and R. E. Crandall, ``On the Khintchine Constant,'' \emph{Mathematics of Computation} \textbf{66} (1997), 417--431.
+  \item H. Cohn, ``A Short Proof of the Simple Continued Fraction Expansion of $e$,'' \emph{American Mathematical Monthly} \textbf{113} (2006), 57--62.
+  \item F. Eisenbrand, ``Pope Gregory, the calendar, and continued fractions,'' in \emph{Discrete Mathematics}, DOI: 10.4171/DMS/6/14.
+  \item R. W. Gosper, ``Continued Fraction Arithmetic,'' Item 101B in M. Beeler,
+  R. W. Gosper, and R. Schroeppel, \emph{HAKMEM}, MIT Artificial Intelligence
+  Memo 239 (1972), 39--44.
+  \item M. J. Collins, ``Arithmetic on Continued Fractions,'' \emph{Qeios}
+  \textbf{7} (2025), DOI: 10.32388/DD1PU3.2.
+  \item NASA Goddard Space Flight Center,
+  \href{https://eclipse.gsfc.nasa.gov/OH/transit12.html}{``2012 Transit of Venus''}
+  (orbital and synodic periods of Venus).
+  \item European Southern Observatory,
+  \href{https://www.eso.org/public/outreach/eduoff/vt-2004/Education/edu1app5.html}{``The Pentagram of Venus''}.
+  \item Saxon State and University Library Dresden,
+  \href{https://www.slub-dresden.de/en/explore/manuscripts/the-dresden-maya-codex/content}{``The Dresden Maya Codex: Content''}.
+  \item A. Kaneko, ``Identification of Postclassic Maya Constellations from
+  the Venus Pages of the Dresden Codex,'' \emph{Estudios de Cultura Maya}
+  \textbf{35} (2010), 33--74.
+  \item J.-P. Serre, \emph{A Course in Arithmetic} (for a more advanced next step).
+\end{itemize}
+
+\vfill
+\begin{center}\color{muted}\small
+Course packet designed as an adaptable teaching draft. Classical results
+and examples are attributed where appropriate; exposition, exercises, and
+diagrams prepared for this packet.
+\end{center}
+
+\end{document}

@@ -1,0 +1,92 @@
+\chapter{Information changes the space}
+\chaptertag{Conditional probability, independence, and Bayes' rule}
+
+\begin{question}
+When evidence arrives, which probabilities should change---and by how much?
+\end{question}
+
+\begin{definition}
+If $\P(B)>0$, the conditional probability of $A$ given $B$ is
+\[
+\P(A\mid B)=\frac{\P(A\cap B)}{\P(B)}.
+\]
+\end{definition}
+
+Conditioning restricts attention to $B$ and renormalizes so that $B$ becomes the new whole.
+
+\begin{center}
+\begin{tikzpicture}[scale=.85]
+  \fill[indigo!8] (-3,-1.5) rectangle (3,1.6);
+  \fill[amber!40] (-.4,0) circle (1.2);
+  \fill[mint!35] (.9,0) circle (1.2);
+  \draw[amber!80!black,thick] (-.4,0) circle (1.2) node[left=8mm] {$A$};
+  \draw[mint!80!black,thick] (.9,0) circle (1.2) node[right=8mm] {$B$};
+  \node[below=16mm] at (.9,0) {Within $B$, measure the part also in $A$};
+\end{tikzpicture}
+\end{center}
+
+\section{Multiplication and trees}
+
+Rearranging the definition gives
+\[
+\P(A\cap B)=\P(B)\P(A\mid B)=\P(A)\P(B\mid A).
+\]
+Along a probability tree, multiply down branches and add across disjoint terminal paths.
+
+\section{Independence}
+
+Events $A$ and $B$ are independent when
+\[
+\P(A\cap B)=\P(A)\P(B).
+\]
+When probabilities are positive, this is equivalent to $\P(A\mid B)=\P(A)$. Disjointness is almost the opposite: two nontrivial disjoint events cannot be independent.
+
+\begin{warningbox}
+Pairwise independence does not imply mutual independence. Three events can be independent in every pair while the third is determined by the first two.
+\end{warningbox}
+
+\section{Total probability and Bayes}
+
+If $B_1,\ldots,B_k$ partition $\Omega$, then
+\[
+\P(A)=\sum_{i=1}^k \P(A\mid B_i)\P(B_i).
+\]
+Bayes' rule reverses the condition:
+\[
+\P(B_j\mid A)=
+\frac{\P(A\mid B_j)\P(B_j)}{\sum_i \P(A\mid B_i)\P(B_i)}.
+\]
+
+\begin{example}[A diagnostic test]
+Suppose prevalence is $1\%$, sensitivity is $95\%$, and specificity is $90\%$. Among 10,000 people, expect 100 cases, of which 95 test positive. Among 9,900 non-cases, 990 test positive. Thus
+\[
+\P(\text{case}\mid +)=\frac{95}{95+990}\approx 0.0876.
+\]
+A highly sensitive test can have a modest positive predictive value when the base rate is low.
+\end{example}
+
+\begin{labbox}
+Represent the test example with 10,000 dots rather than formulas. Change prevalence while holding sensitivity and specificity fixed. Plot the positive predictive value; locate the prevalence at which a positive result becomes more likely correct than incorrect.
+\end{labbox}
+
+\section{A preview: symmetry is not independence}
+
+Choose once between coins with heads probabilities $1/4$ and $3/4$, giving each coin probability $1/2$, and then repeatedly toss the chosen coin. Conditional on the choice, the tosses are independent. Without that information, if $H_i$ means heads on toss $i$, then
+\[
+\P(H_1)=\P(H_2)=\frac12,\qquad
+\P(H_1\cap H_2)=\frac12\left(\frac14\right)^2
++\frac12\left(\frac34\right)^2=\frac5{16}\ne\frac14.
+\]
+The tosses are dependent, yet any reordering of a finite string has the same probability as the original string. This symmetry is called \emph{exchangeability}. Chapter~\ref{ch:exchangeability} returns to the example and proves de Finetti's surprising converse for infinite zero--one sequences: exchangeability gives a representation by a shared random bias and conditionally independent trials.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Draw a tree for two draws without replacement from an urn with three red and two blue balls. \exlevel{Fluency}
+  \item Prove that if $A$ and $B$ are independent, then $A^c$ and $B$ are independent. \exlevel{Reasoning}
+  \item Construct three pairwise independent events that are not mutually independent. \exlevel{Reasoning}
+  \item Solve the diagnostic-test example with prevalence $5\%$. \exlevel{Fluency}
+  \item A randomly selected coin is fair with probability $.8$ and double-headed with probability $.2$. It lands heads three times. Find the posterior probability it is double-headed. \exlevel{Reasoning}
+  \item Explain precisely why changing the information protocol can change the ``two children'' answer. \exlevel{Exploration}
+  \item Simulate Monty Hall and explain the result using conditioning rather than frequency alone. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

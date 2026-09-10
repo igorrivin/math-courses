@@ -1,0 +1,50 @@
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathtools,amssymb,booktabs,array}
+\usefonttheme{professionalfonts}
+\geometry{papersize={13.33333in,7.5in}}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\definecolor{paper}{HTML}{FBFAF7}
+\definecolor{muted}{HTML}{5D6B78}
+\setbeamercolor{normal text}{fg=ink,bg=paper}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamercolor{structure}{fg=teal}
+\setbeamercolor{alerted text}{fg=teal}
+\setbeamercolor{footline}{fg=muted,bg=paper}
+\setbeamerfont{normal text}{size=\fontsize{23}{30}}
+\setbeamerfont{frametitle}{size=\fontsize{32}{38},series=\bfseries}
+\setbeamersize{text margin left=.65in,text margin right=.65in}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{frametitle}{\vspace{.22in}\insertframetitle\par}
+\newcommand{\lecturefoot}[1]{%
+  \leavevmode\hbox to\paperwidth{%
+    \hskip.65in{\fontsize{11}{13}\selectfont\lectureName}%
+    \hfil{\fontsize{11}{13}\selectfont #1}\hskip.65in}%
+  \vskip.15in}
+\setbeamertemplate{footline}{\lecturefoot{\insertframenumber/\coreSlides}}
+\setlength{\parskip}{10pt}
+\setlength{\parindent}{0pt}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\mat}[4]{\begin{pmatrix}#1&#2\\#3&#4\end{pmatrix}}
+\newcommand{\key}[1]{{\color{teal}#1}}
+\newcommand{\spacer}{\par\vspace{.12in}}
+\newcommand{\teachslide}[4]{\begin{frame}[t]{#1}\usebeamerfont{normal text}#3\end{frame}}
+\newcommand{\teachcover}[4]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=ink}
+  \setbeamercolor{normal text}{fg=white}
+  \begin{frame}[plain]
+  \usebeamercolor[fg]{normal text}
+  {\fontsize{18}{22}\selectfont\lectureName\par}
+  \vspace{.38in}
+  {\fontsize{42}{49}\selectfont\bfseries #1\par}
+  \vspace{.35in}
+  {\fontsize{26}{34}\selectfont #3}
+  \end{frame}\endgroup}
+\newcommand{\backups}{%
+  \setbeamertemplate{footline}{\lecturefoot{Further questions}}}
+\newcommand{\backupslide}[3]{\begin{frame}[t,noframenumbering]{#1}\usebeamerfont{normal text}#2\end{frame}}

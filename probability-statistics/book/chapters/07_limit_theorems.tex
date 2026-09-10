@@ -1,0 +1,74 @@
+\chapter{From repetition to regularity}
+\chaptertag{Laws of large numbers, the central limit theorem, and sampling}
+
+\begin{question}
+Why do averages stabilize, and why do bell curves emerge from non-normal data?
+\end{question}
+
+Let $X_1,\ldots,X_n$ be independent copies of a variable with mean $\mu$ and variance $\sigma^2$. Their average is
+\[
+\bar X_n=\frac1n\sum_{i=1}^nX_i,
+\qquad
+\E[\bar X_n]=\mu,
+\qquad
+\Var(\bar X_n)=\frac{\sigma^2}{n}.
+\]
+
+\begin{theorem}[Weak law of large numbers]
+For every $\varepsilon>0$,
+\[
+\P(|\bar X_n-\mu|>\varepsilon)\longrightarrow0.
+\]
+\end{theorem}
+
+With finite variance, Chebyshev gives the proof immediately:
+\[
+\P(|\bar X_n-\mu|>\varepsilon)
+\le \frac{\sigma^2}{n\varepsilon^2}.
+\]
+
+\begin{theorem}[Central limit theorem]
+If $0<\sigma^2<\infty$, then
+\[
+\frac{\sqrt n(\bar X_n-\mu)}{\sigma}
+\xrightarrow{d}\Normal(0,1).
+\]
+\end{theorem}
+
+The LLN says where the average goes; the CLT describes the scale and approximate shape of its remaining fluctuations.
+
+\begin{center}
+\begin{tikzpicture}[x=.7cm,y=.8cm]
+  \foreach \x/\h in {0/1.0,1/3.4,2/1.2,3/3.1,4/.8}{\fill[rose!65] (\x,0) rectangle +(0.7,\h);}
+  \node at (1.9,-.6) {one draw};
+  \draw[-{Stealth},thick,mint] (4.3,1.8)--(5.5,1.8);
+  \foreach \x/\h in {6/.4,7/1.2,8/2.3,9/3.1,10/2.3,11/1.2,12/.4}{\fill[violet!65] (\x,0) rectangle +(0.7,\h);}
+  \node at (9.3,-.6) {average of many draws};
+\end{tikzpicture}
+\end{center}
+
+\section{Sampling distributions}
+
+A \emph{statistic} is a function of the sample. Before data are observed it is random, and its probability law is its sampling distribution. The standard deviation of that distribution is the \emph{standard error}.
+
+For a Bernoulli sample, the sample proportion $\hat p$ has
+\[
+\E[\hat p]=p,\qquad
+\operatorname{SE}(\hat p)=\sqrt{\frac{p(1-p)}n}.
+\]
+
+\section{Monte Carlo and bootstrap}
+
+Monte Carlo approximates an expectation by simulating from a known model. The bootstrap approximates a sampling distribution by repeatedly resampling, with replacement, from observed data. The bootstrap is powerful but cannot repair a badly biased or unrepresentative original sample.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Compute the standard error of the mean when $\sigma=12$ and $n=64$. \exlevel{Fluency}
+  \item Prove the weak law using Chebyshev's inequality. \exlevel{Reasoning}
+  \item Approximate $\P(480\le X\le520)$ for $X\sim\Bin(1000,.5)$ using the CLT and a continuity correction. \exlevel{Fluency}
+  \item Explain why quadrupling the sample size halves a standard error. \exlevel{Reasoning}
+  \item Simulate sample means from a skewed distribution for $n=1,2,5,30$. Quantify convergence rather than only describing the pictures. \exlevel{Exploration}
+  \item Compare Monte Carlo error at $n=100$, $10^4$, and $10^6$. Is the $n^{-1/2}$ rate visible? \exlevel{Exploration}
+  \item Give an example where bootstrap resampling cannot reveal a sampling bias. \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}

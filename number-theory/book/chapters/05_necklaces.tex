@@ -1,0 +1,97 @@
+\chapter{A theorem you can rotate}
+\chaptertag{Necklace colorings and Fermat's little theorem}
+
+Why should a prime $p$ divide $a^p-a$ for every integer $a$? Instead of manipulating the expression, we count objects that naturally arrive in packets of $p$.
+
+\section{Words on a circular loom}
+
+Fix a prime $p$ and $a$ colors. First imagine $p$ labeled positions around a circle. A coloring is a word
+\[
+(c_0,c_1,\dots,c_{p-1}),
+\]
+and there are $a^p$ such words. Rotation by one step sends it to
+\[
+(c_{p-1},c_0,\dots,c_{p-2}).
+\]
+
+\begin{center}
+\begin{tikzpicture}[scale=.82]
+\foreach \shift/\rot/\lab in {0/0/{first},4.4/72/{rotate},8.8/144/{rotate again}}{
+  \begin{scope}[xshift=\shift cm,rotate=\rot]
+    \draw[navy!25,thick] (0,0) circle (1.25);
+    \foreach \ang/\col in {90/teal,18/gold,-54/teal,-126/coral,162/gold}{
+      \fill[\col] (\ang:1.25) circle (5.5pt);
+    }
+  \end{scope}
+  \node[muted] at (\shift,-1.75) {\lab};
+}
+\draw[-{Stealth},teal,thick] (1.5,0)--(2.9,0);
+\draw[-{Stealth},teal,thick] (5.9,0)--(7.3,0);
+\end{tikzpicture}
+\end{center}
+
+Group words together when one is a rotation of another. Such a group is called a rotational \emph{orbit}. How large can an orbit be?
+
+\begin{lemma}[Prime orbit dichotomy]
+For $p$ prime, a length-$p$ word has either $1$ or $p$ distinct rotations. It has one exactly when it is constant.
+\end{lemma}
+
+\begin{proof}
+If rotation by $k$ positions, with $1\le k<p$, fixes the word, then entries $i$ and $i+k$ have the same color (indices modulo $p$). Since $\gcd(k,p)=1$, repeatedly adding $k$ visits every position. Thus all entries have one color. A nonconstant word has no repeated rotation before the $p$th, so its orbit has size $p$.
+\end{proof}
+
+There are $a$ constant words, one for each color. The remaining $a^p-a$ words split into orbits of exactly $p$ words.
+
+\begin{theorem}[Fermat's little theorem, necklace form]
+If $p$ is prime, then for every integer $a$,
+\[
+a^p\congr a\pmod p.
+\]
+If $p\ndivides a$, then $a^{p-1}\congr1\pmod p$.
+\end{theorem}
+
+\begin{proof}
+For $a\ge0$, the orbit count above shows $p\divides a^p-a$. This congruence depends only on the residue of $a$ modulo $p$, so it holds for every integer $a$. If $p\ndivides a$, then $a$ has an inverse modulo $p$, and we may cancel it from $a^p\congr a$.
+\end{proof}
+
+\begin{bigidea}
+Divisibility by $p$ appears because symmetry packages nonexceptional objects into groups of $p$. The exceptions are exactly the colorings fixed by rotation. This pattern -- count, isolate fixed points, divide the rest into orbits -- reaches far beyond number theory.
+\end{bigidea}
+
+\section{A subtle choice: labeled words or necklaces?}
+
+A physical necklace usually ignores where position $0$ is. Here we first count \emph{labeled} circular words, then use rotation to partition them. Calling each orbit a necklace is convenient, but the proof depends on keeping those two levels distinct.
+
+\begin{warningbox}
+When the length is composite, an orbit can have an intermediate size. The word $RBRB$ has two distinct rotations, not $1$ or $4$. Primality is doing real work.
+\end{warningbox}
+
+\section{Using the theorem}
+
+To compute $3^{1000}\pmod7$, note that $3^6\congr1$ and $1000=6\cdot166+4$:
+\[
+3^{1000}\congr(3^6)^{166}3^4\congr81\congr4\pmod7.
+\]
+
+Fermat's theorem also explains the first layer of binomial divisibility. For $1\le k\le p-1$,
+\[
+\binom pk=\frac{p!}{k!(p-k)!}
+\]
+is divisible by $p$, because the denominator contains no factor $p$. Therefore
+\[
+(x+y)^p\congr x^p+y^p\pmod p.
+\]
+We will return to this ``freshman's dream'' after developing binomial coefficients systematically.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item List the rotational orbits of binary words of length $3$. Identify the constant words. \exlevel{Fluency}
+  \item Compute $11^{2026}\pmod{17}$ using Fermat's theorem. \exlevel{Fluency}
+  \item In the orbit lemma, prove carefully that $0,k,2k,\dots,(p-1)k$ are all distinct modulo $p$. \exlevel{Reasoning}
+  \item Give an orbit-counting proof that $p\divides a^p-a$ using linear strings and cyclic shift, without drawing a circle. \exlevel{Reasoning}
+  \item Find every possible orbit size for binary words of length $6$, and give an example of each. \exlevel{Exploration}
+  \item Prove that if $p$ is prime, then $(x+y)^p\congr x^p+y^p\pmod p$. Use induction to deduce $(x_1+\cdots+x_m)^p\congr x_1^p+\cdots+x_m^p$. \exlevel{Reasoning}
+  \item If $n$ is composite, must there be an $a$ with $a^n\not\congr a\pmod n$? Test $n=341$ and $561$. This opens the door to pseudoprimes and Carmichael numbers. \exlevel{Challenge}
+\end{enumerate}
+\end{exercisebox}
+

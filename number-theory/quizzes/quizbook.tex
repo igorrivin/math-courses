@@ -1,0 +1,379 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=0.68in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D7F}
+\definecolor{gold}{HTML}{E3A32B}
+\definecolor{coral}{HTML}{D9664C}
+\definecolor{paper}{HTML}{FAF7F0}
+\definecolor{ink}{HTML}{202A33}
+\definecolor{muted}{HTML}{64717D}
+
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{muted}Patterns, Proofs, and Primes}
+\fancyfoot[R]{\footnotesize\color{muted}Quiz \thequiznum\ of 10}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=4pt}
+\newcounter{quiznum}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\edition}{\ifanswers Instructor Key\else Student Edition\fi}
+\newcommand{\points}[1]{\hfill{\small\color{coral}\textbf{[#1 points]}}}
+
+\newcommand{\quizheading}[1]{%
+  \clearpage\stepcounter{quiznum}%
+  \begin{tcolorbox}[
+    enhanced,colback=paper,colframe=navy,boxrule=1.1pt,arc=2mm,
+    left=4mm,right=4mm,top=2.5mm,bottom=2.5mm,
+    borderline west={4pt}{0pt}{teal}]
+    {\Large\bfseries\color{navy}Weekly Quiz \thequiznum}\hfill
+    {\bfseries\color{teal}\edition}\\[-1pt]
+    {\large\color{ink}#1}\\[2pt]
+    {\small\color{muted}20 minutes \quad $\bullet$ \quad 10 points \quad $\bullet$ \quad Show the essential steps.}
+    \ifanswers\else
+      \\[5pt]\textbf{Name:}\ \rule{0.48\linewidth}{0.4pt}\hfill
+      \textbf{Date:}\ \rule{0.20\linewidth}{0.4pt}
+    \fi
+  \end{tcolorbox}
+}
+
+\NewDocumentEnvironment{solution}{O{1.05in}+b}{%
+  \ifanswers
+    \begin{tcolorbox}[enhanced,breakable,colback=teal!4,colframe=teal!45,
+      boxrule=0.55pt,arc=1mm,left=2.5mm,right=2.5mm,top=1.5mm,bottom=1.5mm,
+      title={\small\bfseries Solution},fonttitle=\small\bfseries,coltitle=navy]
+      \small #2
+    \end{tcolorbox}
+  \else
+    \par\vspace{#1}
+  \fi
+}{}
+
+\begin{document}
+
+\quizheading{Divisibility and the Euclidean algorithm}
+\begin{enumerate}
+  \item Use the Euclidean algorithm to compute $\gcd(252,198)$. \points{3}
+  \begin{solution}[1.05in]
+    \[
+    252=198+54,\quad 198=3\cdot54+36,\quad
+    54=36+18,\quad 36=2\cdot18.
+    \]
+    The last nonzero remainder is $18$, so $\gcd(252,198)=18$.
+  \end{solution}
+
+  \item Explain why $\gcd(a,b)=\gcd(b,a-b)$ for positive integers $a>b$. \points{3}
+  \begin{solution}[1.2in]
+    A number $d$ divides both $a$ and $b$ exactly when it divides both $b$ and
+    $a-b$: in one direction, $d\mid a$ and $d\mid b$ imply $d\mid a-b$; in the
+    other, $d\mid b$ and $d\mid a-b$ imply $d\mid (a-b)+b=a$. Thus the two pairs
+    have the same common divisors and therefore the same greatest common divisor.
+  \end{solution}
+
+  \item A $252\text{ cm}\times198\text{ cm}$ rectangle is tiled by the largest
+  possible congruent squares, with no cutting. Find the side length and the number
+  of squares. \points{4}
+  \begin{solution}[1.5in]
+    The side length must divide both dimensions, so the largest possible side is
+    $\gcd(252,198)=18$ cm. There are $252/18=14$ squares across and $198/18=11$
+    down, hence $14\cdot11=154$ squares.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{B\'ezout identities and Diophantine equations}
+\begin{enumerate}
+  \item Find integers $x,y$ such that $527x+341y=\gcd(527,341)$. \points{4}
+  \begin{solution}[1.45in]
+    Euclid gives
+    \[
+      527=341+186,\quad 341=186+155,\quad 186=155+31,\quad 155=5\cdot31.
+    \]
+    Back-substitution gives
+    \[
+      31=186-155=2\cdot186-341=2\cdot527-3\cdot341.
+    \]
+    Thus $\gcd(527,341)=31$ and one answer is $(x,y)=(2,-3)$.
+  \end{solution}
+
+  \item Solve $35x+22y=1$ in integers, and give all solutions. \points{3}
+  \begin{solution}[1.3in]
+    Back-substitution in the Euclidean algorithm gives
+    $1=-5\cdot35+8\cdot22$, so one solution is $(-5,8)$. Since
+    $\gcd(35,22)=1$, all solutions are
+    \[
+       x=-5+22t,\qquad y=8-35t,\qquad t\in\Z.
+    \]
+  \end{solution}
+
+  \item Decide whether $42x+30y=18$ has integer solutions. If it does, find one.
+  \points{3}
+  \begin{solution}[1.25in]
+    Since $\gcd(42,30)=6$ and $6\mid18$, solutions exist. Moreover,
+    $6=3\cdot30-2\cdot42$, so
+    $18=9\cdot30-6\cdot42$. One solution is $(x,y)=(-6,9)$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Primes and unique factorization}
+\begin{enumerate}
+  \item Factor $756$ and $630$ into primes; then find their gcd and lcm. \points{4}
+  \begin{solution}[1.35in]
+    \[
+    756=2^2\cdot3^3\cdot7,\qquad 630=2\cdot3^2\cdot5\cdot7.
+    \]
+    Taking the smaller exponent of each prime gives
+    $\gcd(756,630)=2\cdot3^2\cdot7=126$. Taking the larger exponent gives
+    $\operatorname{lcm}(756,630)=2^2\cdot3^3\cdot5\cdot7=3780$.
+  \end{solution}
+
+  \item Let $p$ be prime. Use Euclid's lemma to show that $p\mid a^2$ implies
+  $p\mid a$. \points{3}
+  \begin{solution}[1.2in]
+    We have $a^2=a\cdot a$. Euclid's lemma says that if a prime divides a product,
+    it divides at least one factor. Both factors here are $a$, so $p\mid a$.
+  \end{solution}
+
+  \item The statement ``if $p\mid ab$, then $p\mid a$ and $p\mid b$'' is false.
+  Give a counterexample and state the correct theorem. \points{3}
+  \begin{solution}[1.25in]
+    For example, $2\mid 2\cdot3$, but $2\nmid3$. The correct statement is
+    Euclid's lemma: if $p$ is prime and $p\mid ab$, then $p\mid a$ \emph{or}
+    $p\mid b$ (possibly both).
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Continued fractions and best approximations}
+\begin{enumerate}
+  \item Evaluate the finite continued fraction $[3;2,4]$. \points{3}
+  \begin{solution}[1.05in]
+    \[
+      [3;2,4]=3+\frac{1}{2+\frac14}
+      =3+\frac49=\frac{31}{9}.
+    \]
+  \end{solution}
+
+  \item Use Euclid's algorithm to find the simple continued fraction of $43/13$,
+  and list its convergents. \points{4}
+  \begin{solution}[1.5in]
+    Since
+    \[
+      43=3\cdot13+4,\qquad 13=3\cdot4+1,\qquad 4=4\cdot1,
+    \]
+    we get $43/13=[3;3,4]$. Its convergents are
+    \[
+      3,\qquad 3+\frac13=\frac{10}{3},\qquad [3;3,4]=\frac{43}{13}.
+    \]
+  \end{solution}
+
+  \item The first four convergents of $\sqrt2=[1;2,2,\ldots]$ are
+  $1,3/2,7/5,17/12$. Verify the Pell-type identity for the last convergent and
+  explain what it says about the approximation. \points{3}
+  \begin{solution}[1.3in]
+    \[
+      17^2-2\cdot12^2=289-288=1.
+    \]
+    Thus $(17/12)^2-2=1/144$, so $17/12$ is extremely close to $\sqrt2$;
+    equivalently, the numerator and denominator nearly solve $x^2=2y^2$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Modular arithmetic}
+\begin{enumerate}
+  \item Find the least nonnegative residue of $-137$ modulo $12$. \points{2}
+  \begin{solution}[0.85in]
+    Since $-137=-12\cdot12+7$, we have $-137\equiv7\pmod{12}$.
+  \end{solution}
+
+  \item Solve $7x\equiv5\pmod{12}$. \points{3}
+  \begin{solution}[1.05in]
+    The inverse of $7$ modulo $12$ is $7$, because $7^2=49\equiv1\pmod{12}$.
+    Multiplying by $7$ gives $x\equiv35\equiv11\pmod{12}$.
+  \end{solution}
+
+  \item Find the inverse of $17$ modulo $43$ using the Euclidean algorithm.
+  Check your answer. \points{5}
+  \begin{solution}[1.65in]
+    \[
+      43=2\cdot17+9,\quad17=9+8,\quad9=8+1.
+    \]
+    Hence
+    \[
+      1=9-8=2\cdot9-17=2(43-2\cdot17)-17=2\cdot43-5\cdot17.
+    \]
+    Therefore $17^{-1}\equiv-5\equiv38\pmod{43}$. Indeed,
+    $17\cdot38=646=15\cdot43+1$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{The Chinese remainder theorem}
+\begin{enumerate}
+  \item Solve $x\equiv2\pmod3$ and $x\equiv3\pmod5$. Give the complete congruence
+  class. \points{3}
+  \begin{solution}[1.05in]
+    The numbers congruent to $3$ modulo $5$ are $3,8,13,\ldots$; among them,
+    $8\equiv2\pmod3$. Thus $x\equiv8\pmod{15}$.
+  \end{solution}
+
+  \item Solve $x\equiv1\pmod4$ and $x\equiv3\pmod7$. \points{4}
+  \begin{solution}[1.3in]
+    Write $x=1+4k$. Then $1+4k\equiv3\pmod7$, so $4k\equiv2\pmod7$.
+    Since $4^{-1}\equiv2\pmod7$, $k\equiv4\pmod7$. Therefore
+    $x=1+4(4)=17\pmod{28}$.
+  \end{solution}
+
+  \item Explain immediately why $x\equiv2\pmod6$ and $x\equiv4\pmod9$ has no
+  solution. \points{3}
+  \begin{solution}[1.2in]
+    Reducing both congruences modulo $\gcd(6,9)=3$ gives contradictory demands:
+    the first says $x\equiv2\pmod3$, while the second says $x\equiv1\pmod3$.
+    Hence no integer can satisfy both.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Necklace coloring and Fermat's little theorem}
+\begin{enumerate}
+  \item Five beads arranged in a circle are colored with three labeled colors.
+  How many nonconstant color words are there, and how many rotation orbits do they
+  form? \points{4}
+  \begin{solution}[1.35in]
+    There are $3^5$ color words and $3$ constant words, so $3^5-3=240$ are
+    nonconstant. Because $5$ is prime, every nonconstant word has an orbit of size
+    $5$. Therefore there are $240/5=48$ nonconstant rotation orbits.
+  \end{solution}
+
+  \item Why does every nonconstant word of prime length $p$ have exactly $p$
+  distinct rotations? \points{3}
+  \begin{solution}[1.3in]
+    The orbit size divides $p$, so it is either $1$ or $p$. Orbit size $1$ means
+    rotation by one place fixes the word, forcing every bead to have the same color.
+    A nonconstant word cannot have size $1$, so its orbit has size $p$.
+  \end{solution}
+
+  \item Turn the orbit count into a congruence, then use it to compute
+  $2^{11}\pmod{11}$. \points{3}
+  \begin{solution}[1.2in]
+    With $a$ colors, the $a^p-a$ nonconstant words split into orbits of size $p$;
+    hence $p\mid(a^p-a)$, or $a^p\equiv a\pmod p$. Thus
+    $2^{11}\equiv2\pmod{11}$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Groups and the standard proof of Fermat's theorem}
+\begin{enumerate}
+  \item List the units modulo $10$ and the multiplicative inverse of each. \points{3}
+  \begin{solution}[1.05in]
+    The units are $\{1,3,7,9\}$. Their inverses modulo $10$ are
+    $1^{-1}=1$, $3^{-1}=7$, $7^{-1}=3$, and $9^{-1}=9$.
+  \end{solution}
+
+  \item List, in order, the elements generated by $3$ in the multiplicative group
+  modulo $7$. What is the order of $3$? \points{3}
+  \begin{solution}[1.2in]
+    The successive powers are
+    \[
+      3^0,3^1,\ldots,3^5\equiv1,3,2,6,4,5\pmod7,
+    \]
+    and $3^6\equiv1$. Thus $3$ generates all six nonzero classes and has order $6$.
+  \end{solution}
+
+  \item Let $p\nmid a$. Prove $a^{p-1}\equiv1\pmod p$ by multiplying the nonzero
+  residue classes by $a$. \points{4}
+  \begin{solution}[1.55in]
+    Multiplication by $a$ permutes $1,2,\ldots,p-1$ modulo $p$: if
+    $ai\equiv aj$, cancellation gives $i\equiv j$. Therefore
+    \[
+      a\cdot2a\cdots(p-1)a\equiv1\cdot2\cdots(p-1)\pmod p.
+    \]
+    Hence $a^{p-1}(p-1)!\equiv(p-1)!\pmod p$. No factor of $(p-1)!$ is divisible
+    by $p$, so it can be canceled, yielding $a^{p-1}\equiv1\pmod p$.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Binomial coefficients and divisibility}
+\begin{enumerate}
+  \item Compute $\binom83$ and explain its subset interpretation. \points{3}
+  \begin{solution}[1.05in]
+    \[
+      \binom83=\frac{8\cdot7\cdot6}{3\cdot2\cdot1}=56.
+    \]
+    It counts the $3$-element subsets of an $8$-element set.
+  \end{solution}
+
+  \item If $p$ is prime and $1\le k\le p-1$, prove that
+  $p\mid\binom pk$. \points{4}
+  \begin{solution}[1.5in]
+    From
+    \[
+      k\binom pk=p\binom{p-1}{k-1},
+    \]
+    the right side is divisible by $p$. Since $1\le k<p$, we have $p\nmid k$;
+    Euclid's lemma therefore implies $p\mid\binom pk$.
+  \end{solution}
+
+  \item Find the exponent of $2$ in $\binom{10}{4}$, either by factoring or by
+  counting binary carries. \points{3}
+  \begin{solution}[1.2in]
+    \[
+      \binom{10}{4}=210=2\cdot3\cdot5\cdot7,
+    \]
+    so the exponent is $1$. Equivalently, adding $4=0100_2$ and $6=0110_2$
+    produces exactly one carry, agreeing with Kummer's theorem.
+  \end{solution}
+\end{enumerate}
+
+\quizheading{Central binomial coefficients and primes}
+\begin{enumerate}
+  \item For $n=4$, verify
+  \[
+    \frac{4^n}{2n+1}\le \binom{2n}{n}\le4^n.
+  \]
+  \points{3}
+  \begin{solution}[1.15in]
+    Here $\binom84=70$, while $4^4/9=256/9\approx28.4$ and $4^4=256$.
+    Thus $256/9\le70\le256$.
+  \end{solution}
+
+  \item Show that every prime $p$ with $n<p\le2n$ divides $\binom{2n}{n}$.
+  \points{4}
+  \begin{solution}[1.45in]
+    In
+    \[
+      \binom{2n}{n}=\frac{(n+1)(n+2)\cdots(2n)}{n!},
+    \]
+    the prime $p$ appears in the numerator. Since $p>n$, it does not appear in
+    $n!$. Hence the exponent of $p$ in the binomial coefficient is positive, so
+    $p\mid\binom{2n}{n}$.
+  \end{solution}
+
+  \item Deduce the logarithmic estimate
+  \[
+    \sum_{n<p\le2n}\log p\le2n\log2,
+  \]
+  and say in one sentence why this connects binomial coefficients to prime counts.
+  \points{3}
+  \begin{solution}[1.45in]
+    The previous result shows
+    $\prod_{n<p\le2n}p\le\binom{2n}{n}$. Also
+    $\binom{2n}{n}\le4^n$. Taking logarithms gives
+    \[
+      \sum_{n<p\le2n}\log p\le\log\binom{2n}{n}\le n\log4=2n\log2.
+    \]
+    The product records primes in an interval, while the central binomial
+    coefficient gives a tractable size bound for that product.
+  \end{solution}
+\end{enumerate}
+
+\end{document}

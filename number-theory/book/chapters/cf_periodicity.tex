@@ -1,0 +1,350 @@
+\section{Periodic tails are fixed points}
+\label{sec:periodic-fixed-points}
+
+The matrix language answers a question that the nested notation conceals:
+what kind of number can a repeating continued fraction represent?
+Throughout this discussion the continued fractions are \emph{simple}:
+$a_0\in\Z$ and $a_n\ge1$ for $n\ge1$.
+
+\begin{definition}
+An infinite continued fraction is \emph{eventually periodic} if its digits
+repeat after a finite prefix. It is \emph{purely periodic} if repetition
+starts at the first digit:
+\[
+ [\overline{b_0,\ldots,b_{\ell-1}}]
+ =[b_0;b_1,\ldots,b_{\ell-1},b_0,b_1,\ldots].
+\]
+In a purely periodic simple continued fraction, every $b_i$ is positive,
+including $b_0$. Rational numbers have finite simple continued fractions;
+we do not call those eventually periodic here.
+\end{definition}
+
+\begin{definition}
+A \emph{quadratic irrational} (or quadratic surd) is an irrational real
+root of a quadratic polynomial with integer coefficients. Its other root
+is its \emph{conjugate}, written $x'$. Equivalently,
+\[
+ x=u+v\sqrt D,\qquad x'=u-v\sqrt D
+ \quad (u,v\in\Q,\ v\ne0),
+\]
+where $D$ is a positive nonsquare integer. Replacing $\sqrt D$ by
+$-\sqrt D$ respects addition, multiplication, and division by nonzero
+numbers. In particular, $(T_M(x))'=T_M(x')$ for rational $M$.
+\end{definition}
+
+\begin{lemma}[A nontrivial fixed point is quadratic]
+\label{lem:mobius-fixed-point}
+If an invertible rational matrix
+$M=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$ is not a scalar
+multiple of the identity and fixes an irrational number $t$ under its
+linear fractional action, then $t$ is a quadratic irrational.
+\end{lemma}
+\begin{proof}
+Multiplying $t=(at+b)/(ct+d)$ by its denominator gives
+\begin{equation}\label{eq:mobius-fixed-point}
+ ct^2+(d-a)t-b=0.
+\end{equation}
+The coefficients are not all zero: that would say $c=b=0$ and $d=a$,
+making $M$ scalar. Moreover, $c$ cannot be zero, since a nonzero linear
+polynomial with rational coefficients cannot vanish at an irrational
+number. Thus this is a genuine quadratic equation. Clear denominators to
+obtain integer coefficients.
+\end{proof}
+
+\begin{warningbox}
+The qualification \emph{nontrivial} matters. The identity transformation
+fixes every real number, so $t=T_I(t)$ by itself says nothing about $t$.
+For a period matrix there is no such problem: its lower-left entry is
+strictly positive.
+\end{warningbox}
+
+\begin{theorem}[Lagrange]
+\label{thm:lagrange-periodicity}
+A real number has an eventually periodic simple continued fraction if and
+only if it is a quadratic irrational.
+\end{theorem}
+
+\begin{proof}[Proof that periodicity implies a quadratic equation]
+First let $x=[\overline{b_0,\ldots,b_{\ell-1}}]$. Removing one complete
+period leaves the same infinite tail, so
+\[
+ x=T_N(x),\qquad
+ N=D(b_0)\cdots D(b_{\ell-1})
+   =\begin{pmatrix}A&B\\C&D_0\end{pmatrix}.
+\]
+Because every $b_i\ge1$, we have $B,C>0$. Also
+$\det N=(-1)^\ell$. The fixed-point equation is
+\[
+ Cx^2+(D_0-A)x-B=0.
+\]
+The alternating-convergent argument also applies to an infinite
+positive digit sequence: it gives a limit and an error at most
+$1/(q_kq_{k+1})$. That limit cannot be rational. Indeed, the
+convergents are in lowest terms and $q_k\to\infty$, so they are
+eventually distinct from any fixed rational $p/q$. Their distance
+from $p/q$ is then at least $1/(q q_k)$, contradicting the error
+bound once $q_{k+1}>q$. Thus $x$ is quadratic.
+
+Now allow a prefix:
+\[
+ y=[a_0;\ldots,a_{r-1},\overline{b_0,\ldots,b_{\ell-1}}]
+   =T_M(x),\qquad M=D(a_0)\cdots D(a_{r-1}).
+\]
+If the prefix is empty, take $M=I$. Since $T_M$ is invertible,
+substituting $x=T_{M^{-1}}(y)$ into $x=T_N(x)$ gives
+\begin{equation}\label{eq:prefix-conjugation}
+ \boxed{\ y=T_{MNM^{-1}}(y).\ }
+\end{equation}
+Both $M$ and $N$ have determinant $\pm1$, so $K=MNM^{-1}$ is an
+integer matrix. It is not scalar: if $K=\lambda I$, then
+$N=M^{-1}KM=\lambda I$, contrary to $C>0$.
+
+Finally, write $M=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$.
+The number $y$ is irrational. Otherwise the inverse formula
+$x=T_{M^{-1}}(y)$ would make $x$ rational. Its denominator cannot vanish
+at $y=T_M(x)$: direct substitution gives
+$a-cy=(ad-bc)/(cx+d)\ne0$.
+The fixed-point lemma applied to $K$ therefore gives a genuine quadratic
+equation for $y$ as well.
+\end{proof}
+
+\begin{bigidea}
+A repeating tail is a fixed point. Attaching a finite prefix
+\emph{conjugates the transformation that fixes it}. This is the missing
+algebraic step between a purely periodic tail and an eventually periodic
+number; it requires only matrix multiplication and inversion.
+\end{bigidea}
+
+\begin{example}[A prefix changes the equation, not its degree]
+Take
+\[
+ x=[\overline{1,2}],\qquad
+ N=D(1)D(2)=\begin{pmatrix}3&1\\2&1\end{pmatrix}.
+\]
+Then $2x^2-2x-1=0$, so $x=(1+\sqrt3)/2$. Prefix the digit $1$:
+\[
+ y=[1;\overline{1,2}]=1+\frac1x,\qquad
+ M=D(1)=\begin{pmatrix}1&1\\1&0\end{pmatrix}.
+\]
+The conjugated matrix is
+\[
+ MNM^{-1}
+ =\begin{pmatrix}1&1\\1&0\end{pmatrix}
+  \begin{pmatrix}3&1\\2&1\end{pmatrix}
+  \begin{pmatrix}0&1\\1&-1\end{pmatrix}
+ =\begin{pmatrix}2&3\\1&2\end{pmatrix}.
+\]
+Thus $y=(2y+3)/(y+2)$, giving $y^2=3$. Since $y>0$, $y=\sqrt3$.
+The same matrix will reappear as a generator of Pell solutions.
+\end{example}
+
+\section{Why every quadratic irrational repeats}
+\label{sec:quadratic-finite-states}
+
+We now prove the other direction of Lagrange's theorem. There are two
+tasks: find a bounded set of integer states, and show that the continued
+fraction eventually enters it. The conjugate supplies exactly the
+inequalities we need.
+
+\begin{definition}
+A quadratic irrational $x$ is \emph{reduced} if
+\[
+ x>1\qquad\text{and}\qquad -1<x'<0.
+\]
+\end{definition}
+
+\subsection*{Step 1: every quadratic irrational has a reduced tail}
+Write $x_0=x$, $a_n=\floor{x_n}$, and
+$x_{n+1}=1/(x_n-a_n)$. For $n\ge1$, $x_n>1$ and $a_n\ge1$.
+Conjugating the recurrence gives
+\[
+ x_{n+1}'=\frac1{x_n'-a_n}.
+\]
+Consequently, once $x_n'<0$ with $n\ge1$, the next conjugate belongs to
+$(-1,0)$. Every later complete quotient is reduced too.
+
+Why must a negative conjugate appear? Invert the matrix for the first
+$n$ digits and then conjugate. For $n\ge2$ this gives
+\[
+ x_n'=-\frac{q_{n-2}x'-p_{n-2}}{q_{n-1}x'-p_{n-1}}.
+\]
+The convergents $p_k/q_k$ tend to $x$, and $x'\ne x$. Hence, for all
+sufficiently large $k$, the numbers
+$x'-p_k/q_k$ have the same sign as $x'-x$.
+The numerator and denominator in the displayed ratio therefore have
+the same sign for large $n$, since the $q_k$ are positive.
+It follows that $x_n'<0$ eventually, as required.
+This argument also applies when the original $x$ is negative or less
+than $1$.
+
+\subsection*{Step 2: integer states evolve by an exact recurrence}
+Choose an equation $Ax^2+Bx+C=0$ with integer coefficients and $A\ne0$.
+After changing all three signs if necessary, the quadratic formula reads
+\[
+ x=\frac{-B+\sqrt D}{2A},
+ \qquad D=B^2-4AC>0.
+\]
+Here $D$ is a nonsquare integer; it need not be squarefree. Put
+$P_0=-B$ and $Q_0=2A$. Then $Q_0\ne0$ and
+$Q_0\divides D-P_0^2$, because $D-P_0^2=-4AC$.
+The sign change above is important: $Q_0$ may initially be negative.
+
+Suppose $x_n=(P_n+\sqrt D)/Q_n$ with integers $P_n,Q_n$ satisfying
+$Q_n\divides D-P_n^2$. Rationalizing $1/(x_n-a_n)$ yields
+\begin{equation}\label{eq:quadratic-state-recurrence}
+ \boxed{\quad
+ P_{n+1}=a_nQ_n-P_n,\qquad
+ Q_{n+1}=\frac{D-P_{n+1}^2}{Q_n}.
+ \quad}
+\end{equation}
+Indeed,
+\[
+ \frac1{x_n-a_n}
+ =\frac{Q_n}{\sqrt D-P_{n+1}}
+ =\frac{P_{n+1}+\sqrt D}{(D-P_{n+1}^2)/Q_n}.
+\]
+Since $P_{n+1}\congr-P_n\pmod{Q_n}$, the new $Q_{n+1}$ is an integer.
+It is nonzero because $D$ is not a square. The equality
+$D-P_{n+1}^2=Q_nQ_{n+1}$ supplies the divisibility condition for the
+next step. Thus the representation persists forever with the same $D$.
+
+\subsection*{Step 3: reduced states lie in a finite box}
+For a reduced complete quotient,
+\[
+ x_n=\frac{P_n+\sqrt D}{Q_n}>1,\qquad
+ -1<\frac{P_n-\sqrt D}{Q_n}<0.
+\]
+Their difference is $2\sqrt D/Q_n>1$, so
+$0<Q_n<2\sqrt D$. The conjugate inequalities then give
+$\sqrt D-Q_n<P_n<\sqrt D$. In particular,
+\begin{equation}\label{eq:reduced-state-bounds}
+ \boxed{\quad |P_n|<\sqrt D,\qquad 0<Q_n<2\sqrt D.\quad}
+\end{equation}
+Only finitely many integer pairs satisfy these bounds.
+By Step 1 all sufficiently late states lie in this box, and by Step 2
+each state determines its next state, including the digit
+$a_n=\floor{(P_n+\sqrt D)/Q_n}$.
+Two states must repeat. Every later state, and hence every later digit,
+then repeats with the same period. This completes the proof of
+Theorem~\ref{thm:lagrange-periodicity}.
+
+\begin{example}[The states for $\sqrt3$]
+Starting with $(P_0,Q_0)=(0,1)$ and $D=3$ gives
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$n$ & $P_n$ & $Q_n$ & $x_n$ & $a_n$\\
+\midrule
+$0$ & $0$ & $1$ & $\sqrt3$ & $1$\\
+$1$ & $1$ & $2$ & $(1+\sqrt3)/2$ & $1$\\
+$2$ & $1$ & $1$ & $1+\sqrt3$ & $2$\\
+$3$ & $1$ & $2$ & $(1+\sqrt3)/2$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The initial state is not reduced. The next two are reduced and form a
+cycle, giving $\sqrt3=[1;\overline{1,2}]$.
+\end{example}
+
+\section{Galois: when repetition starts immediately}
+\label{sec:galois}
+
+The fixed-point equation tells us that periodic continued fractions are
+quadratic. It does \emph{not} tell us which quadratic irrationals have
+no initial nonrepeating segment. That distinction is Galois's theorem.
+
+\begin{theorem}[Galois's pure-periodicity criterion]
+\label{thm:galois}
+The simple continued fraction of a quadratic irrational $x$ is purely
+periodic if and only if $x$ is reduced:
+\[
+ x>1\qquad\text{and}\qquad -1<x'<0.
+\]
+\end{theorem}
+\begin{proof}
+Suppose first that $x$ is purely periodic with period length $\ell$.
+The fixed-point argument shows that it is quadratic, and Step 1 above
+shows that all sufficiently late complete quotients are reduced.
+But $x_{k\ell}=x_0=x$ for every $k$. Taking $k$ large proves that
+$x$ itself is reduced.
+
+Conversely, suppose $x$ is reduced. All its complete quotients remain
+reduced, and the finite-state proof gives $x_i=x_j$ for some $i<j$.
+To conclude that the period starts at $0$, we need one more fact:
+\emph{a reduced complete quotient has at most one reduced predecessor}.
+
+Indeed, suppose the continued-fraction step sends a reduced $u$ to $z$,
+and let $a=\floor u$. Then $z=1/(u-a)$, so
+\[
+ -\frac1{z'}=a-u'.
+\]
+Since $-1<u'<0$, we have $a<-1/z'<a+1$. Therefore
+\begin{equation}\label{eq:reduced-predecessor}
+ \boxed{\quad
+ a=\floor{-1/z'},\qquad u=a+\frac1z.
+ \quad}
+\end{equation}
+Both the previous digit and the previous reduced number are determined
+by $z$. If $i>0$, equality $x_i=x_j$ therefore forces
+$x_{i-1}=x_{j-1}$. Repeating the argument gives $x_0=x_{j-i}$.
+The deterministic continued-fraction algorithm now repeats from its
+first step, proving pure periodicity.
+\end{proof}
+
+\begin{bigidea}
+Finitely many states give \emph{eventual} periodicity.
+Recovering the previous reduced state removes the possible initial
+segment and gives \emph{pure} periodicity. These are different steps.
+For instance, the finite map $0\mapsto1$, $1\mapsto1$ has an initial
+segment when started at $0$; finiteness alone does not exclude one.
+\end{bigidea}
+
+\begin{example}[Two inequalities, both necessary]
+The number $\sqrt2=[1;\overline2]$ is not reduced, because
+$-\sqrt2<-1$. It is eventually but not purely periodic.
+In contrast,
+\[
+ 1+\sqrt2=[\overline2],
+ \qquad \frac{1+\sqrt5}{2}=[\overline1]
+\]
+are reduced and purely periodic.
+The number $\sqrt2/2$ has conjugate in $(-1,0)$ but is less than $1$,
+so it is not purely periodic either.
+
+A displayed prefix does not necessarily represent a genuine preperiod:
+\[
+ [2;\overline{1,2}]=1+\sqrt3=[\overline{2,1}].
+\]
+Here the conjugate $1-\sqrt3$ lies in $(-1,0)$, so Galois correctly
+detects pure periodicity despite the first way of writing the digits.
+\end{example}
+
+\begin{corollary}[The conjugate reverses the period]
+If $x=[\overline{b_0,\ldots,b_{\ell-1}}]$, then
+\[
+ -\frac1{x'}=[\overline{b_{\ell-1},\ldots,b_0}].
+\]
+\end{corollary}
+\begin{proof}
+Each $D(b_i)$ is symmetric, so reversing the digits transposes their
+product $N=\begin{psmallmatrix}A&B\\C&D_0\end{psmallmatrix}$.
+Its fixed-point equation is $Cx^2+(D_0-A)x-B=0$. Substituting
+$x'=-1/z$ gives
+\[
+ Bz^2+(D_0-A)z-C=0,
+\]
+which is the fixed-point equation for $N^T$. Since $B,C>0$, this
+quadratic has exactly one positive root. Both $-1/x'$ and the
+reversed periodic continued fraction are that root.
+\end{proof}
+
+\begin{checkpoint}[title={Three names, three different conclusions}]
+\textbf{Legendre}: an exceptionally close rational approximation must
+be a convergent.
+\quad\textbf{Lagrange}: the numbers with eventually periodic simple
+continued fractions are exactly the quadratic irrationals.
+\quad\textbf{Galois}: among them, pure periodicity means exactly
+$x>1$ and $-1<x'<0$.
+The first direction of Lagrange is the fixed-point calculation;
+Galois's additional content is the precise conjugate criterion.
+\end{checkpoint}

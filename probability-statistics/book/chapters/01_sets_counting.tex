@@ -1,0 +1,251 @@
+\chapter{The grammar of uncertainty}
+\chaptertag{Sets, permutations, combinations, and inclusion--exclusion}
+
+\begin{question}
+Before assigning probabilities, how do we describe precisely what could happen?
+\end{question}
+
+A \emph{sample space} is built from possible outcomes; an \emph{event} is a collection of outcomes. Set notation is therefore the grammar of probability.
+
+\section{Set operations}
+
+Let $\Omega$ be a universe of outcomes and $A,B\subseteq\Omega$. The union $A\cup B$ means ``$A$ or $B$ (or both),'' the intersection $A\cap B$ means ``both,'' and the complement $A^c$ means ``not $A$.'' The difference $A\setminus B$ contains outcomes in $A$ but not $B$.
+
+\begin{center}
+\begin{tikzpicture}[scale=.95]
+  \draw[rounded corners,thick,indigo] (-3,-1.6) rectangle (3,1.8);
+  \fill[mint!28] (-.9,.1) circle (1.25);
+  \fill[amber!32] (.9,.1) circle (1.25);
+  \draw[mint!90!black,thick] (-.9,.1) circle (1.25);
+  \draw[amber!85!black,thick] (.9,.1) circle (1.25);
+  \node at (-1.25,.25) {$A$};
+  \node at (1.25,.25) {$B$};
+  \node[above right] at (-3,1.8) {$\Omega$};
+  \node[below] at (0,-1.8) {Overlap represents $A\cap B$};
+\end{tikzpicture}
+\end{center}
+
+De Morgan's laws translate negated statements:
+\[
+(A\cup B)^c=A^c\cap B^c,
+\qquad
+(A\cap B)^c=A^c\cup B^c.
+\]
+
+\begin{warningbox}
+In everyday speech, ``or'' is sometimes exclusive. In probability, $A\cup B$ is inclusive unless explicitly stated otherwise.
+\end{warningbox}
+
+\section{Products and sequences}
+
+The Cartesian product $A\times B$ contains ordered pairs $(a,b)$. Repeated trials naturally live in product spaces. Three coin flips have sample space $\{H,T\}^3$, with eight ordered strings. Order matters: $HTT$ and $THT$ are different outcomes.
+
+\section{The multiplication principle}
+
+If a first choice has $m$ possibilities and, after \emph{each} first choice,
+a second choice has $n$ possibilities, there are $mn$ ordered outcomes.
+More generally, if the successive numbers of choices are $n_1,\ldots,n_k$,
+the number of outcomes is $n_1\cdots n_k$. The available choices may depend
+on earlier choices; their \emph{number} at each stage must be the stated one.
+If different first choices leave different numbers of continuations, count
+each branch and add its contributions instead.
+
+\begin{example}[Codes and officers]
+A four-digit code may begin with zero. If digits can repeat, there are
+$10^4$ codes. If digits must be distinct, the count is
+$10\cdot9\cdot8\cdot7=5040$. Assigning president, secretary, and treasurer
+from ten students similarly gives $10\cdot9\cdot8=720$ outcomes when no
+student holds two offices.
+\end{example}
+
+\section{Permutations and combinations}
+
+There are $n!=n(n-1)\cdots1$ orders of $n$ distinct objects, with $0!=1$.
+For $0\le k\le n$, an ordered selection of $k$ distinct objects from $n$
+has
+\[
+  (n)_k=n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}
+\]
+possibilities. This is sometimes written $P(n,k)$. An unordered selection
+of $k$ objects is a \emph{combination}. Every such selection has exactly
+$k!$ orderings, so
+\[
+  \binom nk=\frac{(n)_k}{k!}=\frac{n!}{k!(n-k)!}.
+\]
+In particular, $\binom n0=\binom nn=1$: there is one empty selection and
+one selection containing everything. We use $\binom nk=0$ when $k<0$ or
+$k>n$ and $n$ is a nonnegative integer.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}XXl@{}}
+\toprule
+Experiment & What distinguishes outcomes? & Count \\
+\midrule
+$k$ draws with replacement & Order matters; repetition allowed & $n^k$ \\
+$k$ draws without replacement & Order matters; objects distinct & $(n)_k$ \\
+A $k$-element subset & Order ignored; no repetition & $\binom nk$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{example}[A committee is not a list of officers]
+From ten students there are $\binom{10}{3}=120$ three-person committees,
+but $720$ assignments to three distinct offices. A committee with one
+designated chair has $3\binom{10}{3}=360$ possibilities: the two other
+members have no distinct roles. The question about order must be answered
+before choosing a formula.
+\end{example}
+
+\begin{proposition}[Arrangements with repeated objects]
+If $n$ objects consist of $r$ types with multiplicities
+$n_1,\ldots,n_r$, where $n_1+\cdots+n_r=n$, the number of distinct
+arrangements is $n!/(n_1!\cdots n_r!)$.
+\end{proposition}
+\begin{proof}
+Temporarily distinguish objects of the same type with labels. There are
+$n!$ arrangements of the labeled objects. Each arrangement after erasing
+the labels comes from exactly $n_1!\cdots n_r!$ labeled arrangements.
+Dividing by that constant multiplicity gives the result.
+\end{proof}
+For example, $\texttt{BANANA}$ has $6!/(3!2!)=60$ distinct arrangements.
+
+\section{Binomial coefficients count in two directions}
+
+\begin{proposition}[Symmetry and Pascal's identity]
+For $0\le k\le n$,
+\[
+\binom nk=\binom n{n-k},
+\]
+and, for $n\ge1$,
+\[
+\binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}.
+\]
+\end{proposition}
+\begin{proof}
+A $k$-element subset determines its $(n-k)$-element complement, proving
+symmetry. For Pascal's identity, single out one object. A $k$-element
+subset either contains it, leaving $k-1$ choices from the other $n-1$
+objects, or omits it, leaving $k$ choices from those objects. These two
+cases are disjoint and exhaustive.
+\end{proof}
+
+\begin{theorem}[Binomial theorem]
+For a nonnegative integer $n$,
+\[
+  (x+y)^n=\sum_{k=0}^n\binom nk x^{n-k}y^k.
+\]
+\end{theorem}
+\begin{proof}
+Expand the product of $n$ copies of $(x+y)$. To produce $x^{n-k}y^k$,
+choose the $k$ factors that supply $y$; all the others supply $x$.
+There are $\binom nk$ choices.
+\end{proof}
+
+Taking $x=y=1$ gives $\sum_{k=0}^n\binom nk=2^n$. This also counts all
+subsets in two ways: by their sizes, or by making an include/exclude
+choice for each object. Taking $x=1,y=-1$ gives, for $n\ge1$,
+$\sum_{k=0}^n(-1)^k\binom nk=0$. This alternating sum is the engine
+behind the general inclusion--exclusion formula.
+
+\section{Inclusion--exclusion for finite sets}
+
+\begin{proposition}[Two and three sets]
+For finite sets $A,B,C$,
+\begin{align*}
+|A\cup B|&=|A|+|B|-|A\cap B|,\\
+|A\cup B\cup C|&=|A|+|B|+|C|\\
+&\quad-|A\cap B|-|A\cap C|-|B\cap C|
+  +|A\cap B\cap C|.
+\end{align*}
+\end{proposition}
+
+For two sets, subtraction repairs the double count of the overlap. With
+three sets, an element in all three is added three times and subtracted
+three times, so it must be added back once. An element in exactly two
+sets contributes $2-1=1$; an element in exactly one contributes $1$.
+An element outside the union contributes zero. This proves the formulas.
+
+\begin{warningbox}
+$A\cap B$ includes the triple intersection $A\cap B\cap C$.
+It does not mean ``in $A$ and $B$ but outside $C$.'' Confusing these
+two regions produces incorrect inclusion--exclusion calculations.
+\end{warningbox}
+
+\begin{example}[Three activities]
+Among 100 students, 39 attend activity $A$, 29 attend $B$, and 25 attend
+$C$. The pairwise intersection counts are 13, 11, and 9, respectively,
+and 5 students attend all three. Thus the union has
+$39+29+25-13-11-9+5=65$ students; 35 attend none.
+The exactly-two count is $(13-5)+(11-5)+(9-5)=18$.
+The exactly-one count is $65-18-5=42$.
+\end{example}
+
+\begin{theorem}[Finite inclusion--exclusion]
+For finite sets $A_1,\ldots,A_r$,
+\[
+\left|\bigcup_{i=1}^r A_i\right|
+=\sum_{\varnothing\ne J\subseteq\{1,\ldots,r\}}
+ (-1)^{|J|+1}\left|\bigcap_{j\in J}A_j\right|.
+\]
+Equivalently: add the single-set sizes, subtract the pairwise
+intersection sizes, add the triple-intersection sizes, and continue
+with alternating signs through the intersection of all $r$ sets.
+\end{theorem}
+\begin{proof}
+An element belonging to exactly $t\ge1$ sets occurs in
+$\binom tk$ of the $k$-fold intersections. Its total contribution is
+\[
+\sum_{k=1}^t(-1)^{k+1}\binom tk=1-(1-1)^t=1.
+\]
+An element in no set contributes zero. Thus each element of the union
+is counted exactly once.
+\end{proof}
+
+\begin{example}[Using all three symbols]
+There are $3^4$ strings of length four over $\{A,B,C\}$.
+To count those using every symbol, subtract strings missing at least
+one symbol. Each missing-symbol event has $2^4$ strings; each pair of
+missing-symbol events has one string; no length-four string misses
+all three symbols. Therefore the required count is
+\[
+3^4-3\cdot2^4+3\cdot1^4=36.
+\]
+These are counts; turning them into probabilities requires a specified
+probability model.
+\end{example}
+
+\begin{example}
+A five-card poker hand is an unordered choice from 52 cards, so there are $\binom{52}{5}$ hands. Exactly two aces means choosing two of four aces and three of the remaining 48 cards:
+\[
+\binom42\binom{48}{3}.
+\]
+\end{example}
+
+\begin{labbox}
+Use the website's counting lab to compare committees, ordered selections,
+and repeated draws. Then use the inclusion--exclusion lab to vary the eight
+disjoint regions of three sets, including the region outside the union.
+Recover the marginal and intersection totals from those regions. With
+all seven marginal/intersection totals specified, the seven interior
+region counts are determined; knowing the universe size also determines
+the outside region. If totals are omitted, the remaining data need not
+determine a unique diagram.
+\end{labbox}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Write $(A\cap B^c)\cup(A^c\cap B)$ in words. \exlevel{Fluency}
+  \item Verify both De Morgan laws using membership tables. \exlevel{Reasoning}
+  \item How many eight-character strings contain exactly three letters and five digits? \exlevel{Fluency}
+  \item Count five-card hands containing at least one ace. \exlevel{Reasoning}
+  \item Prove $\binom nk=\binom n{n-k}$ by a counting argument. \exlevel{Reasoning}
+  \item Among integers from 1 to 1,000, how many are divisible by 2 or 3 or 5? \exlevel{Reasoning}
+  \item Design two different sampling procedures that produce the same set of possible outcomes but not the same probabilities. \exlevel{Exploration}
+  \item From nine students, count a four-person committee, a list of four distinct officers, and a four-person committee with one chair. \exlevel{Fluency}
+  \item Count the distinct arrangements of the letters in $\texttt{LEVEL}$. Explain the divisor in your formula. \exlevel{Fluency}
+  \item Prove Pascal's identity by deciding whether a distinguished object is selected. \exlevel{Reasoning}
+  \item Find the coefficient of $x^2$ in $(1+3x)^5$, and explain its binomial coefficient. \exlevel{Fluency}
+  \item Count length-five strings over $\{A,B,C\}$ that use all three symbols. \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}

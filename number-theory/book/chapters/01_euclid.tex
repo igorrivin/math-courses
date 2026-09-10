@@ -1,0 +1,116 @@
+\chapter{The algorithm hidden in a rectangle}
+\chaptertag{Divisibility, gcd, and B\'ezout's identity}
+
+\begin{question}
+What is the largest square tile that exactly covers a $391\times299$ rectangle?
+\end{question}
+
+If a square has integer side length $d$, then it fits precisely only when $d\divides391$ and $d\divides299$. We are looking for the \emph{greatest common divisor}, written $\gcd(391,299)$.
+
+\section{Divisibility as structure}
+
+For integers $a,b$, we say $a\divides b$ when $b=ak$ for some $k\in\Z$. Divisibility is not an operation like division; it is a yes-or-no relation.
+
+\begin{proposition}[Division algorithm]
+If $a\in\Z$ and $b>0$, there are unique integers $q,r$ such that
+\[
+a=bq+r,\qquad 0\le r<b.
+\]
+\end{proposition}
+
+The quotient $q$ says how many full copies of $b$ fit inside $a$; the remainder $r$ is what is left. The crucial observation is
+\[
+\gcd(a,b)=\gcd(b,r)\quad\text{whenever }a=bq+r.
+\]
+Indeed, an integer divides both $a$ and $b$ exactly when it divides both $b$ and $a-bq=r$.
+
+\section{Euclid's algorithm}
+
+Repeat the division algorithm until the remainder is zero:
+\begin{align*}
+391&=1\cdot299+92,\\
+299&=3\cdot92+23,\\
+92&=4\cdot23+0.
+\end{align*}
+The last nonzero remainder is $23$, so $\gcd(391,299)=23$.
+
+\begin{center}
+\begin{tikzpicture}[scale=.72]
+  \fill[navy!7] (0,0) rectangle (7.82,5.98);
+  \draw[navy,thick] (0,0) rectangle (7.82,5.98);
+  \fill[teal!25] (0,0) rectangle (5.98,5.98);
+  \draw[teal,thick] (0,0) rectangle (5.98,5.98);
+  \foreach \y in {0,1.84,3.68}{
+    \fill[gold!35] (5.98,\y) rectangle (7.82,{\y+1.84});
+    \draw[gold!80!black] (5.98,\y) rectangle (7.82,{\y+1.84});
+  }
+  \fill[coral!30] (5.98,5.52) rectangle (6.44,5.98);
+  \foreach \x in {6.44,6.90,7.36}{
+    \fill[coral!30] (\x,5.52) rectangle ({\x+.46},5.98);
+    \draw[coral] (\x,5.52) rectangle ({\x+.46},5.98);
+  }
+  \draw[coral] (5.98,5.52) rectangle (6.44,5.98);
+  \node[below] at (3.91,0) {$391$};
+  \node[rotate=90,above] at (0,2.99) {$299$};
+  \node[teal!70!black] at (2.99,2.99) {$299\times299$};
+  \node[gold!60!black,rotate=90] at (6.9,2.76) {three $92\times92$ squares};
+  \node[coral!80!black,above] at (6.9,5.98) {four $23\times23$ squares};
+\end{tikzpicture}
+
+\small The same remainders appear when successively removing the largest possible squares.
+\end{center}
+
+\begin{theorem}[Euclidean algorithm]
+For positive integers $a\ge b$, repeated division terminates, and the last nonzero remainder is $\gcd(a,b)$.
+\end{theorem}
+
+\begin{proof}
+Each remainder is a nonnegative integer smaller than the previous positive remainder, so the process must stop. Replacing $(a,b)$ by $(b,r)$ does not change the common divisors. At the last line $r_{k-1}=q r_k$, hence the common divisors are precisely the divisors of $r_k$.
+\end{proof}
+
+\section{Running the movie backward}
+
+The remainders do more than find the gcd. Reverse the equations:
+\begin{align*}
+23&=299-3\cdot92\\
+  &=299-3(391-299)\\
+  &=4\cdot299-3\cdot391.
+\end{align*}
+Thus $23$ is an integer linear combination of $391$ and $299$.
+
+\begin{theorem}[B\'ezout's identity]
+For integers $a,b$, not both zero, there are integers $x,y$ such that
+\[
+ax+by=\gcd(a,b).
+\]
+Moreover, $\gcd(a,b)$ is the smallest positive integer of the form $ax+by$.
+\end{theorem}
+
+\begin{corollary}
+The equation $ax+by=c$ has integer solutions exactly when $\gcd(a,b)\divides c$.
+\end{corollary}
+
+\begin{proof}
+If $ax+by=c$, every common divisor of $a,b$ divides $c$. Conversely, multiply a B\'ezout identity for the gcd by $c/\gcd(a,b)$.
+\end{proof}
+
+\begin{warningbox}
+The gcd is positive, but B\'ezout coefficients need not be. Restricting $x,y$ to positive integers makes the statement false.
+\end{warningbox}
+
+\begin{labbox}
+Choose two 3-digit integers. Make a two-column record: Euclid's divisions on the left, backward substitutions on the right. How large can the coefficients become? The optional Sage notebook automates the arithmetic but also asks you to certify its output by substitution.
+\end{labbox}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Compute $\gcd(2024,748)$ by Euclid's algorithm. \exlevel{Fluency}
+  \item Express $\gcd(527,341)$ in the form $527x+341y$. \exlevel{Fluency}
+  \item Prove: if $d\divides a$ and $d\divides b$, then $d\divides (ma+nb)$ for all $m,n\in\Z$. \exlevel{Reasoning}
+  \item Find all integer solutions to $35x+22y=1$. Describe how one solution generates all the others. \exlevel{Reasoning}
+  \item Show that $\gcd(a,b)=\gcd(a+kb,b)$ for every $k\in\Z$. Explain why this is the engine of Euclid's algorithm. \exlevel{Reasoning}
+  \item A rectangle has integer sides $a>b$. Repeatedly remove the largest square available. Prove that the final square has side $\gcd(a,b)$. \exlevel{Exploration}
+  \item Consecutive Fibonacci numbers make Euclid's algorithm take many steps. Test this claim, then prove $\gcd(F_{n+1},F_n)=1$. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}
+

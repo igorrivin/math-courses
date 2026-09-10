@@ -1,0 +1,388 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.78in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb,booktabs,array,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,needspace,hyperref}
+\definecolor{ink}{HTML}{17243A}
+\definecolor{indigo}{HTML}{293D70}
+\definecolor{mint}{HTML}{2A8C82}
+\definecolor{muted}{HTML}{647084}
+\definecolor{mist}{HTML}{EAF5F2}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=mint,urlcolor=mint,
+ pdfauthor={Igor Rivin},pdftitle={Probability Problem Set 2: Counting, Events, and Shared Birthdays}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\pts}[1]{\hfill\textcolor{muted}{\small[#1 points]}}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}\mbox{\textcolor{muted}{\small(#1)}}}
+\newcommand{\edition}{\ifsolutions Instructor solutions\else Student handout\fi}
+\newcounter{problem}
+\newcommand{\problem}[2]{\par\addvspace{11pt}\Needspace{7\baselineskip}\stepcounter{problem}{\bfseries\color{indigo}\theproblem.\ #1}\pts{#2}\par\nobreak}
+\newcommand{\topic}[1]{\par\addvspace{9pt}\Needspace{10\baselineskip}{\large\bfseries\color{mint}#1}\par\nobreak}
+\newcommand{\studentbreak}{\ifsolutions\else\newpage\fi}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Problem Set 2}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\small\color{mint}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\NewDocumentEnvironment{solution}{+b}{\ifsolutions
+ \begin{tcolorbox}[enhanced,breakable,colback=mist!45,colframe=mint!45,
+  boxrule=.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=7pt,after skip=7pt,title={Solution},
+  title after break={Solution (continued)},colbacktitle=mist,coltitle=mint,
+  fonttitle=\small\bfseries]\small #1\end{tcolorbox}\fi}{}
+
+\begin{document}
+{\LARGE\bfseries\color{indigo}Problem Set 2}\hfill{\small\color{mint}\edition}\\[4pt]
+{\large Counting, events, and shared birthdays}\\[4pt]
+{\small\color{muted}100 points + 10 optional challenge points}\par
+\ifsolutions
+\medskip
+\textbf{Teaching note.} This assignment revisits the probability spaces from
+week two and connects them to counting and inclusion--exclusion. Allow
+approximately three hours, excluding the challenge. Subpart scores appear
+in parentheses. Give credit for any correct model and reasoning; distinguish
+a wrong model from an arithmetic error carried through correctly.
+\else
+\medskip
+\textbf{Name:}\ \rule{.46\linewidth}{.4pt}\hfill
+\textbf{Due:}\ \rule{.20\linewidth}{.4pt}
+\fi
+
+\medskip
+\textbf{Instructions.} Identify the outcomes, their probabilities, and the
+event being counted. State whether order matters and repetition is allowed.
+Give exact answers except where decimal approximations are requested.
+A calculator or short program may be used for Problem 7. Show enough work
+that the model and the calculation can be checked.
+
+\topic{I. Probability spaces: outcomes need weights}
+
+\problem{A weighted finite space}{12}
+Let $\Omega=\{1,2,3,4,5,6\}$, let $\mathcal F=2^\Omega$ be all subsets,
+and suppose $\P(\{i\})=ci$ for $i=1,\ldots,6$.
+\begin{enumerate}
+ \item Find $c$. Explain why these masses define a probability space when
+ $\P(E)$ is the sum of the masses in $E$. \partpts{4}
+ \item Let $A=\{2,4,6\}$ and $B=\{4,5,6\}$. Find $\P(A)$, $\P(B)$,
+ $\P(A\cap B)$, and $\P(A\cup B)$. Check the last answer by
+ inclusion--exclusion. \partpts{4}
+ \item A student says $\P(A)=|A|/|\Omega|=1/2$. Explain the error and
+ state the extra assumption that would make this counting rule valid. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item The total mass is $c(1+2+3+4+5+6)=21c$, so $c=1/21$.
+ All masses are nonnegative and sum to one. Summing them over disjoint
+ events is additive because no outcome is counted twice. On a finite
+ space only finitely many members of a disjoint family are nonempty,
+ so this also verifies countable additivity. The collection of all
+ subsets is closed under complements and countable unions.
+ \item Summing weights gives
+ \[
+ \P(A)=\frac{12}{21}=\frac47,\quad
+ \P(B)=\frac{15}{21}=\frac57,\quad
+ \P(A\cap B)=\frac{10}{21},\quad
+ \P(A\cup B)=\frac{17}{21}.
+ \]
+ The overlap check is $(12+15-10)/21=17/21$.
+ \item The six outcomes are not equally likely: outcome $i$ has mass
+ $i/21$. A set's probability is the sum of its masses, not its relative
+ cardinality. The rule $\P(A)=|A|/|\Omega|$ is valid when the model
+ assigns equal probability to every individual outcome.
+\end{enumerate}
+\end{solution}
+
+\problem{The same recorded outcomes, two experiments}{10}
+Experiment I flips two fair coins independently and records the number
+$K$ of heads. Experiment II chooses an integer uniformly from $\{0,1,2\}$.
+\begin{enumerate}
+ \item Give the ordered sample space for Experiment I and the probability
+ of each ordered outcome. Then give the probabilities of the recorded
+ values $K=0,1,2$. \partpts{4}
+ \item Find the probability of recording at least one in each experiment.
+ Why does the common recorded sample space $\{0,1,2\}$ not force the
+ two answers to agree? \partpts{3}
+ \item After Experiment II records $k$, choose uniformly among the
+ two-coin strings with exactly $k$ heads. Find the probabilities of
+ $HH,HT,TH,TT$. Does this reproduce Experiment I? \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item The ordered space is $\{HH,HT,TH,TT\}$, with all subsets as
+ events and mass $1/4$ per outcome. Recording $K$ gives probabilities
+ $1/4,1/2,1/4$ on $0,1,2$, respectively: two strings yield one head.
+ \item Experiment I gives $3/4$, while Experiment II gives $2/3$.
+ A sample space specifies possible outcomes, not their weights.
+ \item Experiment II assigns probability $1/3$ to $k=0$ and $k=2$,
+ producing $TT$ and $HH$, respectively. The probability $1/3$ of
+ $k=1$ is split equally between $HT$ and $TH$. Thus the four probabilities
+ in the requested order are $1/3,1/6,1/6,1/3$. They are not all $1/4$,
+ so the resulting experiment is different.
+\end{enumerate}
+\end{solution}
+
+\topic{II. Permutations and binomial coefficients}
+
+\problem{What distinguishes two selections?}{12}
+Explain the counting rule in each part.
+\begin{enumerate}
+ \item Choose a three-person committee from eight students. \partpts{3}
+ \item Assign president, secretary, and treasurer from those eight
+ students, with no person holding two offices. \partpts{3}
+ \item Choose a three-person committee from those students and designate
+ one member as chair; the other two have no distinct roles. \partpts{3}
+ \item Arrange the seven letters of $\texttt{BALLOON}$, treating repeated
+ copies of the same letter as indistinguishable. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Order is ignored and repetition is forbidden, so the count is
+ $\binom83=56$.
+ \item The offices distinguish the three positions. There are
+ $8\cdot7\cdot6=336$ ordered selections without repetition.
+ \item Choose the committee and then its chair: $3\binom83=168$.
+ Equivalently, choose the chair first and the other two members next:
+ $8\binom72=168$.
+ \item There are two L's and two O's. Labeling them temporarily gives
+ $7!$ arrangements, but each unlabeled arrangement occurs $2!2!$ times.
+ The required count is $7!/(2!2!)=1260$.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\problem{Why binomial coefficients appear}{12}
+\begin{enumerate}
+ \item Prove Pascal's identity
+ $\binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}$ for $1\le k\le n-1$
+ by a counting argument, not by manipulating factorials. \partpts{4}
+ \item Prove $\sum_{k=0}^n\binom nk=2^n$ by counting all subsets of an
+ $n$-element set in two ways. \partpts{4}
+ \item Find the coefficient of $x^3$ in $(1+2x)^6$. Explain both the
+ binomial coefficient and the power of $2$ in your answer. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Distinguish one of the $n$ objects. Subsets of size $k$ that contain
+ it are obtained by choosing $k-1$ of the other $n-1$ objects. Subsets
+ that omit it are obtained by choosing $k$ of those $n-1$ objects.
+ The two disjoint cases exhaust all $k$-element subsets, proving the identity.
+ \item Classifying subsets by size gives the sum on the left.
+ Independently choosing whether to include each of the $n$ objects gives
+ $2^n$ subsets, including the empty set. Both expressions count the same set.
+ \item Choose which three of the six factors contribute $2x$;
+ the other factors contribute $1$. Each such choice contributes
+ $2^3x^3$. Hence the coefficient is $\binom63 2^3=20\cdot8=160$.
+\end{enumerate}
+\end{solution}
+
+\topic{III. Inclusion--exclusion: cardinalities and probabilities}
+
+\problem{Overlaps among divisibility conditions}{12}
+Let $A,B,C$ be the integers from $1$ through $300$ divisible by $4,6,10$,
+respectively. Here ``through 300'' includes both endpoints.
+\begin{enumerate}
+ \item Find the sizes of the three sets, their three pairwise
+ intersections, and their triple intersection. \partpts{4}
+ \item How many integers are divisible by at least one of $4,6,10$?
+ How many are divisible by none? \partpts{4}
+ \item How many are divisible by exactly two of $4,6,10$? Explain how
+ you remove the triple intersection from the pairwise counts. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Divisibility by both $r$ and $s$ means divisibility by their lcm.
+ \begin{center}\small
+ \begin{tabular}{@{}c*{7}{c}@{}}
+ \toprule
+ Set & $A$ & $B$ & $C$ & $A\cap B$ & $A\cap C$ & $B\cap C$ & $A\cap B\cap C$\\
+ \midrule
+ Required divisor & 4 & 6 & 10 & 12 & 20 & 30 & 60\\
+ Count & 75 & 50 & 30 & 25 & 15 & 10 & 5\\
+ \bottomrule
+ \end{tabular}\end{center}
+ Each count is $\lfloor300/d\rfloor$ for the indicated divisor $d$.
+ \item The union has $75+50+30-25-15-10+5=110$ elements.
+ Its complement has $300-110=190$.
+ \item The pairwise counts total $25+15+10=50$.
+ An element in exactly two sets contributes once; one in all three
+ contributes three times. To keep only exactly-two elements, subtract
+ $3\cdot5$, giving $50-15=35$.
+\end{enumerate}
+\end{solution}
+
+\problem{Can these event probabilities occur?}{14}
+Three events have the following probabilities; no independence is assumed.
+\begin{center}
+\begin{tabular}{@{}c*{7}{c}@{}}
+\toprule
+Event & $A$ & $B$ & $C$ & $A\cap B$ & $A\cap C$ & $B\cap C$ & $A\cap B\cap C$\\
+\midrule
+Probability & $10/20$ & $9/20$ & $8/20$ & $4/20$ & $3/20$ & $2/20$ & $1/20$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{enumerate}
+ \item Find the probability of at least one event and the probability
+ of none. \partpts{4}
+ \item Find the probability of exactly one event. \partpts{4}
+ \item Verify that the data define a possible model by giving
+ nonnegative probability masses for the eight disjoint membership regions
+ and checking that they sum to one. \partpts{6}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Inclusion--exclusion gives
+ $\P(A\cup B\cup C)=(10+9+8-4-3-2+1)/20=19/20$.
+ The probability of none is $1/20$.
+ \item The A-only mass is $(10-4-3+1)/20=4/20$.
+ Similarly the B-only and C-only masses are each $4/20$.
+ These regions are disjoint, so the exactly-one probability is
+ $12/20=3/5$.
+ \item The region masses are
+ \begin{center}
+ \begin{tabular}{@{}lclc@{}}
+ \toprule
+ Region & Mass & Region & Mass\\
+ \midrule
+ A only & $4/20$ & A and B only & $3/20$\\
+ B only & $4/20$ & A and C only & $2/20$\\
+ C only & $4/20$ & B and C only & $1/20$\\
+ All three & $1/20$ & None & $1/20$\\
+ \bottomrule
+ \end{tabular}
+ \end{center}
+ They are nonnegative and sum to $20/20$. Take these eight regions as
+ the eight outcomes of a finite probability space, with all subsets
+ measurable and these masses. Define $A,B,C$ by the corresponding
+ membership labels. Their marginal and intersection probabilities are
+ exactly the supplied values, so the data are realizable.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{IV. Birthday collisions}
+
+\problem{A classroom birthday model}{16}
+Assume $n$ labeled people have independent birthdays, each uniform over
+365 days. Ignore leap days.
+\begin{enumerate}
+ \item Specify $\Omega,\mathcal F$, and the probability of each individual
+ outcome. For $1\le n\le365$, count the outcomes with all birthdays
+ distinct. \partpts{4}
+ \item Derive an exact formula for the probability $q(n)$ of at least
+ one shared birthday. What is the answer when $n>365$? \partpts{4}
+ \item Compute $q(22)$ and $q(23)$ to four decimal places. Explain why
+ these values establish the smallest class size for which a collision
+ is more likely than not. \partpts{4}
+ \item For $n=23$, compute the probability that someone else shares
+ one designated member's birthday. Explain why it is much smaller
+ than $q(23)$. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item $\Omega=\{1,\ldots,365\}^n$, $\mathcal F=2^\Omega$, and
+ each ordered list has probability $365^{-n}$ by the independent uniform
+ model. For all birthdays to be distinct, there are
+ $365\cdot364\cdots(365-n+1)=(365)_n$ lists.
+ \item Divide the no-collision count by $365^n$ and take the complement:
+ \[
+ q(n)=1-\frac{(365)_n}{365^n}
+     =1-\prod_{j=0}^{n-1}\left(1-\frac j{365}\right)
+ \quad(1\le n\le365).
+ \]
+ For $n>365$, at least two people must share a day, so $q(n)=1$.
+ \item $q(22)\approx0.4757$ and $q(23)\approx0.5073$.
+ Adding a person cannot remove an existing match, so $q(n)$ is
+ nondecreasing. Consequently no class with at most 22 people has
+ probability above $1/2$, while a class of 23 does.
+ \item Conditional on the designated person's day, each of the 22
+ others avoids it with probability $364/365$, independently. This
+ conditional probability is the same for every possible designated day,
+ so the unconditional match probability is also
+ \[
+ 1-(364/365)^{22}\approx0.0586.
+ \]
+ There are just 22 comparisons with that person, whereas a match
+ anywhere in the group can involve any of $\binom{23}{2}=253$ pairs.
+ The pair events overlap, so the larger number of pairs explains the
+ contrast without implying that their probabilities may simply be added.
+\end{enumerate}
+\end{solution}
+
+\problem{Three people: inclusion--exclusion checks the product}{12}
+In a toy calendar of ten equally likely days, three labeled people have
+independent birthdays. Let $E_{ij}$ be the event that people $i$ and $j$
+share a birthday.
+\begin{enumerate}
+ \item Find $\P(E_{12})$, the probability of each pairwise intersection
+ among $E_{12},E_{13},E_{23}$, and the probability of their triple
+ intersection. Explain the event described by an intersection. \partpts{5}
+ \item Use inclusion--exclusion to find the probability of at least
+ one match. Check it by counting the complement. \partpts{4}
+ \item A student computes the no-match probability as $(9/10)^3$ by
+ multiplying the three pairwise no-match probabilities. Explain why
+ that multiplication is not justified. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item A single pair matches with probability $1/10$.
+ Any two pair-match events force all three birthdays to agree;
+ the triple intersection describes that same event.
+ There are 10 all-equal lists among $10^3$ equally likely lists,
+ so every pairwise intersection and the triple intersection have
+ probability $10/10^3=1/100$.
+ \item Inclusion--exclusion gives
+ \[
+ 3\cdot\frac1{10}-3\cdot\frac1{100}+\frac1{100}
+ =\frac7{25}=.28.
+ \]
+ The complement check is $1-(10\cdot9\cdot8)/10^3=1-.72=.28$.
+ \item Multiplication would require mutual independence of the
+ no-match events. They are not mutually independent: their joint
+ probability is $.72$, while the proposed product is $.729$.
+ Structurally, after people 1 and 2 have different birthdays, avoiding
+ both requires person 3 to avoid two distinct days. Individual birthdays
+ are independent, but these overlapping comparisons are not.
+\end{enumerate}
+\end{solution}
+
+\par\addvspace{12pt}\Needspace{8\baselineskip}
+{\bfseries\color{mint}Optional challenge: nobody gets their own hat}\pts{10 extra}
+
+The $n$ labeled hats of $n$ people are returned as a uniformly random
+permutation. Use inclusion--exclusion to show that the probability that
+no one gets their own hat is
+\[
+ \sum_{k=0}^n\frac{(-1)^k}{k!}.
+\]
+Explain the count for an intersection of $k$ specified correct-hat events,
+and evaluate the probability when $n=4$.
+\begin{solution}
+Let $A_i$ mean that person $i$ receives their own hat. An intersection
+of $k$ specified events fixes those $k$ hats; the other $n-k$ hats may
+be permuted in $(n-k)!$ ways. There are $\binom nk$ ways to specify
+the fixed hats. Inclusion--exclusion for the complement of the union
+therefore gives the no-fixed-point count
+\[
+ \sum_{k=0}^n(-1)^k\binom nk(n-k)!
+ =n!\sum_{k=0}^n\frac{(-1)^k}{k!}.
+\]
+Divide by the $n!$ equally likely permutations. At $n=4$,
+$1-1+1/2-1/6+1/24=3/8$; equivalently, 9 of the 24 permutations
+have no correct hats.
+
+\textbf{Suggested credit:} intersection counts (4), inclusion--exclusion
+and normalization (4), evaluation at $n=4$ (2).
+\end{solution}
+\end{document}

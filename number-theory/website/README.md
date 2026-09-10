@@ -9,7 +9,7 @@ The September 10, 2026 revision expands Chapter 3 of the downloadable book
 with linear fractional transformations, matrix composition, prefix
 conjugation, complete elementary Lagrange and Galois proofs, period reversal,
 and seven exercises with solutions. The continued-fraction lab introduces the
-same ideas. The editable book lives in the sibling number_theory_course folder;
+same ideas. The editable book lives in the sibling ../book folder;
 public/course-packet.pdf must match its compiled patterns_proofs_primes.pdf.
 
 ## Prerequisites

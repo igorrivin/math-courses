@@ -1,0 +1,230 @@
+\chapter{Every integer has an address}
+\chaptertag{Primes and the fundamental theorem of arithmetic}
+
+Positive integers factor. But why should the factorization into primes be unique? The arithmetic step that makes uniqueness possible is modest enough to miss.
+
+\begin{definition}
+An integer $p>1$ is \emph{prime} if its only positive divisors are $1$ and $p$. An integer $n>1$ that is not prime is \emph{composite}.
+\end{definition}
+
+\section{Euclid's lemma}
+
+\begin{lemma}[Euclid]
+If $p$ is prime and $p\divides ab$, then $p\divides a$ or $p\divides b$.
+\end{lemma}
+
+\begin{proof}
+Suppose $p\ndivides a$. Since the only positive divisors of $p$ are $1,p$, we have $\gcd(p,a)=1$. B\'ezout gives $px+ay=1$. Multiply by $b$:
+\[
+pbx+aby=b.
+\]
+Both terms on the left are divisible by $p$, so $p\divides b$.
+\end{proof}
+
+\begin{warningbox}
+The word ``prime'' is essential. We have $6\divides 2\cdot3$, but $6$ divides neither factor.
+\end{warningbox}
+
+Applying the lemma repeatedly shows: if a prime divides $a_1a_2\cdots a_k$, it divides at least one factor.
+
+\section{Existence and uniqueness}
+
+\begin{theorem}[Fundamental theorem of arithmetic]
+Every integer $n>1$ can be written as a product of primes. Apart from rearranging the factors, this product is unique.
+\end{theorem}
+
+\begin{proof}[Existence]
+Use strong induction on $n$. If $n$ is prime, we are done. If it is composite, write $n=ab$ with $1<a,b<n$. By induction, both $a$ and $b$ are products of primes, so $n$ is too.
+\end{proof}
+
+\begin{proof}[Uniqueness]
+Suppose
+\[
+p_1p_2\cdots p_r=q_1q_2\cdots q_s
+\]
+with all $p_i,q_j$ prime. Since $p_1$ divides the right side, Euclid's lemma says $p_1=q_j$ for some $j$. Cancel this common factor. Repeat. No factor can remain on only one side, so the lists agree up to order.
+\end{proof}
+
+\section{An exponent-parity proof of irrationality}
+
+Unique factorization can rule out rational numbers without trying to compute
+their decimal expansions.
+
+\begin{theorem}
+The number $\sqrt2$ is irrational.
+\end{theorem}
+
+\begin{proof}
+Suppose instead that $\sqrt2=a/b$ for integers $a,b$ with $b\ne0$. Squaring
+and clearing the denominator gives
+\[
+  a^2=2b^2.
+\]
+By the fundamental theorem of arithmetic, the exponent of $2$ in the prime
+factorization of $a^2$ is even: every exponent occurring in $a$ has been
+doubled. The exponent of $2$ in $2b^2$ is odd: it is one plus twice the
+exponent occurring in $b$. Uniqueness says that equal positive integers must
+have the same exponent of every prime, so this is impossible.
+\end{proof}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=12mm,
+  parity/.style={draw=navy!55,rounded corners=2mm,fill=white,minimum width=48mm,
+    minimum height=13mm,align=center},
+  arr/.style={-{Stealth[length=2.2mm]},thick,coral}
+]
+  \node[parity] (left) {$a^2$ has an \textbf{even}\\number of factors $2$};
+  \node[parity,right=of left] (right) {$2b^2$ has an \textbf{odd}\\number of factors $2$};
+  \draw[arr] (left)--node[above,font=\small\bfseries] {cannot be equal} (right);
+\end{tikzpicture}
+
+\small The contradiction is not merely that one side is even; it is that the
+two sides contain incompatible numbers of factors $2$.
+\end{center}
+
+The same proof works with any prime in place of $2$. More generally, a rational
+number can be a perfect square only when every prime exponent in its reduced
+numerator and denominator is even.
+
+\begin{labbox}[title={Aside: existence without a witness}]
+Here is a famous one-line use of the law of excluded middle. Set
+\[
+  x=(\sqrt2)^{\sqrt2}.
+\]
+Either $x$ is rational or it is irrational. In the first case, the two
+irrational numbers $a=b=\sqrt2$ satisfy $a^b=x\in\mathbb Q$. In the second
+case, the two irrational numbers $a=x$ and $b=\sqrt2$ satisfy
+\[
+  a^b=\left((\sqrt2)^{\sqrt2}\right)^{\sqrt2}=2.
+\]
+Thus, classically, there exist irrational $a$ and $b$ for which $a^b$ is
+rational.
+
+The proof is valid in classical mathematics, but it is not a constructive
+proof: it uses the disjunction ``$x$ is rational or $x$ is not rational''
+without deciding which alternative holds, so it does not identify which of
+the two proposed pairs is a witness. Constructive and intuitionistic
+mathematics do not in general accept this unrestricted use of excluded
+middle.
+
+Unique factorization gives an elementary explicit witness. Take
+\[
+  a=\sqrt2,
+  \qquad
+  b=\log_{\sqrt2}3.
+\]
+Then $a^b=3$. Moreover $b$ is irrational: if $b=p/q$ with $q>0$, then
+raising $(\sqrt2)^{p/q}=3$ to the power $2q$ would give
+\[
+  2^p=3^{2q},
+\]
+contradicting unique prime factorization. This time the proof supplies the
+pair that works. Much more deeply, the Gelfond--Schneider theorem implies that
+$(\sqrt2)^{\sqrt2}$ is transcendental, so it retrospectively selects the
+second branch of the classical argument.
+\end{labbox}
+
+Collecting repeated primes gives a coordinate system
+\[
+n=2^{e_2}3^{e_3}5^{e_5}\cdots,
+\]
+where only finitely many exponents are nonzero. Multiplication adds exponent vectors; gcd takes coordinatewise minima; lcm takes coordinatewise maxima.
+
+\begin{center}
+\begin{tikzpicture}[x=1.2cm,y=1.0cm]
+  \draw[-{Stealth},navy] (0,0)--(4.5,0) node[right] {$e_2$};
+  \draw[-{Stealth},navy] (0,0)--(0,3.7) node[above] {$e_3$};
+  \foreach \x in {0,...,4} \foreach \y in {0,...,3} \fill[navy!25] (\x,\y) circle (1.3pt);
+  \fill[teal] (3,2) circle (4pt) node[above right] {$72=2^3 3^2$};
+  \fill[coral] (2,3) circle (4pt) node[above right] {$108=2^2 3^3$};
+  \fill[gold!80!black] (2,2) circle (4pt) node[below left] {$\gcd=36$};
+  \draw[dashed,gold!80!black] (2,2)--(3,2);
+  \draw[dashed,gold!80!black] (2,2)--(2,3);
+  \fill[navy] (3,3) circle (4pt) node[above right] {$\operatorname{lcm}=216$};
+\end{tikzpicture}
+
+\small Prime exponents turn gcd and lcm into geometry.
+\end{center}
+
+\begin{proposition}
+If $n=\prod p^{e_p}$ and $m=\prod p^{f_p}$, then
+\[
+\gcd(n,m)=\prod p^{\min(e_p,f_p)},\qquad
+\operatorname{lcm}(n,m)=\prod p^{\max(e_p,f_p)}.
+\]
+In particular, $\gcd(n,m)\operatorname{lcm}(n,m)=nm$.
+\end{proposition}
+
+\section{The sieve of Eratosthenes}
+
+Unique factorization also explains a practical way to find every prime up to a
+chosen bound $N$. Write down the integers $2,3,\dots,N$. Circle the first
+uncrossed number, then cross out its larger multiples. Repeat. The circled
+numbers are precisely the primes.
+
+\begin{center}
+\newcommand{\sieveprime}[1]{\tikz[baseline=(n.base)]\node[
+  draw=teal,fill=teal!13,rounded corners=1mm,minimum size=6.5mm,
+  inner sep=0pt,font=\small\bfseries,text=teal!70!black] (n) {#1};}
+\newcommand{\sievegone}[1]{\tikz[baseline=(n.base)]{
+  \node[minimum size=6.5mm,inner sep=0pt,font=\small,text=muted] (n) {#1};
+  \draw[coral!65,line width=.45pt] (n.south west)--(n.north east);}}
+\newcommand{\sieveone}[1]{\tikz[baseline=(n.base)]\node[
+  minimum size=6.5mm,inner sep=0pt,font=\small,text=muted!70] (n) {#1};}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{*{10}{c}}
+\sieveone{1}&\sieveprime{2}&\sieveprime{3}&\sievegone{4}&\sieveprime{5}&\sievegone{6}&\sieveprime{7}&\sievegone{8}&\sievegone{9}&\sievegone{10}\\
+\sieveprime{11}&\sievegone{12}&\sieveprime{13}&\sievegone{14}&\sievegone{15}&\sievegone{16}&\sieveprime{17}&\sievegone{18}&\sieveprime{19}&\sievegone{20}\\
+\sievegone{21}&\sievegone{22}&\sieveprime{23}&\sievegone{24}&\sievegone{25}&\sievegone{26}&\sievegone{27}&\sievegone{28}&\sieveprime{29}&\sievegone{30}\\
+\sieveprime{31}&\sievegone{32}&\sievegone{33}&\sievegone{34}&\sievegone{35}&\sievegone{36}&\sieveprime{37}&\sievegone{38}&\sievegone{39}&\sievegone{40}\\
+\sieveprime{41}&\sievegone{42}&\sieveprime{43}&\sievegone{44}&\sievegone{45}&\sievegone{46}&\sieveprime{47}&\sievegone{48}&\sievegone{49}&\sievegone{50}
+\end{tabular}
+
+\small Sieve to $50$: the boxed survivors are prime; every composite has been crossed out.
+\end{center}
+
+\begin{proposition}[Why the sieve stops early]
+If $n>1$ is composite, then it has a prime divisor at most $\sqrt n$.
+Consequently, to find all primes up to $N$, it is enough to cross out multiples
+of primes $p\le\sqrt N$.
+\end{proposition}
+
+\begin{proof}
+Write $n=ab$ with $1<a\le b$. Then $a\le\sqrt n$. A prime factor $p$ of $a$
+therefore satisfies $p\le a\le\sqrt n$. Thus if an integer $n\le N$ survives
+all sieving primes through $\sqrt N$, it cannot be composite.
+\end{proof}
+
+\begin{checkpoint}
+For the display above, only the multiples of $2,3,5,$ and $7$ need to be
+crossed out. The next prime is $11>\sqrt{50}$. Notice also that one may begin
+crossing out at $p^2$: every smaller multiple of $p$ has already been handled
+by an earlier prime.
+\end{checkpoint}
+
+\section{There is no last prime}
+
+\begin{theorem}[Euclid]
+There are infinitely many primes.
+\end{theorem}
+
+\begin{proof}
+If $p_1,\dots,p_k$ were all primes, consider $N=p_1\cdots p_k+1$. Some prime divides $N$, but none of the listed primes does: division by any $p_i$ leaves remainder $1$. Contradiction.
+\end{proof}
+
+This proof does not say that $N$ is prime. It says that $N$ has a prime factor missing from the proposed complete list.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Factor $7560$ and use the exponent vectors to find the number of its positive divisors. \exlevel{Fluency}
+  \item Compute $\gcd(2^7 3^2 11,2^4 3^5 5)$ and the lcm without multiplying first. \exlevel{Fluency}
+  \item Prove that if $\gcd(a,b)=1$ and $a\divides c$, $b\divides c$, then $ab\divides c$. \exlevel{Reasoning}
+  \item Reproduce the exponent-parity proof that $\sqrt2$ is irrational, then prove that $\sqrt p$ is irrational for every prime $p$. State exactly where unique factorization is used. \exlevel{Reasoning}
+  \item Prove that every composite $n>1$ has a prime divisor at most $\sqrt n$. Turn this into a primality test. \exlevel{Reasoning}
+  \item Use the sieve of Eratosthenes to list every prime at most $100$. Explain why, after sieving by $2,3,5,$ and $7$, no further crossing-out step is needed. \exlevel{Fluency}
+  \item Is $n!+1$ always prime? Find the first counterexample, then explain why Euclid's proof is unaffected. \exlevel{Exploration}
+  \item Prove that infinitely many primes are congruent to $3$ modulo $4$ by adapting Euclid's idea to $4p_1\cdots p_k-1$. You may use the fact that a product of numbers congruent to $1$ modulo $4$ is again $1$ modulo $4$. \exlevel{Challenge}
+  \item Verify directly that $a=\sqrt2$ and $b=\log_{\sqrt2}3$ are irrational and satisfy $a^b=3$. What does this explicit witness add to the excluded-middle proof? \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}

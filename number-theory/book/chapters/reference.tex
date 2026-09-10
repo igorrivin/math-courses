@@ -1,0 +1,193 @@
+\chapter{Reference sheets}
+\chaptertag{Definitions, algorithms, and proof moves}
+
+\section*{Core notation}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{.22\textwidth}X}
+\toprule
+Notation & Meaning \\
+\midrule
+$a\divides b$ & $b=ak$ for some integer $k$ \\
+$\gcd(a,b)$ & greatest positive common divisor \\
+$a\congr b\pmod n$ & $n\divides(a-b)$ \\
+$(\Z/n\Z)^\times$ & invertible residue classes modulo $n$ \\
+$\varphi(n)$ & number of units modulo $n$ \\
+$v_p(m)$ & exponent of $p$ in $m$ \\
+$\pi(x)$ & number of primes at most $x$ \\
+$\vartheta(x)$ & $\sum_{p\le x}\log p$ \\
+$\psi(x)$ & $\sum_{p^k\le x}\log p$ \\
+$f(x)\asymp g(x)$ & their ratio stays between positive constants eventually \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section*{Algorithms at a glance}
+
+\textbf{Extended Euclid.} Divide until zero; the last nonzero remainder is the gcd; substitute backward to obtain $ax+by=\gcd(a,b)$.
+
+\textbf{Sieve of Eratosthenes.} To find the primes through $N$, repeatedly
+circle the least uncrossed integer and cross out its larger multiples. Stop
+after the sieving primes $p\le\sqrt N$; a composite at most $N$ must have a
+prime factor in that range.
+
+\textbf{Existence versus a witness.} The classical dichotomy for
+$x=(\sqrt2)^{\sqrt2}$ proves that one of
+$(\sqrt2,\sqrt2)$ and $(x,\sqrt2)$ has a rational power, but does not say
+which. The explicit choice
+$a=\sqrt2$, $b=\log_{\sqrt2}3$ gives $a^b=3$, and unique factorization proves
+that $b$ is irrational.
+
+\textbf{Continued fraction.} Repeatedly take the integer part, subtract it, and invert. Convergents satisfy
+\[
+p_k=a_kp_{k-1}+p_{k-2},\qquad q_k=a_kq_{k-1}+q_{k-2}.
+\]
+The recurrences are the columns of the matrix product
+\[
+\begin{pmatrix}a_0&1\\1&0\end{pmatrix}\cdots
+\begin{pmatrix}a_k&1\\1&0\end{pmatrix}
+=\begin{pmatrix}p_k&p_{k-1}\\q_k&q_{k-1}\end{pmatrix},
+\]
+whose determinant is $(-1)^{k+1}$. Each factor lies in
+$\operatorname{GL}_2(\Z)$; a product with an even number of factors lies in
+$\operatorname{SL}_2(\Z)$.
+For $A/B=[a_0;\dots,a_n]$, the Euclidean remainders obey
+\[
+r_k=(-1)^k(q_kA-p_kB).
+\]
+For irrational $x$, the zero-indexed convergents form alternating monotone bounds:
+\[
+c_0<c_2<c_4<\cdots<x<\cdots<c_5<c_3<c_1.
+\]
+Legendre's test says that a reduced fraction satisfying
+$\abs{x-p/q}<1/(2q^2)$ must be a convergent. Lagrange's theorem says that a
+simple continued fraction is eventually periodic exactly for a quadratic
+irrational; Galois says it is purely periodic exactly when $x>1$ and
+$-1<x'<0$.
+
+\textbf{Fixed points and prefixes.} For $\det M\ne0$,
+$T_M(t)=(at+b)/(ct+d)$ satisfies $T_M\circ T_N=T_{MN}$.
+An irrational fixed point of a nonscalar rational $M$ obeys the genuine
+quadratic $ct^2+(d-a)t-b=0$. If $x=T_N(x)$ and $y=T_M(x)$, then
+\[
+ y=T_{MNM^{-1}}(y).
+\]
+A finite continued-fraction prefix therefore preserves quadratic
+irrationality by conjugating the period matrix.
+
+\textbf{Reduced quadratic states.} Write $x_n=(P_n+\sqrt D)/Q_n$ with
+$Q_n\divides D-P_n^2$. With $a_n=\floor{x_n}$, the exact update is
+\[
+ P_{n+1}=a_nQ_n-P_n,\qquad Q_{n+1}=(D-P_{n+1}^2)/Q_n.
+\]
+Every quadratic irrational eventually has a reduced tail.
+For reduced states, $|P_n|<\sqrt D$ and $0<Q_n<2\sqrt D$,
+so only finitely many states occur. A reduced successor $z$ determines
+its reduced predecessor:
+$a=\floor{-1/z'}$ and $u=a+1/z$.
+Finiteness gives eventual repetition; unique predecessors make a
+reduced starting state purely periodic.
+
+\textbf{Typical information rate.} For almost every $x$, the Khinchin--L\'evy
+law gives
+\[
+ \lim_{n\to\infty}q_n^{1/n}=e^{\pi^2/(12\log2)}\approx3.275823,
+ \qquad
+ \lim_{n\to\infty}\abs{x-p_n/q_n}^{-1/n}
+ =e^{\pi^2/(6\log2)}\approx10.731.
+\]
+So a continued-fraction term earns about $1.0306$ decimal digits on average.
+For the first $100{,}000$ partial quotients of $\pi$, computation gives
+$G_n(\pi)\approx2.67956$ and $q_n^{2/n}\approx10.67835$; neither limiting law
+has been proved for $\pi$. In contrast,
+$e=[2;1,2,1,1,4,1,1,6,\dots]$ has
+$G_{3m}(e)\sim(2m/e)^{1/3}\to\infty$ and $q_{3m}^{2/(3m)}\to\infty$.
+
+\textbf{Gosper's streaming arithmetic.} Represent a unary rational
+transformation by $M=\begin{psmallmatrix}A&B\\C&D\end{psmallmatrix}$.  Reading
+an input digit $m$ and emitting a certified output digit $k$ update the state by
+\[
+ M\longmapsto M\begin{pmatrix}m&1\\1&0\end{pmatrix},
+ \qquad
+ M\longmapsto\begin{pmatrix}0&1\\1&-k\end{pmatrix}M.
+\]
+For two inputs use
+$(axy+bx+cy+d)/(exy+fx+gy+h)$; its eight integer coefficients are closed
+under the same absorb-or-emit operations.  Exact interval bounds certify a
+digit when every possible value has the same floor.  Interval-valued output is
+the safe fallback at integer boundaries where a digit-only process can stall.
+
+\textbf{Calendar design.} If a tropical year is $365+\alpha$ days, a cycle
+with $p$ leap days in $q$ years asks for $p/q\approx\alpha$. For
+$\alpha\approx0.2421988$, the convergents begin
+\[
+ \frac14,\quad\frac7{29},\quad\frac8{33},\quad\frac{31}{128}.
+\]
+The Julian calendar uses $1/4$. Requiring $q=100Q$ means approximating
+$100\alpha$; its convergent $97/4$ yields the Gregorian rate $97/400$.
+
+\textbf{Planetary lapping time.} If an inner planet takes $V$ days for one
+Sun-centered lap and Earth takes $E>V$ days, the waiting time $S$ between
+successive alignments (the \emph{synodic period}) satisfies
+\[
+  \frac1S=\frac1V-\frac1E,
+  \qquad \frac SE=T(E/V),\qquad T(r)=\frac1{r-1}.
+\]
+For Earth and Venus, $E/V\approx13/8$ and $S/E\approx8/5$; the five
+successive conjunction directions advance by about $3/5$ of a turn and draw a
+near-pentagram.  The Dresden Codex uses the exact nominal calendar identities
+\[
+  5\cdot584=8\cdot365=2920,
+  \qquad
+  65\cdot584=104\cdot365=146\cdot260=37960.
+\]
+
+\textbf{Pell bridge.} If $p^2-Dq^2=\pm1$, then
+\[
+ \abs{\sqrt D-p/q}=\frac{1}{q^2(\sqrt D+p/q)}<\frac1{2q^2},
+\]
+so Legendre makes $p/q$ a convergent. Conversely, the period of $\sqrt D$
+produces Pell solutions. A solution $u^2-Dv^2=1$ gives the generator
+$\begin{psmallmatrix}u&Dv\\v&u\end{psmallmatrix}\in\operatorname{SL}_2(\Z)$.
+
+\textbf{Base-$b$ expansion.} Long division evolves by
+$br_n=qd_{n+1}+r_{n+1}$ with $0\le r_{n+1}<q$. Repeated remainders make every
+rational expansion eventually periodic. A reduced fraction $m/q$ is purely
+periodic exactly when $\gcd(q,b)=1$; the reverse direction follows from
+Euler's theorem.
+
+\textbf{Linear congruence.} For $ax\congr b\pmod n$, first compute $d=\gcd(a,n)$. There are solutions iff $d\divides b$. Divide by $d$, reduce the modulus to $n/d$, and invert the new coefficient.
+
+\textbf{CRT.} With $N=\prod n_i$, take $N_i=N/n_i$ and choose $M_i=N_i^{-1}\pmod{n_i}$. Then $x=\sum a_iN_iM_i\pmod N$.
+
+\section*{Proof moves worth naming}
+
+\begin{itemize}
+  \item \textbf{Minimal counterexample / strong induction}: factor a composite object into smaller ones.
+  \item \textbf{B\'ezout insertion}: replace $1$ by $ax+by$ to transfer divisibility.
+  \item \textbf{Exponent comparison}: use unique factorization or $v_p$ to compare products and quotients.
+  \item \textbf{M\"obius monotonicity}: compute the derivative of $(at+b)/(ct+d)$ to determine how a continued-fraction tail moves its value.
+  \item \textbf{Conjugation}: transport a fixed-point equation through a change of variable using $MNM^{-1}$.
+  \item \textbf{Finite states with reversible steps}: bound integer states to force eventual repetition, then recover predecessors to remove any initial segment.
+  \item \textbf{Equal-block partition}: cosets and rotation orbits turn a count into divisibility.
+  \item \textbf{Count two ways}: binomial identities become transparent when both sides count the same set.
+  \item \textbf{Logarithmic weighting}: products of primes become the sums $\vartheta$ and $\psi$.
+  \item \textbf{Dyadic decomposition}: split a range into $(x/2,x],(x/4,x/2],\dots$ and sum a geometric series.
+\end{itemize}
+
+\section*{The two Fermat proofs}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{p{.18\textwidth}XX}
+\toprule
+ & Necklace proof & Group proof \\
+\midrule
+Objects & $a^p$ labeled colorings & nonzero residues modulo $p$ \\
+Structure & cyclic rotation orbits & group $(\Z/p\Z)^\times$ \\
+Exceptional part & $a$ constant colorings & identity/powers inside cyclic subgroups \\
+Equal blocks & nonconstant orbits have size $p$ & element orders divide $p-1$ \\
+Conclusion & $a^p\congr a\pmod p$ & $a^{p-1}\congr1\pmod p$ for $p\ndivides a$ \\
+\bottomrule
+\end{tabularx}
+\end{center}

@@ -1,0 +1,403 @@
+\chapter{Streaming arithmetic with continued fractions}\label{app:gosper}
+\chaptertag{Gosper's homographic and bihomographic algorithms}
+
+Suppose a number is arriving one continued-fraction digit at a time.  Can we
+transform it without first converting it to a decimal, and without waiting for
+the entire infinite input?  Bill Gosper's answer is yes.  The method reads just
+enough of the input to prove the next output digit, emits that digit, and then
+continues.
+
+\section{The problem---before the machinery}
+
+There are two versions.
+
+\begin{description}[leftmargin=2.7cm,style=nextline]
+  \item[One input.] Given
+  \[
+    x=[a_0;a_1,a_2,\dots]
+  \]
+  as a stream, and a linear fractional transformation
+  \[
+    L(x)=\frac{\alpha x+\beta}{\gamma x+\delta},
+  \]
+  produce the continued fraction of $L(x)$ from left to right.
+
+  \item[Two inputs.] Given continued-fraction streams for $x$ and $y$, produce
+  the continued fraction of a two-variable fractional expression.  In
+  particular, $x+y$, $x-y$, $xy$, and $x/y$ all have the form
+  \[
+    \Phi(x,y)=\frac{axy+bx+cy+d}{exy+fx+gy+h}.
+  \]
+\end{description}
+
+The intended computation is \emph{exact}.  It should never guess a digit from
+a floating-point approximation.  Instead, every emitted digit comes with a
+proof that all inputs compatible with the digits seen so far would produce that
+same digit.
+
+\begin{bigidea}
+A finite input prefix determines an \emph{interval} of possible values.  Map
+that interval through the desired transformation.  If the whole image fits
+inside one continued-fraction digit cell $[k,k+1)$, the next output digit is
+certified to be $k$.  If it crosses an integer boundary, read more input and
+shrink the interval.
+\end{bigidea}
+
+The original algorithm appeared as Item 101B of the 1972 MIT memo
+\emph{HAKMEM}.  A modern refinement by Michael J. Collins allows exact
+intervals themselves to appear in the output stream, resolving boundary cases
+in which no next digit can be certified after finite time.
+
+\section{What the unread tail means}
+
+The subscript on a tail records the \emph{next} digit, not the first digit of
+the original number.  After the prefix $a_0,\dots,a_{j-1}$ has been read, write
+\begin{equation}
+  x=[a_0;a_1,\dots,a_{j-1},t_j],
+  \qquad
+  t_j=[a_j;a_{j+1},\dots].                         \label{eq:tail-invariant}
+\end{equation}
+Here $t_j$ is the complete unread remainder of the continued fraction, used as
+the last entry in the first expression.  Before $a_j$ is known, the only
+universal information is
+\[
+  1\leq t_j\leq\infty
+\]
+for a positive simple continued fraction.  When the next digit $a_j=m$ arrives,
+\begin{equation}
+  t_j=m+\frac1{t_{j+1}},
+  \qquad t_{j+1}=[a_{j+1};a_{j+2},\dots]\in[1,\infty].
+  \label{eq:tail-shift}
+\end{equation}
+Thus knowing the single digit $m$ restricts the old tail to
+$t_j\in(m,m+1]$; absorbing $m$ replaces it by the new unknown tail
+$t_{j+1}\in[1,\infty]$.
+
+\begin{labbox}[title={Known prefix versus unknown tail}]
+At the start, $t_0=x$ and no input digits have been absorbed.  After $a_0$ is
+read, the state incorporates $a_0$ and the unknown variable is
+$t_1=[a_1;a_2,\dots]$.  After $a_1$ is read, the state incorporates
+$a_0,a_1$ and the unknown variable is $t_2$, and so on.  The state changes;
+the exact number represented does not.
+\end{labbox}
+
+Let
+\[
+  D(m)=\begin{pmatrix}m&1\\1&0\end{pmatrix},
+  \qquad
+  M_0=\begin{pmatrix}\alpha&\beta\\\gamma&\delta\end{pmatrix}.
+\]
+After $j$ input digits have been absorbed, set
+\begin{equation}
+  M_j=M_0D(a_0)D(a_1)\cdots D(a_{j-1})
+      =\begin{pmatrix}A&B\\C&D\end{pmatrix}.       \label{eq:prefix-state}
+\end{equation}
+Then the output value still waiting to be written is exactly
+\[
+  F_{M_j}(t_j)=\frac{At_j+B}{Ct_j+D}.
+\]
+This is the invariant behind the algorithm.
+
+\section{The geometry: map an interval, then inspect its floor}
+
+For a general certified tail interval $I=[b_0,b_1]$, consider
+\[
+  F_M(t)=\frac{At+B}{Ct+D}.
+\]
+Provided $Ct+D$ never vanishes on $I$, the derivative
+\begin{equation}
+  F_M'(t)=\frac{AD-BC}{(Ct+D)^2}                    \label{eq:mobius-derivative-b}
+\end{equation}
+has constant sign.  Hence $F_M$ is monotone, and the image $F_M(I)$ is simply
+the interval whose endpoints are $F_M(b_0)$ and $F_M(b_1)$, in the appropriate
+order.  No point between them can escape those endpoint bounds.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[navy!55,line width=.8pt] (0,1.25)--(5.2,1.25);
+  \fill[teal] (1,1.25) circle (2.5pt) node[below=5pt,text=ink] {$b_0$};
+  \fill[teal] (4.2,1.25) circle (2.5pt) node[below=5pt,text=ink] {$b_1$};
+  \draw[teal,line width=3pt] (1,1.25)--(4.2,1.25);
+  \node[text=muted] at (2.6,1.75) {possible input tail $I$};
+
+  \draw[-{Stealth[length=2.5mm]},coral,line width=1.2pt]
+    (5.65,1.25) to[bend left=22] (7.1,1.25);
+
+  \foreach \x/\lab in {7.4/$k$,9.0/$k+1$,10.6/$k+2$}{
+    \draw[navy!35] (\x,.94)--(\x,1.58);
+    \node[below=4pt,text=muted] at (\x,.94) {\lab};
+  }
+  \draw[gold,line width=5pt] (7.75,1.25)--(8.65,1.25);
+  \fill[coral] (7.75,1.25) circle (2.4pt);
+  \fill[coral] (8.65,1.25) circle (2.4pt);
+  \node[text=muted] at (8.2,1.75) {$F_M(I)\subset[k,k+1)$};
+\end{tikzpicture}
+
+\small\color{muted}If both endpoint images lie in the same floor cell and
+there is no pole between them, every possible output has floor $k$.
+\end{center}
+
+For the universal interval $[1,\infty]$, the two endpoint values are
+\[
+  F_M(1)=\frac{A+B}{C+D},
+  \qquad
+  F_M(\infty)=\frac AC.
+\]
+An endpoint at infinity may be open, and a finite continued fraction may end;
+exact implementations retain this endpoint information.  The essential test is
+unchanged:
+\[
+  F_M(I)\subseteq[k,k+1)quad\Longrightarrow\quad
+  \text{the next output digit is }k.
+\]
+If the image crosses an integer boundary, or if a pole is possible, no digit is
+yet justified.  We must refine the input interval.
+
+\section{The two algebraic moves}
+
+\paragraph{Absorb the next input digit.}
+If $a_j=m$, substitute $t_j=m+1/t_{j+1}$ into the current map.  Clearing the
+factor $t_{j+1}$ gives
+\[
+ F_M\left(m+\frac1{t_{j+1}}\right)
+ =\frac{(Am+B)t_{j+1}+A}{(Cm+D)t_{j+1}+C}.
+\]
+Thus the exact state update is
+\begin{equation}
+  \boxed{\mathcal I_m(M)=M D(m)
+  =\begin{pmatrix}Am+B&A\\Cm+D&C\end{pmatrix}.}    \label{eq:unary-absorb}
+\end{equation}
+
+\paragraph{Emit a certified output digit.}
+If the image interval lies in $[k,k+1)$, write the digit $k$.  The unread part
+of the output continued fraction is then $1/(F_M-k)$, represented by
+\begin{equation}
+  \boxed{\mathcal E_k(M)=
+  \begin{pmatrix}0&1\\1&-k\end{pmatrix}M
+  =\begin{pmatrix}C&D\\A-kC&B-kD\end{pmatrix}.}   \label{eq:unary-emit}
+\end{equation}
+
+\begin{checkpoint}[title={The homographic loop}]
+Maintain the statement: ``the unread output is $F_M(t_j)$ for every
+$t_j\in I$.''
+\begin{enumerate}
+  \item Map the current certified interval $I$ through $F_M$ by evaluating its
+  endpoints.
+  \item If the image lies in one floor cell $[k,k+1)$, emit $k$, apply
+  $M\leftarrow\mathcal E_k(M)$, and replace the output interval by
+  $1/(F_M(I)-k)$.
+  \item Otherwise read $a_j=m$, use $t_j=m+1/t_{j+1}$, apply
+  $M\leftarrow\mathcal I_m(M)$, and return to the universal interval
+  $t_{j+1}\in[1,\infty]$.
+  \item Repeat.  A common nonzero factor may be removed from the four matrix
+  entries without changing the map.
+\end{enumerate}
+\end{checkpoint}
+
+\section{Worked stream: the first digits of \texorpdfstring{$\pi/2$}{pi/2}}
+
+Here $L(x)=x/2$, so
+$M_0=\begin{psmallmatrix}1&0\\0&2\end{psmallmatrix}$, and the input is
+\[
+ \pi=[3;7,15,1,292,\dots].
+\]
+After reading $a_0=3$ and $a_1=7$, the unknown variable is
+$t_2=[15;1,292,\dots]\in[1,\infty]$, and
+\[
+ M_2=M_0D(3)D(7)=\begin{pmatrix}22&3\\14&2\end{pmatrix}.
+\]
+The first row below maps the endpoint tails $1$ and $\infty$.  Each following
+row applies \eqref{eq:unary-emit}; no further input digit is read.
+
+\begin{center}
+\small
+\begin{tabular}{c c c}
+\toprule
+event & current matrix $M$ & image of the possible tail interval \\
+\midrule
+read $3,7$ & $\begin{psmallmatrix}22&3\\14&2\end{psmallmatrix}$
+ & $[25/16,\,11/7)$: emit $1$ \\
+emit $1$ & $\begin{psmallmatrix}14&2\\8&1\end{psmallmatrix}$
+ & $(7/4,\,16/9]$: emit $1$ \\
+emit $1$ & $\begin{psmallmatrix}8&1\\6&1\end{psmallmatrix}$
+ & $[9/7,\,4/3)$: emit $1$ \\
+emit $1$ & $\begin{psmallmatrix}6&1\\2&0\end{psmallmatrix}$
+ & $(3,\,7/2]$: emit $3$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+After these four emissions the state is
+$\begin{psmallmatrix}2&0\\0&1\end{psmallmatrix}$: the unread output is
+$2t_2$.  Only now do we read the next input digits, $15$ and $1$; absorbing
+them maps the new unknown tail into $[31,32)$ and certifies $31$.  Therefore
+\[
+ \frac\pi2=[1;1,1,3,31,\dots].
+\]
+The calculation has used exact rational endpoints throughout.  The decimal
+digits of $\pi$ never entered.
+
+\section{Two inputs: rectangles replace intervals}
+
+Now suppose prefixes of two inputs have been read.  Their unread tails, say
+$u_j$ and $v_\ell$, range independently over certified intervals $I$ and $J$.
+The unread output has the form
+\begin{equation}
+ B_{\mathcal B}(u,v)
+ =\frac{auv+bu+cv+d}{euv+fu+gv+h},
+ \qquad
+ \mathcal B=(a,b,c,d;\,e,f,g,h).                  \label{eq:bihomographic}
+\end{equation}
+Thus the possible input is a rectangle $I\times J$, not a line segment.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \fill[teal!10] (.6,.35) rectangle (4.2,2.45);
+  \draw[teal,line width=1pt] (.6,.35) rectangle (4.2,2.45);
+  \foreach \p/\lab/\pos in {
+    {.6,.35}/{$(b_0,c_0)$}/{below left},
+    {4.2,.35}/{$(b_1,c_0)$}/{below right},
+    {.6,2.45}/{$(b_0,c_1)$}/{above left},
+    {4.2,2.45}/{$(b_1,c_1)$}/{above right}}
+    \fill[coral] (\p) circle (2.5pt) node[\pos,text=ink] {\lab};
+  \node[text=muted] at (2.4,1.4) {$I\times J$};
+  \draw[-{Stealth[length=2.5mm]},coral,line width=1.2pt]
+    (4.85,1.4) to[bend left=18] (6.35,1.4);
+  \draw[navy!55] (6.65,1.4)--(10.8,1.4);
+  \draw[gold,line width=5pt] (7.35,1.4)--(9.85,1.4);
+  \fill[coral] (7.35,1.4) circle (2.5pt);
+  \fill[coral] (9.85,1.4) circle (2.5pt);
+  \node[text=muted] at (8.6,1.95) {range bounded by corner images};
+\end{tikzpicture}
+\end{center}
+
+Assume the denominator has no zero on the rectangle.  For a fixed $v$, the
+map is linear fractional in $u$, so its extrema along that horizontal segment
+occur at the two ends.  On either vertical edge it is linear fractional in
+$v$, so the remaining extrema occur at the edge endpoints.  Consequently the
+entire range is bounded by the images of the four corners.  In particular, for
+$I=J=[1,\infty]$ these values are
+\begin{equation}
+ \frac ae,\qquad \frac{a+b}{e+f},\qquad
+ \frac{a+c}{e+g},\qquad
+ \frac{a+b+c+d}{e+f+g+h},                         \label{eq:four-corners}
+\end{equation}
+with the usual interpretation of infinite and open endpoints.
+
+The four basic operations differ only in their starting coefficients:
+\[
+\begin{array}{c|c}
+\text{desired output} & (a,b,c,d;\,e,f,g,h)\\ \hline
+x+y &(0,1,1,0;\,0,0,0,1)\\
+x-y &(0,1,-1,0;\,0,0,0,1)\\
+xy  &(1,0,0,0;\,0,0,0,1)\\
+x/y &(0,1,0,0;\,0,0,1,0)
+\end{array}
+\]
+
+If the next $u$-digit is $m$, substitute $u=m+1/u'$; if the next $v$-digit is
+$n$, substitute $v=n+1/v'$.  Collecting coefficients gives
+\begin{align}
+\mathcal I^u_m(\mathcal B)
+ &=(ma+c,\,mb+d,\,a,\,b;\,me+g,\,mf+h,\,e,\,f),
+                                                        \label{eq:binary-absorb-u}\\
+\mathcal I^v_n(\mathcal B)
+ &=(na+b,\,a,\,nc+d,\,c;\,ne+f,\,e,\,ng+h,\,g).
+                                                        \label{eq:binary-absorb-v}
+\end{align}
+When the four corner images all lie in one floor cell $[k,k+1)$, emit $k$ and
+invert the fractional part:
+\begin{equation}
+\mathcal E_k(\mathcal B)
+=(e,f,g,h;\,a-ke,b-kf,c-kg,d-kh).                  \label{eq:binary-emit}
+\end{equation}
+
+The geometry and the logic are exactly as before.  If the image of the current
+rectangle crosses an integer boundary, absorb from one input and replace the
+rectangle by a thinner one; alternate inputs, or choose the one expected to
+shrink the image more.  If the denominator may vanish inside the rectangle,
+no output is safe until further input or separate algebra resolves the issue.
+
+\begin{bigidea}
+The four coefficients in the one-input problem, or eight in the two-input
+problem, are bookkeeping for a moving interval image.  Matrix formulas make
+the updates fast, but the proof of correctness is geometric: every possible
+tail lies in the current interval or rectangle, and every emitted digit is
+shared by its entire image.
+\end{bigidea}
+
+\section{The boundary problem and the interval repair}
+
+The floor function jumps at every integer.  This creates a subtle failure mode.
+Feed two \emph{independent} copies of the continued fraction of $\sqrt2$ to the
+multiplication algorithm.  The actual product is $2$, but every finite pair of
+independent enclosures allows one copy to move a little below $\sqrt2$ and the
+other a little above it.  The resulting product rectangle can straddle $2$.
+Its image then meets both floor cells $[1,2)$ and $[2,3)$, so the rule cannot
+certify even the first digit.
+
+This is an information problem, not numerical instability.  The two stream
+variables have forgotten that they denote the same algebraic number.  Retaining
+the relation $x=y$ reduces the expression to $x^2$, and the separate fact
+$x^2=2$ resolves the equality immediately.
+
+Collins's interval-valued refinement distinguishes a continued fraction from
+its computational stream.  A stream item may be either
+\begin{itemize}
+  \item an explicit partial quotient, or
+  \item an exact rational interval bounding the current unread value.
+\end{itemize}
+If no digit is forced, the algorithm may output a tighter certified interval
+instead of waiting silently.  A consumer asks for an error tolerance
+$\varepsilon$ and reads until the resulting value interval has width below
+$\varepsilon$.  Exact endpoints and their open-or-closed status preserve the
+no-roundoff character of Gosper's method while guaranteeing useful progress at
+an integer boundary.
+
+\begin{warningbox}[title={Digits and numerical accuracy are different requests}]
+There may be no finite proof of the next continued-fraction digit even when a
+very accurate numerical enclosure is easy.  A robust implementation therefore
+asks for a certified error tolerance, not an unconditional number of output
+digits.  Away from boundaries, intervals quickly collapse into ordinary
+partial quotients and recover Gosper's original stream.
+\end{warningbox}
+
+\section{Exercises}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Suppose only the prefix $[2;3]$ of $x$ is known.  Write
+  $x=[2;3,t_2]$ with $t_2\in[1,\infty]$, evaluate the two endpoint values,
+  and prove that $x\in[9/4,7/3)$. \exlevel{Fluency}
+
+  \item Prove the endpoint-image rule using
+  \eqref{eq:mobius-derivative-b}.  Apply it to
+  $F(t)=(22t+3)/(14t+2)$ on $[1,\infty]$ and certify its floor.
+  \exlevel{Reasoning}
+
+  \item Derive the absorption and emission updates
+  \eqref{eq:unary-absorb} and \eqref{eq:unary-emit} directly by
+  substitution.  Express each as matrix multiplication. \exlevel{Fluency}
+
+  \item Continue the $\pi/2$ calculation: from
+  $\begin{psmallmatrix}2&0\\0&1\end{psmallmatrix}$, absorb $15$ and $1$ and
+  show that the new image lies in $[31,32)$. \exlevel{Reasoning}
+
+  \item Prove the four-corner range rule for a bihomographic map on a finite
+  rectangle with no denominator zero.  Why is checking four corners not enough
+  if a pole lies inside? \exlevel{Reasoning}
+
+  \item Derive \eqref{eq:binary-absorb-u} and
+  \eqref{eq:binary-absorb-v}.  Verify that the four initial states really
+  represent $+$, $-$, $\times$, and $/$. \exlevel{Fluency}
+
+  \item Explain why independent intervals for two copies of $\sqrt2$ can
+  straddle the boundary $2$ forever when computing $\sqrt2\sqrt2$.  State the
+  extra algebraic information that resolves the equality. \exlevel{Reasoning}
+
+  \item Design a lazy implementation whose output type is either
+  \texttt{Digit(k)} or \texttt{Bound(lo,hi)}.  State invariants that make every
+  emitted item a certificate, then test all four operations on rational and
+  quadratic inputs. \exlevel{Project}
+\end{enumerate}
+\end{exercisebox}

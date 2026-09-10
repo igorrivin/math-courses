@@ -1,0 +1,71 @@
+\chapter{Probability for unknowns}
+\chaptertag{An introduction to Bayesian inference}
+
+Chapter~\ref{ch:exchangeability} will revisit this chapter's shared-parameter models from another direction: under infinite exchangeability, a conditional-i.i.d.\ representation is a theorem rather than a starting assumption.
+
+\begin{question}
+What changes when an unknown parameter is itself represented by a probability distribution?
+\end{question}
+
+Bayesian inference combines a prior distribution $\pi(\theta)$ with a likelihood $p(y\mid\theta)$. Bayes' rule produces the posterior
+\[
+\pi(\theta\mid y)=
+\frac{p(y\mid\theta)\pi(\theta)}{\int p(y\mid u)\pi(u)\,du}
+\propto p(y\mid\theta)\pi(\theta).
+\]
+
+\section{Beta--binomial updating}
+
+Suppose $p\sim\operatorname{Beta}(\alpha,\beta)$ and, conditional on $p$, $X\sim\Bin(n,p)$. After observing $x$ successes,
+\[
+p\mid X=x\sim\operatorname{Beta}(\alpha+x,\beta+n-x).
+\]
+The prior parameters behave like pseudocounts: $\alpha-1$ prior successes and $\beta-1$ prior failures when both exceed one.
+
+The posterior mean is
+\[
+\E[p\mid x]=\frac{\alpha+x}{\alpha+\beta+n},
+\]
+a weighted compromise between the prior mean and the sample proportion.
+
+\begin{center}
+\begin{tikzpicture}[x=8cm,y=1cm]
+  \draw[->,indigo] (0,0)--(1.05,0) node[right] {$p$};
+  \draw[amber,thick,domain=.01:.99,samples=70,smooth] plot (\x,{1.3*(1-\x)});
+  \draw[mint,very thick,domain=.01:.99,samples=70,smooth] plot (\x,{5.5*\x*\x*(1-\x)});
+  \node[amber!80!black] at (.18,1.05) {prior};
+  \node[mint!80!black] at (.76,1.05) {posterior};
+  \node[below] at (0,0) {0}; \node[below] at (1,0) {1};
+\end{tikzpicture}
+\end{center}
+
+\section{Credible intervals and prediction}
+
+A $95\%$ posterior credible interval contains $95\%$ of the posterior probability. This is a conditional probability statement about the parameter under the model and prior. A posterior predictive distribution averages future outcomes over posterior uncertainty:
+\[
+p(y_{\mathrm{new}}\mid y)=\int p(y_{\mathrm{new}}\mid\theta)\pi(\theta\mid y)\,d\theta.
+\]
+
+\section{Prior sensitivity and checking}
+
+Priors make assumptions visible; they do not make assumptions disappear. Compare reasonable priors, examine posterior predictive simulations, and ask whether the fitted model reproduces important features of the data.
+
+\begin{bigidea}
+Frequentist and Bayesian intervals answer different probability questions. The productive comparison is not ``which formula looks similar?'' but ``what is random, what is conditioned upon, and what operating guarantee or posterior statement is being claimed?''
+\end{bigidea}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Update a Beta$(2,2)$ prior after 8 successes in 10 trials. \exlevel{Fluency}
+  \item Compute the posterior mean and compare it with the sample proportion. \exlevel{Fluency}
+  \item Derive beta--binomial conjugacy by collecting powers of $p$ and $1-p$. \exlevel{Reasoning}
+  \item Under a Beta$(\alpha,\beta)$ posterior, find the predictive probability that the next Bernoulli trial succeeds. \exlevel{Reasoning}
+  \item Compare Beta$(1,1)$, Beta$(2,2)$, and Beta$(20,20)$ priors for the same small dataset. \exlevel{Exploration}
+  \item Explain why a credible interval and confidence interval can have the same numerical endpoints but different interpretations. \exlevel{Reasoning}
+  \item Design a posterior predictive check for a coin model that might have time-varying bias. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}
+
+\section*{Capstone: one question, two inferential languages}
+
+Choose a binomial, count, or measurement dataset. State a generative model, inspect the data, estimate the target, and quantify uncertainty both frequentistically and Bayesianly. End with a model check and a paragraph explaining which conclusions are robust to the modeling choices.

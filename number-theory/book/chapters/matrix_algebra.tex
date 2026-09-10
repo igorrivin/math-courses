@@ -1,0 +1,157 @@
+\chapter{Two-by-two matrices and M\"obius maps}\label{app:matrices}
+\chaptertag{A compact toolkit for continued fractions}
+
+This appendix develops only the matrix algebra used in Chapter~3. The central
+idea is simple: a matrix with determinant $\pm1$ can be reversed without ever
+leaving the integers.
+
+\section{Multiplication and determinants}
+
+A $2\times2$ matrix acts on a column vector by
+\[
+ \begin{pmatrix}a&b\\c&d\end{pmatrix}
+ \begin{pmatrix}x\\y\end{pmatrix}
+ =\begin{pmatrix}ax+by\\cx+dy\end{pmatrix}.
+\]
+Matrix multiplication is defined so that composition works as expected:
+applying $B$ and then $A$ is the same as applying $AB$. Explicitly,
+\[
+ \begin{pmatrix}a&b\\c&d\end{pmatrix}
+ \begin{pmatrix}e&f\\g&h\end{pmatrix}
+ =\begin{pmatrix}ae+bg&af+bh\\ce+dg&cf+dh\end{pmatrix}.
+\]
+
+The determinant of $A=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$ is
+$\det A=ad-bc$. It measures invertibility:
+\[
+ A^{-1}=\frac1{ad-bc}
+ \begin{pmatrix}d&-b\\-c&a\end{pmatrix},
+ \qquad\text{provided }ad-bc\ne0.
+\]
+The identity $\det(AB)=\det(A)\det(B)$ makes determinants especially useful
+for long products.
+
+\begin{definition}
+The group $\operatorname{GL}_2(\Z)$ consists of the integer matrices with
+determinant $\pm1$. Its subgroup $\operatorname{SL}_2(\Z)$ consists of those
+with determinant $+1$.
+\end{definition}
+
+\begin{proposition}[Integer reversibility]
+An integer $2\times2$ matrix has an inverse with integer entries if and only if
+its determinant is $\pm1$.
+\end{proposition}
+
+\begin{proof}
+If $\det A=\pm1$, the displayed inverse formula has integer entries. Conversely,
+if both $A$ and $A^{-1}$ have integer entries, then
+$1=\det(I)=\det(A)\det(A^{-1})$ is a product of two integers. Hence
+$\det(A)=\pm1$.
+\end{proof}
+
+\begin{bigidea}
+The columns of a matrix in $\operatorname{GL}_2(\Z)$ form an integer basis of
+$\Z^2$: every integer vector has a unique expression as an integer linear
+combination of those columns. This is the exact algebraic strength supplied by
+the determinant identity for consecutive convergents.
+\end{bigidea}
+
+\section{Matrices as fractional linear maps}
+
+Associate to an invertible matrix
+$A=\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}$, with $ad-bc\ne0$,
+the M\"obius map
+\[
+  T_A(t)=\frac{at+b}{ct+d}.
+\]
+A direct substitution shows
+\[
+  T_A\bigl(T_B(t)\bigr)=T_{AB}(t).
+\]
+Thus nested fractional expressions become matrix products. Multiplying $A$ by
+any nonzero scalar leaves $T_A$ unchanged, but retaining the specific integer
+matrix remembers determinant and divisibility information that the function
+alone would forget.
+
+The inverse map is $T_{A^{-1}}$, so a change of variable transports fixed
+points by conjugation:
+\[
+ x=T_N(x),\quad y=T_M(x)
+ \quad\Longrightarrow\quad y=T_{MNM^{-1}}(y).
+\]
+Section~\ref{sec:periodic-fixed-points} uses this identity to prove that
+adding a finite prefix to a periodic continued fraction preserves
+quadratic irrationality. Section~\ref{sec:galois} then proves the precise
+criterion for pure periodicity.
+
+When $ct+d\ne0$, the quotient rule gives
+\[
+  T_A'(t)=\frac{ad-bc}{(ct+d)^2}.
+\]
+Therefore the determinant tells us whether the map is increasing or decreasing.
+This is the M\"obius derivative trick used to locate alternating convergents.
+
+\section{Continued fractions as iterated products}
+
+One partial quotient corresponds to
+\[
+  D(a)=\begin{pmatrix}a&1\\1&0\end{pmatrix},
+  \qquad T_{D(a)}(t)=a+\frac1t.
+\]
+Consequently,
+\[
+ T_{D(a_0)\cdots D(a_k)}(t)
+ =[a_0;a_1,\dots,a_k,t].
+\]
+The convergent recurrences are equivalent to the product identity
+\[
+ D(a_0)\cdots D(a_k)
+ =\begin{pmatrix}p_k&p_{k-1}\\q_k&q_{k-1}\end{pmatrix}.
+\]
+Since every $D(a_i)$ has determinant $-1$, the product has determinant
+$(-1)^{k+1}$. Hence
+\[
+ p_kq_{k-1}-p_{k-1}q_k=(-1)^{k+1}.
+\]
+
+This one product packages four facts:
+\begin{itemize}
+  \item its first column is the current convergent $(p_k,q_k)$;
+  \item its second column is the preceding convergent $(p_{k-1},q_{k-1})$;
+  \item its determinant says the two columns form an integer basis;
+  \item its M\"obius action inserts an arbitrary remaining tail.
+\end{itemize}
+
+\begin{example}
+For $[4;2,6,7]=415/93$,
+\[
+ D(4)D(2)D(6)D(7)
+ =\begin{pmatrix}415&58\\93&13\end{pmatrix}.
+\]
+Its inverse is
+\[
+ \begin{pmatrix}13&-58\\-93&415\end{pmatrix}.
+\]
+The top row applied to the first column gives
+$13(415)-58(93)=1$. In the opposite direction, multiplying a vector by the
+inverse recovers its integer coordinates in the basis of consecutive
+convergents.
+\end{example}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Multiply three general matrices $D(a_0)D(a_1)D(a_2)$ and identify the
+  two convergents in its columns. \exlevel{Fluency}
+  \item Prove $\det(AB)=\det(A)\det(B)$ directly for $2\times2$ matrices.
+  \exlevel{Reasoning}
+  \item Find the inverse of
+  $\begin{psmallmatrix}17&7\\12&5\end{psmallmatrix}$ and use it to express
+  $(1,0)$ and $(0,1)$ as integer combinations of its columns.
+  \exlevel{Fluency}
+  \item Verify directly that $T_A\circ T_B=T_{AB}$. Explain why multiplying a
+  matrix by $-1$ does not change its M\"obius map. \exlevel{Reasoning}
+  \item Let $P=D(a_1)\cdots D(a_\ell)$. Show that a purely periodic tail
+  $t=[\overline{a_1,\dots,a_\ell}]$ is a fixed point of $T_P$, and derive its
+  quadratic equation from the four entries of $P$. \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}

@@ -1,0 +1,48 @@
+# Dependencies, local runtimes, and generated website output
+node_modules/
+.next/
+.vinext/
+.wrangler/
+.vercel/
+.npm-cache/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Credentials and local environment files
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+*.p12
+*.pfx
+.netrc
+.npmrc
+
+# TeX build intermediates; named teaching PDFs remain tracked
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.bbl
+*.blg
+main.pdf
+
+# Local caches, previews, and older working backups
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+tmp/
+.revision-backups/

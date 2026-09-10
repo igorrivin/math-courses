@@ -1,0 +1,70 @@
+\chapter{A library of chance mechanisms}
+\chaptertag{Standard discrete and continuous distributions}
+
+\begin{question}
+Which probability laws recur because the same mechanisms recur?
+\end{question}
+
+\section{Discrete families}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{lXll}
+\toprule
+Law & Mechanism and mass function & Mean & Variance \\
+\midrule
+Bernoulli$(p)$ & one success indicator; $p^x(1-p)^{1-x}$ & $p$ & $p(1-p)$ \\
+Binomial$(n,p)$ & successes in $n$ independent trials; $\binom nkp^k(1-p)^{n-k}$ & $np$ & $np(1-p)$ \\
+Geometric$(p)$ & trials through first success; $(1-p)^{k-1}p$ & $1/p$ & $(1-p)/p^2$ \\
+Poisson$(\lambda)$ & rare-event count; $e^{-\lambda}\lambda^k/k!$ & $\lambda$ & $\lambda$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The geometric law is memoryless:
+\[
+\P(X>s+t\mid X>s)=\P(X>t).
+\]
+The Poisson law arises as a limit of $\Bin(n,p)$ when $n$ is large, $p$ is small, and $np\approx\lambda$.
+
+\section{Continuous families}
+
+Uniform$(a,b)$ assigns constant density $1/(b-a)$ to an interval. Exponential$(\lambda)$ has density $\lambda e^{-\lambda x}$ on $x\ge0$ and is the continuous memoryless law.
+
+The normal density with mean $\mu$ and variance $\sigma^2$ is
+\[
+f(x)=\frac1{\sigma\sqrt{2\pi}}
+\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right).
+\]
+Standardization sends $X\sim\Normal(\mu,\sigma^2)$ to
+\[
+Z=\frac{X-\mu}{\sigma}\sim\Normal(0,1).
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=1.2cm,y=5cm]
+  \draw[->,indigo] (-3.5,0)--(3.6,0) node[right] {$z$};
+  \draw[mint,very thick,domain=-3.4:3.4,samples=80,smooth] plot (\x,{0.3989*exp(-\x*\x/2)});
+  \fill[amber!35,domain=-1:1,samples=40] plot (\x,{0.3989*exp(-\x*\x/2)}) -- (1,0)--(-1,0)--cycle;
+  \draw (-1,.012)--(-1,-.012) node[below] {$-1$};
+  \draw (1,.012)--(1,-.012) node[below] {$1$};
+  \node at (0,.19) {about $68\%$};
+\end{tikzpicture}
+\end{center}
+
+The beta family on $[0,1]$ has density proportional to $x^{\alpha-1}(1-x)^{\beta-1}$. It is useful for proportions and becomes a natural prior for a Bernoulli probability.
+
+\section{Choose by mechanism, not by silhouette}
+
+A bell-shaped histogram does not prove normality. Ask what generated the observations, what values are possible, whether trials are independent, whether rates are stable, and what approximation error is acceptable.
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item Compute $\P(X\ge2)$ for $X\sim\Bin(5,.3)$. \exlevel{Fluency}
+  \item Prove the geometric memoryless property. \exlevel{Reasoning}
+  \item Approximate $\Bin(1000,.002)$ by a Poisson law and compare $\P(X=0)$. \exlevel{Exploration}
+  \item Find the median of an exponential distribution. \exlevel{Fluency}
+  \item If $X\sim\Normal(10,9)$, express $\P(8<X<13)$ using the standard normal CDF. \exlevel{Fluency}
+  \item Derive the mean and variance of Uniform$(a,b)$. \exlevel{Reasoning}
+  \item For each family in the chapter, invent one plausible and one implausible real-world use. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

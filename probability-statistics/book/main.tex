@@ -1,0 +1,143 @@
+\documentclass[11pt,oneside,openany]{book}
+
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{mathtools,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,patterns,positioning,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{booktabs,tabularx,array,multicol}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\definecolor{ink}{HTML}{17243A}
+\definecolor{indigo}{HTML}{293D70}
+\definecolor{violet}{HTML}{6750A4}
+\definecolor{mint}{HTML}{2A8C82}
+\definecolor{amber}{HTML}{E9A23B}
+\definecolor{rose}{HTML}{D85D75}
+\definecolor{mist}{HTML}{EAF5F2}
+\definecolor{paper}{HTML}{FCFAF5}
+\definecolor{muted}{HTML}{647084}
+
+\pagecolor{paper}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=violet,urlcolor=rose,citecolor=mint,pdfauthor={Course design by OpenAI Codex},pdftitle={Chance, Data, and Decisions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=5pt}
+\setlist[enumerate,1]{label=\textbf{\arabic*.},leftmargin=*}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[C]{\color{violet}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\newtheoremstyle{course}{6pt}{6pt}{\itshape}{}{\bfseries\color{indigo}}{.}{.5em}{}
+\theoremstyle{course}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Guiding question}
+
+\newtcolorbox{bigidea}[1][]{enhanced,breakable,colback=mist,colframe=mint,boxrule=.8pt,arc=2mm,left=5mm,borderline west={3pt}{0pt}{mint},title={Big idea},fonttitle=\bfseries,#1}
+\newtcolorbox{checkpoint}[1][]{enhanced,breakable,colback=white,colframe=amber,boxrule=.7pt,arc=2mm,title={Checkpoint},fonttitle=\bfseries\color{ink},#1}
+\newtcolorbox{warningbox}[1][]{enhanced,breakable,colback=rose!5,colframe=rose,boxrule=.7pt,arc=2mm,title={Common trap},fonttitle=\bfseries,#1}
+\newtcolorbox{labbox}[1][]{enhanced,breakable,colback=indigo!4,colframe=indigo,boxrule=.7pt,arc=2mm,title={Explore},fonttitle=\bfseries,#1}
+\newtcolorbox{exercisebox}[1][]{enhanced,breakable,colback=white,colframe=indigo!45,boxrule=.6pt,arc=1mm,title={Exercises},fonttitle=\bfseries\color{indigo},#1}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\Normal}{\mathcal N}
+\newcommand{\given}{\,\middle|\,}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\exlevel}[1]{\hfill\textcolor{violet}{\small[#1]}}
+\newcommand{\chaptertag}[1]{\par\vspace{-1.4em}{\color{violet}\large\sffamily #1}\par\vspace{1em}}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[indigo] (current page.south west) rectangle (current page.north east);
+  \draw[mint!70,line width=1.4pt] plot[smooth] coordinates {
+    ($(current page.south west)+(1.0,4.0)$)
+    ($(current page.south west)+(2.4,4.2)$)
+    ($(current page.south west)+(3.7,5.3)$)
+    ($(current page.south west)+(5.2,8.2)$)
+    ($(current page.south west)+(6.7,5.3)$)
+    ($(current page.south west)+(8.0,4.2)$)
+    ($(current page.south west)+(9.4,4.0)$)};
+  \foreach \x/\y in {2.0/10.2,2.6/11.1,3.2/9.8,3.8/12.0,4.4/10.7,5.0/11.8,5.6/10.0,6.2/12.4,6.8/11.2,7.4/10.5}{
+    \fill[amber] ($(current page.south west)+(\x,\y)$) circle (2.3pt);
+  }
+  \draw[rose,line width=3pt] ($(current page.south west)+(0,2.0)$) -- ($(current page.south east)+(0,2.0)$);
+\end{tikzpicture}
+\vspace*{4.1cm}
+{\color{amber}\sffamily\bfseries\Large AN INTRODUCTION TO PROBABILITY AND STATISTICS\par}
+\vspace{.5cm}
+{\color{white}\fontsize{36}{42}\selectfont\bfseries Chance, Data,\par and Decisions\par}
+\vspace{1cm}
+{\color{white!78}\Large A visual, inquiry-driven course with exercises\par}
+\vfill
+{\color{white!75}\large One-semester course packet\par}
+{\color{white!55}\normalsize events $\to$ random variables $\to$ samples $\to$ inference\par}
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\frontmatter
+\input{chapters/course_design}
+{\setlength{\parskip}{0pt}\tableofcontents}
+
+\mainmatter
+\input{chapters/01_sets_counting}
+\input{chapters/02_probability_spaces}
+\input{chapters/03_conditioning}
+\input{chapters/04_random_variables}
+\input{chapters/05_standard_distributions}
+\input{chapters/06_joint_distributions}
+\input{chapters/07_limit_theorems}
+\input{chapters/08_estimation_testing}
+\input{chapters/09_bayesian_inference}
+\input{chapters/10_exchangeability}
+
+\appendix
+\input{chapters/solutions}
+\input{chapters/reference}
+
+\backmatter
+\chapter*{Further reading}
+\addcontentsline{toc}{chapter}{Further reading}
+\begin{itemize}
+  \item D. Freedman, R. Pisani, and R. Purves, \emph{Statistics}.
+  \item J. Blitzstein and J. Hwang, \emph{Introduction to Probability}.
+  \item L. Wasserman, \emph{All of Statistics} (for a concise next course).
+  \item A. Gelman et al., \emph{Bayesian Data Analysis} (for a more advanced Bayesian treatment).
+  \item W. Kirsch, \href{https://arxiv.org/abs/1809.00882}{\emph{An elementary proof of de Finetti's Theorem}}, arXiv:1809.00882 (2018).
+  \item P. Diaconis and D. Freedman, \href{https://doi.org/10.1214/aop/1176994663}{\emph{Finite Exchangeable Sequences}}, Annals of Probability \textbf{8}(4) (1980), 745--764.
+\end{itemize}
+
+\vfill
+\begin{center}\color{muted}\small
+Course packet designed as an adaptable teaching draft. Classical results and examples are attributed where appropriate; exposition, exercises, and diagrams are prepared for this packet.
+\end{center}
+
+\end{document}
