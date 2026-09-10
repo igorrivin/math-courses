@@ -1,91 +1,78 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
-import test from "node:test";
+import { readFile } from "node:fs/promises";
+import { before, test } from "node:test";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
+let html;
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-
-  return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
+before(async () => {
+  const { default: worker } = await import("../dist/server/index.js");
+  const response = await worker.fetch(
+    new Request("https://numbertheoryintro.dimensionreducers.ai/", {
+      headers: {
+        accept: "text/html",
+        host: "numbertheoryintro.dimensionreducers.ai",
+        "x-forwarded-proto": "https",
       },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
+    }),
+    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+    { waitUntil() {}, passThroughOnException() {} },
   );
-}
-
-test("server-renders the starter loading skeleton", async () => {
-  const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Building your site/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(
-    html,
-    /Your first version will appear here automatically when it’s ready\./,
-  );
-  assert.doesNotMatch(html, /Codex/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+  html = await response.text();
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
-  ]);
+test("renders the existing course, not the starter preview", () => {
+  assert.match(html, /<title>Patterns, Proofs, and Primes<\/title>/);
+  for (const id of ["course", "labs", "practice"]) {
+    assert.ok(html.includes('id="' + id + '"'));
+  }
+  assert.equal((html.match(/class="chapter-card /g) ?? []).length, 8);
+  assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/);
+});
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
+test("keeps all seven live explorations and their initial output", () => {
+  assert.equal((html.match(/<article class="lab-card\b/g) ?? []).length, 7);
+  for (const id of ["euclid", "fractions", "venus", "modular", "necklaces", "pascal", "primes"]) {
+    assert.ok(html.includes('id="' + id + '"'), "Missing lab: " + id);
+  }
+  assert.match(html, /The alternating trap/);
+  assert.match(html, /continued fraction/);
+  assert.match(html, /Pell/);
+});
 
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
+test("explains the fixed point, prefix conjugation, and both periodicity criteria", () => {
+  assert.match(html, /Linear fractional transformations/);
+  assert.match(html, /ad − bc ≠ 0/);
+  assert.match(html, /ct² \+ \(d − a\)t − b = 0/);
+  assert.match(html, /MNM<sup>−1<\/sup>/);
+  assert.match(html, /Lagrange’s theorem/);
+  assert.match(html, /Galois’s sharper criterion/);
+  assert.match(html, /x &gt; 1 and −1 &lt; x′ &lt; 0/);
+  assert.match(html, /bounded integer states and unique reduced predecessors/);
+  assert.match(html, /seven new exercises and solutions/);
+  assert.match(html, /href="\/course-packet\.pdf#nameddest=section\.3\.7"/);
+});
 
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
+test("preserves the public-facing book link and sharing metadata", () => {
+  assert.match(html, /href="\/course-packet\.pdf"/);
+  assert.match(html, /Download the expanded course packet/);
+  assert.doesNotMatch(html, /68-page/);
+  assert.match(html, /https:\/\/numbertheoryintro\.dimensionreducers\.ai\/og\.png/);
+  assert.match(html, /summary_large_image/);
+});
 
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+test("ships a real PDF identical to the built asset", async () => {
+  const source = await readFile(new URL("../public/course-packet.pdf", import.meta.url));
+  const built = await readFile(new URL("../dist/client/course-packet.pdf", import.meta.url));
+  assert.equal(source.subarray(0, 5).toString(), "%PDF-");
+  assert.ok(source.length > 500_000);
+  assert.deepEqual(built, source);
+});
+
+test("keeps the existing Site binding without adding storage", async () => {
+  const hosting = JSON.parse(await readFile(new URL("../.openai/hosting.json", import.meta.url), "utf8"));
+  assert.equal(hosting.project_id, "appgprj_6a7cbb0e569081919995f0ffb82fc9ba");
+  assert.equal(hosting.d1, null);
+  assert.equal(hosting.r2, null);
 });

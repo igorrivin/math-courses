@@ -7,7 +7,7 @@ type EuclidRow = { a: number; b: number; q: number; r: number };
 const chapters = [
   { n: "01", title: "The algorithm in a rectangle", topic: "Euclid · Bézout · Diophantine equations", accent: "teal", blurb: "Turn repeated division into a proof-producing machine." },
   { n: "02", title: "Every integer has an address", topic: "Unique factorization · √2 irrational · Eratosthenes", accent: "gold", blurb: "Use prime exponents for proof, then uncover primes with the sieve." },
-  { n: "03", title: "Fractions inside fractions", topic: "Matrices · Periodic surds · Pell equations", accent: "coral", blurb: "Turn repeating digit matrices into convergents and Pell solutions." },
+  { n: "03", title: "Fractions inside fractions", topic: "Möbius maps · Lagrange · Galois · Pell", accent: "coral", blurb: "Use matrix fixed points and reduced surds to prove exactly which continued fractions repeat." },
   { n: "04", title: "Arithmetic on a clock", topic: "Congruences · Inverses · Chinese remainders", accent: "teal", blurb: "Forget complete turns and preserve arithmetic structure." },
   { n: "05", title: "A theorem you can rotate", topic: "Necklace orbits · Fermat’s little theorem", accent: "gold", blurb: "Watch divisibility emerge from cyclic symmetry." },
   { n: "06", title: "The reusable machine", topic: "Groups · Cosets · Lagrange · Euler", accent: "coral", blurb: "Name the structure shared by clocks and rotations." },
@@ -149,6 +149,9 @@ function ContinuedFractionLab() {
       </div>
       <p className="observation"><b>The alternating trap:</b> the 1st, 3rd, 5th, … convergents rise below the target; the 2nd, 4th, 6th, … converge downward from above.</p>
       <p className="observation"><b>The matrix spine:</b> multiplying the digit matrices [[a, 1], [1, 0]] places consecutive convergents in its columns. Every product has determinant ±1, so it can be reversed over the integers.</p>
+      <p className="observation"><b>Linear fractional transformations:</b> a matrix M = [[a, b], [c, d]] with ad − bc ≠ 0 acts by T<sub>M</sub>(t) = (at + b)/(ct + d). Composition is matrix multiplication, with the rightmost factor acting first. A repeating tail is a fixed point, giving ct² + (d − a)t − b = 0.</p>
+      <p className="observation"><b>A prefix conjugates the period:</b> if x = T<sub>N</sub>(x) and y = T<sub>M</sub>(x), then y = T<sub>MNM<sup>−1</sup></sub>(y). The nontrivial period matrix stays nontrivial after conjugation, so an eventually periodic continued fraction is still a quadratic irrational. Chapter 3 works this out for √3.</p>
+      <p className="observation"><b>Exactly which numbers repeat?</b> Lagrange’s theorem says: precisely the real quadratic irrationals. Galois’s sharper criterion says the repetition starts immediately exactly when x &gt; 1 and −1 &lt; x′ &lt; 0, where x′ is the other root of its quadratic. Thus √2 is eventually periodic, while 1 + √2 is purely periodic. The <a href="/course-packet.pdf#nameddest=section.3.7">expanded book</a> proves both directions using bounded integer states and unique reduced predecessors, with seven new exercises and solutions.</p>
       <p className="observation"><b>A calendar is an approximation:</b> the tropical year has about 0.2422 extra days. Its convergents begin 1/4, 7/29, 8/33, 31/128. The Julian rule is 1/4; after requiring a cycle of whole centuries, the convergent 97/4 to the per-century excess 100 × 0.2422 becomes the Gregorian rate 97/400.</p>
       <p className="observation"><b>Almost base 11:</b> the Khinchin–Lévy law gives a typical precision factor of e<sup>π²/(6 log 2)</sup> ≈ 10.731 per continued-fraction term—about 1.03 decimal digits.</p>
       <p className="observation"><b>π looks typical; e does not:</b> for the first 100,000 partial quotients of π, the geometric mean is 2.67956 and q<sub>n</sub><sup>2/n</sup> is 10.67835, close to the generic targets 2.68545 and 10.73102—but no limiting theorem is known for π. Euler’s patterned expansion of e instead makes both statistics diverge.</p>
@@ -401,7 +404,7 @@ export default function Home() {
       <section className="section course-section" id="course">
         <div className="section-heading"><div><p className="eyebrow">The course</p><h2>One idea unlocks the next.</h2></div><p>The sequence is a proof journey, not a catalogue: algorithms become structures, structures become symmetry, and symmetry becomes information about primes.</p></div>
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
-        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the complete 68-page packet</a></div>
+        <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the expanded course packet</a></div>
       </section>
 
       <section className="section labs-section" id="labs">

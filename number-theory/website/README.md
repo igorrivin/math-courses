@@ -1,8 +1,16 @@
-# vinext-starter
+# Patterns, Proofs, and Primes — interactive companion
 
-A clean full-stack starter running on
+The number theory course website runs on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Drizzle support. Reuse the existing Site in .openai/hosting.json and preserve
+its public audience and numbertheoryintro.dimensionreducers.ai custom domain.
+
+The September 10, 2026 revision expands Chapter 3 of the downloadable book
+with linear fractional transformations, matrix composition, prefix
+conjugation, complete elementary Lagrange and Galois proofs, period reversal,
+and seven exercises with solutions. The continued-fraction lab introduces the
+same ideas. The editable book lives in the sibling number_theory_course folder;
+public/course-packet.pdf must match its compiled patterns_proofs_primes.pdf.
 
 ## Prerequisites
 
@@ -89,7 +97,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
+- `npm test`: build the course site and verify its rendered lessons, seven labs, metadata, and PDF asset
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
 ## Learn More
