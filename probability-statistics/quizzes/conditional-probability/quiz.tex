@@ -1,0 +1,311 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.68in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,booktabs,array,enumitem,fancyhdr,hyperref}
+
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Conditional Probability and Bayes' Rule: 50-minute Quiz},
+  pdfauthor={Chance, Data, and Decisions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=3pt,topsep=4pt,parsep=2pt}
+\setlist[itemize]{leftmargin=1.5em,itemsep=1pt,topsep=3pt,parsep=0pt}
+
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\edition}{\ifanswers Instructor key\else Student quiz\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[4]{\par\addvspace{8pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points} $\cdot$ about #4 minutes}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{.45in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Conditional probability quiz}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{quiz-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+
+\begin{document}
+
+{\LARGE\bfseries\color{indigo}Conditional Probability and Bayes' Rule}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 50 points
+  \quad $\bullet$ \quad \edition}\par
+\ifanswers
+  \textbf{Grading note.} Subpart scores sum to the problem totals. Award
+  method credit for correct reasoning after an earlier error; do not deduct
+  twice for the same arithmetic mistake. Suggested working time is 46 minutes,
+  leaving 4 minutes to check answers.\par
+\else
+  \smallskip
+  \textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+  \textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Show your reasoning and give exact fractions.
+No calculator is needed. Show the Bayes' Rule setup in Problems 3(c) and 4(d).
+The suggested times leave 4 minutes to check your work.
+
+\problem{1}{Warm-up: a finite probability space}{8}{7}
+A bag contains eight tickets labeled
+$a,b,b,c,c,d,d,d$. Choose one ticket uniformly at random and record its letter.
+An event is any subset of the sample space of recorded letters.
+\begin{enumerate}
+  \item Give the sample space $\Omega$ of recorded letters and the probability
+  of each outcome. Check that these probabilities sum to $1$. \partpts{4}
+  \begin{solution}[.6in]
+    $\Omega=\{a,b,c,d\}$, with
+    $\Prob(\{a\})=1/8$, $\Prob(\{b\})=2/8$,
+    $\Prob(\{c\})=2/8$, and $\Prob(\{d\})=3/8$.
+    The masses are nonnegative and sum to $(1+2+2+3)/8=1$.
+    For any event, add the masses of its letters; disjoint events have no
+    letters in common, so their probabilities add.
+    \credit{Sample space: 1; outcome probabilities: 2; sum check: 1.}
+  \end{solution}
+
+  \item Let $A=\{a,c\}$ and $B=\{c,d\}$. Find
+  $\Prob(A\cap B)$ and $\Prob(A\cup B)$. \partpts{2}
+  \begin{solution}[.55in]
+    $A\cap B=\{c\}$, so $\Prob(A\cap B)=2/8=1/4$.
+    Also $A\cup B=\{a,c,d\}$, so $\Prob(A\cup B)=(1+2+3)/8=3/4$.
+    \credit{Each event probability: 1.}
+  \end{solution}
+
+  \item A student claims $\Prob(A)=2/4$ because $A$ contains two of the four
+  possible letters. Is this correct? Give $\Prob(A)$ and explain. \partpts{2}
+  \begin{solution}[.55in]
+    No: $\Prob(A)=(1+2)/8=3/8$. The tickets are equally likely, but the
+    recorded letters are not. Counting letters and dividing by four would
+    require all four letters to be equally likely.
+    \credit{Correct probability: 1; unequal letter probabilities: 1.}
+  \end{solution}
+\end{enumerate}
+
+\problem{2}{Which group is the denominator?}{10}{10}
+The table describes a group of 60 students. Choose one of them uniformly at
+random. Let $C$ mean ``belongs to the chess club'' and $M$ mean ``plays a
+musical instrument.''
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ & $M$ & $M^c$ & Total\\
+\midrule
+$C$   & 12 & 18 & 30\\
+$C^c$ &  8 & 22 & 30\\
+\midrule
+Total & 20 & 40 & 60\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{enumerate}
+  \item Find $\Prob(C)$, $\Prob(M)$, and $\Prob(C\cap M)$. \partpts{3}
+  \begin{solution}[.4in]
+    $\Prob(C)=30/60=1/2$, $\Prob(M)=20/60=1/3$, and
+    $\Prob(C\cap M)=12/60=1/5$.
+    \credit{Each probability: 1.}
+  \end{solution}
+
+  \item Find $\Prob(M\mid C)$ and $\Prob(C\mid M)$.
+  For each calculation, say which group supplies the denominator. \partpts{4}
+  \begin{solution}[.65in]
+    $\Prob(M\mid C)=12/30=2/5$: the denominator counts the 30 chess-club
+    members. $\Prob(C\mid M)=12/20=3/5$: the denominator counts the 20
+    students who play an instrument.
+    \credit{Each probability: 1; each conditioning group: 1.}
+  \end{solution}
+
+  \item Are $C$ and $M$ independent? Justify your answer using probabilities.
+  \partpts{3}
+  \begin{solution}[.6in]
+    No: $\Prob(C\cap M)=1/5$, whereas
+    $\Prob(C)\Prob(M)=(1/2)(1/3)=1/6$.
+    Equivalently, $\Prob(M\mid C)=2/5\ne1/3=\Prob(M)$.
+    \credit{A valid independence criterion: 1; numerical comparison: 1;
+    conclusion: 1. Reversing the condition and getting different values
+    is not by itself an independence test.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{A red ball: which box?}{12}{11}
+Box $U$ contains three red balls and one blue ball. Box $V$ contains one red
+ball and three blue balls. Choose box $U$ with probability $1/3$ and box $V$
+with probability $2/3$. Then draw one ball uniformly at random from the chosen
+box. Let $U$ and $V$ also denote the events that the corresponding box is
+chosen, and let $R$ denote the event that the ball is red.
+\begin{enumerate}
+  \item List the four possible outcomes of the form (chosen box, ball color)
+  and find their probabilities. Show how the probabilities for box choice and
+  color combine. A labeled tree or table is fine. \partpts{4}
+  \begin{solution}[2in]
+    The conditional red/blue probabilities are $3/4,1/4$ in box $U$ and
+    $1/4,3/4$ in box $V$. Multiply along each path:
+    \begin{center}
+    \begin{tabular}{@{}llc@{}}
+    \toprule
+    Chosen box & Color & Joint probability\\
+    \midrule
+    $U$ & Red  & $(1/3)(3/4)=1/4$\\[3pt]
+    $U$ & Blue & $(1/3)(1/4)=1/12$\\[3pt]
+    $V$ & Red  & $(2/3)(1/4)=1/6$\\[3pt]
+    $V$ & Blue & $(2/3)(3/4)=1/2$\\
+    \bottomrule
+    \end{tabular}
+    \end{center}
+    These four disjoint outcomes have total probability
+    $1/4+1/12+1/6+1/2=1$.
+    \credit{Each outcome with its product and probability: 1.}
+  \end{solution}
+
+  \item Use the law of total probability to find $\Prob(R)$. \partpts{3}
+  \begin{solution}[1.2in]
+    The box choices $U,V$ are disjoint and cover all possibilities, so
+    \[
+      \Prob(R)=\Prob(R\mid U)\Prob(U)+\Prob(R\mid V)\Prob(V)
+      =\frac34\cdot\frac13+\frac14\cdot\frac23=\frac5{12}.
+    \]
+    \credit{Decomposition into the two box cases: 1; correct weighted
+    terms: 1; result: 1.}
+  \end{solution}
+
+  \item The drawn ball is red. Use Bayes' Rule to find the probability
+  that box $U$ was chosen. \partpts{3}
+  \begin{solution}[1.35in]
+    \[
+      \Prob(U\mid R)
+      =\frac{\Prob(R\mid U)\Prob(U)}{\Prob(R)}
+      =\frac{(3/4)(1/3)}{5/12}
+      =\frac{1/4}{5/12}=\frac35.
+    \]
+    \credit{Bayes setup with the prior in the numerator: 1; correct
+    substitution (or consistent use of part (b)): 1; evaluation: 1.}
+  \end{solution}
+
+  \item Another student answers part (c) with $3/4$, saying ``three of the
+  four balls in box $U$ are red.'' Which conditional probability does $3/4$
+  describe, and how does it differ from the probability requested? \partpts{2}
+  \begin{solution}[1.15in]
+    $3/4$ is $\Prob(R\mid U)$: the probability of red when the box is known
+    to be $U$. The question asks for $\Prob(U\mid R)$: the probability the
+    box was $U$ when the color is known to be red. The box choice is
+    uncertain, and both boxes can produce a red ball.
+    \credit{Identify $\Prob(R\mid U)$: 1; explain the reversed conditioning: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{4}{Monty Hall, step by step}{20}{18}
+A car is placed behind one of three doors, with probability $1/3$ for each
+door. The other two doors hide goats. You initially choose Door 1.
+The host follows these rules:
+\begin{itemize}
+  \item The host knows where the car is and always opens exactly one
+  unchosen door that hides a goat.
+  \item If both unchosen doors hide goats, the host chooses between them
+  with equal probability $1/2$.
+  \item The host always offers you the choice of staying with Door 1 or
+  switching to the other unopened door.
+\end{itemize}
+\textbf{You observe the host open Door 3, revealing a goat.}
+Let $C_i$ mean ``the car is behind Door $i$,'' and let $H_3$ mean
+``the host opens Door 3.'' All probabilities below assume your initial
+choice is Door 1.
+\begin{enumerate}
+  \item Before the host opens a door, what are
+  $\Prob(C_1)$, $\Prob(C_2)$, and $\Prob(C_3)$? \partpts{2}
+  \begin{solution}[.35in]
+    $\Prob(C_1)=\Prob(C_2)=\Prob(C_3)=1/3$.
+    \credit{Equal probabilities: 1; correct value $1/3$: 1.}
+  \end{solution}
+
+  \item Fill in the table and briefly explain each entry using the host's
+  rules. These are probabilities of the host's action \emph{given the car's
+  location}. \partpts{6}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{@{}l*{3}{>{\centering\arraybackslash}p{.95in}}@{}}
+  \toprule
+  Car location & $C_1$ & $C_2$ & $C_3$\\
+  \midrule
+  $\Prob(H_3\mid C_i)$ &
+    \ifanswers $1/2$\else\rule{0pt}{.25in}\fi &
+    \ifanswers $1$\fi &
+    \ifanswers $0$\fi\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  \begin{solution}[1in]
+    If $C_1$ occurs, Doors 2 and 3 both hide goats, so the host chooses
+    Door 3 with probability $1/2$. If $C_2$ occurs, the host must open
+    Door 3. If $C_3$ occurs, opening Door 3 would reveal the car and is
+    forbidden by the rules.
+    \credit{Each conditional probability: 1; each explanation: 1.}
+  \end{solution}
+
+  \item Use the law of total probability to find $\Prob(H_3)$.
+  Show all three car-location terms. \partpts{4}
+  \begin{solution}[.95in]
+    The three car locations form disjoint cases covering all possibilities:
+    \[
+      \Prob(H_3)=\sum_{i=1}^3\Prob(H_3\mid C_i)\Prob(C_i)
+      =\frac12\cdot\frac13+1\cdot\frac13+0\cdot\frac13=\frac12.
+    \]
+    \credit{Total-probability setup: 1; three weighted terms: 2;
+    evaluation: 1.}
+  \end{solution}
+
+  \item Use Bayes' Rule to find $\Prob(C_1\mid H_3)$ and
+  $\Prob(C_2\mid H_3)$. Also state $\Prob(C_3\mid H_3)$. \partpts{5}
+  \begin{solution}[1.25in]
+    \[
+      \Prob(C_i\mid H_3)
+      =\frac{\Prob(H_3\mid C_i)\Prob(C_i)}{\Prob(H_3)}.
+    \]
+    Thus
+    \[
+      \Prob(C_1\mid H_3)=\frac{(1/2)(1/3)}{1/2}=\frac13,
+      \qquad
+      \Prob(C_2\mid H_3)=\frac{1(1/3)}{1/2}=\frac23.
+    \]
+    $\Prob(C_3\mid H_3)=0$, since Door 3 has revealed a goat.
+    The three updated probabilities sum to $1$.
+    \credit{For each of Doors 1 and 2, Bayes setup: 1 and calculation: 1;
+    Door 3 probability: 1.}
+  \end{solution}
+
+  \item Should you stay with Door 1 or switch to Door 2? Give the chance
+  of winning under each choice. Explain why ``two doors remain, so each
+  has probability $1/2$'' is not a valid argument. \partpts{3}
+  \begin{solution}[1in]
+    Switch to Door 2: switching wins with probability $2/3$, while staying
+    wins with probability $1/3$, given $H_3$. Two remaining possibilities
+    need not be equally likely. Opening Door 3 is twice as likely when
+    the car is behind Door 2 as when it is behind Door 1; with equal priors,
+    Bayes' Rule therefore gives Door 2 twice the updated probability.
+    \credit{Switch decision: 1; both winning probabilities: 1; explanation
+    referring to unequal likelihoods or the host's informed rule: 1.}
+  \end{solution}
+\end{enumerate}
+
+\label{quiz-last-page}
+\end{document}
