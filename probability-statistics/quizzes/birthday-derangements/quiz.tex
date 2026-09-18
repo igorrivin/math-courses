@@ -1,0 +1,318 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.68in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,booktabs,array,enumitem,fancyhdr,hyperref}
+
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Birthdays, Derangements, and a Little Calculus: 50-minute Quiz},
+  pdfauthor={Chance, Data, and Decisions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=3pt,topsep=4pt,parsep=2pt}
+\setlist[itemize]{leftmargin=1.5em,itemsep=1pt,topsep=3pt,parsep=0pt}
+
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\edition}{\ifanswers Instructor key\else Student quiz\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[4]{\par\addvspace{8pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points} $\cdot$ about #4 minutes}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{.45in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Birthdays and derangements quiz}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{quiz-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+
+\begin{document}
+
+{\LARGE\bfseries\color{indigo}Birthdays, Derangements, and a Little Calculus}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 50 points
+  \quad $\bullet$ \quad \edition}\par
+\ifanswers
+  \textbf{Grading note.} Subpart scores sum to the problem totals. Award
+  method credit for correct reasoning after an earlier error; do not deduct
+  twice for the same arithmetic mistake. Suggested working time is 45 minutes,
+  leaving 5 minutes of slack.\par
+\else
+  \smallskip
+  \textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+  \textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Show your reasoning. Give exact fractions where a
+number is requested; no calculator is needed. You may use
+$\ln 2\approx0.693$ and $1+2+\cdots+(n-1)=n(n-1)/2$ without proof.
+The suggested times leave 5 minutes of slack.
+
+\problem{1}{The calculus toolkit}{10}{8}
+\begin{enumerate}
+  \item Write the Taylor series of $e^x$ about $x=0$: give the terms through
+  $x^3$ and the general term. Then write $1/e$ as an infinite series of
+  numbers. \partpts{3}
+  \begin{solution}[1.5in]
+    \[
+      e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots
+         =\sum_{k=0}^\infty\frac{x^k}{k!},
+      \qquad
+      \frac1e=e^{-1}=\sum_{k=0}^\infty\frac{(-1)^k}{k!}
+      =1-1+\frac1{2!}-\frac1{3!}+\cdots.
+    \]
+    \credit{Terms through $x^3$: 1; general term: 1; series for $1/e$: 1.}
+  \end{solution}
+
+  \item Let $f(x)=\ln(1-x)$. Find $f(0)$ and $f'(0)$, and write the
+  tangent-line approximation to $f(x)$ for $x$ near $0$. \partpts{3}
+  \begin{solution}[1.5in]
+    $f(0)=\ln1=0$. By the chain rule $f'(x)=-1/(1-x)$, so $f'(0)=-1$.
+    The tangent line at $0$ is $f(0)+f'(0)x$, giving
+    $\ln(1-x)\approx -x$ for small $x$.
+    \credit{$f(0)$: 1; $f'(0)$ with the chain-rule sign: 1; approximation: 1.}
+  \end{solution}
+
+  \item Find $\displaystyle\lim_{n\to\infty}n\ln\Bigl(1-\frac1n\Bigr)$, and
+  use it to find $\displaystyle\lim_{n\to\infty}\Bigl(1-\frac1n\Bigr)^{n}$.
+  Justify the first limit (the definition of $f'(0)$ from part (b), or
+  L'H\^opital's rule, will do). \partpts{4}
+  \begin{solution}[2.2in]
+    Put $x=1/n\to0$. Since $f(0)=0$,
+    \[
+      n\ln\Bigl(1-\frac1n\Bigr)=\frac{f(x)-f(0)}{x}\longrightarrow f'(0)=-1 .
+    \]
+    Because $(1-1/n)^n=\exp\bigl(n\ln(1-1/n)\bigr)$ and $\exp$ is continuous,
+    the second limit is $e^{-1}=1/e$.
+    \credit{Rewriting as a difference quotient or a $0/0$ form: 1; first
+    limit $-1$ with justification: 1; taking logarithms/exponentials: 1;
+    answer $1/e$: 1. ``$\ln(1-x)\approx-x$, so the limit is $-1$'' without
+    further comment earns the justification point.}
+  \end{solution}
+\end{enumerate}
+
+\ifanswers\else\newpage\fi
+\problem{2}{Shared birthdays on a $d$-day calendar}{14}{13}
+A year has $d$ days. People enter a room one at a time; their birthdays are
+independent and uniformly distributed over the $d$ days.
+Let $N_n$ be the event that the first $n$ people all have \emph{different}
+birthdays.
+\begin{enumerate}
+  \item Suppose the first $k$ people have $k$ different birthdays. What is the
+  conditional probability $\Prob(N_{k+1}\mid N_k)$ that person $k+1$ misses all
+  of them? Use the multiplication rule to write $\Prob(N_n)$ as a product
+  (for $n\le d$). \partpts{4}
+  \begin{solution}[1.5in]
+    Given $N_k$, exactly $k$ of the $d$ equally likely days are taken, so
+    $\Prob(N_{k+1}\mid N_k)=(d-k)/d=1-k/d$. Since
+    $N_n\subset N_{n-1}\subset\cdots\subset N_1$ and $\Prob(N_1)=1$,
+    \[
+      \Prob(N_n)=\Prob(N_1)\prod_{k=1}^{n-1}\Prob(N_{k+1}\mid N_k)
+      =\prod_{k=1}^{n-1}\Bigl(1-\frac kd\Bigr).
+    \]
+    \credit{Conditional probability: 2; multiplication rule: 1; product with
+    correct range: 1. The counting form $d(d-1)\cdots(d-n+1)/d^n$ is
+    equivalent and earns the last two points.}
+  \end{solution}
+
+  \item Take the logarithm of your product and use $\ln(1-x)\approx-x$ to
+  show that, when $n$ is much smaller than $d$, \partpts{4}
+  \[
+    \Prob(N_n)\approx\exp\Bigl(-\frac{n(n-1)}{2d}\Bigr).
+  \]
+  \begin{solution}[1.7in]
+    \[
+      \ln\Prob(N_n)=\sum_{k=1}^{n-1}\ln\Bigl(1-\frac kd\Bigr)
+      \approx-\sum_{k=1}^{n-1}\frac kd
+      =-\frac1d\cdot\frac{n(n-1)}2 ,
+    \]
+    where each $k/d\le n/d$ is small. Exponentiate both sides.
+    \credit{Logarithm of a product is a sum: 1; linear approximation applied
+    termwise: 1; arithmetic sum: 1; exponentiating: 1.}
+  \end{solution}
+
+  \item On a planet whose year has $d=100$ days, use the approximation in (b)
+  to find the smallest $n$ for which a shared birthday is predicted to be
+  more likely than not. \partpts{3}
+  \begin{solution}[1.4in]
+    We need $\exp(-n(n-1)/200)<1/2$, that is,
+    $n(n-1)>200\ln2\approx138.6$. Since $12\cdot11=132$ and
+    $13\cdot12=156$, the answer is $n=13$.
+    \credit{Inequality $n(n-1)>2d\ln2$: 1; numerical threshold: 1; $n=13$: 1.}
+    {\footnotesize\color{muted}(The exact product gives match probability
+    $0.4968$ for $n=12$ and $0.5572$ for $n=13$, so the prediction is
+    correct.)}
+  \end{solution}
+
+  \item Now only three people are in the room. Find the probability that all
+  three share one birthday, \emph{given} that at least two of them do.
+  Simplify your answer as a function of $d$. \partpts{3}
+  \begin{solution}[1.6in]
+    Let $S$ be ``all three share'' and $M=N_3^c$ be ``at least one match.''
+    Then $S\subset M$, so $\Prob(S\cap M)=\Prob(S)=d/d^3=1/d^2$, while
+    \[
+      \Prob(M)=1-\frac{(d-1)(d-2)}{d^2}=\frac{3d-2}{d^2}.
+    \]
+    Hence $\Prob(S\mid M)=\dfrac{1/d^2}{(3d-2)/d^2}=\dfrac1{3d-2}$.
+    \credit{$\Prob(S)$: 1; $\Prob(M)$ by the complement: 1; conditional
+    probability using $S\subset M$: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{The hat-check problem}{16}{14}
+Each of $n$ guests checks a hat, and the hats are returned in a uniformly
+random order: all $n!$ assignments are equally likely. Let $A_i$ be the event
+that guest $i$ receives their own hat, and let $p_n$ be the probability that
+\emph{nobody} receives their own hat (the assignment is a \emph{derangement}).
+\begin{enumerate}
+  \item For $n=3$, list all the derangements and find $p_3$. \partpts{3}
+  \begin{solution}[.8in]
+    Writing the hats received by guests $1,2,3$ in order, the six assignments
+    are $123,132,213,231,312,321$. Only $231$ and $312$ leave no guest with
+    their own hat, so $p_3=2/6=1/3$.
+    \credit{Each derangement: 1; probability: 1.}
+  \end{solution}
+
+  \item For distinct guests $i_1,\dots,i_k$, explain why
+  $\Prob(A_{i_1}\cap\cdots\cap A_{i_k})=(n-k)!/n!$. Then use
+  inclusion--exclusion to show that \partpts{5}
+  \[
+    p_n=\sum_{k=0}^{n}\frac{(-1)^k}{k!}.
+  \]
+  \begin{solution}[2.1in]
+    If guests $i_1,\dots,i_k$ have their own hats, the other $n-k$ hats may go
+    to the other $n-k$ guests in any of $(n-k)!$ ways, out of $n!$ equally
+    likely assignments. There are $\binom nk$ ways to choose the $k$ guests,
+    so the $k$-th inclusion--exclusion sum is
+    \[
+      \binom nk\frac{(n-k)!}{n!}=\frac{n!}{k!\,(n-k)!}\cdot\frac{(n-k)!}{n!}
+      =\frac1{k!}.
+    \]
+    Therefore
+    \[
+      \Prob(A_1\cup\cdots\cup A_n)=\sum_{k=1}^n\frac{(-1)^{k+1}}{k!},
+      \qquad
+      p_n=1-\Prob(A_1\cup\cdots\cup A_n)=\sum_{k=0}^n\frac{(-1)^k}{k!}.
+    \]
+    \credit{Counting the intersection: 1; $\binom nk$ terms: 1; simplification
+    to $1/k!$: 1; alternating signs: 1; complement: 1.}
+  \end{solution}
+
+  \item Evaluate $p_4$ as a fraction in lowest terms. \partpts{2}
+  \begin{solution}[.7in]
+    $p_4=1-1+\dfrac12-\dfrac16+\dfrac1{24}=\dfrac{12-4+1}{24}=\dfrac9{24}
+    =\dfrac38$.
+    \credit{Five correct terms: 1; $3/8$: 1.}
+  \end{solution}
+
+  \item What is $\lim_{n\to\infty}p_n$? The error made by truncating an
+  alternating series with decreasing terms is at most the first omitted term.
+  Use this to find the smallest $n$ for which this estimate guarantees that
+  $p_n$ is within $1/1000$ of its limit. \partpts{4}
+  \begin{solution}[1.35in]
+    By Problem 1(a), $p_n$ is the $n$-th partial sum of the series for $1/e$,
+    so $p_n\to1/e$. The terms $1/k!$ decrease to $0$, so
+    \[
+      \Bigl|p_n-\frac1e\Bigr|\le\frac1{(n+1)!}.
+    \]
+    We need $(n+1)!\ge1000$. Since $6!=720$ and $7!=5040$, the smallest such
+    $n$ is $n=6$.
+    \credit{Limit $1/e$: 1; bound $1/(n+1)!$: 1; factorial comparison: 1;
+    $n=6$: 1.}
+    {\footnotesize\color{muted}(In fact $|p_5-1/e|\approx0.0012$, so $n=6$ is
+    also the smallest $n$ that actually works.)}
+  \end{solution}
+
+  \item For $n=4$, find the probability that nobody receives their own hat,
+  given that guest $1$ does not. \partpts{2}
+  \begin{solution}[.9in]
+    Let $D$ be the derangement event. Then $D\subset A_1^c$ and
+    $\Prob(A_1^c)=1-1/4=3/4$, so
+    \[
+      \Prob(D\mid A_1^c)=\frac{\Prob(D)}{\Prob(A_1^c)}=\frac{3/8}{3/4}=\frac12.
+    \]
+    \credit{$\Prob(A_1^c)$ and $D\subset A_1^c$: 1; quotient: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{4}{Was the clerk careless?}{10}{10}
+A hat-check clerk is \emph{careful} with probability $2/3$ and
+\emph{careless} with probability $1/3$. A careful clerk returns every hat to
+its owner. A careless clerk returns the hats in a uniformly random order, as
+in Problem 3. Tonight there are $n=3$ guests. Let $L$ mean ``the clerk is
+careless,'' let $A_1$ mean ``guest 1 receives their own hat,'' and let $C$
+mean ``all three guests receive their own hats.''
+\begin{enumerate}
+  \item Find $\Prob(C\mid L)$ and $\Prob(C\mid L^c)$, and use the law of total
+  probability to find $\Prob(C)$. \partpts{3}
+  \begin{solution}[1.1in]
+    Exactly one of the $3!=6$ assignments is correct, so $\Prob(C\mid L)=1/6$,
+    while $\Prob(C\mid L^c)=1$. Hence
+    \[
+      \Prob(C)=\frac16\cdot\frac13+1\cdot\frac23=\frac1{18}+\frac{12}{18}
+      =\frac{13}{18}.
+    \]
+    \credit{Two conditional probabilities: 1; total-probability setup: 1;
+    result: 1.}
+  \end{solution}
+
+  \item All three guests receive their own hats. Use Bayes' Rule to find
+  the probability that the clerk was careless. \partpts{3}
+  \begin{solution}[1.1in]
+    \[
+      \Prob(L\mid C)=\frac{\Prob(C\mid L)\Prob(L)}{\Prob(C)}
+      =\frac{(1/6)(1/3)}{13/18}=\frac{1/18}{13/18}=\frac1{13}.
+    \]
+    \credit{Bayes setup with the prior in the numerator: 1; substitution (or
+    consistent use of part (a)): 1; evaluation: 1.}
+  \end{solution}
+
+  \item Suppose instead you learn only that guest 1 received their own hat.
+  Find $\Prob(L\mid A_1)$. \partpts{2}
+  \begin{solution}[1.1in]
+    $\Prob(A_1\mid L)=2!/3!=1/3$ and $\Prob(A_1\mid L^c)=1$, so
+    \[
+      \Prob(L\mid A_1)=\frac{(1/3)(1/3)}{(1/3)(1/3)+1\cdot(2/3)}
+      =\frac{1/9}{7/9}=\frac17.
+    \]
+    \credit{$\Prob(A_1\mid L)=1/3$: 1; Bayes evaluation: 1.}
+  \end{solution}
+
+  \item Redo part (b) for a general number $n$ of guests, and say what happens
+  to $\Prob(L\mid C)$ as $n\to\infty$. Interpret the limit in one sentence.
+  \partpts{2}
+  \begin{solution}[1.2in]
+    Now $\Prob(C\mid L)=1/n!$, so
+    \[
+      \Prob(L\mid C)=\frac{\frac13\cdot\frac1{n!}}
+        {\frac13\cdot\frac1{n!}+\frac23}=\frac1{1+2\,n!}\longrightarrow0 .
+    \]
+    A careless clerk almost never gets a long list entirely right, so a
+    perfect return is overwhelming evidence of care. ($n=3$ recovers $1/13$.)
+    \credit{Formula: 1; limit with interpretation: 1.}
+  \end{solution}
+\end{enumerate}
+
+\label{quiz-last-page}
+\end{document}
