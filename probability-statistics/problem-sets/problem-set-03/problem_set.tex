@@ -1,0 +1,514 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.78in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb,booktabs,array,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,needspace,hyperref}
+\definecolor{ink}{HTML}{17243A}
+\definecolor{indigo}{HTML}{293D70}
+\definecolor{mint}{HTML}{2A8C82}
+\definecolor{muted}{HTML}{647084}
+\definecolor{mist}{HTML}{EAF5F2}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=mint,urlcolor=mint,
+ pdfauthor={Igor Rivin},pdftitle={Probability Problem Set 3: Counting, Collisions, and Derangements}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\pts}[1]{\hfill\textcolor{muted}{\small[#1 points]}}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}\mbox{\textcolor{muted}{\small(#1)}}}
+\newcommand{\edition}{\ifsolutions Instructor solutions\else Student handout\fi}
+\newcounter{problem}
+\newcommand{\problem}[2]{\par\addvspace{11pt}\Needspace{7\baselineskip}\stepcounter{problem}{\bfseries\color{indigo}\theproblem.\ #1}\pts{#2}\par\nobreak}
+\newcommand{\topic}[1]{\par\addvspace{9pt}\Needspace{10\baselineskip}{\large\bfseries\color{mint}#1}\par\nobreak}
+\newcommand{\studentbreak}{\ifsolutions\else\newpage\fi}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Problem Set 3}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\small\color{mint}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\NewDocumentEnvironment{solution}{+b}{\ifsolutions
+ \begin{tcolorbox}[enhanced,breakable,colback=mist!45,colframe=mint!45,
+  boxrule=.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=7pt,after skip=7pt,title={Solution},
+  title after break={Solution (continued)},colbacktitle=mist,coltitle=mint,
+  fonttitle=\small\bfseries]\small #1\end{tcolorbox}\fi}{}
+
+\begin{document}
+{\LARGE\bfseries\color{indigo}Problem Set 3}\hfill{\small\color{mint}\edition}\\[4pt]
+{\large Counting, collisions, and derangements}\\[4pt]
+{\small\color{muted}100 points + 10 optional challenge points}\par
+\ifsolutions
+\medskip
+\textbf{Teaching note.} This assignment consolidates discrete probability
+spaces and counting, then pushes the birthday and hat-check problems one
+step past the lectures: rigorous two-sided birthday bounds, collision
+patterns, the derangement recurrence, and the distribution of the number of
+correct hats. Allow approximately three and a half hours, excluding the
+challenge. Subpart scores appear in parentheses. Give credit for any correct
+model and reasoning; distinguish a wrong model from an arithmetic error
+carried through correctly.
+\else
+\medskip
+\textbf{Name:}\ \rule{.46\linewidth}{.4pt}\hfill
+\textbf{Due:}\ \rule{.20\linewidth}{.4pt}
+\fi
+
+\medskip
+\textbf{Instructions.} Identify the outcomes, their probabilities, and the
+event being counted. State whether order matters and repetition is allowed.
+Give exact answers except where decimal approximations are requested.
+A calculator or short program may be used for Problems 3, 6, and 7.
+Throughout, $D_n$ is the number of derangements of $n$ objects
+(permutations with no fixed point), and $p_n=D_n/n!$; you may use the formula
+$p_n=\sum_{k=0}^n(-1)^k/k!$ from class. By convention $D_0=1$.
+
+\topic{I. Discrete probability spaces}
+
+\problem{A space with infinitely many outcomes}{10}
+Flip a fair coin until the first head appears and record the number $K$
+of flips used. Take $\Omega=\{1,2,3,\ldots\}$, let $\mathcal F=2^\Omega$,
+and give outcome $k$ the mass $2^{-k}$.
+\begin{enumerate}
+ \item Explain where the mass $2^{-k}$ comes from, and verify that the
+ masses sum to one. What does this say about the possibility that no head
+ ever appears? \partpts{3}
+ \item Find $\P(K\text{ is even})$ and $\P(K\text{ is divisible by }3)$.
+ Find $\P(K>n)$ in two ways: by summing masses, and by describing the event
+ in terms of the first $n$ flips. \partpts{4}
+ \item Show that there is \emph{no} probability measure on
+ $\Omega=\{1,2,3,\ldots\}$ giving every outcome the same mass. Which axiom
+ does the argument use that a finite space never needs? \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item $K=k$ means the flips are $T\cdots TH$ with $k-1$ tails: one
+ specified string among $2^k$ equally likely strings of length $k$.
+ The geometric series gives $\sum_{k\ge1}2^{-k}=\frac{1/2}{1-1/2}=1$.
+ The outcomes ``first head at flip $k$'' already carry total probability
+ one, so ``no head ever'' has probability zero; nothing is lost by
+ omitting it from $\Omega$.
+ \item Both are geometric series:
+ \[
+ \P(K\text{ even})=\sum_{j\ge1}4^{-j}=\frac{1/4}{1-1/4}=\frac13,
+ \qquad
+ \P(3\mid K)=\sum_{j\ge1}8^{-j}=\frac{1/8}{1-1/8}=\frac17 .
+ \]
+ Summing masses, $\P(K>n)=\sum_{k>n}2^{-k}=2^{-n}$. Directly, $K>n$
+ exactly when the first $n$ flips are all tails, which has probability
+ $2^{-n}$.
+ \item Suppose every outcome had mass $c$. Countable additivity applied to
+ $\Omega=\bigcup_k\{k\}$ gives $1=\P(\Omega)=\sum_{k\ge1}c$. If $c=0$
+ the sum is $0$; if $c>0$ it diverges. Either way it is not $1$.
+ The argument uses \emph{countable} additivity; on a finite space finite
+ additivity suffices. (So ``a uniformly random positive integer'' is not a
+ probability model.)
+\end{enumerate}
+\end{solution}
+
+\problem{The larger of two dice}{10}
+Roll two fair dice, one red and one green, and let $M$ be the larger of the
+two values shown (the common value if they agree).
+\begin{enumerate}
+ \item Give $\Omega$ and the mass of each outcome. Show that
+ $\P(M\le k)=k^2/36$ for $k=1,\ldots,6$, and deduce that
+ $\P(M=k)=(2k-1)/36$. \partpts{4}
+ \item Check that your six values of $\P(M=k)$ sum to one. Which familiar
+ identity about odd numbers have you verified, and how does a $6\times6$
+ grid of outcomes explain it? \partpts{3}
+ \item Recording only $M$ produces a new probability space on
+ $\{1,\ldots,6\}$. Find $\P(M\text{ is even})$ in that space. Compare with
+ the probability that a single fair die is even, and explain the direction
+ of the difference. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item $\Omega=\{1,\ldots,6\}^2$ (red, green), each of the 36 ordered pairs
+ having mass $1/36$. $M\le k$ means both dice show at most $k$:
+ $k^2$ outcomes. Since $\{M\le k\}$ is the disjoint union of
+ $\{M\le k-1\}$ and $\{M=k\}$,
+ \[
+ \P(M=k)=\frac{k^2-(k-1)^2}{36}=\frac{2k-1}{36}.
+ \]
+ \item $(1+3+5+7+9+11)/36=36/36$. This is the identity
+ $1+3+\cdots+(2n-1)=n^2$ at $n=6$. In the grid, the outcomes with $M=k$
+ form an L-shaped border of $2k-1$ cells around the $(k-1)\times(k-1)$
+ square, and the six borders tile the whole grid.
+ \item $\P(M\text{ even})=(3+7+11)/36=21/36=7/12$, larger than $1/2$.
+ The masses $(2k-1)/36$ increase with $k$, and each even value $2j$
+ outweighs the odd value $2j-1$ just below it, so the even values
+ collect more than half of the mass. The recorded space has six outcomes,
+ but they are not equally likely.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{II. Permutations and combinations}
+
+\problem{Poker hands}{12}
+A hand is five cards dealt from a well-shuffled standard deck: 13 ranks
+in each of 4 suits. Give each probability as an exact fraction and as a
+decimal to four places.
+\begin{enumerate}
+ \item Describe a probability space in which a hand is an \emph{unordered}
+ set of cards, and count its outcomes. \partpts{2}
+ \item Find the probability of a \emph{full house}: three cards of one rank
+ and two of another. \partpts{3}
+ \item Find the probability of \emph{exactly one pair}: two cards of one
+ rank and three cards of three other, different ranks. \partpts{4}
+ \item For \emph{two pairs} (two cards of one rank, two of another, and a
+ fifth card of a third rank) a student writes
+ $13\binom42\cdot12\binom42\cdot44$. Explain the error, give the correct
+ count, and explain why the same ``first rank, then second rank'' scheme
+ was \emph{not} an error in part (b). \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item $\Omega$ is the set of 5-element subsets of the deck, all equally
+ likely, so $|\Omega|=\binom{52}5=2{,}598{,}960$.
+ \item Choose the rank of the triple and three of its four suits, then
+ the rank of the pair and two of its suits:
+ $13\binom43\cdot12\binom42=3744$. The probability is
+ $3744/2{,}598{,}960=6/4165\approx0.0014$.
+ \item Choose the paired rank and its two suits, then three other ranks
+ as an unordered set, then a suit for each:
+ $13\binom42\binom{12}3 4^3=1{,}098{,}240$, giving probability
+ $352/833\approx0.4226$.
+ \item The scheme orders the two paired ranks, but ``kings and sevens''
+ is the same hand as ``sevens and kings'': every hand is counted twice.
+ The correct count is
+ $\binom{13}2\binom42^2\cdot44=123{,}552$, with probability
+ $198/4165\approx0.0475$. In a full house the two ranks play
+ \emph{different} roles (triple and pair), so an ordered choice of ranks
+ corresponds to exactly one hand. The rule: divide by the symmetry only
+ when the roles are interchangeable.
+\end{enumerate}
+\end{solution}
+
+\problem{Random arrangements of a word with repeats}{12}
+The eleven letter tiles of $\texttt{MISSISSIPPI}$ (one M, four I's, four
+S's, two P's) are placed in a uniformly random order.
+\begin{enumerate}
+ \item How many distinguishable arrangements are there? Explain why all
+ of them are equally likely, even though the underlying experiment permutes
+ eleven physical tiles. \partpts{3}
+ \item Find the probability that no two S's are adjacent.
+ (Arrange the other letters first, then choose gaps.) \partpts{4}
+ \item Find the probability that the first and last letters are the same,
+ in two ways: by counting arrangements, and by looking only at the two
+ physical tiles that land in the first and last positions. \partpts{5}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item There are $11!$ equally likely orderings of labeled tiles, and
+ each distinguishable word arises from exactly $1!\,4!\,4!\,2!$ of them
+ (permute identical letters among themselves). Equal-sized classes of
+ equally likely outcomes are equally likely, and the number of words is
+ $11!/(4!\,4!\,2!)=34{,}650$.
+ \item The seven non-S letters can be arranged in $7!/(4!\,2!)=105$ ways.
+ They create 8 gaps (including the two ends); the S's are non-adjacent
+ exactly when they occupy four different gaps, $\binom84=70$ choices.
+ Thus $105\cdot70=7350$ arrangements, and the probability is
+ $7350/34{,}650=7/33$.
+ \item \emph{Counting words.} If both ends are I, the middle nine letters
+ are M, II, SSSS, PP: $9!/(2!\,4!\,2!)=3780$ words. Both ends S gives
+ $3780$ by symmetry, and both ends P gives $9!/(4!\,4!)=630$.
+ The probability is $(3780+3780+630)/34{,}650=8190/34{,}650=13/55$.
+
+ \emph{Two tiles.} The ordered pair of tiles in positions 1 and 11 is
+ uniform over the $11\cdot10$ ordered pairs of distinct tiles. The number
+ of pairs with equal letters is $4\cdot3+4\cdot3+2\cdot1=26$, so the
+ probability is $26/110=13/55$.
+\end{enumerate}
+\end{solution}
+
+\problem{Committees and Vandermonde's identity}{10}
+A five-person committee is chosen uniformly at random from a club of
+6 women and 9 men.
+\begin{enumerate}
+ \item Find the probability that the committee has exactly two women.
+ \partpts{3}
+ \item Find the probability that it includes at least one woman and at
+ least one man. \partpts{3}
+ \item Prove \emph{Vandermonde's identity}
+ $\displaystyle\sum_{j=0}^k\binom mj\binom n{k-j}=\binom{m+n}k$
+ by a counting argument (with $\binom ab=0$ when $b>a$). What does it say
+ about the probabilities in part (a), taken over all possible numbers of
+ women? \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item There are $\binom{15}5=3003$ equally likely committees, of which
+ $\binom62\binom93=15\cdot84=1260$ have exactly two women. The probability
+ is $1260/3003=60/143$.
+ \item The complement is ``all men or all women,'' two disjoint events with
+ $\binom95=126$ and $\binom65=6$ committees. The probability is
+ $1-132/3003=1-4/91=87/91$.
+ \item Count the $k$-person committees from $m$ women and $n$ men. Directly
+ there are $\binom{m+n}k$. Alternatively classify by the number $j$ of
+ women: choose them in $\binom mj$ ways and the $k-j$ men in
+ $\binom n{k-j}$ ways. The classes are disjoint and exhaustive, so the
+ sum equals $\binom{m+n}k$. Dividing by $\binom{m+n}k$: the probabilities
+ $\binom mj\binom n{k-j}/\binom{m+n}k$ of ``exactly $j$ women,''
+ $j=0,\ldots,k$, sum to one, as the probabilities of a partition of
+ $\Omega$ must.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{III. Birthday collisions}
+
+\problem{Two honest bounds for the birthday problem}{12}
+Each of $n$ customers independently chooses a four-digit PIN uniformly from
+the $d=10^4$ possibilities. Let $N_n$ be the event that all $n$ PINs are
+different, so that $\P(N_n)=\prod_{k=1}^{n-1}(1-k/d)$. In class we
+\emph{approximated} $\ln(1-x)\approx-x$. Here you will replace the
+approximation by inequalities.
+\begin{enumerate}
+ \item Prove that $1-x\le e^{-x}$ for every real $x$. \partpts{3}
+ \item Deduce that $\P(\text{some two PINs agree})\ge
+ 1-\exp\bigl(-n(n-1)/(2d)\bigr)$: the approximation from class is a
+ rigorous \emph{lower} bound for the collision probability. \partpts{3}
+ \item Let $E_{ij}$ be the event that customers $i$ and $j$ choose the same
+ PIN. Using $\P(A\cup B)\le\P(A)+\P(B)$, show that
+ $\P(\text{some two PINs agree})\le\binom n2/d$. \partpts{3}
+ \item Use (c) to show that a collision is less likely than not when
+ $n\le100$, and (b) to show that it is more likely than not when
+ $n\ge119$ (use $\ln2\approx0.693147$). Then compute the exact
+ collision probabilities for $n=118$ and $n=119$ to four decimal places.
+ \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Let $g(x)=e^{-x}-(1-x)$. Then $g'(x)=1-e^{-x}$ is negative for
+ $x<0$ and positive for $x>0$, so $g$ has its minimum at $x=0$, where
+ $g(0)=0$. Hence $g\ge0$. (Equivalently: the convex function $e^{-x}$ lies
+ above its tangent line at $0$.)
+ \item Every factor satisfies $0\le1-k/d\le e^{-k/d}$, and inequalities
+ between nonnegative numbers may be multiplied:
+ \[
+ \P(N_n)\le\prod_{k=1}^{n-1}e^{-k/d}
+ =\exp\Bigl(-\frac1d\sum_{k=1}^{n-1}k\Bigr)
+ =\exp\Bigl(-\frac{n(n-1)}{2d}\Bigr).
+ \]
+ Take complements.
+ \item The collision event is $\bigcup_{i<j}E_{ij}$, a union of $\binom n2$
+ events. By induction the two-event inequality gives
+ $\P(\bigcup_m A_m)\le\sum_m\P(A_m)$ for finitely many events.
+ Whatever PIN customer $i$ chose, customer $j$ matches it with probability
+ $1/d$, so $\P(E_{ij})=1/d$ and the bound is $\binom n2/d$.
+ \item For $n\le100$ the collision probability is at most
+ $\binom{100}2/10^4=0.495<1/2$; it is nondecreasing in $n$, so the single
+ case $n=100$ suffices. By (b), the collision probability exceeds $1/2$ as
+ soon as $n(n-1)>2d\ln2\approx13{,}862.9$; since $118\cdot117=13{,}806$
+ and $119\cdot118=14{,}042$, this holds for $n\ge119$. Exactly,
+ \[
+ 1-\P(N_{118})\approx0.4999,\qquad 1-\P(N_{119})\approx0.5058,
+ \]
+ so the threshold is $n=119$. (To more places $1-\P(N_{118})=0.499936$,
+ a remarkably near miss. The lower bound from (b) is $0.4986$ and $0.5045$
+ at these two values: accurate to about one part in a thousand.)
+\end{enumerate}
+\end{solution}
+
+\problem{What kind of collision?}{12}
+\begin{enumerate}
+ \item Four labeled people have independent birth \emph{months}, uniform on
+ 12 months. Classify the $12^4$ outcomes by pattern: all four different;
+ exactly one shared pair (the other two different from it and from each
+ other); two different shared pairs; three alike and one different; all
+ four alike. Count each pattern, and check that the counts total $12^4$.
+ \partpts{6}
+ \item Now $n$ people have independent birthdays, uniform on $d$ days,
+ with $2\le n\le d+1$. Show that the probability that exactly one pair
+ shares a birthday and all other birthdays are different from it and from
+ each other is $\binom n2\,d(d-1)\cdots(d-n+2)/d^n$. \partpts{3}
+ \item For $n=23$ and $d=365$, compute to four decimal places the
+ probabilities of no shared birthday, of the pattern in (b), and of any
+ more complicated coincidence. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item In each case choose which people are grouped, then assign distinct
+ months to the groups.
+ \begin{center}\small
+ \begin{tabular}{@{}llr@{}}
+ \toprule
+ Pattern & Count & \\
+ \midrule
+ All different & $12\cdot11\cdot10\cdot9$ & 11{,}880\\
+ One pair & $\binom42\cdot12\cdot11\cdot10$ & 7{,}920\\
+ Two pairs & $3\cdot12\cdot11$ & 396\\
+ Three and one & $4\cdot12\cdot11$ & 528\\
+ All alike & $12$ & 12\\
+ \midrule
+ Total & & $20{,}736=12^4$\\
+ \bottomrule
+ \end{tabular}
+ \end{center}
+ For two pairs, there are $3$ ways to split four people into two unordered
+ pairs; once the split is fixed, the pair containing person 1 is
+ distinguished, so its month and the other pair's month form an ordered
+ choice, $12\cdot11$. (The probabilities are $55/96$, $55/144$, $11/576$,
+ $11/432$, $1/1728$.)
+ \item Choose the pair in $\binom n2$ ways. The pair together with the
+ $n-2$ other people forms $n-1$ labeled groups needing distinct days:
+ $d(d-1)\cdots(d-n+2)$ assignments. Different choices give different
+ birthday lists, and all $d^n$ lists are equally likely.
+ \item No match: $0.4927$. Exactly one pair: $0.3634$. Anything more
+ complicated (two or more pairs, a triple, \dots):
+ $1-0.4927-0.3634=0.1439$. So when a class of 23 has a coincidence, it is a
+ single pair about 72\% of the time.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{IV. Derangements}
+
+\problem{A recurrence for derangements}{10}
+\begin{enumerate}
+ \item Prove that $D_n=(n-1)\,(D_{n-1}+D_{n-2})$ for $n\ge2$, by a counting
+ argument. Suggested route: in a derangement guest 1 receives some hat
+ $j\ne1$; separate the cases in which guest $j$ does, or does not, receive
+ hat 1. \partpts{5}
+ \item Starting from $D_0=1$ and $D_1=0$, compute $D_2,\ldots,D_6$, and
+ check $D_6$ against the formula for $p_6$. \partpts{2}
+ \item The alternating-series estimate gives
+ $|p_n-1/e|<1/(n+1)!$. Deduce that for $n\ge2$, $D_n$ is the integer
+ nearest to $n!/e$, and confirm this for $n=6$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item There are $n-1$ choices for the hat $j$ received by guest 1; by
+ symmetry each contributes the same number of derangements.
+ \emph{Case 1: guest $j$ receives hat 1.} Guests 1 and $j$ have swapped,
+ and the remaining $n-2$ guests must derange their own $n-2$ hats:
+ $D_{n-2}$ ways.
+ \emph{Case 2: guest $j$ does not receive hat 1.} The guests other than 1
+ must receive the hats other than $j$, with guest $j$ forbidden hat 1 and
+ every other guest $i$ forbidden hat $i$. Renaming hat 1 as ``hat $j$''
+ makes this exactly a derangement of $n-1$ guests: $D_{n-1}$ ways.
+ The cases are disjoint and exhaustive, so
+ $D_n=(n-1)(D_{n-2}+D_{n-1})$.
+ \item $D_2=1\cdot(0+1)=1$, $D_3=2(1+0)=2$, $D_4=3(2+1)=9$,
+ $D_5=4(9+2)=44$, $D_6=5(44+9)=265$. The formula gives
+ $p_6=\frac12-\frac16+\frac1{24}-\frac1{120}+\frac1{720}
+ =\frac{360-120+30-6+1}{720}=\frac{265}{720}$.
+ \item Multiply by $n!$:
+ $|D_n-n!/e|<n!/(n+1)!=1/(n+1)\le1/3$ for $n\ge2$. An integer within
+ $1/2$ of a real number is the nearest integer to it, and it is unique.
+ For $n=6$: $720/e\approx264.87$, nearest integer $265$.
+\end{enumerate}
+\end{solution}
+
+\problem{How many guests get the right hat?}{12}
+The hats of $n$ guests are returned as a uniformly random permutation.
+\begin{enumerate}
+ \item Show that the probability that \emph{exactly} $k$ guests receive
+ their own hats is $\binom nk D_{n-k}/n!=p_{n-k}/k!$. \partpts{3}
+ \item For $n=5$, tabulate the number of permutations with exactly $k$
+ correct hats for $k=0,1,\ldots,5$, and check the total. \partpts{3}
+ \item Explain in words why exactly $n-1$ correct hats is impossible, and
+ how the formula in (a) knows this. For fixed $k$, find the limit of the
+ probability in (a) as $n\to\infty$. \partpts{3}
+ \item Show that the total number of correct hats, summed over all $n!$
+ permutations, is exactly $n!$, by counting pairs (permutation, guest with
+ the correct hat) in a second way. Verify this with your table from (b).
+ What is the average number of correct hats, and how does it depend on
+ $n$? \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Choose which $k$ guests are correct, $\binom nk$ ways; the other
+ $n-k$ guests must then derange their own hats, $D_{n-k}$ ways. Different
+ choices give different permutations. Dividing by $n!$,
+ \[
+ \frac{n!}{k!\,(n-k)!}\cdot\frac{D_{n-k}}{n!}
+ =\frac1{k!}\cdot\frac{D_{n-k}}{(n-k)!}=\frac{p_{n-k}}{k!}.
+ \]
+ \item Using $D_0,\ldots,D_5=1,0,1,2,9,44$:
+ \begin{center}\small
+ \begin{tabular}{@{}l*{6}{r}r@{}}
+ \toprule
+ $k$ & 0 & 1 & 2 & 3 & 4 & 5 & Total\\
+ \midrule
+ $\binom5kD_{5-k}$ & 44 & 45 & 20 & 10 & 0 & 1 & 120\\
+ \bottomrule
+ \end{tabular}
+ \end{center}
+ \item If $n-1$ guests have their own hats, the one remaining hat belongs
+ to the one remaining guest, who is then also correct. In the formula this
+ is $D_1=0$. For fixed $k$, $p_{n-k}\to1/e$, so the probability tends to
+ $e^{-1}/k!$. (These limits sum to $e^{-1}\sum_k1/k!=1$: they form a
+ probability distribution on $\{0,1,2,\ldots\}$, which we shall meet again
+ as the Poisson distribution with mean 1.)
+ \item Count pairs $(\sigma,i)$ with $\sigma(i)=i$. Grouping by $\sigma$
+ gives the total number of correct hats. Grouping by $i$: the permutations
+ fixing $i$ are the $(n-1)!$ permutations of the other hats, so there are
+ $n\cdot(n-1)!=n!$ pairs. Table check:
+ $0\cdot44+1\cdot45+2\cdot20+3\cdot10+4\cdot0+5\cdot1=120$. The average
+ number of correct hats is $n!/n!=1$ for every $n$: a larger party offers
+ more chances, each proportionally less likely.
+\end{enumerate}
+\end{solution}
+
+\par\addvspace{12pt}\Needspace{8\baselineskip}
+{\bfseries\color{mint}Optional challenge: Secret Santa}\pts{10 extra}
+
+In a Secret Santa, $n\ge3$ people draw names from a hat, and the draw is
+repeated from scratch until nobody has drawn their own name.
+\begin{enumerate}
+ \item Explain why the final assignment is uniformly distributed over
+ the $D_n$ derangements. For $n=5$, find the probability that more than
+ three draws are needed. \partpts{3}
+ \item Find the probability that persons 1 and 2 draw each other, in terms
+ of derangement numbers, and evaluate it for $n=6$. \partpts{3}
+ \item Find the probability that person 1 draws person 2, for general $n$.
+ Then use (b) to find the conditional probability that 2 drew 1, given
+ that 1 drew 2, for $n=6$. Is reciprocation more or less likely than the
+ unconditional probability that 2 draws 1? \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+ \item Each draw is a uniform permutation, and draws are independent. The
+ first successful draw is a uniform permutation conditioned on being a
+ derangement; conditioning a uniform distribution on a subset gives the
+ uniform distribution on that subset, since every derangement $\sigma$ has
+ conditional probability $(1/n!)/(D_n/n!)=1/D_n$. For $n=5$ a draw fails
+ with probability $1-44/120=19/30$, so more than three draws are needed
+ with probability $(19/30)^3=6859/27{,}000\approx0.254$.
+ \item If 1 and 2 swap, the other $n-2$ people must derange among
+ themselves: $D_{n-2}$ of the $D_n$ equally likely derangements. For
+ $n=6$ this is $D_4/D_6=9/265$.
+ \item Relabeling persons $2,\ldots,n$ maps derangements to derangements,
+ so person 1 is equally likely to draw each of the other $n-1$ people:
+ the probability is $1/(n-1)$. For $n=6$,
+ \[
+ \P(2\to1\mid1\to2)=\frac{9/265}{1/5}=\frac{9}{53}\approx0.170
+ <\frac15 .
+ \]
+ Reciprocation is slightly \emph{less} likely than the unconditional $1/5$.
+ In general, by the recurrence of Problem 8 the derangements with $1\to2$
+ number $D_{n-1}+D_{n-2}$, of which the $D_{n-2}$ of Case 1 reciprocate.
+ The formula for $p_m$ gives $D_m=mD_{m-1}+(-1)^m$, and therefore
+ \[
+ \P(2\to1\mid1\to2)=\frac{D_{n-2}}{D_{n-1}+D_{n-2}}
+ =\frac1{\,n+(-1)^{n-1}/D_{n-2}\,},
+ \]
+ which is close to $1/n$ rather than $1/(n-1)$; at $n=6$ it is
+ $1/(6-\frac19)=9/53$. It is below $1/(n-1)$ for every $n\ge3$ except
+ $n=4$, where the two agree.
+\end{enumerate}
+\textbf{Suggested credit:} as marked, (3), (3), (4); in (c) award 2 for
+$1/(n-1)$ with a symmetry argument and 2 for the conditional probability
+and comparison.
+\end{solution}
+\end{document}

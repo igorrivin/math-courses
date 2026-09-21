@@ -16,8 +16,9 @@ cardinality and probabilistic inclusion-exclusion, and the birthday paradox.
 The birthday model assumes independent, uniformly distributed birthdays;
 its simulation is compared with the exact product formula.
 
-`public/problem-set-02.pdf` is the student handout. Instructor solutions are
-kept with the separate course materials, outside the public site.
+`public/problem-set-02.pdf` and `public/problem-set-03.pdf` are the student
+handouts. Instructor solutions are kept with the separate course materials,
+outside the public site.
 
 ## Local development
 

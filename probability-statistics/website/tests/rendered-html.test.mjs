@@ -54,7 +54,7 @@ test("the ten-chapter course includes the exchangeability capstone", () => {
 
 test("student-facing downloads are PDFs and do not expose the instructor key", async () => {
   const publicDir = new URL("../public/", import.meta.url);
-  for (const name of ["course-packet.pdf", "problem-set-02.pdf"]) {
+  for (const name of ["course-packet.pdf", "problem-set-02.pdf", "problem-set-03.pdf"]) {
     assert.ok(html.includes(`href="/${name}"`));
     const bytes = await readFile(new URL(name, publicDir));
     assert.equal(bytes.subarray(0, 5).toString(), "%PDF-");

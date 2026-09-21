@@ -62,8 +62,9 @@ No repository-root npm workspace or shared dependency installation is needed.
 
 After editing and compiling a book, update its named PDF and the matching
 website `public/course-packet.pdf` together. Keep the probability website's
-`public/problem-set-02.pdf` in sync with the student edition in
-`probability-statistics/problem-sets/problem-set-02/`.
+`public/problem-set-02.pdf` and `public/problem-set-03.pdf` in sync with the
+student editions in `probability-statistics/problem-sets/problem-set-02/` and
+`problem-set-03/`.
 
 ## Existing websites
 
