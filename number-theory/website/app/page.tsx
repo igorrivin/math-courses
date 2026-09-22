@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { CattleLab, PellLab } from "./quadratic-labs";
 
 type EuclidRow = { a: number; b: number; q: number; r: number };
 
 const chapters = [
   { n: "01", title: "The algorithm in a rectangle", topic: "Euclid · Bézout · Diophantine equations", accent: "teal", blurb: "Turn repeated division into a proof-producing machine." },
   { n: "02", title: "Every integer has an address", topic: "Unique factorization · √2 irrational · Eratosthenes", accent: "gold", blurb: "Use prime exponents for proof, then uncover primes with the sieve." },
-  { n: "03", title: "Fractions inside fractions", topic: "Möbius maps · Lagrange · Galois · Pell", accent: "coral", blurb: "Use matrix fixed points and reduced surds to prove exactly which continued fractions repeat." },
+  { n: "03", title: "Fractions inside fractions", topic: "Lagrange–Galois · Pell · Archimedes", accent: "coral", blurb: "Prove why surds repeat, locate Pell solutions, and count the Cattle of the Sun." },
   { n: "04", title: "Arithmetic on a clock", topic: "Congruences · Inverses · Chinese remainders", accent: "teal", blurb: "Forget complete turns and preserve arithmetic structure." },
   { n: "05", title: "A theorem you can rotate", topic: "Necklace orbits · Fermat’s little theorem", accent: "gold", blurb: "Watch divisibility emerge from cyclic symmetry." },
   { n: "06", title: "The reusable machine", topic: "Groups · Cosets · Lagrange · Euler", accent: "coral", blurb: "Name the structure shared by clocks and rotations." },
@@ -151,12 +152,12 @@ function ContinuedFractionLab() {
       <p className="observation"><b>The matrix spine:</b> multiplying the digit matrices [[a, 1], [1, 0]] places consecutive convergents in its columns. Every product has determinant ±1, so it can be reversed over the integers.</p>
       <p className="observation"><b>Linear fractional transformations:</b> a matrix M = [[a, b], [c, d]] with ad − bc ≠ 0 acts by T<sub>M</sub>(t) = (at + b)/(ct + d). Composition is matrix multiplication, with the rightmost factor acting first. A repeating tail is a fixed point, giving ct² + (d − a)t − b = 0.</p>
       <p className="observation"><b>A prefix conjugates the period:</b> if x = T<sub>N</sub>(x) and y = T<sub>M</sub>(x), then y = T<sub>MNM<sup>−1</sup></sub>(y). The nontrivial period matrix stays nontrivial after conjugation, so an eventually periodic continued fraction is still a quadratic irrational. Chapter 3 works this out for √3.</p>
-      <p className="observation"><b>Exactly which numbers repeat?</b> Lagrange’s theorem says: precisely the real quadratic irrationals. Galois’s sharper criterion says the repetition starts immediately exactly when x &gt; 1 and −1 &lt; x′ &lt; 0, where x′ is the other root of its quadratic. Thus √2 is eventually periodic, while 1 + √2 is purely periodic. The <a href="/course-packet.pdf#nameddest=section.3.7">expanded book</a> proves both directions using bounded integer states and unique reduced predecessors, with seven new exercises and solutions.</p>
+      <p className="observation"><b>Exactly which numbers repeat?</b> Lagrange’s theorem says: precisely the real quadratic irrationals. Galois’s sharper criterion says the repetition starts immediately exactly when x &gt; 1 and −1 &lt; x′ &lt; 0, where x′ is the other root of its quadratic. Thus √2 is eventually periodic, while 1 + √2 is purely periodic. The <a href="/course-packet.pdf#nameddest=section.3.7">expanded book</a> proves both directions using bounded integer states and unique reduced predecessors, with worked examples, exercises, and solutions. <a href="/04_mobius_lagrange_galois.ipynb" download>Sage Lab 4</a> turns these proofs into exact matrix and quadratic-field experiments.</p>
       <p className="observation"><b>A calendar is an approximation:</b> the tropical year has about 0.2422 extra days. Its convergents begin 1/4, 7/29, 8/33, 31/128. The Julian rule is 1/4; after requiring a cycle of whole centuries, the convergent 97/4 to the per-century excess 100 × 0.2422 becomes the Gregorian rate 97/400.</p>
       <p className="observation"><b>Almost base 11:</b> the Khinchin–Lévy law gives a typical precision factor of e<sup>π²/(6 log 2)</sup> ≈ 10.731 per continued-fraction term—about 1.03 decimal digits.</p>
       <p className="observation"><b>π looks typical; e does not:</b> for the first 100,000 partial quotients of π, the geometric mean is 2.67956 and q<sub>n</sub><sup>2/n</sup> is 10.67835, close to the generic targets 2.68545 and 10.73102—but no limiting theorem is known for π. Euler’s patterned expansion of e instead makes both statistics diverge.</p>
       <p className="observation"><b>Continued fractions can calculate:</b> Gosper’s homographic and bihomographic algorithms absorb input terms and emit certified output terms using only integer matrices. A modern interval-valued refinement prevents exact boundary cases—such as √2 × √2 = 2—from stalling forever.</p>
-      <p className="observation"><b>Periodicity meets Pell:</b> Lagrange and Galois explain the repeating surd; its period matrices generate Pell solutions. In reverse, Legendre’s criterion recognizes every ±1 Pell solution as a convergent.</p>
+      <p className="observation"><b>Periodicity meets Pell:</b> The identity p<sub>k</sub>² − Dq<sub>k</sub>² = (−1)<sup>k+1</sup>Q<sub>k+1</sub> proves that a period endpoint gives norm ±1. The <a href="#pell">exact Pell lab</a> shows the parity rule and the palindromic digits; <a href="#cattle">Archimedes’ cattle</a> add a divisibility condition to the resulting Pell equation.</p>
     </article>
   );
 }
@@ -391,11 +392,11 @@ export default function Home() {
       <nav className="topbar">
         <a className="brand" href="#top" aria-label="Patterns, Proofs, and Primes home"><span>PP</span><b>Patterns, Proofs,<br />and Primes</b></a>
         <button className="menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu}>Menu</button>
-        <div className={menu ? "navlinks open" : "navlinks"}><a href="#course">Course</a><a href="#labs">Labs</a><a href="#practice">Practice</a><a className="pdf-link" href="/course-packet.pdf">PDF edition ↗</a></div>
+        <div className={menu ? "navlinks open" : "navlinks"}><a href="#course">Course</a><a href="#labs">Labs</a><a href="#practice">Practice</a><a href="#sage">Sage</a><a className="pdf-link" href="/course-packet.pdf">PDF edition ↗</a></div>
       </nav>
 
       <header className="hero" id="top">
-        <div className="hero-copy"><p className="kicker">An interactive introduction to number theory</p><h1>Patterns,<br />Proofs, <span>and Primes</span></h1><p className="lede">Start with a rectangle. Follow Venus around the Sun. Rotate a necklace. Then carry the patterns all the way to a proof.</p><div className="hero-actions"><a className="button primary" href="#labs">Open the math lab</a><a className="button quiet" href="#course">See the 14-week course</a></div><div className="hero-meta"><span>8 chapters</span><span>7 live explorations</span><span>70+ exercises</span></div></div>
+        <div className="hero-copy"><p className="kicker">An interactive introduction to number theory</p><h1>Patterns,<br />Proofs, <span>and Primes</span></h1><p className="lede">Start with a rectangle. Follow Venus around the Sun. Rotate a necklace. Then carry the patterns all the way to a proof.</p><div className="hero-actions"><a className="button primary" href="#labs">Open the math lab</a><a className="button quiet" href="#course">See the 14-week course</a></div><div className="hero-meta"><span>8 chapters</span><span>9 live explorations</span><span>5 Sage notebooks</span><span>70+ exercises</span></div></div>
         <div className="hero-orbits" aria-hidden="true"><div className="orbit o1" /><div className="orbit o2" /><div className="orbit o3" /><div className="orbit o4" />{Array.from({ length: 12 }, (_, i) => <i key={i} style={{ transform: `rotate(${i * 30}deg) translateY(-154px)` }} />)}<div className="hero-formula">a<sup>p</sup> ≡ a <span>(mod p)</span></div></div>
       </header>
 
@@ -409,7 +410,7 @@ export default function Home() {
 
       <section className="section labs-section" id="labs">
         <div className="section-heading light"><div><p className="eyebrow">Interactive companion</p><h2>Touch the structure.</h2></div><p>Every experiment is paired with a proof question. Computation is the microscope—not the oracle.</p></div>
-        <div className="labs-stack"><EuclidLab /><ContinuedFractionLab /><VenusOrbitLab /><ModularLab /><NecklaceLab /><PascalLab /><PrimeLab /></div>
+        <nav className="lab-jump-links" aria-label="Number theory labs"><a href="#fractions">Continued fractions</a><a href="#pell">Pell & palindromes</a><a href="#cattle">Archimedes’ cattle</a><a href="#sage">Sage notebooks</a></nav><div className="labs-stack"><EuclidLab /><ContinuedFractionLab /><VenusOrbitLab /><ModularLab /><NecklaceLab /><PascalLab /><PrimeLab /><PellLab /><CattleLab /></div>
       </section>
 
       <section className="section practice-section" id="practice">
@@ -419,6 +420,18 @@ export default function Home() {
           <article><span>02</span><h3>Reasoning</h3><p>Intermediate claims guide students through complete proofs.</p><strong>Example</strong><blockquote>Why does a nonconstant word of prime length have exactly p rotations?</blockquote></article>
           <article><span>03</span><h3>Exploration</h3><p>Generate evidence, form a conjecture, then test its limits.</p><strong>Example</strong><blockquote>Color Pascal’s triangle modulo p. What do its repeating blocks know about base p?</blockquote></article>
         </div>
+      </section>
+
+      <section className="section sage-section" id="sage">
+        <div className="section-heading"><div><p className="eyebrow">SageMath companion</p><h2>Compute exactly. Then explain why.</h2></div><p>Five notebooks pair executable calculations with proof questions. Open a notebook in Jupyter with the SageMath kernel and run from the first cell.</p></div>
+        <div className="sage-grid">
+          <article><span>01 · Foundations and extensions</span><h3>Euclid & continued fractions</h3><p>The sieve, Bézout, convergents, matrix identities, Pell, Khinchin–Lévy experiments, and Gosper’s arithmetic.</p><a href="/01_euclid_and_continued_fractions.ipynb" download>Download notebook ↓</a></article>
+          <article><span>02 · Arithmetic and symmetry</span><h3>Clocks, necklaces & groups</h3><p>Units, cyclic orbits, and three routes to Fermat’s theorem.</p><a href="/02_modular_necklaces_and_groups.ipynb" download>Download notebook ↓</a></article>
+          <article><span>03 · Prime divisibility</span><h3>Pascal & prime counting</h3><p>Explore carries, binomial coefficients, and the Chebyshev scale.</p><a href="/03_pascal_and_prime_counting.ipynb" download>Download notebook ↓</a></article>
+          <article className="sage-recent"><span>04 · New focused lab</span><h3>Möbius, Lagrange & Galois</h3><p>Compose matrices, conjugate a period, detect repeated integer states, test reduced surds, and reverse a period.</p><a href="/04_mobius_lagrange_galois.ipynb" download>Download notebook ↓</a><a href="/04_mobius_lagrange_galois.sage" download>Sage script ↓</a></article>
+          <article className="sage-recent"><span>05 · New focused lab</span><h3>Pell & the Cattle of the Sun</h3><p>Prove the exact norm identity, inspect palindromes, generate Pell units, and verify Archimedes’ complete herd.</p><a href="/05_pell_and_archimedes.ipynb" download>Download notebook ↓</a><a href="/05_pell_and_archimedes.sage" download>Sage script ↓</a></article>
+        </div>
+        <p className="sage-instructions">With SageMath installed, start <code>sage -n jupyterlab</code>, open the downloaded notebook, and select the SageMath kernel. The two new labs also run as scripts with <code>sage filename.sage</code>. The notebooks distinguish computational evidence from the proof still required.</p>
       </section>
 
       <section className="closing"><div><p className="eyebrow">The central lesson</p><h2>Proof is a way of seeing why a pattern had to appear.</h2><p>Print the formal development. Use the web to experiment. Move between them until the computation and the proof tell the same story.</p><div className="hero-actions"><a className="button primary" href="#euclid">Begin with Euclid</a><a className="button quiet" href="/course-packet.pdf">Open the PDF edition</a></div></div><div className="closing-mark">∴</div></section>

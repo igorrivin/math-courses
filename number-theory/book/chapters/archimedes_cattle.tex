@@ -1,0 +1,198 @@
+\section{The Cattle of the Sun: Archimedes' challenge}
+\label{sec:archimedes-cattle}
+
+The cattle problem attributed to Archimedes asks for a herd belonging to
+the Sun, with bulls and cows in four colors: white, black, yellow, and
+dappled. Its proportions can be written as linear equations. Two further
+conditions ask for a square and a triangle. Together they lead to a Pell
+equation with a remarkably large first solution.
+
+This optional application begins with the
+\href{https://math.nyu.edu/Archimedes/Cattle/Statement.html}{ancient problem's conditions}.
+For a detailed modern exposition, see Ilan Vardi,
+\href{https://doi.org/10.1080/00029890.1998.12004887}{``Archimedes' Cattle Problem,''
+\emph{American Mathematical Monthly} \textbf{105} (1998), 305--319};
+an \href{https://www.maths.tcd.ie/~lebed/Cattle\%20problem\%20Ilan\%20Vardi.pdf}{accessible preprint}
+is also available. The calculations below can be reproduced with exact
+integer arithmetic in the first notebook.
+
+\subsection*{Eight unknowns, seven linear conditions}
+Let $W,B,Y,S$ count white, black, yellow, and spotted (dappled) bulls;
+let $w,b,y,s$ count cows of the corresponding colors. The conditions are
+\begin{align*}
+ W&=\left(\frac12+\frac13\right)B+Y,
+ &B&=\left(\frac14+\frac15\right)S+Y,
+ &S&=\left(\frac16+\frac17\right)W+Y,\\
+ w&=\left(\frac13+\frac14\right)(B+b),
+ &b&=\left(\frac14+\frac15\right)(S+s),\\
+ y&=\left(\frac16+\frac17\right)(W+w),
+ &s&=\left(\frac15+\frac16\right)(Y+y).
+\end{align*}
+The cow equations use an entire herd of the specified color, including
+its bulls. The two additional conditions concern bulls only:
+\begin{equation}\label{eq:cattle-shapes}
+ W+B=\text{a square},\qquad
+ Y+S=\frac{h(h+1)}2\quad\text{for some integer }h\ge1.
+\end{equation}
+
+Eliminate $B,Y,S$ from the first three equations to obtain
+\[
+ B=\frac{267}{371}W,\qquad
+ Y=\frac{297}{742}W,\qquad
+ S=\frac{790}{1113}W.
+\]
+The four cow equations form a cycle. Substituting around that cycle
+expresses $w$ as a known multiple of $W$ plus
+$\frac7{12}\frac9{20}\frac{11}{30}\frac{13}{42}w$.
+Since this coefficient is less than $1$, $w$, and then every cow count,
+is uniquely determined by $W$. Clearing denominators gives
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Color & Bulls & Cows\\
+\midrule
+White   & $10\,366\,482t$ & $7\,206\,360t$\\
+Black   & $7\,460\,514t$  & $4\,893\,246t$\\
+Yellow  & $4\,149\,387t$  & $5\,439\,213t$\\
+Dappled & $7\,358\,060t$  & $3\,515\,820t$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Substitution verifies all seven equations, and the eight coefficients
+have gcd $1$. Therefore all eight counts are integers exactly when
+$t$ is an integer: a B\'ezout combination of those counts equals $t$.
+Every positive solution of the linear part has $t\ge1$, and the total
+number of cattle is
+\begin{equation}\label{eq:cattle-total-scale}
+ T=50\,389\,082t.
+\end{equation}
+
+\subsection*{The square and the triangle produce Pell}
+The square condition is
+\[
+ W+B=17\,826\,996t
+ =4\cdot4\,456\,749t,
+ \qquad4\,456\,749=3\cdot11\cdot29\cdot4657.
+\]
+The four factors in the last product are distinct primes (trial division
+checks $4657$). Unique factorization therefore says that this is a square
+exactly when
+\[
+ t=4\,456\,749r^2\qquad(r\ge1).
+\]
+Indeed, every prime in the displayed squarefree product must have odd
+exponent in $t$, and every other prime must have even exponent.
+Now the triangular condition becomes
+\[
+ 11\,507\,447t=\frac{h(h+1)}2,
+ \qquad
+ 51\,285\,802\,909\,803r^2=\frac{h(h+1)}2.
+\]
+Multiplying by $8$ and completing the square gives
+\begin{equation}\label{eq:cattle-large-pell}
+ \boxed{\quad X^2-410\,286\,423\,278\,424r^2=1,
+ \qquad X=2h+1.\quad}
+\end{equation}
+Conversely, a positive solution of this equation has odd $X$, since the
+coefficient of $r^2$ is divisible by $8$. Thus $h=(X-1)/2$ is an integer
+and reconstructs the triangle. Together with the table, this proves an
+equivalence, not just a necessary condition.
+
+The coefficient is large, but contains a large square factor:
+\[
+ 410\,286\,423\,278\,424=4\,729\,494\cdot9314^2.
+\]
+Put $Z=9314r$. The equivalent smaller-coefficient problem is
+\begin{equation}\label{eq:cattle-small-pell}
+ \boxed{\quad X^2-4\,729\,494Z^2=1,
+ \qquad 9314\divides Z.\quad}
+\end{equation}
+Keeping the divisibility condition is essential: an arbitrary solution
+of the smaller Pell equation need not give an integer $r$.
+
+\subsection*{A short period, followed by a divisibility test}
+The integer-state algorithm gives $a_0=2174$ and least period length
+$L=92$ for $\sqrt{4\,729\,494}$. The final digit is $4348$; the preceding
+$91$ digits form a palindrome. Since $92$ is even, the convergent
+$p_{91}/q_{91}$ gives the fundamental solution
+\begin{align*}
+ u&=109931986732829734979866232821433543901088049,\\
+ v&=50549485234315033074477819735540408986340.
+\end{align*}
+These values can be checked by the exact equality
+$u^2-4\,729\,494v^2=1$. Write
+$\varepsilon=u+v\sqrt{4\,729\,494}$ and
+\[
+ \varepsilon^j=X_j+Z_j\sqrt{4\,729\,494}.
+\]
+Proposition~\ref{prop:pell-powers} proves that this lists every positive
+solution of the smaller Pell equation. We need the first $j$ for which
+$9314\divides Z_j$.
+
+We can find it without ever forming the enormous powers. Reduce the
+multiplication recurrence modulo $9314$. Here
+\[
+ u\congr9063,\quad v\congr7708,\quad
+ 4\,729\,494\congr7296\pmod{9314}.
+\]
+The following finite computation checks every exponent up to the first
+success, using only small integers:
+\begin{quote}\begin{minipage}{\linewidth}\small
+\begin{verbatim}
+modulus = 9314
+u, v, d = 9063, 7708, 7296
+a, b = 1, 0
+for j in range(1, 2330):
+    a, b = ((u*a + d*v*b) % modulus,
+            (v*a + u*b) % modulus)
+    if b == 0:
+        print(j, a, b)
+        break
+\end{verbatim}
+\end{minipage}\end{quote}
+Its output is \texttt{2329 9313 0}; no earlier exponent passes the test.
+Thus $\varepsilon^{2329}$ produces the smallest admissible $r$ and
+hence the smallest herd. This is a reproducible finite calculation,
+distinct from the general Pell proofs above. Vardi explains a shorter
+divisibility test using a quadratic finite field.
+
+\subsection*{An enormous answer with a compact description}
+Let $X+Z\sqrt{4\,729\,494}=\varepsilon^{2329}$. Then the least total is
+\begin{equation}\label{eq:cattle-exact-total}
+ T=50\,389\,082\cdot4\,456\,749
+       \left(\frac{Z}{9314}\right)^2.
+\end{equation}
+This is an exact specification using integer arithmetic. The first
+notebook computes $X,Z$ by repeated squaring, verifies the seven
+proportions and both shape conditions, and checks
+\[
+ 10^{206544}\le T<10^{206545}.
+\]
+The decimal expansion of the smallest herd's size therefore has
+$206\,545$ digits:
+\[
+ T\approx7.760271406\times10^{206544}.
+\]
+Its size is a mathematical consequence of the conditions, rather than
+a plausible census of animals.
+
+Conjugation also gives a compact real-number expression, of the kind
+developed in Vardi's exposition. Since
+\[
+ Z=\frac{\varepsilon^{2329}-\varepsilon^{-2329}}
+          {2\sqrt{4\,729\,494}},
+\]
+substitution into \eqref{eq:cattle-exact-total} yields
+\[
+ T=\frac{25\,194\,541}{184\,119\,152}
+       \left(\varepsilon^{4658}+\varepsilon^{-4658}-2\right).
+\]
+An expression can be short even when its decimal expansion is long.
+
+\begin{bigidea}
+The linear conditions leave one scale factor. Prime-exponent parity
+makes that factor a fixed number times a square. The triangular
+condition becomes Pell, and a divisibility test selects the allowed
+powers of its fundamental solution. The same elementary tools that
+solve $p^2-2q^2=1$ organize the cattle problem.
+\end{bigidea}

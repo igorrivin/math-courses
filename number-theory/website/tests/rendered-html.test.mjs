@@ -1,8 +1,38 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { before, test } from "node:test";
 
 let html;
+
+test("ships the complete Sage notebook collection and runnable new scripts", async () => {
+  for (const stem of ["01_euclid_and_continued_fractions", "02_modular_necklaces_and_groups", "03_pascal_and_prime_counting", "04_mobius_lagrange_galois", "05_pell_and_archimedes"]) {
+    const name = `${stem}.ipynb`;
+    assert.ok(html.includes(`href="/${name}"`), `Missing download: ${name}`);
+    const source = await readFile(new URL(`../public/${name}`, import.meta.url));
+    const built = await readFile(new URL(`../dist/client/${name}`, import.meta.url));
+    assert.deepEqual(built, source);
+    const notebook = JSON.parse(source);
+    assert.equal(notebook.metadata.kernelspec.name, "sagemath");
+    assert.ok(notebook.cells.some(cell => cell.cell_type === "code"));
+    if (stem.startsWith("04_") || stem.startsWith("05_")) {
+      assert.ok(html.includes(`href="/${stem}.sage"`));
+      assert.deepEqual(await readFile(new URL(`../dist/client/${stem}.sage`, import.meta.url)), await readFile(new URL(`../public/${stem}.sage`, import.meta.url)));
+    }
+  }
+  const files = await readdir(new URL("../public/", import.meta.url));
+  assert.ok(!files.some(name => /instructor|solutions|\.tex$|\.zip$/i.test(name)));
+});
+
+test("explains the exact Pell certificate, parity, and the cattle divisibility condition", () => {
+  for (const text of ["The palindromic part", "complete quotient", "Odd period", "649", "180", "206,545", "2,329", "First admissible power", "SageMath kernel"]) {
+    assert.ok(html.includes(text), `Missing new course content: ${text}`);
+  }
+  assert.match(html, /Q<sub>k\+1<\/sub>/);
+  assert.match(html, /9,314 divides Z/);
+  assert.match(html, /href="\/course-packet\.pdf#nameddest=section\.3\.10"/);
+  assert.match(html, /href="\/course-packet\.pdf#nameddest=section\.3\.11"/);
+  assert.match(html, /10\.1080\/00029890\.1998\.12004887/);
+});
 
 before(async () => {
   const { default: worker } = await import("../dist/server/index.js");
@@ -31,9 +61,9 @@ test("renders the existing course, not the starter preview", () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/);
 });
 
-test("keeps all seven live explorations and their initial output", () => {
-  assert.equal((html.match(/<article class="lab-card\b/g) ?? []).length, 7);
-  for (const id of ["euclid", "fractions", "venus", "modular", "necklaces", "pascal", "primes"]) {
+test("keeps the original explorations and adds exact Pell and cattle labs", () => {
+  assert.equal((html.match(/<article class="lab-card\b/g) ?? []).length, 9);
+  for (const id of ["euclid", "fractions", "venus", "modular", "necklaces", "pascal", "primes", "pell", "cattle"]) {
     assert.ok(html.includes('id="' + id + '"'), "Missing lab: " + id);
   }
   assert.match(html, /The alternating trap/);
@@ -50,7 +80,7 @@ test("explains the fixed point, prefix conjugation, and both periodicity criteri
   assert.match(html, /Galois’s sharper criterion/);
   assert.match(html, /x &gt; 1 and −1 &lt; x′ &lt; 0/);
   assert.match(html, /bounded integer states and unique reduced predecessors/);
-  assert.match(html, /seven new exercises and solutions/);
+  assert.match(html, /worked examples, exercises, and solutions/);
   assert.match(html, /href="\/course-packet\.pdf#nameddest=section\.3\.7"/);
 });
 

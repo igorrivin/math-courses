@@ -10,7 +10,9 @@ This folder contains an adaptable one-semester introductory number theory course
   cycles, selected solutions, and reference sheets.
 - `notebooks/`: three optional SageMath/Jupyter labs. The first includes the
   sieve, extended-Euclidean/convergent correspondence, alternating bounds,
-  Khinchin--Levy experiments, and Gosper's homographic matrix updates.
+  Khinchin--Levy experiments, Gosper's homographic matrix updates, and exact
+  Pell/Archimedes calculations. Its Pell and cattle cells also run unchanged
+  in standard Python, independently of the earlier Sage cells.
 - `patterns_proofs_primes.pdf`: compiled student/instructor packet.
 
 ## Compile
@@ -52,9 +54,20 @@ The notebooks are written for the SageMath kernel. Most basic cells also run in 
   Worked examples include the periods of square roots, a prefix that can
   be absorbed into a pure period, and reversal of a period by conjugation.
   Exercises 20--26 and their selected solutions reinforce these arguments.
-  The chapter then closes the loop by showing how periodic surds produce Pell
-  solutions and how Legendre's criterion recognizes them. A calendar-design
-  aside derives the Julian rule from a convergent and reconstructs the
+  The chapter then proves the square-root palindrome, the exact identity
+  `p_(n-1)^2 - D*q_(n-1)^2 = (-1)^n*Q_n`, and the return condition
+  `Q_n = 1` exactly at multiples of the least period length. These identify
+  every positive and negative Pell solution, with explicit indexing and a
+  proof that powers of the fundamental positive solution generate all others.
+  Worked examples include `D = 13`; Exercises 27--31 add practice.
+  An optional section develops Archimedes' Cattle of the Sun problem from
+  its seven linear conditions through the square/triangle reduction to Pell,
+  retaining the essential divisibility constraint. It cites Ilan Vardi's
+  1998 exposition, explains the exponent 2329 and the 206,545-digit least
+  total, and includes an exact computation in the first notebook plus
+  Exercises 32--34 and solutions. The editable sections are
+  `chapters/cf_pell.tex` and `chapters/archimedes_cattle.tex`.
+  A calendar-design aside derives the Julian rule from a convergent and reconstructs the
   Gregorian $97/400$ rule after imposing a century-cycle constraint. A boxed
   Khinchin--Levy--Lochs aside explains the surprising ``base 11'' information
   rate of a typical continued fraction, followed by empirical data for $\pi$

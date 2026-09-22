@@ -3,6 +3,23 @@ import { readFile, readdir } from "node:fs/promises";
 import { before, test } from "node:test";
 
 let html;
+
+test("exchangeability lab links to a real Sage notebook and script", async () => {
+  for (const text of ['id="exchangeability"', 'href="#exchangeability"', "Same marginal. Different long runs.", "Sequence model", "Uniform [0, 1]", "SageMath kernel", "birthday collisions"]) {
+    assert.ok(html.includes(text), `Missing exchangeability content: ${text}`);
+  }
+  for (const extension of ["ipynb", "sage"]) {
+    const name = `05_exchangeability_and_polya_sage.${extension}`;
+    assert.ok(html.includes(`href="/${name}"`));
+    const source = await readFile(new URL(`../public/${name}`, import.meta.url));
+    assert.deepEqual(await readFile(new URL(`../dist/client/${name}`, import.meta.url)), source);
+    if (extension === "ipynb") {
+      const notebook = JSON.parse(source);
+      assert.equal(notebook.metadata.kernelspec.name, "sagemath");
+      assert.ok(notebook.cells.some(cell => cell.source.join("").includes("sampling_comparison")));
+    }
+  }
+});
 before(async () => {
   const { default: worker } = await import("../dist/server/index.js");
   const response = await worker.fetch(
@@ -15,10 +32,10 @@ before(async () => {
   html = await response.text();
 });
 
-test("server-renders the actual course and all nine labs", () => {
+test("server-renders the actual course and all ten labs", () => {
   assert.match(html, /<title>Chance, Data, and Decisions<\/title>/);
-  assert.equal((html.match(/<article class="lab-card"/g) ?? []).length, 9);
-  for (const text of ["Does the order matter?", "Count each outcome once.", "How many people make a match?", "9 live experiments"]) {
+  assert.equal((html.match(/<article class="lab-card"/g) ?? []).length, 10);
+  for (const text of ["Does the order matter?", "Count each outcome once.", "How many people make a match?", "10 live experiments"]) {
     assert.ok(html.includes(text), `Missing course content: ${text}`);
   }
   assert.doesNotMatch(html, /Your site is taking shape|Building your site|react-loading-skeleton/);

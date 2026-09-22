@@ -12,6 +12,14 @@ and seven exercises with solutions. The continued-fraction lab introduces the
 same ideas. The editable book lives in the sibling ../book folder;
 public/course-packet.pdf must match its compiled patterns_proofs_primes.pdf.
 
+The book's Pell section now proves the exact complete-quotient remainder
+identity, the period-parity rule, the palindrome before the final `2a_0`,
+and generation of every positive solution. An optional Archimedes cattle
+section follows the reduction to Pell and its extra divisibility condition,
+with a reference to Vardi's exposition. Eight further exercises and their
+solutions accompany the revision. The first book notebook supplies exact
+integer calculations, including verification of the 206,545-digit total.
+
 ## Prerequisites
 
 - Node.js `>=22.13.0`

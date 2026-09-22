@@ -244,6 +244,99 @@ Transposition gives $3z^2-8z-7=0$, with positive root
 $z=(4+\sqrt{37})/3$. Finally,
 $-1/x'=7/(\sqrt{37}-4)=(4+\sqrt{37})/3$, as predicted.
 
+\textbf{27.} For $D=23$, the triples $(P_n,Q_n,a_n)$ are
+\[
+ (0,1,4),\ (4,7,1),\ (3,2,3),\ (3,7,1),\ (4,1,8),\ (4,7,1).
+\]
+Thus $L=4$, the palindrome is $(1,3,1)$, and the final digit is
+$8=2a_0$. The first four convergents are $4,5,19/4,24/5$, giving
+$24^2-23\cdot5^2=1$. Including the final $8$ instead produces
+$211/44$, with remainder $211^2-23\cdot44^2=-7$.
+
+\textbf{28.} The period is $\sqrt6=[2;\overline{2,4}]$.
+The four rows $(k,p_k/q_k,Q_{k+1},p_k^2-6q_k^2)$ are
+\[
+ (0,2/1,2,-2),\ (1,5/2,1,1),\
+ (2,22/9,2,-2),\ (3,49/20,1,1).
+\]
+Their last entries equal $(-1)^{k+1}Q_{k+1}$. Since $L=2$, exactly
+the odd-indexed convergents solve $+1$, and none solves $-1$.
+
+\textbf{29.} The least periods for $D=2,3,5,7,13,14$ are, respectively,
+\[
+ (2),\ (1,2),\ (4),\ (1,1,1,4),\ (1,1,1,1,6),\ (1,2,1,6).
+\]
+Only $D=2,5,13$ have odd length. Their least positive solutions of
+the negative equation are $(1,1),(2,1),(18,5)$.
+For $D=3$, reducing $p^2-3q^2=-1$ would give
+$p^2\congr2\pmod3$, impossible because a square is $0$ or $1$ modulo $3$.
+
+\textbf{30.} Multiplication by $2-\sqrt3$ sends
+\[
+ (p,q)\longmapsto(2p-3q,\,2q-p)
+\]
+and preserves norm $1$. For $q=1$, positivity forces $p=2$, and
+the image is $(1,0)$. If $q>1$, then
+$\sqrt3<p/q=\sqrt{3+1/q^2}<2$. Hence $2p-3q>0$ and
+$0<2q-p<q$. Repeated descent strictly decreases the positive integer
+second coordinate until $(2,1)$ and then $(1,0)$ are reached.
+Reversing the steps proves the power formula.
+
+\textbf{31.} The state algorithm gives
+\[
+ \sqrt{61}=[7;\overline{1,4,3,1,2,2,1,3,4,1,14}],\qquad L=11.
+\]
+The palindrome is the ten-digit block before $14$.
+At indices $10$ and $21$, respectively, the convergents give
+\[
+ 29718^2-61\cdot3805^2=-1,
+\]
+\[
+ 1766319049^2-61\cdot226153980^2=1.
+\]
+The second also follows by squaring $29718+3805\sqrt{61}$.
+Theorem~\ref{thm:pell-convergents} excludes every smaller positive
+solution of either sign.
+
+\textbf{32.} Clear denominators to check the seven equalities
+\begin{gather*}
+ 6W=5B+6Y,\quad20B=9S+20Y,\quad42S=13W+42Y,\\
+ 12w=7(B+b),\quad20b=9(S+s),\\
+ 42y=13(W+w),\quad30s=11(Y+y).
+\end{gather*}
+The displayed table at $t=1$ satisfies each equality and has total
+$50\,389\,082$. The first three equations determine all bulls from
+$W$. The cow cycle has coefficient
+$(7/12)(9/20)(11/30)(13/42)\ne1$, so it determines all cows as well.
+Euclid gives gcd $4657$ for the four bull counts and gcd $1$ after
+including the cows. A B\'ezout combination of the scaled counts
+therefore equals $t$, proving $t\in\Z$ whenever the counts are
+integral. At $t=1$, $W+B=4\cdot4\,456\,749$ is not a square,
+so the full problem is not solved.
+
+\textbf{33.} If $cr^2=h(h+1)/2$, then
+$(2h+1)^2=8cr^2+1$. Conversely, an odd $X>1$ gives the integer
+$h=(X-1)/2$ and $h(h+1)/2=(X^2-1)/8=cr^2$.
+Here $c=51\,285\,802\,909\,803$.
+The identity $8c=4\,729\,494\cdot9314^2$ makes
+$(X,r)\mapsto(X,Z)=(X,9314r)$ a bijection onto the positive
+solutions of the smaller equation with $9314\divides Z$.
+For the reverse map, use $r=Z/9314$; the equation then implies
+$X^2\congr1\pmod8$, so $X$ is odd.
+
+\textbf{34.} The recurrence in Section~\ref{sec:archimedes-cattle}
+computes the two coefficients of $\varepsilon^j$ modulo $9314$
+by induction. Its first vanishing second coefficient occurs at
+$j=2329$, with first coefficient $9313\congr-1$.
+Because all positive Pell solutions are powers and their second
+coordinates increase, this first hit gives the smallest herd.
+Write any $j\ge1$ as $j=2329k+r$ with $0\le r<2329$.
+Then $\varepsilon^j\congr(-1)^k\varepsilon^r\pmod{9314}$,
+so its second coefficient vanishes exactly when $r=0$.
+Finally, $T$ is proportional to $Z_j^2$, while
+$Z_j=(\varepsilon^j-\varepsilon^{-j})/(2\sqrt{4\,729\,494})$.
+Squaring doubles the exponent: $2\cdot2329=4658$.
+
 \section*{Chapter 4}
 
 \textbf{1.} Extended Euclid yields

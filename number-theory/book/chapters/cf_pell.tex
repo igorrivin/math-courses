@@ -1,0 +1,269 @@
+\section{Periodicity meets Pell's equation}
+\label{sec:pell}
+
+Fix a nonsquare integer $D\ge2$. \emph{Pell's equation} asks for positive
+integers $p,q$ such that
+\[
+ p^2-Dq^2=1.
+\]
+We will also study the equation with right-hand side $-1$. There are two
+questions to settle: why must a solution appear among the convergents of
+$\sqrt D$, and which convergents actually work? An approximation estimate
+answers the first; an exact identity answers the second.
+
+\subsection*{Every Pell solution is a convergent}
+Suppose $p^2-Dq^2=\pm1$, with $p,q>0$. Any common divisor of $p,q$ would
+divide $1$, so $p/q$ is reduced. Factoring a difference of squares gives
+\begin{equation}\label{eq:pell-error}
+ \abs{\sqrt D-\frac pq}
+ =\frac{1}{q^2(\sqrt D+p/q)}
+ <\frac{1}{2q^2}.
+\end{equation}
+For the strict inequality, note that
+$(p/q)^2\ge D-1\ge1$, while $\sqrt D>1$.
+Legendre's criterion now makes $p/q$ a convergent of $\sqrt D$.
+This does not yet prove that a solution exists: we still need a convergent
+whose difference of squares is exactly $1$ or $-1$.
+
+\subsection*{The palindrome in a square-root period}
+Write $a_0=\floor{\sqrt D}$. The first complete quotient is
+\[
+ x_1=\frac1{\sqrt D-a_0}>1,
+ \qquad x_1'=-\frac1{\sqrt D+a_0}\in(-1,0).
+\]
+Galois's theorem therefore makes $x_1$ purely periodic. Let $L$ be its
+\emph{least} period length, so that
+$\sqrt D=[a_0;\overline{a_1,\ldots,a_L}]$.
+
+\begin{theorem}[The square-root palindrome]
+\label{thm:sqrt-palindrome}
+The last digit of the least period is $a_L=2a_0$, and
+\[
+ a_j=a_{L-j}\qquad(1\le j\le L-1).
+\]
+Thus
+\[
+ \boxed{\quad
+ \sqrt D=[a_0;\overline{a_1,\ldots,a_{L-1},2a_0}],
+ \quad (a_1,\ldots,a_{L-1})\text{ is a palindrome}.
+ \quad}
+\]
+For $L=1$ the palindrome is the empty block.
+\end{theorem}
+\begin{proof}
+Apply Corollary~\ref{cor:period-reversal} to $x_1$:
+\[
+ -\frac1{x_1'}=\sqrt D+a_0
+   =[\overline{a_L,a_{L-1},\ldots,a_1}].
+\]
+Its integer part is $2a_0$, so $a_L=2a_0$. On the other hand,
+\[
+ \sqrt D+a_0=2a_0+\frac1{x_1}
+   =[2a_0;\overline{a_1,\ldots,a_L}].
+\]
+These are two expansions of the same irrational number. The
+continued-fraction algorithm determines its digits uniquely. Comparing
+the next $L-1$ digits gives
+$(a_1,\ldots,a_{L-1})=(a_{L-1},\ldots,a_1)$.
+\end{proof}
+
+For example,
+\[
+ \sqrt{23}=[4;\overline{1,3,1,8}],\qquad
+ \sqrt{14}=[3;\overline{1,2,1,6}],\qquad
+ \sqrt2=[1;\overline2].
+\]
+The final $2a_0$ marks the end of the symmetric block; it is not itself
+part of the palindrome asserted by the theorem.
+
+There is a useful consequence for the integer states
+$x_n=(P_n+\sqrt D)/Q_n$ of
+\eqref{eq:quadratic-state-recurrence}, starting with $(P_0,Q_0)=(0,1)$.
+Since $x_{L+1}=x_1$,
+\[
+ x_L=a_L+\frac1{x_{L+1}}=2a_0+(\sqrt D-a_0)=\sqrt D+a_0.
+\]
+Consequently $(P_L,Q_L)=(a_0,1)$, and the same state occurs at every
+positive multiple of $L$. Conversely, if $n\ge1$ and $Q_n=1$, reducedness
+gives $-1<P_n-\sqrt D<0$, forcing $P_n=a_0$. Thus $x_n=x_L$.
+The $L$ states in a least cycle are distinct, so
+\begin{equation}\label{eq:pell-state-return}
+ \boxed{\qquad Q_n=1\quad\Longleftrightarrow\quad L\divides n
+ \qquad(n\ge1).\qquad}
+\end{equation}
+
+\subsection*{An exact identity for every convergent}
+\begin{lemma}[The complete quotient measures the Pell remainder]
+\label{lem:pell-remainder}
+For every $n\ge1$,
+\begin{equation}\label{eq:pell-remainder}
+ \boxed{\quad p_{n-1}^2-Dq_{n-1}^2=(-1)^nQ_n.\quad}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Keep the entire tail in the matrix product:
+\[
+ \sqrt D
+ =\frac{p_{n-1}x_n+p_{n-2}}{q_{n-1}x_n+q_{n-2}},
+ \qquad x_n=\frac{P_n+\sqrt D}{Q_n}.
+\]
+Substitute the second expression into the first and multiply through.
+Because $\sqrt D$ is irrational, the rational coefficients and the
+coefficients of $\sqrt D$ must agree separately. They give
+\begin{align*}
+ p_{n-1}&=P_nq_{n-1}+Q_nq_{n-2},\\
+ Dq_{n-1}&=P_np_{n-1}+Q_np_{n-2}.
+\end{align*}
+Multiply the first equality by $p_{n-1}$ and the second by $q_{n-1}$,
+then subtract:
+\begin{align*}
+ p_{n-1}^2-Dq_{n-1}^2
+ &=Q_n(p_{n-1}q_{n-2}-p_{n-2}q_{n-1})\\
+ &=(-1)^nQ_n.
+\end{align*}
+The last step is the determinant of the product of the $n$ digit
+matrices $D(a_0),\ldots,D(a_{n-1})$. The initial conventions
+$p_{-1}=1,q_{-1}=0$ also cover $n=1$.
+\end{proof}
+
+\begin{theorem}[Exactly which convergents solve Pell]
+\label{thm:pell-convergents}
+For each $m\ge1$,
+\begin{equation}\label{eq:pell-period}
+ p_{mL-1}^2-Dq_{mL-1}^2=(-1)^{mL}.
+\end{equation}
+These are all positive integer solutions to the two equations
+$p^2-Dq^2=\pm1$. In particular:
+\begin{itemize}
+ \item If $L$ is even, $+1$ occurs at every index $mL-1$, and the
+ equation with right-hand side $-1$ has no integer solution.
+ \item If $L$ is odd, $-1$ occurs for odd $m$ and $+1$ for even $m$.
+\end{itemize}
+The least positive solution of the $+1$ equation is
+$(p_{L-1},q_{L-1})$ for even $L$ and $(p_{2L-1},q_{2L-1})$ for odd $L$.
+\end{theorem}
+\begin{proof}
+All $Q_n$ with $n\ge1$ are positive. The lemma says that a convergent
+solves one of the two equations exactly when $Q_n=1$.
+By \eqref{eq:pell-state-return}, this happens exactly when $n=mL$;
+\eqref{eq:pell-period} and its sign follow. Legendre's criterion, already
+applied above, ensures that no positive solution lies outside the
+convergents. Finally, the recurrence makes $p_0,p_1,\ldots$ strictly
+increasing, so the first admissible index gives the least $p$, and hence
+the least $q$ as well. If a solution of the $-1$ equation had either
+coordinate zero, it would require $p^2=-1$ or $Dq^2=1$, both impossible;
+changing signs reduces every other integer solution to a positive one.
+\end{proof}
+
+\begin{warningbox}[title={Stop before the final digit}]
+The first candidate is
+\[
+ \frac{p_{L-1}}{q_{L-1}}=[a_0;a_1,\ldots,a_{L-1}],
+\]
+which stops \emph{before} the final $2a_0$. There are $L$ digits here,
+counting $a_0$. For $\sqrt3=[1;\overline{1,2}]$, the candidate is
+$[1;1]=2$, and $2^2-3\cdot1^2=1$. Including the next digit gives
+$[1;1,2]=5/3$, whose remainder is $25-27=-2$.
+\end{warningbox}
+
+\begin{example}[An odd period: $D=13$]
+The state calculation gives
+$\sqrt{13}=[3;\overline{1,1,1,1,6}]$, with $L=5$.
+The lemma explains every entry of the last column below.
+\begin{center}
+\begin{tabular}{ccrrr}
+\toprule
+$k$ & $a_k$ & $p_k/q_k$ & $Q_{k+1}$ & $p_k^2-13q_k^2$\\
+\midrule
+0 & 3 & $3/1$ & 4 & $-4$\\
+1 & 1 & $4/1$ & 3 & $3$\\
+2 & 1 & $7/2$ & 3 & $-3$\\
+3 & 1 & $11/3$ & 4 & $4$\\
+4 & 1 & $18/5$ & 1 & $-1$\\
+5 & 6 & $119/33$ & 4 & $4$\\
+6 & 1 & $137/38$ & 3 & $-3$\\
+7 & 1 & $256/71$ & 3 & $3$\\
+8 & 1 & $393/109$ & 4 & $-4$\\
+9 & 1 & $649/180$ & 1 & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus the first negative solution is $(18,5)$, while the first positive
+one is $(649,180)$. Squaring the former gives the latter:
+\[
+ (18+5\sqrt{13})^2=649+180\sqrt{13}.
+\]
+\end{example}
+
+\subsection*{The period matrix becomes a Pell matrix}
+Set $p=p_{L-1}$, $q=q_{L-1}$ and
+$M=D(a_0)\cdots D(a_{L-1})$. At the returning state $P_L=a_0,Q_L=1$,
+the two coefficient identities in the lemma give
+\[
+ M\begin{pmatrix}1&a_0\\0&1\end{pmatrix}
+ =\begin{pmatrix}p&a_0p+p_{L-2}\\q&a_0q+q_{L-2}\end{pmatrix}
+ =\begin{pmatrix}p&Dq\\q&p\end{pmatrix}.
+\]
+The shift by $a_0$ accounts for the fact that $M$ sends the tail
+$\sqrt D+a_0$ to $\sqrt D$. The resulting matrix fixes $\sqrt D$ and
+has determinant $p^2-Dq^2=(-1)^L$. For odd $L$, square it to obtain
+determinant $+1$.
+
+\subsection*{Why one fundamental solution generates all the others}
+For $z=r+s\sqrt D$, define its \emph{norm} by
+$N(z)=zz'=r^2-Ds^2$. Conjugation respects multiplication, so
+$N(zw)=N(z)N(w)$. If $(u,v)$ is the least positive solution of the $+1$
+equation, put $\varepsilon=u+v\sqrt D>1$. Its inverse is
+$u-v\sqrt D$, again with integer coefficients.
+
+\begin{proposition}[All positive Pell solutions are powers]
+\label{prop:pell-powers}
+Every positive solution of $p^2-Dq^2=1$ has the form
+\[
+ p+q\sqrt D=\varepsilon^j\qquad(j=1,2,\ldots).
+\]
+\end{proposition}
+\begin{proof}
+Powers have integer coefficients, norm $1$, and positive coefficients
+for $j\ge1$. Conversely, let $\alpha=p+q\sqrt D>1$ have norm $1$.
+Choose $j\ge0$ with $\varepsilon^j\le\alpha<\varepsilon^{j+1}$ and put
+$\beta=\alpha\varepsilon^{-j}=r+s\sqrt D$. Then $r,s$ are integers,
+$N(\beta)=1$, and $1\le\beta<\varepsilon$. Since $\beta'=1/\beta$,
+\[
+ r=\frac{\beta+\beta^{-1}}2>0,
+ \qquad s=\frac{\beta-\beta^{-1}}{2\sqrt D}\ge0.
+\]
+If $\beta>1$, the function $t-t^{-1}$ is strictly increasing for $t>0$,
+so $0<s<v$. This would be a smaller positive Pell solution, a
+contradiction. Therefore $\beta=1$ and $\alpha=\varepsilon^j$.
+Since $q>0$, we have $j\ge1$.
+\end{proof}
+
+Equivalently, multiplication by $\varepsilon$ is the matrix recurrence
+\[
+ \begin{pmatrix}p^{(j+1)}\\q^{(j+1)}\end{pmatrix}
+ =\begin{pmatrix}u&Dv\\v&u\end{pmatrix}
+  \begin{pmatrix}p^{(j)}\\q^{(j)}\end{pmatrix},
+ \qquad (p^{(0)},q^{(0)})=(1,0).
+\]
+The superscript counts powers; the subscript on $p_k/q_k$ counts
+continued-fraction convergents. For $D=2$, $\varepsilon=3+2\sqrt2$ gives
+$(3,2),(17,12),(99,70)$.
+
+\begin{bigidea}
+Periodicity gives the exact return $Q_{mL}=1$. The determinant identity
+then turns that return into $p_{mL-1}^2-Dq_{mL-1}^2=(-1)^{mL}$.
+Legendre proves completeness, and powers of the least positive solution
+give a second way to list every positive solution. Each step has a
+different job.
+\end{bigidea}
+
+\begin{checkpoint}
+Compute $99/70$ as a decimal. Its accuracy follows from
+$99^2-2\cdot70^2=1$, which forces
+\[
+ \abs{\sqrt2-99/70}=\frac1{70^2(\sqrt2+99/70)}.
+\]
+For a second check, use the period of $\sqrt{23}$ above to find the
+fundamental solution $(24,5)$ without searching through denominators.
+\end{checkpoint}

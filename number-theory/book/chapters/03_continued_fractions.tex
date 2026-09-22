@@ -491,78 +491,8 @@ only eventually periodic.
 
 \input{chapters/cf_periodicity}
 
-\section{Periodicity meets Pell's equation}
-
-The preceding theorems and Pell's equation fit together in both directions.
-Suppose $D\ge2$ is not a square and
-\[
-  p^2-Dq^2=\pm1,
-  \qquad p,q>0.
-\]
-Then
-\begin{equation}\label{eq:pell-error}
- \abs{\sqrt D-\frac pq}
- =\frac{1}{q^2(\sqrt D+p/q)}
- <\frac{1}{2q^2}.
-\end{equation}
-Legendre's criterion therefore says that $p/q$ must be a convergent of
-$\sqrt D$. Pell solutions are not merely good approximations; continued
-fractions are forced to find them.
-
-In the other direction, Lagrange says
-\[
- \sqrt D=[a_0;\overline{a_1,\dots,a_L}].
-\]
-Galois explains why the repeating part starts after $a_0$: the first complete
-quotient $1/(\sqrt D-a_0)$ is reduced. A classical consequence of the matrix
-recurrence is
-\[
- p_{L-1}^2-Dq_{L-1}^2=(-1)^L.
-\]
-Thus one trip through an even-length period gives a solution of the $+1$
-equation. If $L$ is odd, one trip gives $-1$ and two trips give $+1$.
-
-\begin{bigidea}
-\[
-\begin{array}{ccccc}
-\text{periodic surd}&\Longrightarrow&\text{period matrix}
-&\Longrightarrow&\text{Pell solutions},\\[2mm]
-\text{Pell solution}&\Longrightarrow&\text{error below }1/(2q^2)
-&\xLongrightarrow{\text{Legendre}}&\text{convergent}.
-\end{array}
-\]
-Periodicity produces the solutions, and exceptional approximation recognizes
-them.
-\end{bigidea}
-
-For the convergents $p/q$ to $\sqrt2$, direct computation gives
-\[
-p^2-2q^2=\pm1.
-\]
-Here the period has odd length $1$: $1/1$ solves the $-1$ equation, while two
-copies of the period produce $3/2$ and the $+1$ equation. The positive
-solutions to $p^2-2q^2=1$ begin $(3,2),(17,12),(99,70)$.
-
-There is also a direct matrix generator. Whenever $u^2-Dv^2=1$,
-\[
- U=\begin{pmatrix}u&Dv\\v&u\end{pmatrix}\in\operatorname{SL}_2(\Z).
-\]
-If $(p,q)^T$ represents $p+q\sqrt D$, then $U(p,q)^T$ represents
-$(u+v\sqrt D)(p+q\sqrt D)$. Hence powers of $U$ generate new Pell solutions.
-For $D=2$ the fundamental solution $(u,v)=(3,2)$ gives
-\[
- \begin{pmatrix}3&4\\2&3\end{pmatrix}^n
- \begin{pmatrix}1\\0\end{pmatrix}
- =\begin{pmatrix}p_n\\q_n\end{pmatrix},
- \qquad p_n^2-2q_n^2=1.
-\]
-
-\begin{checkpoint}
-Compute $99/70$ as a decimal. The striking accuracy is not a floating-point accident: $99^2-2\cdot70^2=1$ forces
-\[
-\abs{\sqrt2-99/70}=\frac1{70^2(\sqrt2+99/70)}.
-\]
-\end{checkpoint}
+\input{chapters/cf_pell}
+\input{chapters/archimedes_cattle}
 
 \begin{exercisebox}
 \begin{enumerate}
@@ -651,5 +581,42 @@ Compute $99/70$ as a decimal. The striking accuracy is not a floating-point acci
   positive fixed point. Transpose the matrix to obtain the equation for
   $[\overline{3,2,1}]$, and verify directly that this number is $-1/x'$.
   \exlevel{Reasoning}
+  \item Compute the integer states and least period for $\sqrt{23}$.
+  Identify the palindrome, find the fundamental Pell solution, and
+  calculate what happens if you include the final digit $2a_0$ in the
+  first candidate. \exlevel{Fluency}
+  \item For $D=6$, calculate four convergents and the corresponding
+  $Q_{k+1}$. Verify \eqref{eq:pell-remainder} in each row. Use
+  \eqref{eq:pell-state-return} to classify every convergent that solves
+  either sign of Pell. \exlevel{Reasoning}
+  \item Decide whether $p^2-Dq^2=-1$ is solvable for
+  $D=2,3,5,7,13,14$. Give the least positive solution when it exists.
+  For $D=3$, also give a one-line impossibility proof modulo $3$.
+  \exlevel{Reasoning}
+  \item Let $p^2-3q^2=1$ with $p,q>0$. Show that multiplying
+  $p+q\sqrt3$ by $2-\sqrt3$ gives $(1,0)$ from $(2,1)$,
+  and otherwise a positive solution with smaller second coordinate.
+  Use this descent to prove directly that all positive solutions are
+  powers of $2+\sqrt3$. \exlevel{Reasoning}
+  \item Use the integer-state algorithm to find the least period of
+  $\sqrt{61}$. Find the first negative and positive Pell solutions,
+  and explain why the theorem proves that each is the first of its
+  sign. Use exact integers, not a decimal approximation to $\sqrt{61}$.
+  \exlevel{Exploration}
+  \item Verify the cattle table at $t=1$, including its gcd and total.
+  Explain why the seven linear equations have only one free scale
+  factor, and why the gcd certifies that this scale is an integer.
+  Does the table at $t=1$ solve the full problem? \exlevel{Reasoning}
+  \item For positive integers $c,r$, prove that $cr^2$ is triangular
+  exactly when $X^2-8cr^2=1$ has a positive odd solution $X$.
+  Apply this to the cattle problem, and prove both directions of the
+  passage from \eqref{eq:cattle-large-pell} to
+  \eqref{eq:cattle-small-pell}. \exlevel{Reasoning}
+  \item Reproduce the modular search for the cattle problem in the
+  first notebook. Explain why its first hit proves minimality. Using
+  $\varepsilon^{2329}\congr-1\pmod{9314}$ and the absence of an
+  earlier hit, prove that the admissible exponents are exactly the
+  positive multiples of $2329$. Why does $4658$ appear in the total's
+  compact formula? \exlevel{Exploration}
 \end{enumerate}
 \end{exercisebox}

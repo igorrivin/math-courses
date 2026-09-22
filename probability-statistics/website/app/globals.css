@@ -200,3 +200,19 @@ footer { min-height: 130px; padding: 30px clamp(22px, 6vw, 90px); background: va
   .assignment-download a { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+.exchangeability-chart { margin: 26px 0; padding: 24px 18px 12px; border: 1px solid var(--line); background: white; }
+.exchangeability-bars { display: flex; gap: 3px; height: 240px; padding-bottom: 26px; border-bottom: 1px solid var(--line); }
+.exchangeability-bars > div { flex: 1; min-width: 0; position: relative; display: flex; align-items: flex-end; }
+.exchangeability-bars span { width: 100%; background: var(--mint); border-radius: 3px 3px 0 0; }
+.exchangeability-bars .selected span { background: var(--violet); }
+.exchangeability-bars small { position: absolute; bottom: -23px; width: 100%; text-align: center; color: var(--muted); font: 10px var(--font-mono); }
+.exchangeability-chart > p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.exchangeability-results { margin-top: 26px; }
+.exchangeability-table-wrap { max-height: 300px; overflow: auto; }
+.exchangeability-table-wrap table { border-collapse: collapse; width: 100%; background: white; }
+.exchangeability-table-wrap td, .exchangeability-table-wrap th { text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.exchangeability-table-wrap caption { text-align: left; padding: 14px 0; font-size: 13px; color: var(--muted); }
+.notebook-strip > div { min-width: 0; }
+.notebook-strip p:not(.eyebrow) { color: #c5cfdf; line-height: 1.6; font-size: 13px; }
+@media (max-width: 720px) { .exchangeability-results { grid-template-columns: 1fr; } .exchangeability-bars { gap: 2px; } .exchangeability-bars small { font-size: 8px; } }

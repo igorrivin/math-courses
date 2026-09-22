@@ -102,3 +102,48 @@ footer { min-height: 130px; padding: 30px clamp(22px,6vw,90px); display: flex; a
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+.lab-card[id], .sage-section { scroll-margin-top: 95px; }
+.lab-jump-links { max-width: 1200px; margin: -16px auto 28px; display: flex; flex-wrap: wrap; gap: 10px; }
+.lab-jump-links a { color: #e4eee9; border: 1px solid #738e93; padding: 10px 15px; border-radius: 30px; font-size: 13px; }
+.lab-jump-links a:hover { color: var(--gold); border-color: var(--gold); }
+.quadratic-caption { color: var(--muted); }
+.period-strip { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.period-digit { min-width: 48px; padding: 12px; border-radius: 6px; text-align: center; }
+.period-digit b { display: block; font: 600 25px var(--font-serif); }
+.period-digit small { display: block; margin-top: 5px; color: #40515a; font: 11px var(--font-mono); }
+.period-digit.terminal { background: var(--ink); color: white; }
+.period-digit.terminal small { color: var(--gold); }
+.pell-certificate { padding: 24px; background: white; border: 1px solid var(--line); margin: 24px 0; }
+.pell-certificate > span { color: var(--teal); font-weight: 700; }
+.pell-certificate strong { display: block; margin-top: 12px; font: 600 clamp(22px, 3vw, 35px)/1.4 var(--font-serif); overflow-wrap: anywhere; }
+.quadratic-table-wrap { overflow-x: auto; max-height: 480px; border: 1px solid var(--line); }
+.quadratic-table { border-collapse: collapse; width: 100%; font: 13px/1.5 var(--font-mono); white-space: nowrap; }
+.quadratic-table th, .quadratic-table td { padding: 11px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+.quadratic-table thead { background: #e7ebe5; }
+.quadratic-table caption { text-align: left; padding: 14px; white-space: normal; color: var(--muted); }
+.quadratic-table .pell-hit { background: var(--teal-light); color: #174e4a; font-weight: 700; }
+.proof-details { border-top: 1px solid var(--line); margin-top: 26px; padding-top: 18px; }
+.proof-details summary { cursor: pointer; font-weight: 700; padding: 8px 0; }
+.proof-details p, #cattle > p { line-height: 1.7; }
+.quadratic-formula { font: 600 clamp(18px, 2vw, 24px)/1.6 var(--font-serif); overflow-wrap: anywhere; }
+.exact-integer { font: 13px/1.8 var(--font-mono); overflow-wrap: anywhere; }
+.cattle-reduction { padding: 0; margin: 25px 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: cattle; }
+.cattle-reduction li { padding: 22px; border-top: 3px solid var(--teal); background: white; counter-increment: cattle; }
+.cattle-reduction b { display: block; margin-bottom: 12px; }
+.cattle-reduction b::before { content: counter(cattle) " · "; color: var(--teal); }
+.cattle-reduction span { color: var(--muted); line-height: 1.6; }
+.cattle-residues { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 22px; background: white; border: 1px solid var(--line); }
+.cattle-residues strong { display: block; margin-top: 10px; font: 600 40px var(--font-serif); }
+.cattle-residues > p { grid-column: 1 / -1; margin-bottom: 0; color: var(--teal); font-weight: 700; }
+.sage-section { background: #e9eee7; }
+.sage-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.sage-grid article { padding: 28px; background: var(--paper); border-top: 4px solid var(--teal); }
+.sage-grid .sage-recent { border-top-color: var(--coral); }
+.sage-grid article > span { font-size: 11px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .05em; }
+.sage-grid h3 { font: 600 29px/1.15 var(--font-serif); }
+.sage-grid p { line-height: 1.65; color: var(--muted); }
+.sage-grid a { display: inline-block; margin: 8px 15px 0 0; font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.sage-instructions { max-width: 1200px; margin: 24px auto 0; color: var(--muted); line-height: 1.7; }
+@media (max-width: 1000px) { .sage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .cattle-reduction, .sage-grid { grid-template-columns: 1fr; } .cattle-residues { padding: 16px; } .period-digit { min-width: 40px; padding: 10px; } }

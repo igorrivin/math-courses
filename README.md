@@ -36,9 +36,10 @@ cd math-courses
 
 Before a new work session, use `git pull --ff-only`. After editing, review
 `git status` and `git diff`, commit the intended files, and use `git push`.
-The initial local working copy is in `Documents/GitHub/math-courses`.
-Use that copy going forward; edits in the older Codex folders do not sync
-automatically to this repository.
+This private GitHub repository is the canonical working copy. On this
+computer, work in `/Users/igorrivin/devel/math-courses`. On another computer,
+work in your clone of this repository. Edits in the older Codex folders or
+the initial `Documents/GitHub/math-courses` copy do not sync automatically.
 
 ## Build and preview
 
