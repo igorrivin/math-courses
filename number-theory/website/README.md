@@ -47,6 +47,15 @@ an ignored local `.env` file). An empty value keeps access closed. Instructor
 PDFs live in `private/` and are served only after a server-side session check.
 See [setup and maintenance](../../docs/instructor-access.md).
 
+Problem Set 3 covers totients, multiplicative functions, divisor inversion,
+necklaces, and squarefree counts (8 problems, 100 points, plus a challenge).
+Problem Set 4 is optional enrichment on posets, partition counts,
+roots-of-unity interpolation, and cyclic convolution (6 problems, 80 points,
+plus a challenge). Both include separate student and instructor editions;
+their editable sources live in `../problem-sets/problem-set-03/` and
+`../problem-sets/problem-set-04/`. The catalog and PDF copies are maintained
+by `scripts/sync-assessments.py` from the repository root.
+
 ## Prerequisites
 
 - Node.js `>=22.13.0`

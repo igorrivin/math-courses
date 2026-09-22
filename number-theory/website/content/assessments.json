@@ -18,6 +18,24 @@
     "studentFile": "week-02.pdf"
   },
   {
+    "id": "problem-set-03",
+    "kind": "problem-set",
+    "label": "Problem Set 3",
+    "title": "Totients, divisor sums, and exact periods",
+    "description": "Extended Euclid and Euler's theorem lead into multiplicative functions, Möbius inversion, necklace counts, and squarefree integers.",
+    "details": "8 problems + challenge · 100 points · 3–4 hours",
+    "studentFile": "problem-set-03.pdf"
+  },
+  {
+    "id": "problem-set-04",
+    "kind": "problem-set",
+    "label": "Problem Set 4 · Optional enrichment",
+    "title": "Orders, interpolation, and Fourier inversion",
+    "description": "Invert counts on posets, subsets, and partitions, then recover polynomial coefficients at roots of unity and explore cyclic convolution.",
+    "details": "6 problems + challenge · 80 points · 3–4 hours",
+    "studentFile": "problem-set-04.pdf"
+  },
+  {
     "id": "weekly-quizzes",
     "kind": "quiz",
     "label": "Weekly quiz collection",

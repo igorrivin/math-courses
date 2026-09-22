@@ -1,0 +1,57 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.78in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb}
+\usepackage{xcolor,booktabs,array,tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,needspace,hyperref}
+\definecolor{ink}{HTML}{162332}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\definecolor{mist}{HTML}{EDF5F4}
+\definecolor{muted}{HTML}{5D6B78}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlist[enumerate]{label=(\alph*),leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\pts}[1]{\hfill\textcolor{muted}{\small[#1 points]}}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.4em}\textcolor{muted}{\small(#1)}}
+\newcommand{\edition}{\ifsolutions Instructor solutions\else Student handout\fi}
+\newcounter{problem}
+\newcommand{\problem}[2]{\par\addvspace{11pt}\Needspace{6\baselineskip}%
+  \stepcounter{problem}{\bfseries\color{navy}\theproblem.\ #1}\pts{#2}\par\nobreak}
+\newcommand{\topic}[1]{\par\addvspace{9pt}\Needspace{10\baselineskip}%
+  {\large\bfseries\color{teal}#1}\par\nobreak}
+\newcommand{\studentbreak}{\ifsolutions\else\newpage\fi}
+\newcommand{\challenge}[1]{\par\addvspace{12pt}\Needspace{7\baselineskip}%
+  {\bfseries\color{teal}Optional challenge: #1}\pts{10 extra}\par\nobreak}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}\setname}
+\fancyhead[R]{\small\color{muted}Patterns, Proofs, and Primes}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\small\color{teal}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\NewDocumentEnvironment{solution}{+b}{\ifsolutions
+  \begin{tcolorbox}[enhanced,breakable,colback=mist!45,colframe=teal!45,
+    boxrule=.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+    before skip=7pt,after skip=7pt,title={Solution},
+    title after break={Solution (continued)},colbacktitle=mist,
+    coltitle=teal,fonttitle=\small\bfseries]
+  \small #1
+  \end{tcolorbox}\fi}{}
+\newcommand{\handouttitle}[3]{%
+  {\LARGE\bfseries\color{navy}\setname}\hfill{\small\color{teal}\edition}\\[4pt]
+  {\large #1}\\[4pt]{\small\color{muted}#2}\par
+  \medskip\textbf{Preparation.} #3\par
+  \ifsolutions\else\medskip
+  \textbf{Name:}\ \rule{.46\linewidth}{.4pt}\hfill
+  \textbf{Due:}\ \rule{.20\linewidth}{.4pt}\par\fi}

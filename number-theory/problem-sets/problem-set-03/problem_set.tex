@@ -1,0 +1,259 @@
+\input{../inversion-style}
+\newcommand{\setname}{Problem Set 3}
+\hypersetup{pdftitle={Number Theory Problem Set 3: Totients, Divisor Sums, and Exact Periods},
+  pdfsubject={Multiplicative functions and Mobius inversion}}
+\begin{document}
+\handouttitle{Totients, divisor sums, and exact periods}
+{8 problems \textbar\ 100 points + 10 optional challenge points \textbar\ Suggested time: 3--4 hours}
+{Course packet Sections 5.3--5.9; modular inverses and CRT from Chapter 4.
+Posets, complex numbers, and field extensions are not required.}
+
+\textbf{Instructions.} Write on separate paper. Show the arithmetic and
+justify each proof. You may use unique factorization, B\'ezout, CRT,
+Euler's theorem, and M\"obius inversion. When asked to prove a statement,
+give the argument rather than citing that same statement from the book.
+Computation may check examples; it does not replace a proof.
+
+\textbf{Notation.} All divisors are positive.
+$\tau(n)=\sum_{d\mid n}1$, $\sigma(n)=\sum_{d\mid n}d$,
+$\one(n)=1$, and $\id(n)=n$. The function $\varepsilon$ is $1$ at
+$n=1$ and zero otherwise. Convolution means
+$(f*g)(n)=\sum_{d\mid n}f(d)g(n/d)$.
+
+\ifsolutions
+\textbf{Grading note.} Subpart scores total 100; the challenge is extra.
+Accept equivalent proofs. Distinguish a computational slip from a missing
+coprimality or unit hypothesis, and avoid repeated penalties for a carried error.
+Problems 1--6 cover the central theory; 7--8 give two different counting applications.
+\fi
+
+\topic{I. Prime powers and reversible arithmetic}
+
+\problem{A small table, several different rules}{12}
+\begin{enumerate}
+ \item Compute $\varphi(n),\tau(n),\sigma(n),\mu(n)$ for
+ $n=1,16,27,30,180$. Show the prime-power calculations for $180$. \partpts{8}
+ \item Give counterexamples showing that $\varphi,\tau$, and $\mu$
+ are not completely multiplicative. State the hypothesis under which
+ they are multiplicative. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule $n$&$\varphi(n)$&$\tau(n)$&$\sigma(n)$&$\mu(n)$\\\midrule
+1&1&1&1&1\\16&8&5&31&0\\27&18&4&40&0\\
+30&8&8&72&-1\\180&48&18&546&0\\\bottomrule
+\end{tabular}
+\end{center}
+Since $180=2^2\cdot3^2\cdot5$,
+$\varphi(180)=2\cdot6\cdot4=48$,
+$\tau(180)=3\cdot3\cdot2=18$, and
+$\sigma(180)=7\cdot13\cdot6=546$. A prime square divides $180$,
+so $\mu(180)=0$. At $4=2\cdot2$,
+$\varphi(4)=2\ne1=\varphi(2)^2$,
+$\tau(4)=3\ne4=\tau(2)^2$, and
+$\mu(4)=0\ne1=\mu(2)^2$.
+Their product rule requires coprime inputs, with value $1$ at $1$.
+\end{solution}
+
+\problem{Euler needs a unit}{12}
+\begin{enumerate}
+ \item Use extended Euclid to find an integer certificate for the inverse
+ of $7$ modulo $40$. Give the inverse between $0$ and $39$. \partpts{4}
+ \item Compute $\varphi(40)$ using $40=8\cdot5$. Explain why multiplying
+ $\varphi(4)$ and $\varphi(10)$ would not be justified. \partpts{3}
+ \item Use Euler's theorem to compute $7^{2026}\pmod{40}$, then check
+ the result separately modulo $8$ and $5$. \partpts{3}
+ \item Does Euler's theorem imply $2^{16}\equiv1\pmod{40}$?
+ Identify the failed hypothesis and compute the actual remainder. \partpts{2}
+\end{enumerate}
+\begin{solution}
+The divisions $40=5\cdot7+5$, $7=5+2$, $5=2\cdot2+1$ give
+$1=3\cdot40-17\cdot7$. The inverse is $23$, with certificate
+$7\cdot23-4\cdot40=1$.
+CRT gives $\varphi(40)=\varphi(8)\varphi(5)=4\cdot4=16$;
+$4$ and $10$ are not coprime, and their totients would give only $8$.
+Since $2026=16\cdot126+10$ and $7^2\equiv9$, $7^4\equiv1\pmod{40}$,
+the answer is $7^{10}\equiv9$. Modulo $8$, an even power of $-1$
+is $1$; modulo $5$, $2^{2026}\equiv2^2=4$. The remainder $9$ has
+both properties. Finally $\gcd(2,40)=2$, so Euler does not apply;
+$2^{16}=65536\equiv16\pmod{40}$.
+\end{solution}
+
+\problem{Why convolution preserves multiplicativity}{12}
+Let $f,g$ be multiplicative functions, and let $\gcd(m,n)=1$.
+\begin{enumerate}
+ \item Prove that every divisor of $mn$ is uniquely $ab$ with
+ $a\mid m$ and $b\mid n$. \partpts{4}
+ \item Use this correspondence to prove that $h=f*g$ is multiplicative,
+ including the condition at $1$. Indicate both places coprimality is used.
+ \partpts{6}
+ \item Taking $f=g=\one$, use $630=18\cdot35$ to compute
+ $\tau(630)$ without listing its divisors. \partpts{2}
+\end{enumerate}
+\begin{solution}
+No prime divides both $m,n$. A divisor's prime powers therefore have a
+unique assignment to the factor coming from $m$ or from $n$.
+For each resulting pair, $\gcd(a,b)=\gcd(m/a,n/b)=1$, so
+\[
+ \begin{aligned}
+ h(mn)&=\sum_{a\mid m}\sum_{b\mid n}f(ab)g((m/a)(n/b))\\
+ &=\sum_{a\mid m}\sum_{b\mid n}f(a)f(b)g(m/a)g(n/b)=h(m)h(n).
+ \end{aligned}
+\]
+Also $h(1)=f(1)g(1)=1$. Here $\one*\one=\tau$, and
+$\tau(630)=\tau(18)\tau(35)=6\cdot4=24$.
+\end{solution}
+
+\studentbreak
+\topic{II. Recover the exact contribution}
+
+\problem{A gcd partition explains the totient sum}{12}
+\begin{enumerate}
+ \item Partition $\{1,\ldots,n\}$ according to $\gcd(r,n)$ and prove
+ $\sum_{d\mid n}\varphi(d)=n$. Explain the term $\varphi(1)$. \partpts{6}
+ \item Apply M\"obius inversion to recover a formula for $\varphi(n)$.
+ Use it to compute $\varphi(84)$, displaying every nonzero term. \partpts{6}
+\end{enumerate}
+\begin{solution}
+For each $g\mid n$, put $d=n/g$. The integers with $\gcd(r,n)=g$
+are exactly $r=gs$ with $1\le s\le d$ and $\gcd(s,d)=1$,
+so this class has $\varphi(d)$ elements. The class $\{n\}$ gives
+$d=1$ and $\varphi(1)=1$. Summing all classes counts $n$ integers.
+Inversion gives $\varphi(n)=\sum_{d\mid n}\mu(d)n/d$.
+For $84=2^2\cdot3\cdot7$, the contributing divisors are
+$1,2,3,6,7,14,21,42$, giving
+\[
+ \varphi(84)=84-42-28+14-12+6+4-2=24.
+\]
+\end{solution}
+
+\Needspace{15\baselineskip}
+\problem{Recover a hidden arithmetic function}{14}
+Suppose $F(n)=\sum_{d\mid n}f(d)$ and the recorded data are
+\[
+\begin{array}{c|rrrrrr}
+n&1&2&3&6&9&18\\\hline
+F(n)&2&5&6&16&16&45
+\end{array}
+\]
+\begin{enumerate}
+ \item Recover $f$ at these six inputs by successive subtraction.
+ Check $f(18)$ independently by M\"obius inversion. \partpts{6}
+ \item Now assume the rule is $F(n)=\sigma(n)+\tau(n)$ for every $n$.
+ Find and prove a formula for $f(n)$ valid for all positive integers.
+ \partpts{6}
+ \item Is the resulting $f$ multiplicative? Does your answer affect
+ the validity of inversion? \partpts{2}
+\end{enumerate}
+\begin{solution}
+The recovered values are $2,3,4,7,10,19$.
+For example $f(18)=45-(2+3+4+7+10)=19$; inversion also gives
+$F(18)-F(9)-F(6)+F(3)=45-16-16+6=19$.
+Since $\sigma=\id*\one$ and $\tau=\one*\one$,
+$F=(\id+\one)*\one$, hence $f(n)=n+1$.
+Equivalently, $\sum_{d\mid n}(d+1)=\sigma(n)+\tau(n)$ and inversion
+ensures uniqueness. The function is not multiplicative: $f(1)=2$;
+also $f(6)=7\ne12=f(2)f(3)$. Inversion needs no multiplicativity assumption.
+\end{solution}
+
+\problem{Convolve M\"obius with itself}{12}
+Put $h=\mu*\mu$.
+\begin{enumerate}
+ \item For a prime $p$, determine $h(p^k)$ for every $k\ge0$.
+ Use $p^0=1$. \partpts{5}
+ \item Use Problem 3 to compute $h(30),h(180),h(8)$. \partpts{3}
+ \item An integer is \emph{cubefree} if no prime cube divides it.
+ Give a formula for $h(n)$ in terms of whether $n$ is cubefree and
+ the number of primes occurring to exponent exactly $1$. \partpts{4}
+\end{enumerate}
+\begin{solution}
+In $h(p^k)=\sum_{j=0}^k\mu(p^j)\mu(p^{k-j})$, a nonzero term
+requires both exponents to be $0$ or $1$. Thus the values for
+$k=0,1,2$ are $1,-2,1$, and all values for $k\ge3$ are zero.
+Convolution preserves multiplicativity, so
+$h(30)=(-2)^3=-8$, $h(180)=1\cdot1\cdot(-2)=-2$, and $h(8)=0$.
+If $n$ is cubefree and $r$ primes have exponent $1$, then $h(n)=(-2)^r$;
+otherwise $h(n)=0$. The formula includes $h(1)=1$.
+\end{solution}
+
+\studentbreak
+\topic{III. Two counting applications}
+
+\problem{Words and necklaces of length ten}{14}
+Let $P(n)$ count binary labeled words of length $n$ whose least rotational period is $n$.
+Necklaces identify words that differ by a rotation; reflections are not identified.
+\begin{enumerate}
+ \item Explain why $2^n=\sum_{d\mid n}P(d)$ and derive the inversion
+ formula for $P(n)$. \partpts{4}
+ \item Compute $P(d)$ for $d=1,2,5,10$. Count the necklaces of full
+ period $10$. \partpts{5}
+ \item Count all binary necklaces of length $10$, including shorter
+ periods. Explain why dividing $2^{10}$ by $10$ is invalid. \partpts{5}
+\end{enumerate}
+\begin{solution}
+Each word repeats a unique primitive block of length $d\mid n$, so
+$P(n)=\sum_{d\mid n}\mu(d)2^{n/d}$.
+At $1,2,5,10$ the values are $2,2,30,990$; in particular
+$P(10)=1024-32-4+2=990$. Full-period necklaces number $990/10=99$.
+Each least-period-$d$ word has $d$ distinct rotations, giving
+\[
+ \frac{P(1)}1+\frac{P(2)}2+\frac{P(5)}5+\frac{P(10)}{10}
+ =2+1+6+99=108.
+\]
+Dividing $2^{10}$ by $10$ is invalid: shorter-period orbits have sizes $1,2$, or $5$.
+\end{solution}
+
+\problem{Count squarefree integers without testing them one by one}{12}
+Recall that squarefree means no prime square divides the integer.
+\begin{enumerate}
+ \item Prove the indicator identity
+ $\mu(n)^2=\sum_{d^2\mid n}\mu(d)$.
+ \emph{Hint:} examine the primes whose squares divide $n$. \partpts{5}
+ \item Let $Q(N)$ count squarefree integers in $\{1,\ldots,N\}$,
+ including $1$. Exchange finite sums to prove
+ \[
+ Q(N)=\sum_{1\le d\le\sqrt N}\mu(d)\left\lfloor\frac{N}{d^2}\right\rfloor.
+ \]
+ Use this formula to compute $Q(50)$. \partpts{7}
+\end{enumerate}
+\begin{solution}
+Only squarefree $d$ contribute. Such $d$ with $d^2\mid n$ correspond
+to subsets of the primes whose squares divide $n$. If there are none,
+the sole term is $d=1$, giving $1$. Otherwise pair subsets by toggling
+one fixed prime; the signs cancel, giving $0$. This equals $\mu(n)^2$.
+Now sum over $n\le N$ and count the multiples of each $d^2$:
+\[
+ Q(N)=\sum_{n\le N}\sum_{d^2\mid n}\mu(d)
+ =\sum_{d\le\sqrt N}\mu(d)\left\lfloor N/d^2\right\rfloor.
+\]
+For $N=50$, the terms $d=1,2,3,5,6,7$ give
+$50-12-5-2+1-1=31$; the $d=4$ term vanishes.
+\end{solution}
+
+\challenge{a two-coordinate totient}
+Let $J_2(n)$ count ordered pairs $(u,v)$ with $1\le u,v\le n$ and
+$\gcd(u,v,n)=1$, where the gcd is taken over all three integers.
+\begin{enumerate}
+ \item Group all $n^2$ pairs by $\gcd(u,v,n)$ to prove
+ $n^2=\sum_{d\mid n}J_2(d)$. \partpts{4}
+ \item Invert the sum and factor the result to prove
+ \[
+ J_2(n)=n^2\prod_{p\mid n}(1-p^{-2}).
+ \]
+ Compute $J_2(12)$. \partpts{6}
+\end{enumerate}
+\begin{solution}
+For a common gcd $g\mid n$, write $(u,v)=(gx,gy)$ and $d=n/g$.
+Then $1\le x,y\le d$ and $\gcd(x,y,d)=1$, giving $J_2(d)$ pairs.
+These classes partition all $n^2$ pairs, including $J_2(1)=1$.
+Inversion yields
+\[
+ J_2(n)=\sum_{d\mid n}\mu(d)(n/d)^2
+       =n^2\sum_{d\mid n}\frac{\mu(d)}{d^2}
+       =n^2\prod_{p\mid n}(1-p^{-2}).
+\]
+The product expands over squarefree divisors. Thus
+$J_2(12)=144(1-1/4)(1-1/9)=96$.
+\end{solution}
+\end{document}
