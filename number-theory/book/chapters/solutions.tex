@@ -444,6 +444,53 @@ sum. Fermat's statement about residues does not assert $u^p=u$ for
 new elements of an extension; the polynomial identity from
 Chapter~\ref{chap:binomial} proves additivity there instead.
 
+\textbf{8.} There are $2$ constant words, $2^3-2=6$ words of least
+period $3$, and $2^9-2^3=504$ of least period $9$. The latter form
+$504/9=56$ necklaces.
+
+\textbf{9.} The full-period words number $3^8-3^4=6480$, forming
+$6480/8=810$ necklaces. Thus $8\divides3^4(3^4-1)$.
+The factor $3^4=81$ is invertible modulo $8$; the certificate
+$81-10\cdot8=1$ supplies its inverse $1$. Cancellation gives
+$3^4\congr1\pmod8$.
+
+\textbf{10.} Besides $0000$ and $1111$, remove $0101$ and $1010$.
+These are exactly the four words obtained by repeating a two-letter
+block. The count $16-2=14$ is not divisible by $4$, whereas
+$16-4=12$ splits into three full-period orbits.
+
+\textbf{11.} The values are
+\[
+ \varphi(72)=4\cdot6=24,\qquad
+ \varphi(100)=2\cdot20=40,\qquad
+ \varphi(81)=27\cdot2=54.
+\]
+The factors in $9=3\cdot3$ are not coprime: the pair of residues
+$(1,2)$ modulo $3,3$ cannot come from a single integer. There is no
+CRT bijection, and $\varphi(9)=6\ne4=\varphi(3)^2$.
+
+\textbf{12.} The prime-power congruences are $5^4\congr1\pmod8$
+and $5^6\congr1\pmod9$. Raise them to powers $6$ and $4$,
+respectively, then use CRT to obtain $5^{24}\congr1\pmod{72}$.
+Since $2026=24\cdot84+10$, reduce to $5^{10}$.
+Modulo $72$, successive squares give $5^2\congr25$, $5^4\congr49$,
+and $5^8\congr25$, so $5^{10}\congr25^2\congr49$.
+
+\textbf{13.} The factor $3^3$ in $3^9-3^3=3^3(3^6-1)$ is not
+invertible modulo $9$, so it cannot be cancelled. For an odd integer,
+\[
+ (2t+1)^2=1+4t(t+1)\congr1\pmod8,
+\]
+because one of $t,t+1$ is even. Euler's exponent need not be the least.
+
+\textbf{14.} The proper divisors of $6$ are $1,2,3$. Words whose
+periods divide $2$ number $a^2$; those whose periods divide $3$
+number $a^3$. A word fixed by shifts of both $2$ and $3$ is fixed
+by their difference $1$, so their intersection consists of the $a$
+constant words. Removing the union leaves $a^6-a^3-a^2+a$ words,
+all in orbits of size $6$. For $p^k$, all proper divisors divide
+$p^{k-1}$, so a single set contains every shorter-period word.
+
 \section*{Chapter 6}
 
 \textbf{1.} $(\Z/12\Z)^\times=\{1,5,7,11\}$. Every nonidentity element squares to $1$, so their orders are $2$; the identity has order $1$.
@@ -451,6 +498,11 @@ Chapter~\ref{chap:binomial} proves additivity there instead.
 \textbf{4.} If $aH\cap bH$ contains $x$, write $x=ah_1=bh_2$. Then $a=b h_2h_1^{-1}$, so every $ah\in aH$ equals $b(h_2h_1^{-1}h)\in bH$. Thus $aH\subseteq bH$; symmetry gives equality.
 
 \textbf{5.} For $g\ne e$, the order of $g$ divides the prime $\abs G$, so it is $\abs G$. Hence $G=\angles g$.
+
+\textbf{7.} Reducing a product modulo $m$ or $n$ gives the product
+of the reductions. If $xy\congr1\pmod{mn}$, its reductions also
+multiply to $1$, so the CRT bijection preserves inverses. Counting
+its domain and codomain gives $\varphi(mn)=\varphi(m)\varphi(n)$.
 
 \section*{Chapter 7}
 

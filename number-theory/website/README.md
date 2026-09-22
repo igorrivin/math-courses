@@ -23,8 +23,11 @@ integer calculations, including verification of the 206,545-digit total.
 Chapter 4 now emphasizes extended gcd, constructive CRT, its connection to
 Lagrange interpolation, and Fibonacci periodicity via reversible pairs.
 The modular lab displays an integer Bézout certificate for the chosen step
-and explains whether it has an inverse. The necklace lab distinguishes the
-sum formula over the prime field from the polynomial identity that holds
+and explains whether it has an inverse. Chapter 5 and Notebook 2 extend the
+necklace argument from length 9 to prime powers, then use CRT to prove
+Euler's theorem and the totient product formula without inclusion–exclusion.
+The necklace lab links this argument and distinguishes the sum formula over
+the prime field from the polynomial identity that holds
 in extensions. Optional Appendix D builds quadratic-extension arithmetic
 before using Frobenius to compute Fibonacci periods. Notebook 2 follows
 the same teaching order and also runs in standard Python; its marked `.sage`

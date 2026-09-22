@@ -94,8 +94,13 @@ Some commands in the other notebooks require Sage.
   with examples over the rationals and a prime field. Reversible Fibonacci
   pairs prove periodicity without extension fields, and CRT combines periods
   for coprime moduli. Exercises 8–18 and solutions reinforce these steps.
-- Chapter 5 derives `(a+b)^p = a^p + b^p` in the prime field directly from the
-  necklace proof of Fermat. Chapter 7 distinguishes this equality of values
+- Chapter 5 extends Fermat's necklace proof to Euler: begin with length 9,
+  subtract all shorter-period words at prime-power lengths, cancel a unit,
+  and combine the congruences with CRT. Counting units gives the totient
+  product formula without inclusion–exclusion. Exercises 8–14 have solutions.
+  Chapter 6 revisits Euler through Lagrange and the unit-permutation proof.
+- Chapter 5 also derives `(a+b)^p = a^p + b^p` in the prime field directly
+  from Fermat. Chapter 7 distinguishes this equality of values
   from the formal polynomial identity, whose binomial proof allows
   substitution in extension fields.
 - Appendix D first constructs arithmetic in a quadratic extension, including
@@ -104,6 +109,6 @@ Some commands in the other notebooks require Sage.
   yield systematic period computations. The primes 2 and 5 are treated
   separately. This appendix is optional and follows Chapters 4–7.
 - Notebook 2 follows the same order: extended gcd, congruences, CRT,
-  interpolation, reversible pairs, and necklaces, followed by clearly marked
+  interpolation, reversible pairs, necklaces, and Euler, followed by clearly marked
   optional extension and exact-period sections. All computations use exact
   arithmetic and include mathematical checks.

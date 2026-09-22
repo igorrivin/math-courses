@@ -1,0 +1,174 @@
+\section{From prime lengths to prime powers}
+\label{sec:euler-necklaces}
+
+Length $9$ gives us a useful next experiment. The word $ABCABCABC$
+returns after three rotations, while $AAAAAAAAA$ returns after one.
+To obtain packets of nine words, we must remove all words with a shorter
+period. The following elementary fact tells us exactly which periods
+can occur.
+
+\begin{lemma}[A rotation period divides the length]
+For a circular word of length $N$, let $d$ be the least positive number
+of one-step rotations that returns the word to itself. Then $d\divides N$,
+and the word has exactly $d$ distinct rotations.
+\end{lemma}
+\begin{proof}
+Write $N=qd+r$ with $0\le r<d$. Rotating $N$ times does nothing, and
+rotating $qd$ times also returns the word. Hence rotating $r$ times
+returns it, so minimality forces $r=0$.
+The first $d$ rotations are distinct: equality at steps $i<j<d$ would
+give a return after $j-i$ steps. All later rotations repeat these.
+\end{proof}
+
+\begin{example}[Nine positions, one subtraction]
+Use $a\ge1$ colors on nine labeled positions. The possible least
+periods are $1,3,9$. A word with period $1$ or $3$ is precisely three
+copies of a block of length $3$:
+\[
+ \underbrace{c_0c_1c_2}_{\text{choose this block}}\,
+ \underbrace{c_0c_1c_2}_{\text{repeat}}\,
+ \underbrace{c_0c_1c_2}_{\text{repeat}}.
+\]
+There are $a^3$ such words, including the constant ones. Thus the
+remaining $a^9-a^3$ words have full period $9$ and split into rotation
+orbits of size $9$. Consequently
+\[
+ 9\divides a^9-a^3=a^3(a^6-1).
+\]
+If $3\ndivides a$, the factor $a^3$ is a unit modulo $9$, so we may
+cancel it and conclude $a^6\congr1\pmod9$.
+
+For two colors, $2^9-2^3=512-8=504=9\cdot56$: there are $56$
+full-period necklaces. Cancellation gives $2^6\congr1\pmod9$.
+If desired, certify the cancellation by extended Euclid:
+$8\cdot8-7\cdot9=1$.
+\end{example}
+
+\begin{proposition}[The prime-power necklace congruence]
+For every prime $p$, integer $k\ge1$, and integer $a$,
+\[
+ a^{p^k}\congr a^{p^{k-1}}\pmod{p^k}.
+\]
+\end{proposition}
+\begin{proof}
+First take $a\ge1$ colors. Every proper divisor of $p^k$ divides
+$p^{k-1}$. Therefore the words of length $p^k$ with a shorter period
+are exactly $p$ repetitions of a block of length $p^{k-1}$.
+The first block determines the whole labeled word uniquely, even when
+that block itself repeats. There are exactly $a^{p^{k-1}}$ such words.
+
+All remaining $a^{p^k}-a^{p^{k-1}}$ words have full period $p^k$.
+Their rotation orbits have size $p^k$, proving the divisibility.
+For an arbitrary integer $a$, choose a positive representative modulo
+$p^k$; the congruence depends only on that residue.
+\end{proof}
+
+If $p\ndivides a$, factor and cancel the invertible factor:
+\[
+ a^{p^{k-1}}\bigl(a^{p^{k-1}(p-1)}-1\bigr)\congr0\pmod{p^k}
+ \quad\Longrightarrow\quad
+ a^{p^{k-1}(p-1)}\congr1\pmod{p^k}.
+\]
+For $k=1$, this is the original necklace proof of Fermat.
+For larger $k$, one subtraction still removes every shorter period;
+no inclusion--exclusion formula is needed.
+
+\section{Counting units with CRT}
+\label{sec:totient-crt}
+
+\begin{definition}
+Euler's \emph{totient function} counts integers coprime to the modulus:
+\[
+ \varphi(n)=\#\{r:1\le r\le n,\ \gcd(r,n)=1\}.
+\]
+For $n\ge2$, this is the number of units in $\Z/n\Z$.
+The definition also gives $\varphi(1)=1$.
+\end{definition}
+
+For a prime power $p^k$, the only excluded integers are the multiples
+of $p$. There are $p^{k-1}$ of them between $1$ and $p^k$, so
+\[
+ \varphi(p^k)=p^k-p^{k-1}=p^{k-1}(p-1).
+\]
+This is exactly the exponent produced by the necklace argument.
+
+\begin{proposition}[Multiplicativity from CRT]
+If $\gcd(m,n)=1$, then $\varphi(mn)=\varphi(m)\varphi(n)$.
+\end{proposition}
+\begin{proof}
+For $m,n\ge2$, CRT gives a bijection
+\[
+ \Z/mn\Z\longrightarrow\Z/m\Z\times\Z/n\Z,
+ \qquad x\longmapsto(x\bmod m,x\bmod n).
+\]
+An integer is coprime to $mn$ exactly when it is coprime to both $m$
+and $n$. Thus this bijection restricts to a bijection between units
+modulo $mn$ and pairs of units modulo $m,n$. Counting the pairs proves
+the formula. If either modulus is $1$, use $\varphi(1)=1$.
+\end{proof}
+
+For example, $72=8\cdot9$, so $\varphi(72)=\varphi(8)\varphi(9)=4\cdot6=24$.
+The coprimality hypothesis matters: $\varphi(9)=6$, whereas
+$\varphi(3)\varphi(3)=4$.
+
+If $n=p_1^{k_1}\cdots p_r^{k_r}$ with distinct primes $p_i$, repeated
+use of CRT yields
+\[
+ \varphi(n)=\prod_{i=1}^r p_i^{k_i-1}(p_i-1)
+           =n\prod_{p\mid n}\left(1-\frac1p\right).
+\]
+The familiar product formula follows from counting units at each
+prime power. Inclusion--exclusion gives another derivation, but it
+is not a prerequisite here.
+
+\section{Euler's theorem: put the prime powers together}
+\label{sec:euler-crt}
+
+\begin{theorem}[Euler, from necklaces and CRT]
+\label{thm:euler-necklaces}
+If $n\ge2$ and $\gcd(a,n)=1$, then
+\[
+ a^{\varphi(n)}\congr1\pmod n.
+\]
+\end{theorem}
+\begin{proof}
+Factor $n=\prod_i p_i^{k_i}$. For each prime-power factor, the necklace
+argument and cancellation give
+\[
+ a^{\varphi(p_i^{k_i})}\congr1\pmod{p_i^{k_i}}.
+\]
+The totient product formula shows that each $\varphi(p_i^{k_i})$
+divides $\varphi(n)$. Raise the corresponding congruence to the integer
+power $\varphi(n)/\varphi(p_i^{k_i})$. Thus $a^{\varphi(n)}$ is $1$
+modulo every prime-power factor of $n$. CRT makes it $1$ modulo their
+product $n$.
+\end{proof}
+
+\begin{example}[A composite modulus]
+For $n=45=9\cdot5$, the component exponents are $\varphi(9)=6$ and
+$\varphi(5)=4$, and $\varphi(45)=24$. The congruences
+$2^6\congr1\pmod9$ and $2^4\congr1\pmod5$ therefore give
+$2^{24}\congr1\pmod{45}$. Since $2026=24\cdot84+10$,
+\[
+ 2^{2026}\congr2^{10}=1024\congr34\pmod{45}.
+\]
+Check the remainder on the component clocks: $34\congr7\pmod9$
+and $34\congr4\pmod5$.
+\end{example}
+
+\begin{warningbox}
+The necklace congruence holds for every $a$, but Euler's conclusion
+requires $a$ to be a unit. For example, $3^9-3^3$ is divisible by $9$,
+yet $3^6\congr0\pmod9$, not $1$; the factor $3^3$ cannot be cancelled.
+Also, $\varphi(n)$ is a guaranteed exponent, not necessarily the least
+one for a particular unit. Modulo $8$, $3^2\congr1$ although
+$\varphi(8)=4$.
+\end{warningbox}
+
+\begin{checkpoint}
+The proof uses three familiar moves: count full rotation orbits at a
+prime power, cancel using a modular inverse, and reassemble congruences
+using CRT. The totient formula records the number of units in the same
+prime-power decomposition. Chapter~\ref{chap:groups} will give another
+proof using finite groups.
+\end{checkpoint}

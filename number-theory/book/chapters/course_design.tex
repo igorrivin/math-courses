@@ -26,7 +26,7 @@ By the end, students should be able to:
   \item use extended gcd to compute modular inverses and solve linear congruences;
   \item construct CRT selectors and recognize Lagrange interpolation as polynomial CRT;
   \item prove Fibonacci periodicity modulo an integer using reversible pairs of residues;
-  \item explain Fermat's little theorem through cyclic symmetry and through finite groups;
+  \item prove Fermat and Euler through necklace rotations and CRT, then through finite groups;
   \item prove basic identities and divisibility statements for binomial coefficients;
   \item understand why central binomial coefficients control the density of primes;
   \item write short proofs that clearly separate evidence, claim, and justification.
@@ -49,9 +49,9 @@ Week & Core mathematics & Suggested studio or assessment \\
 5 & Alternating convergents; Lagrange and Galois; Pell equations & Fixed points and reduced-state cycles; Problem Set 2 \\
 6 & Congruences; extended gcd; inverses; linear congruences & B\'ezout certificates and multiplication checks \\
 7 & CRT; Lagrange interpolation; Fibonacci pairs & Reconstruct remainders and values; prove periodicity \\
-8 & Necklace colorings and Fermat's theorem & Orbit counting with physical beads; Problem Set 3 \\
+8 & Necklaces; Fermat; prime powers and Euler & Count periods; assemble with CRT; Problem Set 3 \\
 9 & Groups, subgroups, cyclic groups & Cayley-table investigation \\
-10 & Lagrange's theorem; group proof of Fermat & Compare two proofs; Problem Set 4 \\
+10 & Lagrange's theorem; Fermat and Euler via groups & Compare the proofs; Problem Set 4 \\
 11 & Binomial coefficients and Pascal's triangle & Identity stations \\
 12 & $p$-adic valuations; Kummer's carry idea & Color divisibility patterns; Problem Set 5 \\
 13 & Central binomial coefficient; Chebyshev functions & Prime-counting proof workshop \\
@@ -72,11 +72,12 @@ method for division. Use them for linear congruences and CRT, then
 recognize the same selectors in Lagrange interpolation. Prove Fibonacci
 periodicity using reversible pairs; systematic order calculations can wait.
 
-After necklaces, derive $(a+b)^p=a^p+b^p$ in $\F_p$ from Fermat.
-Chapter~\ref{chap:binomial} proves the polynomial identity.
-Optional Appendix~\ref{app:finite-fields} follows Chapters~4--7:
-build quadratic-extension arithmetic, study Frobenius, then compute
-Fibonacci periods using orders.
+After Fermat, count necklaces of length $9$, generalize to prime
+powers, and use CRT to prove Euler; no inclusion--exclusion is needed.
+Fermat also gives $(a+b)^p=a^p+b^p$ in $\F_p$; Chapter~7 proves the
+polynomial identity. Optional Appendix~\ref{app:finite-fields} follows
+Chapters~4--7: build extension arithmetic, study Frobenius, then compute
+Fibonacci periods.
 
 \section*{Assessment design}
 
@@ -93,7 +94,7 @@ The exercises in each chapter carry these labels. A typical weekly assignment is
 
 \begin{itemize}
   \item \textbf{Let the picture precede the notation.} Tiling, winding around a clock, rotating a necklace, and counting lattice paths give students something to reason about before symbols compress the idea.
-  \item \textbf{Prove one theorem twice.} Fermat's little theorem is the deliberate centerpiece: orbit counting supplies a concrete proof, while groups reveal the reusable structure.
+  \item \textbf{Prove a theorem twice.} Fermat and Euler connect the course: necklace rotations and CRT give concrete proofs, while finite groups reveal the reusable structure.
   \item \textbf{Make proof choices visible.} Ask not only ``Is this correct?'' but ``Why did this definition unlock that step?''
   \item \textbf{Use computation as a microscope, not an oracle.} The optional Sage notebook helps students find examples and conjectures; written work must still explain why a pattern continues.
 \end{itemize}
@@ -112,7 +113,7 @@ The exercises in each chapter carry these labels. A typical weekly assignment is
 \node[box,right=of fta] (mod) {Modular\\arithmetic};
 \node[box,below=of mod] (neck) {Necklace\\orbits};
 \node[box,right=of mod] (group) {Finite\\groups};
-\node[box,right=of neck] (flt) {Fermat's little\\theorem};
+\node[box,right=of neck] (flt) {Fermat and Euler\\theorems};
 \node[box,below=of fta] (binom) {Binomial\\coefficients};
 \node[box,below=of flt] (cheb) {Chebyshev's\\estimate};
 \draw[arr] (euclid)--(fta);

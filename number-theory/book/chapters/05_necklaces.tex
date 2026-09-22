@@ -1,6 +1,6 @@
 \chapter{A theorem you can rotate}
 \label{chap:necklaces}
-\chaptertag{Necklace colorings and Fermat's little theorem}
+\chaptertag{Necklace colorings, Fermat, and Euler}
 
 Why should a prime $p$ divide $a^p-a$ for every integer $a$? Instead of manipulating the expression, we count objects that naturally arrive in packets of $p$.
 
@@ -64,10 +64,14 @@ Divisibility by $p$ appears because symmetry packages nonexceptional objects int
 A physical necklace usually ignores where position $0$ is. Here we first count \emph{labeled} circular words, then use rotation to partition them. Calling each orbit a necklace is convenient, but the proof depends on keeping those two levels distinct.
 
 \begin{warningbox}
-When the length is composite, an orbit can have an intermediate size. The word $RBRB$ has two distinct rotations, not $1$ or $4$. Primality is doing real work.
+When the length is composite, an orbit can have an intermediate size.
+The word $RBRB$ has two distinct rotations, not $1$ or $4$.
+To extend the counting proof, we must account for these shorter periods.
 \end{warningbox}
 
-\section{Using the theorem}
+\input{chapters/necklaces_euler}
+
+\section{Using Fermat for a prime modulus}
 
 To compute $3^{1000}\pmod7$, note that $3^6\congr1$ and $1000=6\cdot166+4$:
 \[
@@ -114,5 +118,29 @@ compute this map in Appendix~\ref{app:finite-fields}.
   for integers $x_i$. Explain why this argument alone does not apply
   to new elements of a field extension. \exlevel{Reasoning}
   \item If $n$ is composite, must there be an $a$ with $a^n\not\congr a\pmod n$? Test $n=341$ and $561$. This opens the door to pseudoprimes and Carmichael numbers. \exlevel{Challenge}
+  \item Count the binary words of length $9$ with least rotational
+  period $1$, $3$, and $9$. How many necklaces have full period $9$?
+  \exlevel{Fluency}
+  \item With three colors and eight labeled positions, count the
+  words and necklaces of full period $8$. Use the count and a modular
+  inverse to deduce $3^4\congr1\pmod8$. \exlevel{Fluency}
+  \item Why does subtracting only the constant words fail for length
+  $4$? Compare $2^4-2$ with $2^4-2^2$, and explain which words must
+  be removed. \exlevel{Reasoning}
+  \item Compute $\varphi(72)$, $\varphi(100)$, and $\varphi(81)$
+  using prime powers and CRT. Explain why multiplicativity cannot
+  be applied directly to $9=3\cdot3$. \exlevel{Fluency}
+  \item Use $72=8\cdot9$ to prove $5^{24}\congr1\pmod{72}$
+  from the two prime-power congruences. Then compute
+  $5^{2026}\pmod{72}$. \exlevel{Reasoning}
+  \item Locate the invalid cancellation in an attempted proof of
+  $3^6\congr1\pmod9$. Separately, show that every odd integer has
+  square $1$ modulo $8$, even though $\varphi(8)=4$.
+  \exlevel{Reasoning}
+  \item For length $6$, show that the words of shorter period are
+  the union of words whose periods divide $2$ and those whose periods
+  divide $3$. Their intersection consists of constant words. Deduce
+  that $a^6-a^3-a^2+a$ is divisible by $6$. Explain why the prime-power
+  case needs only one subtraction. \exlevel{Exploration}
 \end{enumerate}
 \end{exercisebox}

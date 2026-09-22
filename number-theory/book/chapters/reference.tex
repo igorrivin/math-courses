@@ -201,6 +201,20 @@ others; $x=\sum a_i e_i\pmod N$ reconstructs the prescribed remainders.
 For two arbitrary moduli $m,n$, compatibility means the prescribed
 remainders agree modulo $\gcd(m,n)$; uniqueness is modulo their lcm.
 
+\textbf{Totients and Euler.} Counting multiples of $p$ gives
+$\varphi(p^k)=p^{k-1}(p-1)$. CRT identifies units modulo coprime
+factors with pairs of units, so
+\[
+ \varphi(mn)=\varphi(m)\varphi(n)\quad(\gcd(m,n)=1),\qquad
+ \varphi(n)=n\prod_{p\mid n}(1-1/p).
+\]
+For necklaces of length $p^k$, remove the $a^{p^{k-1}}$ words
+obtained by repeating a shorter block. Full rotation orbits give
+$p^k\divides a^{p^k}-a^{p^{k-1}}$. If $p\ndivides a$, cancellation
+gives $a^{\varphi(p^k)}\congr1\pmod{p^k}$.
+Raise to the common exponent $\varphi(n)$ and use CRT:
+$a^{\varphi(n)}\congr1\pmod n$ when $n\ge2$ and $\gcd(a,n)=1$.
+
 \textbf{Lagrange interpolation.} For distinct points $c_i$ in a field,
 values $y_i$ determine the unique polynomial of degree less than $r$:
 \[
@@ -245,7 +259,7 @@ The exceptional periods are $\pi(2)=3$ and $\pi(5)=20$.
   \item \textbf{Dyadic decomposition}: split a range into $(x/2,x],(x/4,x/2],\dots$ and sum a geometric series.
 \end{itemize}
 
-\section*{The two Fermat proofs}
+\section*{Fermat and Euler: two counting routes}
 
 \begin{center}
 \small
@@ -258,6 +272,7 @@ Structure & cyclic rotation orbits & group $(\Z/p\Z)^\times$ \\
 Exceptional part & $a$ constant colorings & identity/powers inside cyclic subgroups \\
 Equal blocks & nonconstant orbits have size $p$ & element orders divide $p-1$ \\
 Conclusion & $a^p\congr a\pmod p$ & $a^{p-1}\congr1\pmod p$ for $p\ndivides a$ \\
+Euler & subtract all shorter periods at $p^k$, cancel, then use CRT & apply Lagrange to the $\varphi(n)$ units modulo $n$ \\
 \bottomrule
 \end{tabularx}
 \end{center}

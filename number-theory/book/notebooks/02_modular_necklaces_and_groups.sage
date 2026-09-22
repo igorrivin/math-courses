@@ -2,8 +2,8 @@
 # # Lab 2: Extended gcd, Chinese remainders, and periodicity
 #
 # Follow Chapter 4 through inverses, CRT, Lagrange interpolation, and
-# reversible Fibonacci pairs. Then revisit Fermat through necklaces and
-# groups. The final two sections belong to the later extension-field
+# reversible Fibonacci pairs. Then extend Fermat's necklace argument to
+# Euler using prime powers and CRT. The final two sections belong to the extension-field
 # appendix; stop before them until you have learned that arithmetic.
 #
 # All cells use exact arithmetic and run in order in either SageMath or
@@ -258,7 +258,7 @@ assert len(fibonacci_pair_orbit(15)) == lcm(8, 20) == 40
 # starting at $(1,0)$: where does the inverse argument fail?
 
 # %% [markdown]
-# ## 5. Necklaces, equal blocks, and Fermat
+# ## 5. Necklaces, prime powers, and Euler
 
 # %%
 def rotate(word, k=1):
@@ -295,9 +295,128 @@ for p in [2, 3, 5, 7, 11, 13, 17, 19]:
             assert pow(int(a + b), int(p), int(p)) == (pow(int(a), int(p), int(p)) + pow(int(b), int(p), int(p))) % p
 
 # %% [markdown]
-# **Synthesis.** Compare necklace orbits, multiplication as a permutation,
-# and Lagrange's theorem as proofs of Fermat. Name the set and the operation
-# in each proof. In the prime field, Fermat immediately gives
+# **From nine beads to prime powers.** At length 9, the least period is
+# 1, 3, or 9. All words with a shorter period are three copies of their
+# first three entries, giving $a^3$ words, including constants. The
+# remaining $a^9-a^3$ words form orbits of size 9. At length $p^k$,
+# every shorter period divides $p^{k-1}$, so the same single subtraction
+# gives $p^k\mid a^{p^k}-a^{p^{k-1}}$.
+#
+# First enumerate the actual words. The formula below predicts only the
+# full-period count; the search computes periods independently.
+
+# %%
+from collections import Counter
+
+
+def least_rotation_period(word):
+    return next(d for d in range(1, len(word) + 1) if rotate(word, d) == word)
+
+
+binary_nine = Counter(least_rotation_period(word)
+                      for word in product(range(2), repeat=9))
+print("Binary length-9 words by least period:", dict(sorted(binary_nine.items())))
+assert binary_nine == {1: 2, 3: 6, 9: 504}
+assert binary_nine[9] // 9 == 56
+assert inverse_mod(8, 9) == 8
+assert pow(2, 6, 9) == 1
+
+for p, k in [(2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (5, 1)]:
+    length, block = int(p ** k), int(p ** (k - 1))
+    for colors in [2, 3]:
+        counts = Counter(least_rotation_period(word)
+                         for word in product(range(colors), repeat=length))
+        assert all(length % d == 0 for d in counts)
+        assert sum(counts.values()) == colors ** length
+        assert sum(count for d, count in counts.items() if d < length) == colors ** block
+        assert counts[length] == colors ** length - colors ** block
+        assert counts[length] % length == 0
+        print("Length", length, "colors", colors,
+              "full-period necklaces", counts[length] // length)
+    # The congruence depends only on the residue, including zero and negatives.
+    for a in range(-length, length + 1):
+        assert pow(int(a), length, length) == pow(int(a), block, length)
+
+binary_six = Counter(least_rotation_period(word)
+                     for word in product(range(2), repeat=6))
+assert binary_six[6] == 2 ** 6 - 2 ** 3 - 2 ** 2 + 2 == 54
+assert (2 ** 4 - 2) % 4 != 0
+assert (2 ** 4 - 2 ** 2) % 4 == 0
+
+# %% [markdown]
+# **Proof prompts.** Use division with remainder to prove that a least
+# rotation period divides the word length. Why does repeating a block of
+# length $p^{k-1}$ include *every* shorter-period word exactly once?
+# When $p\nmid a$, factor the necklace congruence and explain precisely
+# which factor has an inverse. Deduce $a^{p^{k-1}(p-1)}\equiv1\pmod{p^k}$.
+# For length 6, explain why the two sets of shorter periods overlap.
+#
+# **Count units, then use CRT.** Multiples of $p$ are the only nonunits
+# modulo $p^k$, giving $\varphi(p^k)=p^{k-1}(p-1)$. CRT gives a bijection
+# between units modulo coprime $m,n$ and pairs of component units, hence
+# $\varphi(mn)=\varphi(m)\varphi(n)$. Each prime-power exponent divides
+# the product $\varphi(n)$. Raise each component congruence to this common
+# exponent, then reassemble: $a^{\varphi(n)}\equiv1\pmod n$ for a unit $a$.
+# No inclusion–exclusion formula is needed.
+
+# %%
+def prime_power_factors(n):
+    n = int(n)
+    if n < 1:
+        raise ValueError("Factor a positive integer.")
+    factors, p = [], 2
+    while p * p <= n:
+        k = 0
+        while n % p == 0:
+            n //= p
+            k += 1
+        if k:
+            factors.append((p, k))
+        p += 1
+    if n > 1:
+        factors.append((n, 1))
+    return factors
+
+
+def totient_from_factors(n):
+    value = 1
+    for p, k in prime_power_factors(n):
+        value *= p ** (k - 1) * (p - 1)
+    return int(value)
+
+
+assert totient_from_factors(1) == 1
+for n in range(1, 101):
+    phi = totient_from_factors(n)
+    assert phi == sum(gcd(a, n) == 1 for a in range(1, n + 1))
+    if n >= 2:
+        assert all(pow(int(a), phi, int(n)) == 1 for a in units_mod(n))
+
+for m, n in [(5, 9), (8, 9), (4, 25)]:
+    pairs = {(a % m, a % n) for a in units_mod(m * n)}
+    assert pairs == set(product(units_mod(m), units_mod(n)))
+    assert len(pairs) == len(units_mod(m * n))
+    assert totient_from_factors(m * n) == totient_from_factors(m) * totient_from_factors(n)
+
+for n in [45, 72, 100, 81]:
+    phi = totient_from_factors(n)
+    component_exponents = [p ** (k - 1) * (p - 1) for p, k in prime_power_factors(n)]
+    assert all(phi % exponent == 0 for exponent in component_exponents)
+    print("Modulus", n, "component exponents", component_exponents, "totient", phi)
+
+assert [totient_from_factors(n) for n in [72, 100, 81]] == [24, 40, 54]
+assert pow(2, 2026, 45) == pow(2, 10, 45) == 34
+assert pow(5, 2026, 72) == pow(5, 10, 72) == 49
+assert pow(3, 6, 9) == 0  # The cancelled factor must be a unit.
+assert totient_from_factors(8) == 4
+assert all(pow(int(a), 2, 8) == 1 for a in units_mod(8))  # phi need not be least.
+assert totient_from_factors(9) != totient_from_factors(3) ** 2  # Coprimality matters.
+
+# %% [markdown]
+# **Synthesis after Chapter 6.** Compare necklace orbits plus CRT,
+# multiplication as a permutation of the units, and Lagrange's theorem
+# as proofs of Euler. Name the set, operation, and cancellable factor
+# where appropriate. In the prime field, Fermat immediately gives
 # $(a+b)^p=a+b=a^p+b^p$: the power map is the identity there.
 #
 # A separate coefficient argument proves the formal polynomial identity
