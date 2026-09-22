@@ -392,7 +392,7 @@ export default function Home() {
       <nav className="topbar">
         <a className="brand" href="#top" aria-label="Patterns, Proofs, and Primes home"><span>PP</span><b>Patterns, Proofs,<br />and Primes</b></a>
         <button className="menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu}>Menu</button>
-        <div className={menu ? "navlinks open" : "navlinks"}><a href="#course">Course</a><a href="#labs">Labs</a><a href="#practice">Practice</a><a href="#sage">Sage</a><a className="pdf-link" href="/course-packet.pdf">PDF edition ↗</a></div>
+        <div className={menu ? "navlinks open" : "navlinks"}><a href="#course">Course</a><a href="#labs">Labs</a><a href="#practice">Practice</a><a href="/assessments">Problem sets & quizzes</a><a href="#sage">Sage</a><a className="pdf-link" href="/course-packet.pdf">PDF edition ↗</a></div>
       </nav>
 
       <header className="hero" id="top">
@@ -414,6 +414,7 @@ export default function Home() {
       </section>
 
       <section className="section practice-section" id="practice">
+        <div className="assessment-home-link"><p>Ready to work through a problem?</p><a href="/assessments">Browse student problem sets & quizzes <span aria-hidden="true">→</span></a></div>
         <div className="section-heading"><div><p className="eyebrow">Practice architecture</p><h2>From calculation to explanation.</h2></div><p>Weekly work mixes three modes. The aim is not merely to get an answer, but to know what kind of reasoning produced it.</p></div>
         <div className="practice-grid">
           <article><span>01</span><h3>Fluency</h3><p>Focused calculations make later proofs readable.</p><strong>Example</strong><blockquote>Express gcd(527, 341) as 527x + 341y.</blockquote></article>

@@ -23,3 +23,11 @@ outside the public site.
 ## Local development
 
 Run `npm run dev` and open the printed local URL. Run `npm run build` for a deployment build.
+
+## Problem sets, quizzes, and instructor editions
+
+`/assessments` lists the student PDFs; `/instructors` requires the shared
+instructor password. Configure `INSTRUCTOR_PASSWORD` as a Sites secret (or in
+an ignored local `.env` file). An empty value keeps access closed. Instructor
+PDFs live in `private/` and are served only after a server-side session check.
+See [setup and maintenance](../../docs/instructor-access.md).

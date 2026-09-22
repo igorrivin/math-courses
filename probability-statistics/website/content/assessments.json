@@ -1,0 +1,56 @@
+[
+  {
+    "id": "problem-set-01",
+    "kind": "problem-set",
+    "label": "Problem Set 1",
+    "title": "The geometry of events",
+    "description": "Set notation, complements, De Morgan’s laws, Venn diagrams, and inclusion–exclusion. No probability background assumed.",
+    "details": "80 points + challenge",
+    "studentFile": "problem-set-01.pdf"
+  },
+  {
+    "id": "problem-set-02",
+    "kind": "problem-set",
+    "label": "Problem Set 2",
+    "title": "Counting, events, and shared birthdays",
+    "description": "Probability spaces, permutations, combinations, binomial identities, inclusion–exclusion, and the birthday paradox.",
+    "details": "8 core problems + challenge · About 3 hours",
+    "studentFile": "problem-set-02.pdf"
+  },
+  {
+    "id": "problem-set-03",
+    "kind": "problem-set",
+    "label": "Problem Set 3",
+    "title": "Counting, collisions, and derangements",
+    "description": "Discrete probability spaces, poker and word counts, birthday bounds, collision patterns, and the hat-check problem.",
+    "details": "9 core problems + challenge · About 3½ hours",
+    "studentFile": "problem-set-03.pdf"
+  },
+  {
+    "id": "conditional-probability-quiz",
+    "kind": "quiz",
+    "label": "Class quiz",
+    "title": "Conditional probability and Bayes’ rule",
+    "description": "Finite probability spaces, conditioning from a table, total probability, and a guided solution to Monty Hall.",
+    "details": "50 minutes · 50 points",
+    "studentFile": "conditional-probability-quiz.pdf"
+  },
+  {
+    "id": "birthday-derangements-quiz",
+    "kind": "quiz",
+    "label": "Class quiz",
+    "title": "Birthdays, derangements, and a little calculus",
+    "description": "The series and approximations behind birthday collisions and derangements, followed by a Bayes’ rule problem.",
+    "details": "50 minutes · 50 points",
+    "studentFile": "birthday-derangements-quiz.pdf"
+  },
+  {
+    "id": "weekly-quizzes",
+    "kind": "quiz",
+    "label": "Weekly quiz collection",
+    "title": "Ten checkpoints from sets to inference",
+    "description": "Short quizzes following the course from events and distributions through estimation and Bayesian inference, with writing space.",
+    "details": "10 quizzes · 20 minutes each · 10 points each",
+    "studentFile": "weekly-quizzes.pdf"
+  }
+]

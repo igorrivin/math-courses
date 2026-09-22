@@ -20,6 +20,14 @@ with a reference to Vardi's exposition. Eight further exercises and their
 solutions accompany the revision. The first book notebook supplies exact
 integer calculations, including verification of the 206,545-digit total.
 
+## Problem sets, quizzes, and instructor editions
+
+`/assessments` lists the student PDFs; `/instructors` requires the shared
+instructor password. Configure `INSTRUCTOR_PASSWORD` as a Sites secret (or in
+an ignored local `.env` file). An empty value keeps access closed. Instructor
+PDFs live in `private/` and are served only after a server-side session check.
+See [setup and maintenance](../../docs/instructor-access.md).
+
 ## Prerequisites
 
 - Node.js `>=22.13.0`

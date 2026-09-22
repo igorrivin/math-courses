@@ -1,0 +1,78 @@
+{
+  "number-theory": [
+    {
+      "id": "problem-set-01", "kind": "problem-set", "label": "Problem Set 1",
+      "title": "Euclid and the architecture of the integers",
+      "description": "Divisibility, greatest common divisors, Bézout identities, prime factorization, and the infinitude of primes.",
+      "details": "10 problems", "studentFile": "problem-set-01.pdf",
+      "studentSource": "problem-sets/problem-set-01/number_theory_problem_set_01_student.pdf",
+      "instructorSource": "problem-sets/problem-set-01/number_theory_problem_set_01_solutions.pdf"
+    },
+    {
+      "id": "week-02", "kind": "problem-set", "label": "Week 2",
+      "title": "Division, primes, and finite continued fractions",
+      "description": "Turn Euclidean calculations, a sieve, and finite continued fractions into proofs. Test divisibility claims with counterexamples.",
+      "details": "8 core problems + challenge · 2–3 hours", "studentFile": "week-02.pdf",
+      "studentSource": "problem-sets/week-02/number_theory_week_02_student.pdf",
+      "instructorSource": "problem-sets/week-02/number_theory_week_02_instructor.pdf"
+    },
+    {
+      "id": "weekly-quizzes", "kind": "quiz", "label": "Weekly quiz collection",
+      "title": "Ten checkpoints from Euclid to primes",
+      "description": "Short, self-contained quizzes following the course sequence, with space to write calculations and proofs.",
+      "details": "10 quizzes · 20 minutes each · 10 points each", "studentFile": "weekly-quizzes.pdf",
+      "studentSource": "quizzes/number_theory_weekly_quizzes_student.pdf",
+      "instructorSource": "quizzes/number_theory_weekly_quizzes_instructor.pdf"
+    }
+  ],
+  "probability-statistics": [
+    {
+      "id": "problem-set-01", "kind": "problem-set", "label": "Problem Set 1",
+      "title": "The geometry of events",
+      "description": "Set notation, complements, De Morgan’s laws, Venn diagrams, and inclusion–exclusion. No probability background assumed.",
+      "details": "80 points + challenge", "studentFile": "problem-set-01.pdf",
+      "studentSource": "problem-sets/problem-set-01/probability_problem_set_01_student.pdf",
+      "instructorSource": "problem-sets/problem-set-01/probability_problem_set_01_solutions.pdf"
+    },
+    {
+      "id": "problem-set-02", "kind": "problem-set", "label": "Problem Set 2",
+      "title": "Counting, events, and shared birthdays",
+      "description": "Probability spaces, permutations, combinations, binomial identities, inclusion–exclusion, and the birthday paradox.",
+      "details": "8 core problems + challenge · About 3 hours", "studentFile": "problem-set-02.pdf",
+      "studentSource": "problem-sets/problem-set-02/probability_problem_set_02_student.pdf",
+      "instructorSource": "problem-sets/problem-set-02/probability_problem_set_02_instructor.pdf"
+    },
+    {
+      "id": "problem-set-03", "kind": "problem-set", "label": "Problem Set 3",
+      "title": "Counting, collisions, and derangements",
+      "description": "Discrete probability spaces, poker and word counts, birthday bounds, collision patterns, and the hat-check problem.",
+      "details": "9 core problems + challenge · About 3½ hours", "studentFile": "problem-set-03.pdf",
+      "studentSource": "problem-sets/problem-set-03/probability_problem_set_03_student.pdf",
+      "instructorSource": "problem-sets/problem-set-03/probability_problem_set_03_instructor.pdf"
+    },
+    {
+      "id": "conditional-probability-quiz", "kind": "quiz", "label": "Class quiz",
+      "title": "Conditional probability and Bayes’ rule",
+      "description": "Finite probability spaces, conditioning from a table, total probability, and a guided solution to Monty Hall.",
+      "details": "50 minutes · 50 points", "studentFile": "conditional-probability-quiz.pdf",
+      "studentSource": "quizzes/conditional-probability/conditional_probability_quiz_student.pdf",
+      "instructorSource": "quizzes/conditional-probability/conditional_probability_quiz_instructor.pdf"
+    },
+    {
+      "id": "birthday-derangements-quiz", "kind": "quiz", "label": "Class quiz",
+      "title": "Birthdays, derangements, and a little calculus",
+      "description": "The series and approximations behind birthday collisions and derangements, followed by a Bayes’ rule problem.",
+      "details": "50 minutes · 50 points", "studentFile": "birthday-derangements-quiz.pdf",
+      "studentSource": "quizzes/birthday-derangements/birthday_derangements_quiz_student.pdf",
+      "instructorSource": "quizzes/birthday-derangements/birthday_derangements_quiz_instructor.pdf"
+    },
+    {
+      "id": "weekly-quizzes", "kind": "quiz", "label": "Weekly quiz collection",
+      "title": "Ten checkpoints from sets to inference",
+      "description": "Short quizzes following the course from events and distributions through estimation and Bayesian inference, with writing space.",
+      "details": "10 quizzes · 20 minutes each · 10 points each", "studentFile": "weekly-quizzes.pdf",
+      "studentSource": "quizzes/probability_statistics_weekly_quizzes_student.pdf",
+      "instructorSource": "quizzes/probability_statistics_weekly_quizzes_instructor.pdf"
+    }
+  ]
+}

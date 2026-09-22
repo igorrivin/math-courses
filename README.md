@@ -62,10 +62,14 @@ from either website folder to build it and run its existing tests.
 No repository-root npm workspace or shared dependency installation is needed.
 
 After editing and compiling a book, update its named PDF and the matching
-website `public/course-packet.pdf` together. Keep the probability website's
-`public/problem-set-02.pdf` and `public/problem-set-03.pdf` in sync with the
-student editions in `probability-statistics/problem-sets/problem-set-02/` and
-`problem-set-03/`.
+website `public/course-packet.pdf` together. After updating assessments, run
+`python3 scripts/sync-assessments.py` to refresh the student downloads,
+private instructor PDFs, and assessment catalogs for both websites.
+Use `--check` to verify their copies without writing files.
+
+Each website has a `/assessments` page for student problem sets and quizzes,
+plus a password-gated `/instructors` page. See
+[instructor access](docs/instructor-access.md) for setup and maintenance.
 
 ## Existing websites
 

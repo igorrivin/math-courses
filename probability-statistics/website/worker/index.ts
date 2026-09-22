@@ -2,7 +2,13 @@
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
 
+import { createInstructorAccess } from "./instructor-access.mjs";
+import instructorPdfs from "virtual:instructor-pdfs";
+
+const instructorAccess = createInstructorAccess(instructorPdfs);
+
 interface Env {
+  INSTRUCTOR_PASSWORD?: string;
   ASSETS: Fetcher;
   DB: D1Database;
   IMAGES: {
@@ -40,7 +46,7 @@ const worker = {
       }, allowedWidths);
     }
 
-    return handler.fetch(request, env, ctx);
+    return instructorAccess(request, env, () => handler.fetch(request, env, ctx));
   },
 };
 

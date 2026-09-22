@@ -1,0 +1,29 @@
+[
+  {
+    "id": "problem-set-01",
+    "kind": "problem-set",
+    "label": "Problem Set 1",
+    "title": "Euclid and the architecture of the integers",
+    "description": "Divisibility, greatest common divisors, Bézout identities, prime factorization, and the infinitude of primes.",
+    "details": "10 problems",
+    "studentFile": "problem-set-01.pdf"
+  },
+  {
+    "id": "week-02",
+    "kind": "problem-set",
+    "label": "Week 2",
+    "title": "Division, primes, and finite continued fractions",
+    "description": "Turn Euclidean calculations, a sieve, and finite continued fractions into proofs. Test divisibility claims with counterexamples.",
+    "details": "8 core problems + challenge · 2–3 hours",
+    "studentFile": "week-02.pdf"
+  },
+  {
+    "id": "weekly-quizzes",
+    "kind": "quiz",
+    "label": "Weekly quiz collection",
+    "title": "Ten checkpoints from Euclid to primes",
+    "description": "Short, self-contained quizzes following the course sequence, with space to write calculations and proofs.",
+    "details": "10 quizzes · 20 minutes each · 10 points each",
+    "studentFile": "weekly-quizzes.pdf"
+  }
+]
