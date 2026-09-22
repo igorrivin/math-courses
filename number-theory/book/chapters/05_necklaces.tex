@@ -1,6 +1,6 @@
 \chapter{A theorem you can rotate}
 \label{chap:necklaces}
-\chaptertag{Necklace colorings, Fermat, and Euler}
+\chaptertag{Necklaces, Fermat, Euler, and M\"obius inversion}
 
 Why should a prime $p$ divide $a^p-a$ for every integer $a$? Instead of manipulating the expression, we count objects that naturally arrive in packets of $p$.
 
@@ -106,6 +106,10 @@ in Chapter~\ref{chap:binomial}, then construct a finite extension and
 compute this map in Appendix~\ref{app:finite-fields}.
 \end{bigidea}
 
+\input{chapters/arithmetic_functions}
+\input{chapters/poset_inversion}
+\input{chapters/fourier_interpolation}
+
 \begin{exercisebox}
 \begin{enumerate}
   \item List the rotational orbits of binary words of length $3$. Identify the constant words. \exlevel{Fluency}
@@ -142,5 +146,72 @@ compute this map in Appendix~\ref{app:finite-fields}.
   divide $3$. Their intersection consists of constant words. Deduce
   that $a^6-a^3-a^2+a$ is divisible by $6$. Explain why the prime-power
   case needs only one subtraction. \exlevel{Exploration}
+  \item Classify $n\mapsto n^2$, $\mathbf{1}$, $\varphi$, $\tau$,
+  and $\mu$ as multiplicative or completely multiplicative.
+  For each failure of complete multiplicativity, give a counterexample.
+  \exlevel{Fluency}
+  \item Compute $\tau(360)$ and $\sigma(360)$ by prime powers.
+  Explain the independent choices behind each product. \exlevel{Fluency}
+  \item Partition $1,\ldots,18$ by gcd with $18$ and verify
+  $\sum_{d\mid18}\varphi(d)=18$. Which class accounts for
+  $\varphi(1)$? \exlevel{Reasoning}
+  \item Tabulate $\mu(1),\ldots,\mu(12)$. List the nonzero terms
+  in $\sum_{d\mid60}\mu(d)$ and in
+  $\varphi(60)=\sum_{d\mid60}\mu(d)(60/d)$. \exlevel{Fluency}
+  \item Find $f$ when $\sum_{d\mid n}f(d)$ equals $\tau(n)$,
+  $\sigma(n)$, or $n+1$. Why is inversion legitimate in the third
+  case even though $n\mapsto n+1$ is not multiplicative?
+  \exlevel{Reasoning}
+  \item Compute $(\mu*\mu)(4)$ and explain why the inverse of
+  $\mu$ under convolution is $\mathbf{1}$ rather than $\mu$.
+  \exlevel{Reasoning}
+  \item Count primitive binary words and primitive binary necklaces
+  of length $12$. Identify which divisors contribute to the inversion.
+  \exlevel{Fluency}
+  \item Starting with $N_a(n)=\sum_{d\mid n}P_a(d)/d$, derive
+  \[
+    N_a(n)=\frac1n\sum_{d\mid n}\varphi(d)a^{n/d}.
+  \]
+  Use the inverted totient identity to collect coefficients.
+  Compute the number of all binary necklaces of length $12$.
+  \exlevel{Challenge}
+  \item \textbf{Bonus.} On subsets of $\{1,2\}$, the cumulative
+  values at $\varnothing,\{1\},\{2\},\{1,2\}$ are $2,5,7,16$.
+  Recover the four exact values and check by summing again.
+  \exlevel{Fluency}
+  \item \textbf{Bonus.} On the chain $0<1<2<3$, recover exact
+  values from cumulative values $2,7,8,20$. Compute $\mu_P(0,3)$;
+  why is ``alternate signs along the chain'' the wrong rule?
+  \exlevel{Reasoning}
+  \item \textbf{Bonus.} In a universe of $40$ elements, three sets
+  have sizes $20,15,12$, pairwise intersections of sizes $8,5,4$,
+  and triple intersection of size $2$. How many elements lie in
+  their union, and how many in none? Specify the upper cumulative
+  count being inverted. \exlevel{Fluency}
+  \item \textbf{Bonus.} Compute the M\"obius coefficients from
+  the bottom of the partition poset of $\{1,2,3\}$. Use upper
+  inversion to count its injective colorings with four colors,
+  and check by direct choice. \exlevel{Reasoning}
+  \item \textbf{Bonus.} View the divisors of $12$ as a product
+  of exponent chains. Compute $\mu_P(1,d)$ for every $d\mid12$.
+  Explain the difference between $\mu_P(1,6)$ and $\mu_P(1,12)$.
+  \exlevel{Reasoning}
+  \item \textbf{Bonus.} Explain why the usual order on $\Z$ is
+  locally finite but the sum $\sum_{x\le y}1$ is not finite.
+  State a condition on $F$ that makes every lower sum well defined.
+  \exlevel{Reasoning}
+  \item \textbf{Bonus.} Use $\omega=i$ to evaluate $2-X+X^3$
+  at the fourth roots of unity, then recover its coefficients by
+  Fourier inversion. Explain why the samples cannot distinguish
+  this polynomial from $2-X+X^3+(X^4-1)$. \exlevel{Fluency}
+  \item \textbf{Bonus.} Prove directly that
+  $\ell_j(X)=n^{-1}\sum_{k=0}^{n-1}\omega^{-jk}X^k$
+  equals the usual Lagrange product
+  $\prod_{r\ne j}(X-\omega^r)/(\omega^j-\omega^r)$.
+  Use their degree bounds and values. \exlevel{Reasoning}
+  \item \textbf{Bonus.} In $\F_5$, verify that $2$ has order $4$.
+  Evaluate $1+2X+3X^2+4X^3$ at $1,2,4,3$, and use the inverse
+  transform to recover its coefficients. Identify the two inverses
+  used in the formula. \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}

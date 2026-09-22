@@ -33,6 +33,12 @@ before using Frobenius to compute Fibonacci periods. Notebook 2 follows
 the same teaching order and also runs in standard Python; its marked `.sage`
 source is converted and mirrored by `scripts/sync-notebooks.py`.
 
+Sections 5.8–5.11 now cover multiplicative functions and Möbius inversion,
+then bonus treatments of posets, inclusion–exclusion, incidence algebras,
+and Fourier inversion as interpolation at roots of unity. Notebook 6 checks
+the counts and both kinds of inversion using exact arithmetic in SageMath
+or standard Python. The companion links these sections and all six notebooks.
+
 ## Problem sets, quizzes, and instructor editions
 
 `/assessments` lists the student PDFs; `/instructors` requires the shared

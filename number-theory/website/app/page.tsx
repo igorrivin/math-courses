@@ -10,7 +10,7 @@ const chapters = [
   { n: "02", title: "Every integer has an address", topic: "Unique factorization · √2 irrational · Eratosthenes", accent: "gold", blurb: "Use prime exponents for proof, then uncover primes with the sieve." },
   { n: "03", title: "Fractions inside fractions", topic: "Lagrange–Galois · Pell · Archimedes", accent: "coral", blurb: "Prove why surds repeat, locate Pell solutions, and count the Cattle of the Sun." },
   { n: "04", title: "Arithmetic on a clock", topic: "Extended gcd · CRT · Interpolation", accent: "teal", blurb: "Certify inverses, reconstruct remainders, and prove that Fibonacci residues repeat." },
-  { n: "05", title: "A theorem you can rotate", topic: "Necklace orbits · Fermat and Euler", accent: "gold", blurb: "Count rotations at prime powers, then use CRT to reach Euler’s theorem." },
+  { n: "05", title: "A theorem you can rotate", topic: "Fermat and Euler · Möbius inversion", accent: "gold", blurb: "Count rotations, recover exact periods, and connect inversion with interpolation." },
   { n: "06", title: "The reusable machine", topic: "Groups · Cosets · Lagrange · Euler", accent: "coral", blurb: "Name the structure shared by clocks and rotations." },
   { n: "07", title: "Arithmetic in Pascal’s triangle", topic: "Binomial coefficients · Valuations · Kummer", accent: "teal", blurb: "Find prime divisibility hiding in base-p carries." },
   { n: "08", title: "How crowded are the primes?", topic: "Central coefficients · θ(x) · Chebyshev", accent: "gold", blurb: "Use the middle of Pascal’s triangle to count primes." },
@@ -286,7 +286,7 @@ function ModularLab() {
           <div className="permutation">{units.map((u, i) => <span key={u}>{u} <b>→</b> {(u * multiplier) % mod}{i < units.length - 1 ? ";" : ""}</span>)}</div>
         </div>
       </div>
-      <p className="observation"><b>CRT becomes interpolation:</b> a selector is 1 at one remainder and 0 at the others. Replace integer moduli with X − c and the same construction gives Lagrange’s interpolation formula. Extended gcd supplies the denominator inverses over a prime field. <a href="/course-packet.pdf#nameddest=section.4.5">Read the construction and worked examples →</a></p>
+      <p className="observation"><b>CRT becomes interpolation:</b> a selector is 1 at one remainder and 0 at the others. Replace integer moduli with X − c and the same construction gives Lagrange’s interpolation formula. Extended gcd supplies the denominator inverses over a prime field. <a href="/course-packet.pdf#nameddest=section.4.5">Read the construction and worked examples →</a> At roots of unity, these Lagrange selectors give exactly the inverse discrete Fourier transform. <a href="/course-packet.pdf#nameddest=section.5.11">Connect interpolation, Fourier inversion, and Möbius inversion →</a></p>
       <p className="observation"><b>Why Fibonacci residues repeat:</b> follow the pair (a, b) → (b, a + b). Its inverse (u, v) → (v − u, u) makes every step reversible, so finitely many pairs force a cycle from the start. Return to (0, 1), not just a zero. <a href="/course-packet.pdf#nameddest=section.4.7">Prove periodicity now →</a> <a href="/course-packet.pdf#nameddest=appendix.D">Explore extension fields and exact periods later →</a></p>
     </article>
   );
@@ -321,6 +321,7 @@ function NecklaceLab() {
         </div>
       </div>
       <p className="observation"><b>From Fermat to Euler:</b> with two colors and nine positions, remove the 2<sup>3</sup> words that repeat a three-bead block. The remaining 2<sup>9</sup> − 2<sup>3</sup> = 504 words form 56 orbits of size 9. Cancel the invertible factor 2<sup>3</sup> to get 2<sup>6</sup> ≡ 1 (mod 9). The same count works at every prime power; CRT combines the congruences into Euler’s theorem. <a href="/course-packet.pdf#nameddest=section.5.3">Follow the proof, starting with length 9 →</a></p>
+      <p className="observation"><b>Undo a count:</b> the totient is a multiplicative function, and its sum over the divisors of n is n. Möbius inversion recovers the individual contributions. The same formula counts words of each exact period. <a href="/course-packet.pdf#nameddest=section.5.8">Explore multiplicative functions and divisor sums →</a> <a href="/course-packet.pdf#nameddest=section.5.10">Bonus: posets, inclusion–exclusion, and partition counts →</a></p>
       <p className="observation"><b>Fermat already gives the sum formula:</b> in the prime field, (a + b)<sup>p</sup> = a + b = a<sup>p</sup> + b<sup>p</sup>. The power map is the identity there. The binomial proof makes this a polynomial identity valid in extensions, where Frobenius can move the new elements. <a href="/course-packet.pdf#nameddest=appendix.D">See Frobenius act in a quadratic extension →</a></p>
     </article>
   );
@@ -405,7 +406,7 @@ export default function Home() {
       </nav>
 
       <header className="hero" id="top">
-        <div className="hero-copy"><p className="kicker">An interactive introduction to number theory</p><h1>Patterns,<br />Proofs, <span>and Primes</span></h1><p className="lede">Start with a rectangle. Follow Venus around the Sun. Rotate a necklace. Then carry the patterns all the way to a proof.</p><div className="hero-actions"><a className="button primary" href="#labs">Open the math lab</a><a className="button quiet" href="#course">See the 14-week course</a></div><div className="hero-meta"><span>8 chapters</span><span>9 live explorations</span><span>5 Sage notebooks</span><span>70+ exercises</span></div></div>
+        <div className="hero-copy"><p className="kicker">An interactive introduction to number theory</p><h1>Patterns,<br />Proofs, <span>and Primes</span></h1><p className="lede">Start with a rectangle. Follow Venus around the Sun. Rotate a necklace. Then carry the patterns all the way to a proof.</p><div className="hero-actions"><a className="button primary" href="#labs">Open the math lab</a><a className="button quiet" href="#course">See the 14-week course</a></div><div className="hero-meta"><span>8 chapters</span><span>9 live explorations</span><span>6 Sage notebooks</span><span>70+ exercises</span></div></div>
         <div className="hero-orbits" aria-hidden="true"><div className="orbit o1" /><div className="orbit o2" /><div className="orbit o3" /><div className="orbit o4" />{Array.from({ length: 12 }, (_, i) => <i key={i} style={{ transform: `rotate(${i * 30}deg) translateY(-154px)` }} />)}<div className="hero-formula">a<sup>p</sup> ≡ a <span>(mod p)</span></div></div>
       </header>
 
@@ -433,15 +434,16 @@ export default function Home() {
       </section>
 
       <section className="section sage-section" id="sage">
-        <div className="section-heading"><div><p className="eyebrow">SageMath companion</p><h2>Compute exactly. Then explain why.</h2></div><p>Five notebooks pair executable calculations with proof questions. Open a notebook in Jupyter with the SageMath kernel and run from the first cell.</p></div>
+        <div className="section-heading"><div><p className="eyebrow">SageMath companion</p><h2>Compute exactly. Then explain why.</h2></div><p>Six notebooks pair executable calculations with proof questions. Open a notebook in Jupyter with the SageMath kernel and run from the first cell.</p></div>
         <div className="sage-grid">
           <article><span>01 · Foundations and extensions</span><h3>Euclid & continued fractions</h3><p>The sieve, Bézout, convergents, matrix identities, Pell, Khinchin–Lévy experiments, and Gosper’s arithmetic.</p><a href="/01_euclid_and_continued_fractions.ipynb" download>Download notebook ↓</a></article>
           <article><span>02 · Arithmetic and symmetry</span><h3>Clocks, necklaces & groups</h3><p>Extended gcd, CRT, interpolation, Fibonacci pairs, and Euler’s theorem through necklaces. Later: extensions, Frobenius, and exact periods. Runs in SageMath or Python.</p><a href="/02_modular_necklaces_and_groups.ipynb" download>Download notebook ↓</a><a href="/02_modular_necklaces_and_groups.sage" download>Download script ↓</a></article>
           <article><span>03 · Prime divisibility</span><h3>Pascal & prime counting</h3><p>Explore carries, binomial coefficients, and the Chebyshev scale.</p><a href="/03_pascal_and_prime_counting.ipynb" download>Download notebook ↓</a></article>
           <article className="sage-recent"><span>04 · New focused lab</span><h3>Möbius, Lagrange & Galois</h3><p>Compose matrices, conjugate a period, detect repeated integer states, test reduced surds, and reverse a period.</p><a href="/04_mobius_lagrange_galois.ipynb" download>Download notebook ↓</a><a href="/04_mobius_lagrange_galois.sage" download>Sage script ↓</a></article>
           <article className="sage-recent"><span>05 · New focused lab</span><h3>Pell & the Cattle of the Sun</h3><p>Prove the exact norm identity, inspect palindromes, generate Pell units, and verify Archimedes’ complete herd.</p><a href="/05_pell_and_archimedes.ipynb" download>Download notebook ↓</a><a href="/05_pell_and_archimedes.sage" download>Sage script ↓</a></article>
+          <article className="sage-recent"><span>06 · Counts and inverses</span><h3>Möbius & Fourier inversion</h3><p>Recover totients and exact periods. Explore posets, partition coefficients, and Fourier inversion as interpolation at roots of unity. Runs in SageMath or Python.</p><a href="/06_mobius_inversion_and_fourier.ipynb" download>Download notebook ↓</a><a href="/06_mobius_inversion_and_fourier.sage" download>Download script ↓</a></article>
         </div>
-        <p className="sage-instructions">With SageMath installed, start <code>sage -n jupyterlab</code>, open the downloaded notebook, and select the SageMath kernel. The two new labs also run as scripts with <code>sage filename.sage</code>. The notebooks distinguish computational evidence from the proof still required.</p>
+        <p className="sage-instructions">With SageMath installed, start <code>sage -n jupyterlab</code>, open the downloaded notebook, and select the SageMath kernel. The downloadable scripts run with <code>sage filename.sage</code>; Labs 2 and 6 also run in standard Python. The notebooks distinguish computational evidence from the proof still required.</p>
       </section>
 
       <section className="closing"><div><p className="eyebrow">The central lesson</p><h2>Proof is a way of seeing why a pattern had to appear.</h2><p>Print the formal development. Use the web to experiment. Move between them until the computation and the proof tell the same story.</p><div className="hero-actions"><a className="button primary" href="#euclid">Begin with Euclid</a><a className="button quiet" href="/course-packet.pdf">Open the PDF edition</a></div></div><div className="closing-mark">∴</div></section>

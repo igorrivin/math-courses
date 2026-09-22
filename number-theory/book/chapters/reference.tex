@@ -215,6 +215,41 @@ gives $a^{\varphi(p^k)}\congr1\pmod{p^k}$.
 Raise to the common exponent $\varphi(n)$ and use CRT:
 $a^{\varphi(n)}\congr1\pmod n$ when $n\ge2$ and $\gcd(a,n)=1$.
 
+\textbf{Multiplicative functions.} Require $f(1)=1$ and
+$f(mn)=f(m)f(n)$ for coprime inputs. Then
+$f(n)=\prod_i f(p_i^{k_i})$ for $n=\prod_i p_i^{k_i}$.
+Complete multiplicativity removes coprimality.
+The convolution $(f*g)(n)=\sum_{d\mid n}f(d)g(n/d)$ preserves
+multiplicativity and has identity $\varepsilon(1)=1$,
+$\varepsilon(n)=0$ for $n>1$.
+
+\textbf{M\"obius inversion.} The function $\mu$ is $(-1)^r$ on
+products of $r$ distinct primes (including $\mu(1)=1$), and zero
+when a prime square divides the input. Since $\mu*\mathbf{1}=\varepsilon$,
+\[
+ F(n)=\sum_{d\mid n}f(d)
+ \quad\Longleftrightarrow\quad
+ f(n)=\sum_{d\mid n}\mu(d)F(n/d).
+\]
+No multiplicativity hypothesis is needed.
+In particular, $\sum_{d\mid n}\varphi(d)=n$ gives
+$\varphi(n)=\sum_{d\mid n}\mu(d)n/d$.
+Primitive length-$n$ words with $a$ colors number
+$P_a(n)=\sum_{d\mid n}\mu(d)a^{n/d}$; divide by $n$ for primitive
+necklaces. All necklaces number $n^{-1}\sum_{d\mid n}\varphi(d)a^{n/d}$.
+
+\textbf{Poset inversion.} Define $\mu_P(x,x)=1$ and
+$\mu_P(x,y)=-\sum_{x\le z<y}\mu_P(x,z)$. For finite sums,
+\[
+ G(y)=\sum_{x\le y}F(x)
+ \quad\Longleftrightarrow\quad
+ F(y)=\sum_{x\le y}\mu_P(x,y)G(x).
+\]
+For upper sums, $F(x)=\sum_{y\ge x}\mu_P(x,y)G(y)$.
+On divisibility intervals $\mu_P(r,s)=\mu(s/r)$; on subsets
+$\mu_P(S,T)=(-1)^{|T\setminus S|}$. Products of posets multiply
+their coefficients. In the incidence algebra, $\mu_P=\zeta^{-1}$.
+
 \textbf{Lagrange interpolation.} For distinct points $c_i$ in a field,
 values $y_i$ determine the unique polynomial of degree less than $r$:
 \[
@@ -224,6 +259,17 @@ values $y_i$ determine the unique polynomial of degree less than $r$:
 These are the CRT selectors for the polynomial moduli $X-c_i$.
 All polynomials with the prescribed values differ by a multiple of
 $\prod_i(X-c_i)$. Over $\F_p$, use extended gcd to invert denominators.
+
+\textbf{Fourier inversion is interpolation at roots of unity.}
+For a primitive $n$th root $\omega$ in a field where $n$ is invertible,
+\[
+ y_j=\sum_{k=0}^{n-1}c_k\omega^{jk},\qquad
+ \ell_j(X)=\frac1n\sum_{k=0}^{n-1}\omega^{-jk}X^k,\qquad
+ c_k=\frac1n\sum_{j=0}^{n-1}y_j\omega^{-jk}.
+\]
+The selectors satisfy $\ell_j(\omega^r)=\delta_{jr}$, reconstructing
+the unique polynomial of degree below $n$. Polynomial CRT modulo
+$X^n-1$ turns cyclic convolution into pointwise multiplication of samples.
 
 \textbf{Fibonacci periodicity now.} Track $(F_n,F_{n+1})\pmod m$.
 The update $(a,b)\mapsto(b,a+b)$ has inverse $(u,v)\mapsto(v-u,u)$,
@@ -254,6 +300,7 @@ The exceptional periods are $\pi(2)=3$ and $\pi(5)=20$.
   \item \textbf{Conjugation}: transport a fixed-point equation through a change of variable using $MNM^{-1}$.
   \item \textbf{Finite states with reversible steps}: bound integer states to force eventual repetition, then recover predecessors to remove any initial segment.
   \item \textbf{Equal-block partition}: cosets and rotation orbits turn a count into divisibility.
+  \item \textbf{Invert a cumulative count}: choose M\"obius coefficients, Lagrange selectors, or Fourier weights so that unwanted contributions cancel.
   \item \textbf{Count two ways}: binomial identities become transparent when both sides count the same set.
   \item \textbf{Logarithmic weighting}: products of primes become the sums $\vartheta$ and $\psi$.
   \item \textbf{Dyadic decomposition}: split a range into $(x/2,x],(x/4,x/2],\dots$ and sum a geometric series.

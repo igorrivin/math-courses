@@ -5,7 +5,7 @@ import { before, test } from "node:test";
 let html;
 
 test("ships the complete Sage notebook collection and runnable new scripts", async () => {
-  for (const stem of ["01_euclid_and_continued_fractions", "02_modular_necklaces_and_groups", "03_pascal_and_prime_counting", "04_mobius_lagrange_galois", "05_pell_and_archimedes"]) {
+  for (const stem of ["01_euclid_and_continued_fractions", "02_modular_necklaces_and_groups", "03_pascal_and_prime_counting", "04_mobius_lagrange_galois", "05_pell_and_archimedes", "06_mobius_inversion_and_fourier"]) {
     const name = `${stem}.ipynb`;
     assert.ok(html.includes(`href="/${name}"`), `Missing download: ${name}`);
     const source = await readFile(new URL(`../public/${name}`, import.meta.url));
@@ -14,7 +14,7 @@ test("ships the complete Sage notebook collection and runnable new scripts", asy
     const notebook = JSON.parse(source);
     assert.equal(notebook.metadata.kernelspec.name, "sagemath");
     assert.ok(notebook.cells.some(cell => cell.cell_type === "code"));
-    if (stem.startsWith("02_") || stem.startsWith("04_") || stem.startsWith("05_")) {
+    if (stem.startsWith("02_") || stem.startsWith("04_") || stem.startsWith("05_") || stem.startsWith("06_")) {
       assert.ok(html.includes(`href="/${stem}.sage"`));
       assert.deepEqual(await readFile(new URL(`../dist/client/${stem}.sage`, import.meta.url)), await readFile(new URL(`../public/${stem}.sage`, import.meta.url)));
     }

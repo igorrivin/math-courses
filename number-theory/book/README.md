@@ -8,7 +8,7 @@ This folder contains an adaptable one-semester introductory number theory course
 - `chapters/`: course design, nine teaching chapters, appendices on matrix
   algebra, Gosper's continued-fraction arithmetic, and Venus's astronomical
   cycles, and finite-field extensions, selected solutions, and reference sheets.
-- `notebooks/`: five optional SageMath/Jupyter labs. The first includes the
+- `notebooks/`: six optional SageMath/Jupyter labs. The first includes the
   sieve, extended-Euclidean/convergent correspondence, alternating bounds,
   Khinchin--Levy experiments, Gosper's homographic matrix updates, and exact
   Pell/Archimedes calculations. Its Pell and cattle cells also run unchanged
@@ -32,8 +32,8 @@ The source uses standard TeX Live packages: TikZ, tcolorbox, amsmath, hyperref, 
 - **Undergraduate seminar:** keep the full sequence and ask students to complete omitted estimates and Kummer's theorem details.
 - **Student edition:** remove `\input{chapters/solutions}` from `main.tex` before compiling.
 
-The notebooks use the SageMath kernel. The second notebook runs unchanged
-in standard Python too; its marked `.sage` source is converted and mirrored
+The notebooks use the SageMath kernel. The second and sixth run unchanged
+in standard Python too; their marked `.sage` sources are converted and mirrored
 to the website by `python3 scripts/sync-notebooks.py` from the repository root.
 Some commands in the other notebooks require Sage.
 
@@ -99,6 +99,21 @@ Some commands in the other notebooks require Sage.
   and combine the congruences with CRT. Counting units gives the totient
   product formula without inclusion–exclusion. Exercises 8–14 have solutions.
   Chapter 6 revisits Euler through Lagrange and the unit-permutation proof.
+- Sections 5.8–5.9 introduce multiplicative functions, divisor counts and
+  sums, Dirichlet convolution, the gcd proof of the totient divisor-sum
+  identity, and Möbius inversion. Applications recover the totient product
+  and count primitive and all necklaces. Section 5.10 is a bonus treatment
+  of finite posets, incidence algebras, inclusion–exclusion, partition
+  coefficients, products of orders, and the local-finiteness condition.
+- Bonus Section 5.11 connects Möbius inversion with interpolation and
+  Fourier inversion. Lagrange selectors at roots of unity give the discrete
+  inverse transform, with explicit signs and normalization; polynomial CRT
+  explains cyclic convolution. Worked examples use complex fourth roots and
+  the prime field with five elements. Exercises 15–31 have solutions.
+- Notebook 6 follows these additions independently. It checks divisor sums,
+  primitive periods against enumerated words, both poset inverses, partition
+  counts, exact Gaussian-rational interpolation, and all 625 four-point
+  transforms over the prime field with five elements.
 - Chapter 5 also derives `(a+b)^p = a^p + b^p` in the prime field directly
   from Fermat. Chapter 7 distinguishes this equality of values
   from the formal polynomial identity, whose binomial proof allows

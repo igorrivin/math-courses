@@ -1,0 +1,247 @@
+\section{Multiplicative functions: work one prime at a time}
+\label{sec:multiplicative-functions}
+
+The identity $\varphi(mn)=\varphi(m)\varphi(n)$ for coprime $m,n$
+suggests a useful class of functions. Many counts become products when
+their prime factors can be chosen independently.
+
+\begin{definition}
+An \emph{arithmetic function} assigns a real number $f(n)$ to each
+positive integer $n$. It is \emph{multiplicative} if $f(1)=1$ and
+\[
+ f(mn)=f(m)f(n)\qquad\text{whenever }\gcd(m,n)=1.
+\]
+It is \emph{completely multiplicative} if this equality holds for all
+positive $m,n$, without the coprimality condition.
+\end{definition}
+
+Unique factorization now gives
+\[
+ f\left(\prod_i p_i^{k_i}\right)=\prod_i f(p_i^{k_i}).
+\]
+Thus a multiplicative function is determined by its values at prime
+\emph{powers}. A completely multiplicative function needs only its
+values at primes, since then $f(p^k)=f(p)^k$.
+The constant function $\mathbf{1}(n)=1$ and the identity function
+$\operatorname{id}(n)=n$ are completely multiplicative.
+Euler's totient is multiplicative by CRT, but
+$\varphi(4)=2\ne1=\varphi(2)^2$.
+
+\subsection*{Two more examples: count divisors and add them}
+
+Write $\sum_{d\mid n}$ for a sum over the positive divisors of $n$, and set
+\[
+ \tau(n)=\sum_{d\mid n}1,\qquad \sigma(n)=\sum_{d\mid n}d.
+\]
+If $n=\prod_i p_i^{k_i}$, each divisor chooses an exponent between
+$0$ and $k_i$ independently at each prime. Counting choices, or summing
+the resulting products, gives
+\[
+ \tau(n)=\prod_i(k_i+1),\qquad
+ \sigma(n)=\prod_i(1+p_i+\cdots+p_i^{k_i}).
+\]
+In particular, $\tau(p^k)=k+1$ and
+$\sigma(p^k)=(p^{k+1}-1)/(p-1)$. Both functions are multiplicative:
+coprime factors have disjoint prime choices. For $72=2^3\cdot3^2$,
+\[
+ \tau(72)=4\cdot3=12,\qquad
+ \sigma(72)=(1+2+4+8)(1+3+9)=195.
+\]
+
+\subsection*{Divisor sums and Dirichlet convolution}
+
+\begin{definition}
+The \emph{Dirichlet convolution} of arithmetic functions $f,g$ is
+\[
+ (f*g)(n)=\sum_{d\mid n}f(d)g(n/d).
+\]
+Its identity is the function $\varepsilon$ given by
+$\varepsilon(1)=1$ and $\varepsilon(n)=0$ for $n>1$.
+\end{definition}
+
+For example, $f*\mathbf{1}$ is the divisor-sum function
+$n\mapsto\sum_{d\mid n}f(d)$, so
+$\tau=\mathbf{1}*\mathbf{1}$ and $\sigma=\operatorname{id}*\mathbf{1}$.
+Swapping $d$ and $n/d$ proves commutativity. Both ways to form a triple
+convolution sum $f(a)g(b)h(c)$ over $abc=n$, proving associativity.
+Only the term $d=n$ survives in $f*\varepsilon$, giving $f(n)$.
+These are finite sums; no convergence questions enter.
+
+\begin{proposition}
+The convolution of two multiplicative functions is multiplicative.
+In particular, divisor sums preserve multiplicativity.
+\end{proposition}
+\begin{proof}
+For coprime $m,n$, each divisor of $mn$ has a unique form $ab$ with
+$a\mid m$ and $b\mid n$. The pairs $a,b$ and $m/a,n/b$ are coprime.
+Therefore
+\[
+ \begin{aligned}
+ (f*g)(mn)
+ &=\sum_{a\mid m}\sum_{b\mid n} f(a)f(b)g(m/a)g(n/b)\\
+ &=\left(\sum_{a\mid m}f(a)g(m/a)\right)
+   \left(\sum_{b\mid n}f(b)g(n/b)\right).
+ \end{aligned}
+\]
+Also $(f*g)(1)=f(1)g(1)=1$.
+\end{proof}
+
+\begin{warningbox}[breakable=false]
+Convolution is not pointwise multiplication. For example,
+$(\mathbf{1}*\mathbf{1})(6)=4$, although $\mathbf{1}(6)\mathbf{1}(6)=1$.
+And multiplicativity does not let us replace $f(p^k)$ by $f(p)^k$:
+the coprimality hypothesis is doing real work.
+\end{warningbox}
+
+\subsection*{The totient identity to be inverted}
+
+\begin{proposition}
+For every positive integer $n$,
+\[
+ \sum_{d\mid n}\varphi(d)=n,
+ \qquad\text{or equivalently}\qquad
+ \varphi*\mathbf{1}=\operatorname{id}.
+\]
+\end{proposition}
+\begin{proof}
+Partition the integers $1\le r\le n$ according to $g=\gcd(r,n)$.
+For each divisor $g\mid n$, put $d=n/g$ and write $r=gs$.
+Then $1\le s\le d$ and $\gcd(s,d)=1$, so this class has
+$\varphi(d)$ elements. Every $r$ belongs to exactly one class.
+Adding their sizes counts all $n$ integers, including $r=n$
+in the class corresponding to $d=1$.
+\end{proof}
+
+For $n=12$, this reads
+$\varphi(1)+\varphi(2)+\varphi(3)+\varphi(4)+\varphi(6)+\varphi(12)
+=1+1+2+2+2+4=12$.
+Can we recover the individual values from their divisor sums?
+
+\section{M\"obius inversion: undo a divisor sum}
+\label{sec:mobius-inversion}
+
+If $F(n)=\sum_{d\mid n}f(d)$, we can solve successively:
+$f(1)=F(1)$ and $f(n)=F(n)-\sum_{d\mid n,\,d<n}f(d)$.
+M\"obius inversion packages those repeated subtractions into one formula.
+The M\"obius function introduced here is a different object from the
+linear fractional transformations in Chapter~3.
+
+\begin{definition}
+An integer is \emph{squarefree} if no prime square divides it.
+The \emph{M\"obius function} is
+\[
+ \mu(n)=
+ \begin{cases}
+ 1,&n=1,\\
+ (-1)^r,&n\text{ is a product of }r\text{ distinct primes},\\
+ 0,&\text{some }p^2\text{ divides }n.
+ \end{cases}
+\]
+\end{definition}
+
+For example, $\mu(6)=1$, $\mu(12)=0$, and $\mu(30)=-1$.
+For coprime inputs, square factors remain square factors; if neither
+input has one, their disjoint lists of prime factors concatenate.
+This proves that $\mu$ is multiplicative. It is not completely
+multiplicative: $\mu(p^2)=0$ but $\mu(p)^2=1$.
+
+\begin{lemma}[Cancellation over the divisors]
+For every positive integer $n$,
+\[
+ \sum_{d\mid n}\mu(d)=\varepsilon(n).
+\]
+\end{lemma}
+\begin{proof}
+For $n=1$, the sum is $\mu(1)=1$. If $n>1$, choose a prime $p\mid n$.
+Only squarefree divisors contribute. Pair each squarefree divisor
+not containing $p$ with the divisor obtained by adjoining $p$.
+The two terms have opposite signs, and every nonzero term belongs
+to exactly one pair. The sum is zero.
+\end{proof}
+
+\begin{theorem}[M\"obius inversion on divisors]
+For arbitrary arithmetic functions $f,F$,
+\[
+ F(n)=\sum_{d\mid n}f(d)\quad\text{for every }n
+ \quad\Longleftrightarrow\quad
+ f(n)=\sum_{d\mid n}\mu(d)F(n/d)\quad\text{for every }n.
+\]
+Equivalently, $f(n)=\sum_{d\mid n}\mu(n/d)F(d)$.
+Neither function needs to be multiplicative.
+\end{theorem}
+\begin{proof}
+Substitute the first formula into the proposed inverse and collect
+the coefficient of each $f(e)$:
+\[
+ \begin{aligned}
+ \sum_{d\mid n}\mu(d)F(n/d)
+ &=\sum_{d\mid n}\mu(d)\sum_{e\mid n/d}f(e)\\
+ &=\sum_{e\mid n}f(e)\sum_{d\mid n/e}\mu(d)=f(n).
+ \end{aligned}
+\]
+The inner sum vanishes unless $e=n$. In convolution notation the
+cancellation lemma says $\mu*\mathbf{1}=\varepsilon$, so the reverse
+implication follows as well:
+$f=\mu*F$ gives $\mathbf{1}*f=(\mathbf{1}*\mu)*F=F$.
+\end{proof}
+
+\begin{example}[Recover the totient]
+Invert $\sum_{d\mid n}\varphi(d)=n$ to obtain
+\[
+ \varphi(n)=\sum_{d\mid n}\mu(d)\frac nd
+ =n\sum_{d\mid n}\frac{\mu(d)}d
+ =n\prod_{p\mid n}\left(1-\frac1p\right).
+\]
+For the last equality, expand the finite product: choosing a subset
+of the distinct prime factors produces exactly one squarefree divisor,
+with its M\"obius sign. For $n=12$, only $d=1,2,3,6$ contribute:
+\[
+ \varphi(12)=12-6-4+2=4.
+\]
+CRT proved this product formula earlier; inversion explains the
+alternating subtractions behind it.
+\end{example}
+
+\subsection*{Return to necklaces of any length}
+\label{sec:primitive-necklaces}
+
+Fix $a\ge1$ colors. Let $P_a(n)$ count labeled words of length $n$
+whose \emph{least} rotational period is $n$; call them primitive words.
+Every word of length $n$ has a unique least period $d\mid n$ and
+is obtained by repeating a unique primitive block of length $d$.
+Consequently
+\[
+ a^n=\sum_{d\mid n}P_a(d),\qquad
+ P_a(n)=\sum_{d\mid n}\mu(d)a^{n/d}.
+\]
+The primitive words have rotation orbits of size $n$. Thus
+\[
+ \frac1n\sum_{d\mid n}\mu(d)a^{n/d}
+\]
+is the integer number of primitive necklaces. At $n=p^k$, only
+$d=1,p$ survive, recovering $a^{p^k}-a^{p^{k-1}}$ and the Euler proof.
+For binary words of length $6$,
+\[
+ P_2(6)=2^6-2^3-2^2+2=54,
+\]
+so there are nine primitive necklaces.
+
+\begin{warningbox}[breakable=false]
+This counts necklaces of \emph{full} period. To count all length-$n$
+necklaces, include the shorter periods too:
+\[
+ N_a(n)=\sum_{d\mid n}\frac{P_a(d)}d.
+\]
+Indeed, a primitive block of length $d$ has $d$ distinct rotations
+even after it is repeated to length $n$. For $a=2,n=6$, the contributions
+are $2,1,2,9$ for $d=1,2,3,6$, giving $N_2(6)=14$.
+\end{warningbox}
+
+\begin{checkpoint}
+Divisor sums record a total after grouping objects by a divisor.
+M\"obius inversion recovers the exact groups. In the totient example
+the grouping uses a gcd; in the necklace example it uses a least period.
+The next section explains how the same method works for other ways of
+ordering the groups. It is bonus material and can be read independently
+of the later group-theory chapter.
+\end{checkpoint}

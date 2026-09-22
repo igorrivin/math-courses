@@ -1,0 +1,144 @@
+\section{Bonus: interpolation and Fourier inversion}
+\label{sec:fourier-interpolation}
+
+M\"obius inversion recovers exact contributions from cumulative sums.
+Interpolation recovers a polynomial from its values. Both invert a
+linear transformation: the observations are known linear combinations
+of the data we want. Fourier inversion belongs to the same family.
+At roots of unity, its connection with interpolation is exact.
+
+\subsection{Evaluate a polynomial on a circle}
+
+For this section, work over the complex numbers. Write $i^2=-1$ and
+choose a \emph{primitive $n$th root of unity} $\omega$: its powers
+$1,\omega,\ldots,\omega^{n-1}$ are distinct and $\omega^n=1$.
+One choice is $\omega=\cos(2\pi/n)+i\sin(2\pi/n)$.
+For $n=4$, we can use $\omega=i$, giving $1,i,-1,-i$.
+
+Let
+\[
+ f(X)=\sum_{k=0}^{n-1}c_kX^k,
+ \qquad y_j=f(\omega^j)=\sum_{k=0}^{n-1}c_k\omega^{jk}
+ \quad(0\le j<n).
+\]
+With this choice of sign, the map $(c_k)\mapsto(y_j)$ is the
+\emph{discrete Fourier transform}. Its matrix is the Vandermonde
+matrix $(\omega^{jk})_{j,k}$: each row evaluates the monomials
+$1,X,\ldots,X^{n-1}$ at one root of unity.
+Some conventions put a minus sign in the forward transform; then
+the inverse uses the opposite sign as well.
+
+\begin{lemma}[Orthogonality of roots of unity]
+For an integer $m$,
+\[
+ \sum_{j=0}^{n-1}\omega^{jm}
+ =\begin{cases}n,&n\mid m,\\0,&n\nmid m.\end{cases}
+\]
+\end{lemma}
+\begin{proof}
+If $n\mid m$, every term is $1$. Otherwise $q=\omega^m\ne1$
+and $q^n=1$, so the geometric sum is $(q^n-1)/(q-1)=0$.
+\end{proof}
+
+The functions $j\mapsto\omega^{jk}$ are the \emph{characters} of
+the cyclic index set: addition of indices becomes multiplication
+of their values. Orthogonality says that different characters
+cancel when we sum over a complete cycle.
+
+\subsection{Lagrange selectors are the inverse Fourier transform}
+
+Recall the interpolation selectors from Chapter~4: the polynomial
+$\ell_j$ of degree less than $n$ is $1$ at the $j$th sample point
+and $0$ at the others. At roots of unity it has the particularly
+simple form
+\[
+ \ell_j(X)=\frac1n\sum_{k=0}^{n-1}\omega^{-jk}X^k.
+\]
+Indeed, $\ell_j(\omega^r)=n^{-1}\sum_k\omega^{(r-j)k}=\delta_{jr}$
+by orthogonality. These are exactly the Lagrange basis polynomials:
+the degree bound and their values characterize them uniquely.
+Interpolation therefore gives
+\[
+ f(X)=\sum_{j=0}^{n-1}y_j\ell_j(X)
+ =\sum_{k=0}^{n-1}
+   \left(\frac1n\sum_{j=0}^{n-1}y_j\omega^{-jk}\right)X^k.
+\]
+Comparing coefficients proves the inversion formula
+\[
+ \boxed{\displaystyle c_k=\frac1n\sum_{j=0}^{n-1}y_j\omega^{-jk}.}
+\]
+Thus interpolation at the roots of unity \emph{is} discrete Fourier
+inversion. The factor $1/n$ comes from the surviving sum of $n$ ones.
+The degree restriction matters: values at these points determine a
+general polynomial only modulo $X^n-1$.
+
+\begin{example}[Four samples recover four coefficients]
+For $f(X)=1+2X+3X^2+4X^3$ and $\omega=i$, the samples are
+\[
+ (y_0,y_1,y_2,y_3)=(10,-2-2i,-2,-2+2i).
+\]
+The inverse formula becomes
+\[
+ \begin{aligned}
+ c_0&=(y_0+y_1+y_2+y_3)/4=1,\\
+ c_1&=(y_0-iy_1-y_2+iy_3)/4=2,\\
+ c_2&=(y_0-y_1+y_2-y_3)/4=3,\\
+ c_3&=(y_0+iy_1-y_2-iy_3)/4=4.
+ \end{aligned}
+\]
+Changing the sign of the root in the inverse, as well as dividing
+by $4$, is essential to recover the coefficients in the stated order.
+\end{example}
+
+\subsection{CRT explains multiplication in Fourier coordinates}
+
+The factorization $X^n-1=\prod_{j=0}^{n-1}(X-\omega^j)$ has distinct
+linear factors. Polynomial CRT identifies a remainder modulo $X^n-1$
+with its $n$ values at these roots. The selectors $\ell_j$ reconstruct
+that remainder, exactly as integer CRT selectors reconstruct residues.
+
+If $f(X)=\sum c_kX^k$ and $g(X)=\sum d_kX^k$, their product modulo
+$X^n-1$ has coefficients
+\[
+ (c\star d)_r=\sum_{k=0}^{n-1}c_kd_{\,r-k\bmod n}.
+\]
+This is \emph{cyclic convolution}: exponents wrap around because
+$X^n=1$. Evaluation takes a product to the product of its values, so
+\[
+ \widehat{c\star d}_j=\widehat c_j\,\widehat d_j.
+\]
+Fourier coordinates turn cyclic convolution into pointwise multiplication.
+Dirichlet convolution instead combines factor pairs $ab=n$, while
+incidence convolution sums over intermediate elements of an interval.
+Each convolution reflects the structure of its indexing set.
+
+\subsection{What the three inversions share}
+
+In each setting, compose the forward and inverse kernels and all
+unwanted contributions cancel:
+\[
+ \begin{array}{ll}
+ \text{M\"obius:}&\displaystyle
+   \sum_{x\le z\le y}\mu_P(x,z)=\delta_{xy},\\[6pt]
+ \text{Interpolation:}&\ell_j(x_r)=\delta_{jr},\\[4pt]
+ \text{Fourier:}&\displaystyle
+   \frac1n\sum_{j=0}^{n-1}\omega^{j(r-k)}=\delta_{rk}
+   \quad(0\le r,k<n).
+ \end{array}
+\]
+M\"obius coefficients undo accumulation along an order; Lagrange
+polynomials undo evaluation at distinct points; Fourier coefficients
+are the explicit interpolation inverse at roots of unity.
+This is the common principle behind the three constructions:
+choose coefficients that isolate one contribution and cancel the rest.
+
+\begin{labbox}[breakable=false]
+No analysis or limiting process was used in the Fourier argument.
+The same formulas work over a field containing a primitive $n$th root
+of unity, provided $n$ is invertible there. For example, in $\F_5$,
+$2$ has order $4$, so the four-point transform uses $1,2,4,3$
+and $1/4=4$. Notebook~6 checks both this example and the complex
+four-point example with exact arithmetic. If the required roots are
+missing, an extension field may supply them; that is a later use
+of the arithmetic developed in Appendix~\ref{app:finite-fields}.
+\end{labbox}

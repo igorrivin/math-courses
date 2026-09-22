@@ -491,6 +491,102 @@ constant words. Removing the union leaves $a^6-a^3-a^2+a$ words,
 all in orbits of size $6$. For $p^k$, all proper divisors divide
 $p^{k-1}$, so a single set contains every shorter-period word.
 
+\textbf{15.} The functions $n^2$ and $\mathbf{1}$ are completely
+multiplicative. The other three are multiplicative but not completely:
+$\varphi(4)=2\ne\varphi(2)^2=1$,
+$\tau(4)=3\ne\tau(2)^2=4$, and
+$\mu(4)=0\ne\mu(2)^2=1$.
+
+\textbf{16.} Since $360=2^3\cdot3^2\cdot5$,
+$\tau(360)=4\cdot3\cdot2=24$ and
+$\sigma(360)=15\cdot13\cdot6=1170$.
+Choose each prime exponent independently; for the sum, distribute
+the product of the three geometric sums.
+
+\textbf{17.} For $d=1,2,3,6,9,18$, the classes with
+$\gcd(r,18)=18/d$ have sizes $1,1,2,2,6,6$, totaling $18$.
+The first class is $\{18\}$, accounting for $\varphi(1)=1$.
+
+\textbf{18.} In order from $1$ to $12$, the values are
+\[
+ 1,-1,-1,0,-1,1,-1,0,0,1,-1,0.
+\]
+The contributing divisors of $60$ are $1,2,3,5,6,10,15,30$.
+Their M\"obius values sum to $1-1-1-1+1+1+1-1=0$, while
+\[
+ \varphi(60)=60-30-20-12+10+6+4-2=16.
+\]
+
+\textbf{19.} The first two inverses are $\mathbf{1}$ and
+$\operatorname{id}$. The third is $\varphi+\varepsilon$, since
+$\mu*(\operatorname{id}+\mathbf{1})=\varphi+\varepsilon$.
+Thus $f(1)=2$ and $f(n)=\varphi(n)$ for $n>1$.
+Inversion applies to every arithmetic function; multiplicativity
+is useful for products, not a hypothesis of the inversion theorem.
+
+\textbf{20.} The divisors $1,2,4$ give
+$(\mu*\mu)(4)=0+1+0=1\ne\varepsilon(4)$.
+The cancellation lemma gives $\mu*\mathbf{1}=\varepsilon$.
+
+\textbf{21.} Only $d=1,2,3,6$ contribute:
+$P_2(12)=2^{12}-2^6-2^4+2^2=4020$ primitive words and
+$4020/12=335$ primitive necklaces.
+
+\textbf{22.} Substitute the primitive-word formula and write $d=me$:
+\[
+ \begin{aligned}
+ nN_a(n)
+ &=\sum_{d\mid n}\frac nd\sum_{m\mid d}\mu(d/m)a^m\\
+ &=\sum_{m\mid n}a^m\sum_{e\mid n/m}\mu(e)\frac{n/m}{e}
+ =\sum_{m\mid n}a^m\varphi(n/m).
+ \end{aligned}
+\]
+Reindex to obtain the requested formula. For binary necklaces of
+length $12$, the numerator is $4096+64+32+16+8+8=4224$, giving $352$.
+
+\textbf{23.} The exact values are $2,5-2=3,7-2=5$, and
+$16-5-7+2=6$. Their lower sums are $2,5,7,16$.
+
+\textbf{24.} Successive differences give $2,5,1,12$.
+The coefficients from $0$ are $1,-1,0,0$, so $\mu_P(0,3)=0$.
+The recurrence cancels the sum over the whole interval; it does
+not assign a sign merely from the distance between endpoints.
+
+\textbf{25.} Upper totals count elements in every set indexed by
+$S$, permitting additional memberships. Inversion at $S=\varnothing$
+gives $40-20-15-12+8+5+4-2=8$ in none. The union has $32$ elements.
+
+\textbf{26.} The coefficients are $1$ at the bottom, $-1$ at each
+of the three middle partitions, and $2$ at the top. Inversion gives
+$4^3-3\cdot4^2+2\cdot4=24$, agreeing with $4\cdot3\cdot2$.
+
+\textbf{27.} At $d=1,2,3,4,6,12$, the coefficients are
+$1,-1,-1,0,1,0$. The exponent interval for $6$ has two one-step
+chains, giving $(-1)(-1)=1$. The exponent of $2$ in $12$ spans
+two steps, whose chain coefficient is zero.
+
+\textbf{28.} The interval $[x,y]$ has $y-x+1$ elements, but
+there are infinitely many integers below $y$. Finite support for
+$F$, or the weaker condition that only finitely many $x\le y$
+have $F(x)\ne0$ for every $y$, makes each lower sum finite.
+
+\textbf{29.} The samples are $(2,2-2i,2,2+2i)$. The inverse
+four-point formulas give $(2,-1,0,1)$. The added polynomial
+$X^4-1$ vanishes at all four sample points; the degree bound is
+what singles out the representative $2-X+X^3$.
+
+\textbf{30.} Both polynomials have degree less than $n$ and take
+the values $\delta_{jr}$ at the $n$ distinct points $\omega^r$.
+Their difference has $n$ roots and degree below $n$, so it is zero.
+
+\textbf{31.} The successive powers of $2$ modulo $5$ are $1,2,4,3,1$,
+so its order is $4$. The samples are $(0,4,3,2)$.
+The inverse formula uses $\omega^{-1}=3$ and $4^{-1}=4$:
+\[
+ c_k=4\sum_{j=0}^3 y_j3^{jk}\pmod5,
+\]
+giving $1,2,3,4$ for $k=0,1,2,3$.
+
 \section*{Chapter 6}
 
 \textbf{1.} $(\Z/12\Z)^\times=\{1,5,7,11\}$. Every nonidentity element squares to $1$, so their orders are $2$; the identity has order $1$.
