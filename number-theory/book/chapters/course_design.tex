@@ -23,7 +23,9 @@ By the end, students should be able to:
   \item explain rational base-$b$ periodicity and prove the Lagrange--Galois characterization of periodic continued fractions using fixed points, conjugation, and reduced surds;
   \item prove the symmetry of square-root periods and identify exactly
   which convergents solve the positive and negative Pell equations;
-  \item calculate in $\Z/n\Z$, solve linear congruences, and use the Chinese remainder theorem;
+  \item use extended gcd to compute modular inverses and solve linear congruences;
+  \item construct CRT selectors and recognize Lagrange interpolation as polynomial CRT;
+  \item prove Fibonacci periodicity modulo an integer using reversible pairs of residues;
   \item explain Fermat's little theorem through cyclic symmetry and through finite groups;
   \item prove basic identities and divisibility statements for binomial coefficients;
   \item understand why central binomial coefficients control the density of primes;
@@ -45,8 +47,8 @@ Week & Core mathematics & Suggested studio or assessment \\
 3 & Primes; unique factorization; $\sqrt2\notin\Q$; the sieve & Sieve studio; repair a flawed proof; Problem Set 1 \\
 4 & Finite continued fractions; matrix products; extended Euclid; calendar design & Match remainders with convergent coefficients \\
 5 & Alternating convergents; Lagrange and Galois; Pell equations & Fixed points and reduced-state cycles; Problem Set 2 \\
-6 & Congruences; units; linear congruences & Clock arithmetic and affine ciphers \\
-7 & Chinese remainder theorem & CRT construction studio; short quiz \\
+6 & Congruences; extended gcd; inverses; linear congruences & B\'ezout certificates and multiplication checks \\
+7 & CRT; Lagrange interpolation; Fibonacci pairs & Reconstruct remainders and values; prove periodicity \\
 8 & Necklace colorings and Fermat's theorem & Orbit counting with physical beads; Problem Set 3 \\
 9 & Groups, subgroups, cyclic groups & Cayley-table investigation \\
 10 & Lagrange's theorem; group proof of Fermat & Compare two proofs; Problem Set 4 \\
@@ -58,19 +60,23 @@ Week & Core mathematics & Suggested studio or assessment \\
 \end{tabularx}
 \end{center}
 
-Chapter~3 now gives full elementary periodicity proofs. A compact lecture
-route is to introduce linear fractional transformations alongside the
-matrix recurrence, do the fixed-point and prefix-conjugation calculations
-in class, and assign the three-step finite-state argument as guided reading.
-Return to the reduced-predecessor formula to prove Galois's criterion;
-Exercises~20--26 provide practice. Section~\ref{sec:pell} then proves
-the square-root palindrome and the exact Pell remainder identity,
-including the period-parity rule and generation of all positive
-solutions. Exercises~27--31 reinforce those arguments.
-Section~\ref{sec:archimedes-cattle}, Exercises~32--34, and the first
-notebook develop Archimedes' cattle problem as an optional application;
-its modular computation can also be revisited after congruences.
-The metric-theory and astronomical asides remain optional.
+Chapter~3 proves Lagrange and Galois through fixed points, conjugation,
+bounded states, and unique predecessors; use Exercises~20--26 for practice.
+Section~\ref{sec:pell} and Exercises~27--31 cover square-root symmetry
+and Pell solutions. The cattle application
+(Section~\ref{sec:archimedes-cattle}, Exercises~32--34, Notebook~1),
+metric theory, and astronomical asides are optional.
+
+In Chapter~\ref{chap:modular}, make extended-gcd certificates the default
+method for division. Use them for linear congruences and CRT, then
+recognize the same selectors in Lagrange interpolation. Prove Fibonacci
+periodicity using reversible pairs; systematic order calculations can wait.
+
+After necklaces, derive $(a+b)^p=a^p+b^p$ in $\F_p$ from Fermat.
+Chapter~\ref{chap:binomial} proves the polynomial identity.
+Optional Appendix~\ref{app:finite-fields} follows Chapters~4--7:
+build quadratic-extension arithmetic, study Frobenius, then compute
+Fibonacci periods using orders.
 
 \section*{Assessment design}
 
@@ -81,7 +87,7 @@ One workable balance is 45\% problem sets, 20\% two short proof interviews, 15\%
   \item \textbf{Exploration}: generate data, state a conjecture, then test its limits.
 \end{itemize}
 
-The exercises in each chapter carry these labels. A typical weekly assignment is two fluency problems, two reasoning problems, and one exploration. The appendices supply a short matrix toolkit, continued-fraction arithmetic, an astronomical Venus case study, selected hints and solutions, and reference sheets. An instructor can remove the solution pages when distributing assignments.
+The exercises in each chapter carry these labels. A typical weekly assignment is two fluency problems, two reasoning problems, and one exploration. The appendices supply a short matrix toolkit, continued-fraction arithmetic, an astronomical Venus case study, extension-field arithmetic and Fibonacci periods, selected hints and solutions, and reference sheets. An instructor can remove the solution pages when distributing assignments.
 
 \section*{Teaching principles}
 
@@ -123,5 +129,7 @@ The exercises in each chapter carry these labels. A typical weekly assignment is
 \end{center}
 
 \begin{checkpoint}
-\textbf{A good opening prompt.} Write $391$ and $299$ on the board. Ask: ``What is the largest square tile that covers a $391\times299$ rectangle without cutting? How could you be certain?'' Do not define gcd until the class has invented the subtraction or division process.
+\textbf{Opening prompt.} What is the largest square tile that covers a
+$391\times299$ rectangle without cutting? Ask for a justification before
+naming the gcd.
 \end{checkpoint}

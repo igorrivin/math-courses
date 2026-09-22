@@ -9,7 +9,7 @@ const chapters = [
   { n: "01", title: "The algorithm in a rectangle", topic: "Euclid · Bézout · Diophantine equations", accent: "teal", blurb: "Turn repeated division into a proof-producing machine." },
   { n: "02", title: "Every integer has an address", topic: "Unique factorization · √2 irrational · Eratosthenes", accent: "gold", blurb: "Use prime exponents for proof, then uncover primes with the sieve." },
   { n: "03", title: "Fractions inside fractions", topic: "Lagrange–Galois · Pell · Archimedes", accent: "coral", blurb: "Prove why surds repeat, locate Pell solutions, and count the Cattle of the Sun." },
-  { n: "04", title: "Arithmetic on a clock", topic: "Congruences · Inverses · Chinese remainders", accent: "teal", blurb: "Forget complete turns and preserve arithmetic structure." },
+  { n: "04", title: "Arithmetic on a clock", topic: "Extended gcd · CRT · Interpolation", accent: "teal", blurb: "Certify inverses, reconstruct remainders, and prove that Fibonacci residues repeat." },
   { n: "05", title: "A theorem you can rotate", topic: "Necklace orbits · Fermat’s little theorem", accent: "gold", blurb: "Watch divisibility emerge from cyclic symmetry." },
   { n: "06", title: "The reusable machine", topic: "Groups · Cosets · Lagrange · Euler", accent: "coral", blurb: "Name the structure shared by clocks and rotations." },
   { n: "07", title: "Arithmetic in Pascal’s triangle", topic: "Binomial coefficients · Valuations · Kummer", accent: "teal", blurb: "Find prime divisibility hiding in base-p carries." },
@@ -97,7 +97,7 @@ function LabHeader({ eyebrow, title, text, index }: { eyebrow: string; title: st
 }
 
 function NumberField({ label, value, setValue, min = 1, max = 9999 }: { label: string; value: number; setValue: (n: number) => void; min?: number; max?: number }) {
-  return <label className="field"><span>{label}</span><input type="number" value={value} min={min} max={max} onChange={(e) => setValue(Math.max(min, Math.min(max, Number(e.target.value) || min)))} /></label>;
+  return <label className="field"><span>{label}</span><input type="number" value={value} min={min} max={max} onChange={(e) => setValue(Math.max(min, Math.min(max, Math.trunc(Number(e.target.value)) || min)))} /></label>;
 }
 
 function EuclidLab() {
@@ -261,9 +261,11 @@ function ModularLab() {
   const result = ((start + step) % mod + mod) % mod;
   const units = Array.from({ length: mod }, (_, i) => i).filter(i => gcd(i, mod) === 1);
   const multiplier = units.find(u => u > 1) ?? 1;
+  const [divisor, u, v] = extendedGcd(step, mod);
+  const inverse = ((u % mod) + mod) % mod;
   return (
     <article className="lab-card" id="modular">
-      <LabHeader index="04" eyebrow="Congruence lab" title="Wind around a clock" text="Explore residues, units, and the permutation hiding inside a finite group." />
+      <LabHeader index="04" eyebrow="Congruence lab" title="Wind around a clock" text="Add on the clock, then use extended gcd to decide whether division is possible." />
       <div className="control-row"><NumberField label="Modulus" value={mod} setValue={setMod} min={3} max={20} /><NumberField label="Start" value={start} setValue={setStart} min={0} max={99} /><NumberField label="Add" value={step} setValue={setStep} min={0} max={99} /></div>
       <div className="clock-layout">
         <div className="clock" aria-label={`Clock modulo ${mod}`}>
@@ -276,11 +278,16 @@ function ModularLab() {
         </div>
         <div className="clock-notes">
           <div className="equation"><strong>{start} + {step}</strong><span>≡</span><strong>{result}</strong><small>(mod {mod})</small></div>
+          <p className="micro-label">Extended gcd · a certificate for division</p>
+          <p>Try dividing by the step {step}. Extended Euclid gives the integer identity <strong>{`${step} × (${u}) + ${mod} × (${v}) = ${divisor}`}</strong>.</p>
+          <p>{divisor === 1 ? `The coefficient ${u} reduces to ${inverse}, the inverse of ${step} modulo ${mod}. Check: ${step} × ${inverse} ≡ 1 (mod ${mod}).` : `The gcd is ${divisor}, so ${step} has no inverse modulo ${mod}. A congruence ${step}x ≡ b is solvable exactly when ${divisor} divides b.`}</p>
           <p className="micro-label">Units modulo {mod}</p><div className="unit-list">{units.map(u => <span key={u}>{u}</span>)}</div>
           <p>Multiplication by <b>{multiplier}</b> rearranges these units:</p>
           <div className="permutation">{units.map((u, i) => <span key={u}>{u} <b>→</b> {(u * multiplier) % mod}{i < units.length - 1 ? ";" : ""}</span>)}</div>
         </div>
       </div>
+      <p className="observation"><b>CRT becomes interpolation:</b> a selector is 1 at one remainder and 0 at the others. Replace integer moduli with X − c and the same construction gives Lagrange’s interpolation formula. Extended gcd supplies the denominator inverses over a prime field. <a href="/course-packet.pdf#nameddest=section.4.5">Read the construction and worked examples →</a></p>
+      <p className="observation"><b>Why Fibonacci residues repeat:</b> follow the pair (a, b) → (b, a + b). Its inverse (u, v) → (v − u, u) makes every step reversible, so finitely many pairs force a cycle from the start. Return to (0, 1), not just a zero. <a href="/course-packet.pdf#nameddest=section.4.7">Prove periodicity now →</a> <a href="/course-packet.pdf#nameddest=appendix.D">Explore extension fields and exact periods later →</a></p>
     </article>
   );
 }
@@ -313,6 +320,7 @@ function NecklaceLab() {
           <div className="flt-card"><span>Nonconstant {colors}-color words</span><strong>{colors}<sup>{p}</sup> − {colors} = {total.toString()}</strong><em>{total.toString()} ÷ {p} = {(total / BigInt(p)).toString()} complete orbits</em></div>
         </div>
       </div>
+      <p className="observation"><b>Fermat already gives the sum formula:</b> in the prime field, (a + b)<sup>p</sup> = a + b = a<sup>p</sup> + b<sup>p</sup>. The power map is the identity there. The binomial proof makes this a polynomial identity valid in extensions, where Frobenius can move the new elements. <a href="/course-packet.pdf#nameddest=appendix.D">See Frobenius act in a quadratic extension →</a></p>
     </article>
   );
 }
@@ -427,7 +435,7 @@ export default function Home() {
         <div className="section-heading"><div><p className="eyebrow">SageMath companion</p><h2>Compute exactly. Then explain why.</h2></div><p>Five notebooks pair executable calculations with proof questions. Open a notebook in Jupyter with the SageMath kernel and run from the first cell.</p></div>
         <div className="sage-grid">
           <article><span>01 · Foundations and extensions</span><h3>Euclid & continued fractions</h3><p>The sieve, Bézout, convergents, matrix identities, Pell, Khinchin–Lévy experiments, and Gosper’s arithmetic.</p><a href="/01_euclid_and_continued_fractions.ipynb" download>Download notebook ↓</a></article>
-          <article><span>02 · Arithmetic and symmetry</span><h3>Clocks, necklaces & groups</h3><p>Units, cyclic orbits, and three routes to Fermat’s theorem.</p><a href="/02_modular_necklaces_and_groups.ipynb" download>Download notebook ↓</a></article>
+          <article><span>02 · Arithmetic and symmetry</span><h3>Clocks, necklaces & groups</h3><p>Extended gcd, CRT, interpolation, and Fibonacci pairs. Later: extension arithmetic, Frobenius, and exact periods. Runs in SageMath or Python.</p><a href="/02_modular_necklaces_and_groups.ipynb" download>Download notebook ↓</a><a href="/02_modular_necklaces_and_groups.sage" download>Download script ↓</a></article>
           <article><span>03 · Prime divisibility</span><h3>Pascal & prime counting</h3><p>Explore carries, binomial coefficients, and the Chebyshev scale.</p><a href="/03_pascal_and_prime_counting.ipynb" download>Download notebook ↓</a></article>
           <article className="sage-recent"><span>04 · New focused lab</span><h3>Möbius, Lagrange & Galois</h3><p>Compose matrices, conjugate a period, detect repeated integer states, test reduced surds, and reverse a period.</p><a href="/04_mobius_lagrange_galois.ipynb" download>Download notebook ↓</a><a href="/04_mobius_lagrange_galois.sage" download>Sage script ↓</a></article>
           <article className="sage-recent"><span>05 · New focused lab</span><h3>Pell & the Cattle of the Sun</h3><p>Prove the exact norm identity, inspect palindromes, generate Pell units, and verify Archimedes’ complete herd.</p><a href="/05_pell_and_archimedes.ipynb" download>Download notebook ↓</a><a href="/05_pell_and_archimedes.sage" download>Sage script ↓</a></article>

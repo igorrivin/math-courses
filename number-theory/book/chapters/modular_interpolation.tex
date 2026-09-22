@@ -1,0 +1,123 @@
+\section{Chinese remainders become Lagrange interpolation}
+\label{sec:crt-interpolation}
+
+CRT builds an integer with prescribed remainders. Interpolation builds
+a polynomial with prescribed values. Polynomial division makes these
+the same kind of problem.
+
+Let $K$ be a field, such as $\Q$, $\R$, or $\F_p$. Write $K[X]$ for
+polynomials in an indeterminate $X$ with coefficients in $K$. Division
+by $X-c$ gives
+\[
+ f(X)=(X-c)q(X)+r,
+\]
+where $r$ is constant. Substituting $X=c$ shows $r=f(c)$. In other words,
+\[
+ f(X)\congr b\pmod{X-c}\quad\Longleftrightarrow\quad f(c)=b.
+\]
+Here polynomial congruence means that the difference is divisible by the
+polynomial modulus.
+
+\subsection*{The same construction, with polynomial moduli}
+
+The division algorithm works in $K[X]$: cancel the leading term using
+division in $K$, subtract, and continue while the degree decreases.
+Extended Euclid therefore works too. For coprime polynomials $A,B$,
+it produces $U,V$ with $UA+VB=1$.
+
+Consequently, for pairwise coprime monic moduli $m_1,\ldots,m_r$, set
+$P=\prod_i m_i$ and $P_i=P/m_i$, and use extended Euclid to find
+$U_iP_i+V_im_i=1$. The polynomial
+\[
+ f=\sum_i b_iP_iU_i
+\]
+has prescribed polynomial remainders $b_i$ modulo $m_i$.
+The proof is the integer CRT proof: reduce at each modulus separately.
+Uniqueness is modulo $P$, since the pairwise coprime factors $m_i$ all
+divide the difference of two solutions. Dividing by the monic polynomial
+$P$ selects one representative of degree less than $\deg P$.
+
+For interpolation, take $m_i=X-c_i$ with the $c_i$ distinct. Two such
+linear polynomials are coprime: subtracting them gives the nonzero
+constant $c_j-c_i$, which is invertible in $K$.
+In this special case, the inverse required by CRT is particularly simple.
+For
+\[
+ P_i(X)=\prod_{j\ne i}(X-c_j),
+\]
+reduction modulo $X-c_i$ gives the nonzero number
+$P_i(c_i)=\prod_{j\ne i}(c_i-c_j)$.
+Thus define
+\[
+ \ell_i(X)=\frac{P_i(X)}{P_i(c_i)}
+ =\prod_{j\ne i}\frac{X-c_j}{c_i-c_j}.
+\]
+These are polynomial selectors: $\ell_i(c_i)=1$ and
+$\ell_i(c_j)=0$ for $j\ne i$.
+
+\begin{theorem}[Lagrange interpolation]
+Let $c_1,\ldots,c_r$ be distinct points of a field $K$.
+Given values $b_i\in K$, the unique polynomial of degree less than $r$
+with $f(c_i)=b_i$ for every $i$ is
+\[
+ f(X)=\sum_{i=1}^r b_i\ell_i(X).
+\]
+Every polynomial with these values has the form
+$f(X)+h(X)\prod_i(X-c_i)$, with $h\in K[X]$.
+\end{theorem}
+
+\begin{proof}
+The selector values prove existence. If $f,g$ have the required values,
+each $X-c_i$ divides $f-g$, and hence so does their product. A nonzero
+multiple of that degree-$r$ product cannot have degree less than $r$.
+This proves uniqueness and the description of all solutions.
+The same argument proves the useful \emph{root bound}: a nonzero
+polynomial of degree $d$ over a field has at most $d$ distinct roots.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{p{.18\textwidth}XX}
+\toprule
+ & Integer CRT & Lagrange interpolation \\
+\midrule
+Local data & $x\congr a_i\pmod{n_i}$ & $f(c_i)=b_i$ \\
+Moduli & pairwise coprime $n_i$ & distinct linear factors $X-c_i$ \\
+Selector & $N_i(N_i^{-1}\bmod n_i)$ & $P_i(X)/P_i(c_i)$ \\
+Formula & $\sum_i a_i e_i$ & $\sum_i b_i\ell_i(X)$ \\
+Ambiguity & multiples of $N$ & multiples of $\prod_i(X-c_i)$ \\
+Choice & $0\le x<N$ & $\deg f<r$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{example}[Three values determine a quadratic]
+Over $\Q$, prescribe $f(0)=1$, $f(1)=2$, $f(2)=5$. The selectors are
+\[
+ \ell_0=\frac{(X-1)(X-2)}2,\qquad
+ \ell_1=-X(X-2),\qquad
+ \ell_2=\frac{X(X-1)}2.
+\]
+Combining them gives $f=\ell_0+2\ell_1+5\ell_2=X^2+1$.
+All other solutions are $X^2+1+X(X-1)(X-2)h(X)$.
+
+The same computation works in $\F_5$, where the prescribed values are
+$1,2,0$ and division by $2$ means multiplication by $3$.
+The certificate $2\cdot3-5=1$ makes that division legitimate.
+The result is again $X^2+1$, now with coefficients modulo $5$.
+\end{example}
+
+\begin{warningbox}
+Distinct interpolation points must have invertible differences.
+This is automatic in a field. It can fail for composite moduli:
+over $\Z/8\Z$, the distinct points $0$ and $2$ have difference $2$,
+which has no inverse. Indeed, $f(2)-f(0)$ is even for every polynomial,
+so the data $f(0)=0$, $f(2)=1$ cannot be interpolated.
+\end{warningbox}
+
+\begin{checkpoint}
+Both reconstruction formulas first make an object that vanishes at every
+unwanted coordinate, then multiply by an inverse to make its remaining
+coordinate equal to $1$. Identify those two steps before memorizing either
+formula.
+\end{checkpoint}

@@ -7,8 +7,8 @@ This folder contains an adaptable one-semester introductory number theory course
 - `main.tex`: master LaTeX source.
 - `chapters/`: course design, nine teaching chapters, appendices on matrix
   algebra, Gosper's continued-fraction arithmetic, and Venus's astronomical
-  cycles, selected solutions, and reference sheets.
-- `notebooks/`: three optional SageMath/Jupyter labs. The first includes the
+  cycles, and finite-field extensions, selected solutions, and reference sheets.
+- `notebooks/`: five optional SageMath/Jupyter labs. The first includes the
   sieve, extended-Euclidean/convergent correspondence, alternating bounds,
   Khinchin--Levy experiments, Gosper's homographic matrix updates, and exact
   Pell/Archimedes calculations. Its Pell and cattle cells also run unchanged
@@ -32,7 +32,10 @@ The source uses standard TeX Live packages: TikZ, tcolorbox, amsmath, hyperref, 
 - **Undergraduate seminar:** keep the full sequence and ask students to complete omitted estimates and Kummer's theorem details.
 - **Student edition:** remove `\input{chapters/solutions}` from `main.tex` before compiling.
 
-The notebooks are written for the SageMath kernel. Most basic cells also run in Python after small syntax changes, but exact continued-fraction and modular-group commands require Sage.
+The notebooks use the SageMath kernel. The second notebook runs unchanged
+in standard Python too; its marked `.sage` source is converted and mirrored
+to the website by `python3 scripts/sync-notebooks.py` from the repository root.
+Some commands in the other notebooks require Sage.
 
 ## Early-course lecture alignment
 
@@ -82,3 +85,25 @@ The notebooks are written for the SageMath kernel. Most basic cells also run in 
   time, connects the approximate $13:8:5$ pattern to Fibonacci convergents and
   the five-alignment star, and contrasts this with the exact $37,960$-day
   calendar arithmetic of the Dresden Codex Venus Table.
+
+## Modular-arithmetic lecture alignment
+
+- Chapter 4 centers extended gcd: a forward coefficient table certifies each
+  inverse, solves linear congruences, and constructs CRT selectors. The same
+  selector construction for polynomial moduli gives Lagrange interpolation,
+  with examples over the rationals and a prime field. Reversible Fibonacci
+  pairs prove periodicity without extension fields, and CRT combines periods
+  for coprime moduli. Exercises 8–18 and solutions reinforce these steps.
+- Chapter 5 derives `(a+b)^p = a^p + b^p` in the prime field directly from the
+  necklace proof of Fermat. Chapter 7 distinguishes this equality of values
+  from the formal polynomial identity, whose binomial proof allows
+  substitution in extension fields.
+- Appendix D first constructs arithmetic in a quadratic extension, including
+  inverses. Frobenius then becomes a nontrivial automorphism. Only at this
+  later stage do Fibonacci roots, multiplicative orders, and fast doubling
+  yield systematic period computations. The primes 2 and 5 are treated
+  separately. This appendix is optional and follows Chapters 4–7.
+- Notebook 2 follows the same order: extended gcd, congruences, CRT,
+  interpolation, reversible pairs, and necklaces, followed by clearly marked
+  optional extension and exact-period sections. All computations use exact
+  arithmetic and include mathematical checks.

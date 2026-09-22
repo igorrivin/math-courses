@@ -12,6 +12,7 @@ $a\divides b$ & $b=ak$ for some integer $k$ \\
 $\gcd(a,b)$ & greatest positive common divisor \\
 $a\congr b\pmod n$ & $n\divides(a-b)$ \\
 $(\Z/n\Z)^\times$ & invertible residue classes modulo $n$ \\
+$\F_p$ & the field $\Z/p\Z$ for prime $p$ \\
 $\varphi(n)$ & number of units modulo $n$ \\
 $v_p(m)$ & exponent of $p$ in $m$ \\
 $\pi(x)$ & number of primes at most $x$ \\
@@ -24,7 +25,12 @@ $f(x)\asymp g(x)$ & their ratio stays between positive constants eventually \\
 
 \section*{Algorithms at a glance}
 
-\textbf{Extended Euclid.} Divide until zero; the last nonzero remainder is the gcd; substitute backward to obtain $ax+by=\gcd(a,b)$.
+\textbf{Extended Euclid.} Maintain $r_i=as_i+bt_i$, starting with
+$(a,1,0)$ and $(b,0,1)$. Each division quotient $q$ updates all three
+columns by subtracting $q$ times the current row from the preceding row.
+The last nonzero row certifies $\gcd(a,b)=as+bt$.
+For $au+nv=1$, the coefficient $u$ is $a^{-1}\pmod n$;
+reduce it and check the product.
 
 \textbf{Sieve of Eratosthenes.} To find the primes through $N$, repeatedly
 circle the least uncrossed integer and cross out its larger multiples. Stop
@@ -183,9 +189,46 @@ rational expansion eventually periodic. A reduced fraction $m/q$ is purely
 periodic exactly when $\gcd(q,b)=1$; the reverse direction follows from
 Euler's theorem.
 
-\textbf{Linear congruence.} For $ax\congr b\pmod n$, first compute $d=\gcd(a,n)$. There are solutions iff $d\divides b$. Divide by $d$, reduce the modulus to $n/d$, and invert the new coefficient.
+\textbf{Linear congruence.} Compute $au+nv=d=\gcd(a,n)$.
+There are solutions to $ax\congr b\pmod n$ iff $d\divides b$.
+When it divides, $x_0=u(b/d)$ is a solution, and all solutions are
+$x\congr x_0\pmod{n/d}$: exactly $d$ residues modulo $n$.
 
-\textbf{CRT.} With $N=\prod n_i$, take $N_i=N/n_i$ and choose $M_i=N_i^{-1}\pmod{n_i}$. Then $x=\sum a_iN_iM_i\pmod N$.
+\textbf{CRT.} For pairwise coprime moduli, put $N=\prod n_i$ and
+$N_i=N/n_i$. Extended Euclid gives $N_iM_i+n_iv_i=1$.
+The selectors $e_i=N_iM_i$ are $1$ at modulus $n_i$ and $0$ at the
+others; $x=\sum a_i e_i\pmod N$ reconstructs the prescribed remainders.
+For two arbitrary moduli $m,n$, compatibility means the prescribed
+remainders agree modulo $\gcd(m,n)$; uniqueness is modulo their lcm.
+
+\textbf{Lagrange interpolation.} For distinct points $c_i$ in a field,
+values $y_i$ determine the unique polynomial of degree less than $r$:
+\[
+ f(X)=\sum_{i=1}^r y_i\ell_i(X),\qquad
+ \ell_i(X)=\prod_{j\ne i}\frac{X-c_j}{c_i-c_j}.
+\]
+These are the CRT selectors for the polynomial moduli $X-c_i$.
+All polynomials with the prescribed values differ by a multiple of
+$\prod_i(X-c_i)$. Over $\F_p$, use extended gcd to invert denominators.
+
+\textbf{Fibonacci periodicity now.} Track $(F_n,F_{n+1})\pmod m$.
+The update $(a,b)\mapsto(b,a+b)$ has inverse $(u,v)\mapsto(v-u,u)$,
+so the orbit is periodic from its start. Its least positive return to
+$(0,1)$ is the period $\pi(m)\le m^2-1$.
+For coprime $m,n$, $\pi(mn)=\operatorname{lcm}(\pi(m),\pi(n))$.
+Here $\pi(m)$ denotes a Fibonacci period, distinct from the
+prime-counting function $\pi(x)$ used in Chapter~8.
+
+\textbf{Frobenius and period computation later.} On $\F_p$, Fermat
+makes $u\mapsto u^p$ the identity. The binomial coefficient proof of
+$(X+Y)^p=X^p+Y^p$ makes it an automorphism of every finite extension.
+In $\F_p(s)$ with $s^2=d$ nonsquare and $p$ odd, it sends $a+bs$ to
+$a-bs$. For Fibonacci and primes $p\ne2,5$, the roots of $X^2-X-1$
+have simultaneous order $\pi(p)$. If $5$ is a square modulo $p$,
+$\pi(p)\divides p-1$; otherwise $\pi(p)\divides2(p+1)$ and
+$\pi(p)\ndivides p+1$. These are multiples, not always the least
+period. Remove factors while testing returns by fast doubling.
+The exceptional periods are $\pi(2)=3$ and $\pi(5)=20$.
 
 \section*{Proof moves worth naming}
 

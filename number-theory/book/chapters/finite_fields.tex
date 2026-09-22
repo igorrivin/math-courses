@@ -1,0 +1,311 @@
+\chapter{New numbers for old recurrences}
+\label{app:finite-fields}
+\chaptertag{An optional later route: extensions, Frobenius, and Fibonacci periods}
+
+\begin{bigidea}
+Chapter~\ref{chap:modular} proves Fibonacci periodicity using only
+reversible pairs of residues. This appendix answers the later question:
+how can the roots of $X^2-X-1$ help compute a period when those roots
+are not in $\F_p$? First we build a field containing them and learn its
+arithmetic. Only then do we use Frobenius and multiplicative orders.
+\end{bigidea}
+
+Read this after modular inverses and interpolation
+(Chapter~\ref{chap:modular}), Fermat's theorem
+(Chapter~\ref{chap:necklaces}), orders in finite groups
+(Chapter~\ref{chap:groups}), and the prime binomial identity
+(Chapter~\ref{chap:binomial}). The current modular-arithmetic course can
+stop at the reversible-pair proof and return here later.
+
+\section{Build an extension before taking powers in it}
+\label{sec:quadratic-field-arithmetic}
+
+The squares modulo $7$ are $0,1,2,4$. There is no element of $\F_7$
+whose square is $5$, so writing $\sqrt5$ does not yet give us a number
+we can calculate with in that field.
+
+Introduce a symbol $s$ with the rule $s^2=5$, and use pairs
+\[
+ a+bs,\qquad a,b\in\F_7.
+\]
+Addition is coefficientwise. Multiply by distributing, then replace
+$s^2$ by $5$:
+\[
+ (a+bs)(c+es)=(ac+5be)+(ae+bc)s.
+\]
+All coefficients are reduced modulo $7$. For example,
+\[
+ (2+s)(3+2s)=16+7s=2.
+\]
+Formally, this is polynomial arithmetic modulo $X^2-5$:
+\[
+ K=\F_7[X]/(X^2-5).
+\]
+The notation means that two polynomials represent the same element when
+their difference is a multiple of $X^2-5$. Polynomial division gives a
+unique representative $a+bX$, so there are exactly $49$ elements.
+The usual arithmetic laws descend from polynomial addition and
+multiplication, just as they did for integer residues.
+
+\begin{proposition}[Division in the new arithmetic]
+Every nonzero $a+bs$ has an inverse, given by
+\[
+ (a+bs)^{-1}=\frac{a-bs}{a^2-5b^2}.
+\]
+Consequently $K$ is a field of $49$ elements, denoted $\F_{49}$.
+\end{proposition}
+\begin{proof}
+The product of $a+bs$ and $a-bs$ is $a^2-5b^2\in\F_7$.
+This denominator is nonzero for a nonzero pair: if $b=0$, it is $a^2$;
+if $b\ne0$ and it vanished, then $(a/b)^2=5$, contradicting the list
+of squares. Its inverse exists in $\F_7$ and can be computed by
+extended Euclid. Multiplying gives the claimed inverse.
+\end{proof}
+
+For instance, $4-5=-1=6$ has inverse $6$ modulo $7$, so
+\[
+ (2+s)^{-1}=6(2-s)=5+s.
+\]
+Indeed, $(2+s)(5+s)=15+7s=1$.
+Extended gcd has not disappeared: it now performs the division of
+coefficients inside the extension.
+
+\begin{warningbox}
+$\F_{49}$ is not $\Z/49\Z$. In $\F_{49}$, seven copies of $1$ sum to
+$0$, and every nonzero element is invertible. In $\Z/49\Z$, the nonzero
+residue $7$ satisfies $7\cdot7=0$ and has no inverse.
+\end{warningbox}
+
+The construction works for any odd prime $p$ and any nonsquare
+$d\in\F_p$: the pairs $a+bs$ with $s^2=d$ form a field of $p^2$
+elements. The same inverse formula uses $a^2-db^2$ in the denominator.
+Equivalently, $X^2-d$ has no root in $\F_p$, so, being quadratic,
+it is irreducible. If a chosen polynomial factors, its quotient need
+not be a field; irreducibility is doing the work.
+
+\section{Frobenius moves the new elements}
+\label{sec:frobenius}
+
+A field automorphism is a bijection from a field to itself preserving
+addition, multiplication, and $1$. On a finite field $K$ containing
+$\F_p$, define
+\[
+ \operatorname{Fr}(u)=u^p.
+\]
+
+\begin{theorem}[Frobenius on a finite extension]
+The map $\operatorname{Fr}$ is an automorphism of $K$. Its fixed
+elements are exactly the embedded prime field $\F_p$.
+\end{theorem}
+\begin{proof}
+The coefficient argument in Chapter~\ref{chap:binomial} gives
+$(u+v)^p=u^p+v^p$ in $K$, and $(uv)^p=u^pv^p$ follows from
+commutativity. Also $1^p=1$. If $u^p=v^p$, then $(u-v)^p=0$;
+a nonzero field element cannot have a zero power, so $u=v$.
+Thus the map is injective, and finiteness makes it surjective.
+
+Fermat's theorem fixes every element of $\F_p$. There can be no
+additional fixed elements: the nonzero polynomial $X^p-X$ has degree
+$p$, so the root bound from interpolation allows at most $p$ roots in
+$K$. The prime-field elements already supply all $p$ of them.
+\end{proof}
+
+\begin{example}[Frobenius is conjugation in $\F_{49}$]
+Since $s^2=5$,
+\[
+ s^7=s(s^2)^3=5^3s=125s=-s.
+\]
+For $a,b\in\F_7$, the sum identity and Fermat now give
+\[
+ (a+bs)^7=a^7+b^7s^7=a-bs.
+\]
+Thus Frobenius exchanges $s$ and $-s$, fixes the $7$ constant elements,
+and applying it twice returns every element to itself. This is a
+nontrivial symmetry of the field, although it acts as the identity on
+the coefficients.
+\end{example}
+
+More generally, if $s^2=d$ is nonsquare over $\F_p$ with $p$ odd,
+then $(s^p)^2=d^p=d$, so $s^p$ is either $s$ or $-s$.
+It cannot be $s$, since $s$ is not in the fixed prime field.
+Therefore $(a+bs)^p=a-bs$ in this quadratic extension as well.
+Finiteness was essential to the surjectivity argument; no assertion
+about arbitrary infinite fields is needed here.
+
+\section{Return to the Fibonacci roots}
+\label{sec:fibonacci-field-periods}
+
+Let $p\ne2,5$ be prime. If $5$ is a square in $\F_p$, work in $K=\F_p$;
+otherwise construct $K=\F_p(s)$ with $s^2=5$ as above.
+In either case, $K$ contains the two distinct nonzero roots
+\[
+ \alpha=\frac{1+s}{2},\qquad\beta=\frac{1-s}{2}
+\]
+of $X^2-X-1$. In particular,
+$\alpha+\beta=1$, $\alpha\beta=-1$, and $\alpha-\beta=s\ne0$.
+
+The formula
+\[
+ F_n=\frac{\alpha^n-\beta^n}{\alpha-\beta}\qquad\text{in }K
+\]
+now makes sense: all its divisions are by invertible field elements.
+It is proved by checking $n=0,1$ and observing that each of
+$\alpha^n,\beta^n$ satisfies the Fibonacci recurrence.
+The resulting values are the images of the ordinary Fibonacci numbers
+in the subfield $\F_p$.
+
+\begin{proposition}[A period is a simultaneous multiplicative order]
+For $p\ne2,5$,
+\[
+ \pi(p)=\operatorname{lcm}\bigl(\operatorname{ord}(\alpha),
+                                  \operatorname{ord}(\beta)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+A return $F_t=0$ first says $\alpha^t=\beta^t=c$.
+Then $F_{t+1}=c(\alpha-\beta)/(\alpha-\beta)=c$, so the full
+return condition $(F_t,F_{t+1})=(0,1)$ is equivalent to
+$\alpha^t=\beta^t=1$. The least such positive $t$ is the displayed
+least common multiple.
+\end{proof}
+
+\subsection*{When the roots are already in the prime field}
+
+If $5$ is a square in $\F_p$, Fermat gives
+$\alpha^{p-1}=\beta^{p-1}=1$, and hence
+\[
+ \pi(p)\divides p-1.
+\]
+For $p=11$, choose $s=4$. The roots are $\alpha=8$, $\beta=4$.
+Their orders are $10$ and $5$: $8^5=-1$, $8^2=9\ne1$, while
+$4^5=1$ and $4\ne1$. Thus $\pi(11)=10$.
+The ambient orders divide $10$ by Fermat, which certifies the minimality
+claims in these power checks.
+
+\subsection*{When Frobenius exchanges the roots}
+
+If $5$ is nonsquare, Frobenius takes $s$ to $-s$ and therefore
+\[
+ \alpha^p=\beta,\qquad\beta^p=\alpha.
+\]
+Multiplying by the original root gives the sharper information
+\[
+ \alpha^{p+1}=\beta^{p+1}=\alpha\beta=-1.
+\]
+Consequently
+\[
+ \pi(p)\divides2(p+1),\qquad \pi(p)\ndivides p+1.
+\]
+The minus sign cannot be dropped: $p$ is odd.
+Indeed, $F_{p+1}=0$ but $F_{p+2}=-1$, so the state at $p+1$ is
+$(0,-1)$, not a restart at $(0,1)$.
+
+\begin{example}[The period modulo $7$]
+In the field constructed earlier, $\alpha=4+4s$ and $\beta=4-4s$.
+Repeated squaring gives
+\[
+ \alpha^2=5+4s,\qquad \alpha^4=5s,\qquad
+ \alpha^8=-1,\qquad\alpha^{16}=1.
+\]
+Thus $\alpha$ has order $16$: every proper divisor of $16$ divides $8$,
+and $\alpha^8\ne1$. Both roots have $16$th power $1$, so
+$\pi(7)=16$. This computation uses the arithmetic of the extension
+explicitly; it does not treat the missing square root as an ordinary
+residue modulo $7$.
+\end{example}
+
+\section{From a bound to the exact period}
+\label{sec:exact-fibonacci-period}
+
+The divisibilities above supply a candidate multiple, not always the
+least period. For instance, $\pi(29)=14$, a proper divisor of $28$.
+
+We can decide which case applies without listing all squares.
+There are $(p-1)/2$ nonzero squares, since $x^2=y^2$ exactly when
+$x=\pm y$. Fermat makes each such square a root of
+$X^{(p-1)/2}-1$, and the root bound allows no others.
+Thus $5$ is a square exactly when $5^{(p-1)/2}=1\pmod p$.
+Repeated squaring computes this test efficiently.
+
+A practical procedure after finding a valid multiple $B$ is:
+\begin{enumerate}
+  \item Factor $B$ and set $t=B$.
+  \item For each prime divisor $q$ of $t$, test whether
+  $(F_{t/q},F_{t/q+1})=(0,1)\pmod p$.
+  If so, replace $t$ by $t/q$ and continue removing factors.
+  \item Stop when no prime factor can be removed. The remaining $t$
+  is $\pi(p)$.
+\end{enumerate}
+To justify the stopping rule, $\pi(p)$ divides the current $t$ at every
+stage. If $t>\pi(p)$, some prime divides $t/\pi(p)$, and removing that
+prime still leaves a multiple of the true period. Thus a larger value
+cannot survive all the tests.
+
+These tests can be made without computing all preceding Fibonacci
+numbers. The doubling identities are
+\[
+ F_{2n}=F_n(2F_{n+1}-F_n),\qquad
+ F_{2n+1}=F_n^2+F_{n+1}^2.
+\]
+For a proof, the recurrence gives
+\[
+ \begin{pmatrix}0&1\\1&1\end{pmatrix}^{n}
+ =\begin{pmatrix}F_{n+1}-F_n&F_n\\F_n&F_{n+1}\end{pmatrix}.
+\]
+Square this matrix and compare its upper-right and lower-right entries.
+Thus a pair at index $n$ gives the pair at $2n$; one additional recurrence
+step gives the pair at $2n+1$. Reading the binary digits of an index
+computes its pair by repeated doubling and reduction.
+
+For $p=29$, $11^2=5$ in $\F_{29}$, so start with $B=28$.
+The pair at $14$ is $(0,1)$, reducing the candidate to $14$.
+The pairs at $7$ and $2$ are $(13,21)$ and $(1,2)$, respectively,
+so neither prime factor of $14$ can be removed. Hence $\pi(29)=14$.
+
+\subsection*{The exceptional primes}
+
+For $p=2$, direct pair iteration gives $\pi(2)=3$.
+For $p=5$, the characteristic polynomial has a repeated root, so the
+distinct-root argument does not apply. Put
+$A=\begin{psmallmatrix}0&1\\1&1\end{psmallmatrix}$. Direct computation
+gives $A^5=3I\pmod5$, hence $A^{20}=I$.
+But $A^{10}=4I\ne I$, and $A^4$ has off-diagonal entry $F_4=3\ne0$.
+Every proper divisor of $20$ divides $10$ or $4$, so the order of $A$
+is $20$. The displayed matrix formula shows that $A^t=I$ exactly when
+$(F_t,F_{t+1})=(0,1)$; therefore $\pi(5)=20$.
+
+\begin{checkpoint}
+Keep three questions separate. Reversible finite states prove that a
+period exists. Extension-field arithmetic and Frobenius give useful
+multiples of that period. Order tests identify the least period.
+For small moduli, simply following the pair orbit remains a complete
+method and requires none of the later field theory.
+\end{checkpoint}
+
+\begin{exercisebox}
+\begin{enumerate}
+  \item In $\F_7(s)$ with $s^2=5$, compute $(1+2s)(3+s)$ and
+  $(1+2s)^{-1}$. Check the inverse by multiplication.
+  \exlevel{Fluency}
+  \item Construct $\F_4$ using $t^2=t+1$ over $\F_2$.
+  List its four elements and invert each nonzero element.
+  Compute the square map and identify its fixed elements.
+  \exlevel{Reasoning}
+  \item In $\F_7(s)$, show that $u^7=u$ exactly when $u\in\F_7$,
+  and that $u^{49}=u$ for every element. Explain which calculation
+  exhibits Frobenius as a nonidentity automorphism.
+  \exlevel{Reasoning}
+  \item In $\F_{29}$, verify that the roots of $X^2-X-1$ are $6$ and
+  $24$, of orders $14$ and $7$. Deduce the period by their orders
+  and compare with the factor-removal calculation.
+  \exlevel{Reasoning}
+  \item When $5$ is nonsquare in $\F_p$ for odd $p$, prove directly
+  that the Fibonacci pair at $p+1$ is $(0,-1)$. Use $p=3$ to connect
+  the result with the pair table in Chapter~\ref{chap:modular}.
+  \exlevel{Synthesis}
+  \item Implement the doubling identities and compare the exact
+  period procedure with direct pair iteration for several small
+  primes. Treat $2$ and $5$ separately, and report candidate multiples
+  as well as the least periods. \exlevel{Exploration}
+\end{enumerate}
+\end{exercisebox}

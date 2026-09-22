@@ -1,0 +1,90 @@
+\section{Fibonacci residues: why the pattern must repeat}
+\label{sec:fibonacci-periodicity}
+
+Set $F_0=0$, $F_1=1$, and $F_{n+2}=F_{n+1}+F_n$. Modulo an integer
+$m\ge2$, the next term depends on the previous \emph{two} terms.
+The appropriate state is therefore
+\[
+ S_n=(F_n,F_{n+1})\pmod m,
+ \qquad T(a,b)=(b,a+b)\pmod m.
+\]
+There are only $m^2$ pairs, so a state must eventually repeat.
+But finiteness alone only gives eventual periodicity. Here we can do better:
+\[
+ T^{-1}(u,v)=(v-u,u)\pmod m.
+\]
+Every step has a unique predecessor, using only subtraction.
+
+\begin{theorem}[Fibonacci periodicity from the starting pair]
+For every $m\ge2$, the Fibonacci sequence modulo $m$ is periodic from
+the start. Its least period $\pi(m)$ is the smallest positive $t$ for which
+\[
+ (F_t,F_{t+1})\congr(0,1)\pmod m.
+\]
+In particular, $\pi(m)\le m^2-1$.
+\end{theorem}
+
+\begin{proof}
+If $S_i=S_j$ with $i<j$, apply the inverse step $i$ times to get
+$S_0=S_{j-i}$. Repeating the forward step now gives a period beginning
+at $S_0$, not just after an initial segment. Conversely, a period of the
+sequence must return both $F_0$ and $F_1$, so it returns the starting pair.
+Before the first return all states are distinct. The pair $(0,0)$ is fixed
+by $T$ and has no other predecessor, so the orbit of $(0,1)$ never visits
+it. There are at most $m^2-1$ available states.
+\end{proof}
+
+\begin{example}[A zero is not yet a restart]
+Modulo $3$, the successive states are
+\[
+\begin{array}{c|rrrrrrrrr}
+n&0&1&2&3&4&5&6&7&8\\\hline
+F_n&0&1&1&2&0&2&2&1&0\\
+F_{n+1}&1&1&2&0&2&2&1&0&1
+\end{array}
+\]
+The pair first returns at $n=8$, so $\pi(3)=8$.
+Although $F_4\congr0$, its successor is $2$, not $1$.
+Looking only for a repeated Fibonacci value would give the wrong answer.
+\end{example}
+
+\begin{proposition}[CRT combines periods]
+If $\gcd(m,n)=1$, then
+\[
+ \pi(mn)=\operatorname{lcm}(\pi(m),\pi(n)).
+\]
+\end{proposition}
+
+\begin{proof}
+CRT says that a pair returns modulo $mn$ exactly when it returns modulo
+both $m$ and $n$. The return times modulo $m$ are precisely the multiples
+of $\pi(m)$: divide any return time by $\pi(m)$ and use the minimality of
+the remainder. Likewise for $n$. The first common return time is their
+least common multiple.
+\end{proof}
+
+For example, the orbit modulo $2$ has length $3$, so
+$\pi(6)=\operatorname{lcm}(3,8)=24$.
+The connection is operational: CRT reassembles the two coordinates of
+every state as well as the arithmetic on the clocks.
+
+\begin{labbox}
+For a small modulus, start at $(0,1)$, repeatedly replace $(a,b)$ by
+$(b,a+b\bmod m)$, and stop on the first return to $(0,1)$.
+The theorem proves this procedure terminates and that the answer is exact.
+Record pairs, not just zeros. These small experiments need no extension fields.
+\end{labbox}
+
+\subsection*{What we can prove now, and what comes next}
+
+The reversible-pair argument proves periodicity for \emph{every} modulus,
+prime or composite. The estimate $\pi(m)\le m^2-1$ is an upper bound;
+it does not assert that $\pi(m)$ divides $m^2-1$.
+For example, direct iteration gives $\pi(5)=20$, and $20\ndivides24$.
+
+A structural computation uses the roots of $X^2-X-1$.
+Their $\sqrt5$ exists in $\F_p$ for $p=11$, but not for $p=7$.
+Appendix~\ref{app:finite-fields} first builds arithmetic in an extension
+field, then uses Frobenius and multiplicative orders to compute exact
+periods. Those tools belong to a later unit; pair iteration and CRT
+require only the arithmetic developed here.

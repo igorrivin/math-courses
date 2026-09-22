@@ -1,4 +1,5 @@
 \chapter{Arithmetic in Pascal's triangle}
+\label{chap:binomial}
 \chaptertag{Binomial coefficients and divisibility}
 
 \begin{definition}
@@ -74,6 +75,39 @@ Thus the $p$th row of Pascal's triangle becomes $1,0,\dots,0,1$ modulo $p$, whic
 (x+y)^p\congr x^p+y^p\pmod p.
 \]
 
+\subsection*{A polynomial identity, not only a statement about values}
+\label{sec:prime-binomial-identity}
+
+More precisely, reducing the \emph{coefficients} in the binomial theorem
+gives the identity
+\[
+ (X+Y)^p=X^p+Y^p\qquad\text{in }\F_p[X,Y].
+\]
+If $K$ is a field containing $\F_p$, then adding $1$ to itself $p$ times
+still gives $0$ in $K$; we say $K$ has \emph{characteristic $p$}.
+Every intermediate binomial coefficient is therefore zero in $K$, and
+substitution gives
+\[
+ (a+b)^p=a^p+b^p\qquad\text{for all }a,b\in K.
+\]
+This proof does not assume $a^p=a$ or $b^p=b$.
+It is the justification we will need for Frobenius on finite extensions.
+
+\begin{warningbox}
+Agreeing at every element of a finite field does not make two
+polynomials identical. Fermat says that $X^p-X$ has value zero at every
+element of $\F_p$, but it is a nonzero polynomial of degree $p$.
+Thus the prime-field argument in Section~\ref{sec:fermat-sum} and the
+coefficient argument here have different scopes.
+\end{warningbox}
+
+Once a finite extension has been constructed, the map $a\mapsto a^p$
+preserves addition by this identity and preserves multiplication because
+$(ab)^p=a^pb^p$. Appendix~\ref{app:finite-fields} proves that it is a
+bijection and shows it exchanging two roots of the Fibonacci
+characteristic polynomial. That is where the term
+\emph{Frobenius automorphism} acquires a concrete role.
+
 \section{Measuring divisibility one prime at a time}
 
 \begin{definition}
@@ -130,6 +164,10 @@ Color entry $\binom nk$ when it is nonzero modulo $2$, then modulo $3$. Zoom out
   \item Determine all $n$ for which every interior entry of row $n$ is even. Use Kummer's rule. \exlevel{Reasoning}
   \item For a fixed prime $p$, explore the first $p^2$ rows of Pascal's triangle modulo $p$. State a digit-based conjecture for when $\binom nk\not\congr0\pmod p$. \exlevel{Exploration}
   \item Prove that $\operatorname{lcm}(1,2,\dots,2n)$ is divisible by $\binom{2n}{n}$ by comparing $p$-adic valuations. \exlevel{Bridge}
+  \item Compare the polynomials $X^p$ and $X$ over $\F_p$. Explain why
+  they give the same function on $\F_p$ but are different polynomials.
+  Why does the coefficient proof, rather than equality of these
+  functions, justify substituting extension-field elements into
+  $(X+Y)^p=X^p+Y^p$? \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}
-

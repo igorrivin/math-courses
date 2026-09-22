@@ -353,6 +353,80 @@ x=2(72)(4)+3(63)(7)+4(56)(5)=3019\congr499\pmod{504}.
 \]
 The multipliers $4,7,5$ invert $72,63,56$ modulo $7,8,9$, respectively.
 
+\textbf{8.} The rows $(r,s,t)$ are
+\[
+ (83,1,0),\ (29,0,1),\ (25,1,-2),\ (4,-1,3),\
+ (1,7,-20),\ (0,-29,83).
+\]
+Thus $1=7\cdot83-20\cdot29$ and $29^{-1}\congr63\pmod{83}$.
+Indeed, $29\cdot63=1827=22\cdot83+1$.
+
+\textbf{9.} From $6=42-2\cdot18$, multiplication by $4$ gives
+$24=4\cdot42-8\cdot18$. Hence $x\congr-8\congr6\pmod7$;
+the residues modulo $42$ are $6,13,20,27,34,41$.
+The gcd $6$ does not divide $25$, so the second congruence is impossible.
+
+\textbf{10.} At every component modulus, $e_i$ has value $0$ or $1$,
+exactly one selector has value $1$, and distinct selectors cannot both
+have value $1$. CRT transfers the three identities back modulo $N$.
+Consequently
+$(\sum a_i e_i)(\sum b_i e_i)=\sum a_i b_i e_i$ modulo $N$;
+addition is componentwise as well.
+
+\textbf{11.} Put $x=2+6t$. Then $6t\congr3\pmod9$, or
+$2t\congr1\pmod3$, so $t\congr2\pmod3$ and
+$x\congr14\pmod{18}$. The second system prescribes different residues
+modulo $\gcd(6,9)=3$, so it is incompatible.
+
+\textbf{12.} The selectors at $-1,0,2$ give
+\[
+ f(X)=2\frac{X(X-2)}3-\frac{(X+1)(X-2)}2
+       +3\frac{X(X+1)}6
+     =\frac{2X^2-X+3}{3}.
+\]
+All solutions are $f(X)+(X+1)X(X-2)h(X)$ with $h\in\Q[X]$.
+
+\textbf{13.} The denominators at $0,1,3$ are $3,5,6$ modulo $7$.
+Their inverse certificates are
+\[
+ 3\cdot5-7\cdot2=1,\quad 5\cdot3-7\cdot2=1,\quad
+ 6\cdot6-7\cdot5=1.
+\]
+Thus
+\[
+ f(X)=5(X-1)(X-3)+4\cdot3X(X-3)+2\cdot6X(X-1)
+     =X^2+2X+1\quad\text{in }\F_7[X].
+\]
+Substitution gives the required values $1,4,2$.
+
+\textbf{14.} In $f(2)-f(0)$ every term has a factor $2$, so this
+difference cannot be $1$ modulo $8$. The coefficient ring is not a
+field; specifically, the difference between the two interpolation
+points is a nonunit.
+
+\textbf{15.} Modulo $2$, the orbit is
+$(0,1),(1,1),(1,0),(0,1)$, giving period $3$.
+Modulo $3$, it is
+\[
+ (0,1),(1,1),(1,2),(2,0),(0,2),(2,2),(2,1),(1,0),(0,1),
+\]
+giving period $8$. At the first positive zero, $n=4$, the next residue
+is $2$, not $1$, so the recurrence has not restarted.
+
+\textbf{16.} The periods are $\operatorname{lcm}(3,8)=24$ and
+$\operatorname{lcm}(8,20)=40$. A simultaneous return occurs exactly at
+an index divisible by both component periods. For modulus $15$,
+the product $8\cdot20=160$ is a period but is four times the least one.
+
+\textbf{17.} The orbit is $(1,0)\mapsto(0,0)\mapsto(0,0)$.
+Modulo $2$ the rule is $(a,b)\mapsto(b,b)$, which forgets $a$;
+a state therefore does not determine a unique predecessor.
+
+\textbf{18.} The squares modulo $7$ are $0,1,2,4$. A root $x$ would
+satisfy $(2x-1)^2=5$, which is impossible. Binet's formula requires
+the missing roots (equivalently, a square root of $5$); the extension
+in Appendix~\ref{app:finite-fields} supplies arithmetic for them.
+
 \section*{Chapter 5}
 
 \textbf{1.} The binary length-$3$ words form four orbits:
@@ -363,6 +437,12 @@ The multipliers $4,7,5$ invert $72,63,56$ modulo $7,8,9$, respectively.
 \textbf{3.} If $ik\congr jk\pmod p$, then $p\divides k(i-j)$. As $p\ndivides k$, Euclid's lemma gives $p\divides i-j$. For $0\le i,j<p$, this forces $i=j$.
 
 \textbf{5.} Orbit sizes divide $6$, and binary examples realize $1,2,3,6$: $000000$, $010101$, $001001$, and $000001$.
+
+\textbf{6.} Fermat gives $(a+b)^p=a+b=a^p+b^p$ in $\F_p$.
+Applying it repeatedly proves the corresponding identity for any finite
+sum. Fermat's statement about residues does not assert $u^p=u$ for
+new elements of an extension; the polynomial identity from
+Chapter~\ref{chap:binomial} proves additivity there instead.
 
 \section*{Chapter 6}
 
@@ -393,6 +473,12 @@ Each trailing zero consumes one $2$ and one $5$, so there are $24$.
 v_p\binom{2n}{n}=\sum_{j\ge1}\left(\floor{\frac{2n}{p^j}}-2\floor{\frac n{p^j}}\right).
 \]
 Each summand is $0$ or $1$, and there are at most $\floor{\log_p(2n)}$ nonzero candidates. This is the exponent of $p$ in the lcm, so the valuation of the binomial coefficient is no larger for every prime $p$.
+
+\textbf{8.} Fermat makes $X^p-X$ zero at every point of $\F_p$,
+but its leading coefficient is $1$, so it is not the zero polynomial.
+By contrast, expansion shows that every coefficient of
+$(X+Y)^p-X^p-Y^p$ vanishes modulo $p$. This is a polynomial identity
+and remains valid upon substitution in any field containing $\F_p$.
 
 \section*{Chapter 8}
 
@@ -504,3 +590,36 @@ $[1;\overline1]$.
 
 \textbf{7.} The nominal count gains $0.08$ day per cycle, hence $0.4$ day
 after $5$ cycles, $5.2$ days after $65$, and $52$ days after $650$.
+
+\section*{Appendix \ref{app:finite-fields}: extension arithmetic and periods}
+
+\textbf{1.} The product is $13+7s=6$. Since
+$1-5\cdot2^2=-19=2$ in $\F_7$, its inverse is
+$4(1-2s)=4+6s$. Multiplication gives
+$(1+2s)(4+6s)=64+14s=1$.
+
+\textbf{2.} The elements are $0,1,t,t+1$. The polynomial
+$X^2+X+1$ has no root in $\F_2$ and is irreducible. Directly,
+$t(t+1)=t^2+t=1$, so the nonzero inverses are $1,t+1,t$,
+respectively. Squaring fixes $0,1$ and exchanges $t,t+1$.
+
+\textbf{3.} Write $u=a+bs$. Then $u^7=a-bs$, which equals $u$
+exactly when $2b=0$, hence $b=0$. Applying the map twice gives
+$u^{49}=u$. The example $s^7=-s\ne s$ exhibits its nonidentity action.
+
+\textbf{4.} Both $6$ and $24$ satisfy $X^2-X-1=0$ modulo $29$.
+We have $6^7=-1$, $6^{14}=1$, and $6^2=7\ne1$, so $6$ has
+order $14$. Also $24^7=1$ and $24\ne1$, so $24$ has order $7$.
+Their least common multiple is $14$, agreeing with factor removal.
+
+\textbf{5.} Frobenius interchanges the roots, so
+$\alpha^{p+1}=\beta^{p+1}=-1$. Binet gives $F_{p+1}=0$ and
+$F_{p+2}=(-\alpha+\beta)/(\alpha-\beta)=-1$.
+For $p=3$ this is precisely the state $(0,2)$ at index $4$;
+the full return occurs at index $8$.
+
+\textbf{6 (check values).} For primes $3,7,11,13,29$, valid starting
+multiples are $8,16,10,28,28$ and the respective least periods are
+$8,16,10,28,14$. The exceptional primes $2,5$ have periods $3,20$.
+The modular arithmetic notebook gives implementations of direct pair
+iteration, fast doubling, and factor removal for comparison.

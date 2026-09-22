@@ -1,4 +1,5 @@
 \chapter{A theorem you can rotate}
+\label{chap:necklaces}
 \chaptertag{Necklace colorings and Fermat's little theorem}
 
 Why should a prime $p$ divide $a^p-a$ for every integer $a$? Instead of manipulating the expression, we count objects that naturally arrive in packets of $p$.
@@ -73,15 +74,33 @@ To compute $3^{1000}\pmod7$, note that $3^6\congr1$ and $1000=6\cdot166+4$:
 3^{1000}\congr(3^6)^{166}3^4\congr81\congr4\pmod7.
 \]
 
-Fermat's theorem also explains the first layer of binomial divisibility. For $1\le k\le p-1$,
+\section{The sum formula over the prime field}
+\label{sec:fermat-sum}
+
+There is an immediate consequence of the theorem we have just proved.
+For $a,b\in\F_p$, Fermat gives
 \[
-\binom pk=\frac{p!}{k!(p-k)!}
+ (a+b)^p=a+b=a^p+b^p.
 \]
-is divisible by $p$, because the denominator contains no factor $p$. Therefore
-\[
-(x+y)^p\congr x^p+y^p\pmod p.
-\]
-We will return to this ``freshman's dream'' after developing binomial coefficients systematically.
+No binomial expansion is needed for this conclusion: the map
+$a\mapsto a^p$ fixes \emph{every} element of $\F_p$.
+For integers $a,b$, the same statement is the congruence
+$(a+b)^p\congr a^p+b^p\pmod p$.
+
+There is also a stronger statement, whose proof will use the prime row
+of Pascal's triangle: $\,(X+Y)^p=X^p+Y^p$ as a \emph{polynomial identity}
+over $\F_p$. Unlike an assertion just about the $p$ residues, that identity
+can be substituted into any extension field of $\F_p$.
+The distinction matters because a new element $u$ of an extension need
+not satisfy $u^p=u$.
+
+\begin{bigidea}
+On $\F_p$, the $p$th-power map is the identity. Its name,
+\emph{Frobenius}, becomes informative when there are additional field
+elements for it to move. We will first justify the polynomial identity
+in Chapter~\ref{chap:binomial}, then construct a finite extension and
+compute this map in Appendix~\ref{app:finite-fields}.
+\end{bigidea}
 
 \begin{exercisebox}
 \begin{enumerate}
@@ -90,8 +109,10 @@ We will return to this ``freshman's dream'' after developing binomial coefficien
   \item In the orbit lemma, prove carefully that $0,k,2k,\dots,(p-1)k$ are all distinct modulo $p$. \exlevel{Reasoning}
   \item Give an orbit-counting proof that $p\divides a^p-a$ using linear strings and cyclic shift, without drawing a circle. \exlevel{Reasoning}
   \item Find every possible orbit size for binary words of length $6$, and give an example of each. \exlevel{Exploration}
-  \item Prove that if $p$ is prime, then $(x+y)^p\congr x^p+y^p\pmod p$. Use induction to deduce $(x_1+\cdots+x_m)^p\congr x_1^p+\cdots+x_m^p$. \exlevel{Reasoning}
+  \item Use Fermat's theorem directly, without expanding a power, to
+  prove $(x_1+\cdots+x_m)^p\congr x_1^p+\cdots+x_m^p\pmod p$
+  for integers $x_i$. Explain why this argument alone does not apply
+  to new elements of a field extension. \exlevel{Reasoning}
   \item If $n$ is composite, must there be an $a$ with $a^n\not\congr a\pmod n$? Test $n=341$ and $561$. This opens the door to pseudoprimes and Carmichael numbers. \exlevel{Challenge}
 \end{enumerate}
 \end{exercisebox}
-

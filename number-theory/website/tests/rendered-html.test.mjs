@@ -14,7 +14,7 @@ test("ships the complete Sage notebook collection and runnable new scripts", asy
     const notebook = JSON.parse(source);
     assert.equal(notebook.metadata.kernelspec.name, "sagemath");
     assert.ok(notebook.cells.some(cell => cell.cell_type === "code"));
-    if (stem.startsWith("04_") || stem.startsWith("05_")) {
+    if (stem.startsWith("02_") || stem.startsWith("04_") || stem.startsWith("05_")) {
       assert.ok(html.includes(`href="/${stem}.sage"`));
       assert.deepEqual(await readFile(new URL(`../dist/client/${stem}.sage`, import.meta.url)), await readFile(new URL(`../public/${stem}.sage`, import.meta.url)));
     }
@@ -32,6 +32,17 @@ test("explains the exact Pell certificate, parity, and the cattle divisibility c
   assert.match(html, /href="\/course-packet\.pdf#nameddest=section\.3\.10"/);
   assert.match(html, /href="\/course-packet\.pdf#nameddest=section\.3\.11"/);
   assert.match(html, /10\.1080\/00029890\.1998\.12004887/);
+});
+
+test("renders a valid inverse certificate and links current and later modular lessons", () => {
+  assert.ok(html.includes("5 × (5) + 12 × (-2) = 1"));
+  assert.ok(html.includes("5 × 5 ≡ 1 (mod 12)"));
+  for (const destination of ["section.4.5", "section.4.7", "appendix.D"]) {
+    assert.ok(html.includes(`href="/course-packet.pdf#nameddest=${destination}"`));
+  }
+  assert.match(html, /Lagrange’s interpolation formula/);
+  assert.match(html, /The power map is the identity there/);
+  assert.match(html, /Frobenius can move the new elements/);
 });
 
 before(async () => {

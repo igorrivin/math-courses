@@ -20,6 +20,16 @@ with a reference to Vardi's exposition. Eight further exercises and their
 solutions accompany the revision. The first book notebook supplies exact
 integer calculations, including verification of the 206,545-digit total.
 
+Chapter 4 now emphasizes extended gcd, constructive CRT, its connection to
+Lagrange interpolation, and Fibonacci periodicity via reversible pairs.
+The modular lab displays an integer Bézout certificate for the chosen step
+and explains whether it has an inverse. The necklace lab distinguishes the
+sum formula over the prime field from the polynomial identity that holds
+in extensions. Optional Appendix D builds quadratic-extension arithmetic
+before using Frobenius to compute Fibonacci periods. Notebook 2 follows
+the same teaching order and also runs in standard Python; its marked `.sage`
+source is converted and mirrored by `scripts/sync-notebooks.py`.
+
 ## Problem sets, quizzes, and instructor editions
 
 `/assessments` lists the student PDFs; `/instructors` requires the shared
@@ -113,7 +123,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
-- `npm test`: build the course site and verify its rendered lessons, seven labs, metadata, and PDF asset
+- `npm test`: build the course site and verify its rendered lessons, nine labs, protected instructor downloads, metadata, and PDF asset
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
 ## Learn More

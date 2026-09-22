@@ -1,5 +1,14 @@
 \chapter{Arithmetic on a clock}
-\chaptertag{Congruences, inverses, and the Chinese remainder theorem}
+\label{chap:modular}
+\chaptertag{Extended Euclid, Chinese remainders, and interpolation}
+
+\begin{bigidea}
+The extended gcd algorithm is the computational engine of modular arithmetic.
+It tells us when division is possible and supplies the inverse when it is.
+We will use those inverses to reconstruct an integer from its remainders,
+then recognize the same construction in polynomial interpolation.
+Finally, a reversible recurrence will explain why Fibonacci residues repeat.
+\end{bigidea}
 
 \begin{definition}
 For $n\ge2$, we write $a\congr b\pmod n$ if $n\divides(a-b)$. The equivalence class of $a$ is written $[a]$ or $\bar a$.
@@ -15,8 +24,8 @@ Congruence remembers the remainder and forgets the number of complete turns arou
     \fill[teal] (P\k) circle (2pt);
     \node at ({90-30*\k}:1.94) {$\k$};
   }
-  \draw[-{Stealth[length=3mm]},coral,line width=1.5pt] (P9) arc[start angle=180,end angle=-60,radius=1.65];
-  \node[coral,align=center] at (3.2,.2) {$9+5\congr2\pmod{12}$\\one complete turn disappears};
+  \draw[-{Stealth[length=3mm]},coral,line width=1.5pt] (P9) arc[start angle=180,end angle=30,radius=1.65];
+  \node[coral,align=left,anchor=west] at (2.6,.2) {$9+5\congr2\pmod{12}$\\one complete turn disappears};
 \end{tikzpicture}
 \end{center}
 
@@ -28,6 +37,15 @@ a+c\congr b+d\pmod n,\qquad ac\congr bd\pmod n.
 \]
 Powers are therefore legal too. Division is different.
 
+These rules do not depend on the chosen representatives. For example, if
+$a=b+kn$ and $c=d+\ell n$, then
+$ac-bd=n(b\ell+dk+k\ell n)$. Thus addition and multiplication are
+well-defined operations on the residue classes $\Z/n\Z$. Reduce after
+each step or at the end: the resulting residue class is the same.
+
+\section{Extended gcd: division comes with a certificate}
+\label{sec:modular-egcd}
+
 \begin{definition}
 A residue $a$ is a \emph{unit modulo $n$} if there exists $b$ with $ab\congr1\pmod n$. Such a $b$ is an inverse of $a$.
 \end{definition}
@@ -37,18 +55,103 @@ $a$ has an inverse modulo $n$ exactly when $\gcd(a,n)=1$.
 \end{theorem}
 
 \begin{proof}
-The congruence $ab\congr1\pmod n$ means $ab+nk=1$ for some $k$. This is precisely a B\'ezout identity. Such an identity exists exactly when $\gcd(a,n)=1$.
+The congruence $ab\congr1\pmod n$ means $ab+nk=1$ for some $k$, so any
+common divisor of $a,n$ divides $1$. Conversely, when $\gcd(a,n)=1$,
+extended Euclid produces $u,v$ such that $au+nv=1$. Reducing this
+\emph{integer identity} modulo $n$ gives $au\congr1$: the coefficient
+$u$, reduced modulo $n$, is the required inverse.
 \end{proof}
+
+The theorem is an algorithm, not a direction to try every residue until
+one works. Here is a forward version of the backward substitutions from
+Chapter~1. First reduce $a$ so that $0\le a<n$. Keep three entries in each row:
+\[
+ r_i=ns_i+at_i.
+\]
+Start with $(r_0,s_0,t_0)=(n,1,0)$ and $(r_1,s_1,t_1)=(a,0,1)$.
+Whenever $r_i\ne0$, divide $r_{i-1}=q_i r_i+r_{i+1}$ and update
+\[
+ (r_{i+1},s_{i+1},t_{i+1})
+ =(r_{i-1},s_{i-1},t_{i-1})-q_i(r_i,s_i,t_i).
+\]
+The same subtraction in all three columns preserves the displayed
+identity. The last nonzero row gives the gcd and its B\'ezout coefficients.
+
+\begin{example}[An inverse without guessing]
+Find $17^{-1}\pmod{43}$. The divisions are
+\[
+43=2\cdot17+9,\quad17=9+8,\quad9=8+1,\quad8=8\cdot1.
+\]
+The coefficient table records $r=43s+17t$ throughout:
+\begin{center}
+\begin{tabular}{rrrl}
+\toprule
+$r$ & $s$ & $t$ & Certificate \\
+\midrule
+43 & 1 & 0 & $43=1\cdot43+0\cdot17$ \\
+17 & 0 & 1 & $17=0\cdot43+1\cdot17$ \\
+9 & 1 & $-2$ & $9=43-2\cdot17$ \\
+8 & $-1$ & 3 & $8=-43+3\cdot17$ \\
+1 & 2 & $-5$ & $1=2\cdot43-5\cdot17$ \\
+0 & $-17$ & 43 & $0=-17\cdot43+43\cdot17$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Hence $17^{-1}\congr-5\congr38\pmod{43}$. Check the result directly:
+$17\cdot38=646=15\cdot43+1$.
+\end{example}
+
+\begin{checkpoint}
+In a certificate $au+nv=1$, which coefficient is the inverse of $a$
+modulo $n$? Read the coefficient of $a$, even if the table began with
+$n$ in its first row. The final multiplication check catches a swapped
+coefficient or a sign error.
+\end{checkpoint}
 
 \begin{warningbox}
 Cancellation can fail. Modulo $6$, $2\cdot1\congr2\cdot4$, but $1\not\congr4$. You may cancel $a$ modulo $n$ only when $a$ is a unit, or after carefully reducing the modulus.
 \end{warningbox}
 
+For a prime $p$, every nonzero residue is a unit. We write
+$\F_p=\Z/p\Z$ and call it a \emph{field}: addition and multiplication obey
+the usual commutative arithmetic laws, and every nonzero element permits
+division. The rational and real numbers are other examples of fields.
+For composite $n$, $\Z/n\Z$ need not permit division by a nonzero residue.
+
+\section{Solving a linear congruence with the same algorithm}
+
 \begin{proposition}[Linear congruence]
 The congruence $ax\congr b\pmod n$ has a solution exactly when $d=\gcd(a,n)$ divides $b$. When it does, there are exactly $d$ incongruent solutions modulo $n$.
 \end{proposition}
 
+\begin{proof}[Construction and completeness]
+Run extended Euclid once to obtain $au+nv=d$. If $ax\congr b\pmod n$,
+then $b=ax-nk$ for an integer $k$, so $d\divides b$ is necessary.
+If $d\divides b$, multiply the certificate by $b/d$ to obtain a solution
+\[
+ x_0=u\frac bd.
+\]
+If $d=n$, then both $a$ and $b$ are multiples of $n$, so all $n$ residues
+are solutions. Otherwise $n/d\ge2$, and any two solutions satisfy
+$(a/d)(x-x_0)\congr0\pmod{n/d}$. Since $a/d$ is a unit modulo $n/d$,
+this is equivalent to $x\congr x_0\pmod{n/d}$. Therefore the complete list
+modulo $n$ is
+\[
+ x_0,\ x_0+\frac nd,\ \ldots,\ x_0+(d-1)\frac nd.
+\]
+These $d$ residues are distinct.
+\end{proof}
+
+\begin{example}[A nonunit can give several solutions]
+For $14x\congr21\pmod{35}$, extended Euclid gives
+$7=35-2\cdot14$. Multiplying by $3$ gives $21=3\cdot35-6\cdot14$,
+so $x\congr-6\congr4\pmod5$. The seven solutions modulo $35$ are
+$4,9,14,19,24,29,34$. The same calculation rules out
+$14x\congr20\pmod{35}$, because $7\ndivides20$.
+\end{example}
+
 \section{Reassembling remainders}
+\label{sec:crt}
 
 Suppose a number leaves remainder $2$ modulo $3$ and remainder $3$ modulo $5$. Listing possibilities gives $8$ modulo $15$. The Chinese remainder theorem says this always works for coprime clocks.
 
@@ -61,12 +164,37 @@ has a solution, unique modulo $N=n_1\cdots n_r$.
 \end{theorem}
 
 \begin{proof}[Construction]
-Set $N_i=N/n_i$. Since $\gcd(N_i,n_i)=1$, choose $M_i$ with $N_iM_i\congr1\pmod{n_i}$. Then
+Set $N_i=N/n_i$. Since $\gcd(N_i,n_i)=1$, \emph{use extended Euclid} to
+find $M_i,v_i$ with $N_iM_i+n_iv_i=1$. Then
 \[
 x=\sum_{i=1}^r a_iN_iM_i
 \]
 has every prescribed remainder: modulo $n_i$, its $i$th term is $a_i$ and every other term is $0$. If $x,y$ both work, each $n_i$ divides $x-y$; coprimality makes $N\divides x-y$.
 \end{proof}
+
+The quantities $e_i=N_iM_i$ are \emph{selectors}: $e_i$ is $1$ at its
+own modulus and $0$ at every other modulus. The term $a_i e_i$ installs
+one prescribed remainder without disturbing the others.
+
+\begin{example}[Construct, reduce, and check]
+Solve $x\congr2\pmod3$, $x\congr3\pmod5$, $x\congr2\pmod7$.
+Here $N=105$, and the construction is
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n_i$ & $a_i$ & $N_i$ & $M_i$ & $e_i=N_iM_i$ \\
+\midrule
+3 & 2 & 35 & 2 & 70 \\
+5 & 3 & 21 & 1 & 21 \\
+7 & 2 & 15 & 1 & 15 \\
+\bottomrule
+\end{tabular}
+\end{center}
+For instance, $2\cdot35-23\cdot3=1$ certifies the first inverse.
+Thus $x=2\cdot70+3\cdot21+2\cdot15=233\congr23\pmod{105}$.
+Finally, $23$ has remainders $2,3,2$, as required. Every solution is
+$23+105k$ for an integer $k$.
+\end{example}
 
 \begin{center}
 \begin{tikzpicture}[node distance=8mm]
@@ -78,6 +206,25 @@ has every prescribed remainder: modulo $n_i$, its $i$th term is $a_i$ and every 
 \node[below=12mm of z15,muted] {One clock of size $15$ is equivalent to two independent clocks.};
 \end{tikzpicture}
 \end{center}
+
+The map from one clock to its component clocks preserves addition and
+multiplication, since reduction does. CRT says it is also a bijection.
+For example, the selectors modulo $15$ are $10$ and $6$, giving
+$x\congr10a+6b\pmod{15}$ for remainders $a$ modulo $3$ and $b$ modulo $5$.
+
+\begin{proposition}[When two clocks share a factor]
+The conditions $x\congr a\pmod m$, $x\congr b\pmod n$ are compatible
+exactly when $a\congr b\pmod{\gcd(m,n)}$. If compatible, the solution is
+unique modulo $\operatorname{lcm}(m,n)$.
+\end{proposition}
+\begin{proof}
+Write $x=a+mt$. The remaining condition is $mt\congr b-a\pmod n$,
+so the linear-congruence construction supplies a solution exactly when
+$\gcd(m,n)\divides b-a$. Differences between two solutions are precisely
+the common multiples of $m$ and $n$.
+\end{proof}
+
+\input{chapters/modular_interpolation}
 
 \section{Fast powers and patterns}
 
@@ -91,6 +238,8 @@ then use the binary expansion $222=128+64+16+8+4+2$. Later, Fermat's theorem wil
 Make a multiplication table modulo $n$ and highlight the rows that are permutations of all residues. Conjecture which row labels have inverses. Then compare with the gcd criterion.
 \end{labbox}
 
+\input{chapters/modular_fibonacci}
+
 \begin{exercisebox}
 \begin{enumerate}
   \item Find the inverse of $37$ modulo $101$ using extended Euclid. \exlevel{Fluency}
@@ -100,5 +249,42 @@ Make a multiplication table modulo $n$ and highlight the rows that are permutati
   \item Solve $x\congr2\pmod7$, $x\congr3\pmod8$, $x\congr4\pmod9$ by the constructive CRT proof. \exlevel{Reasoning}
   \item Determine every possible last two digits of a square. Explain how CRT can split the work into moduli $4$ and $25$. \exlevel{Exploration}
   \item Prove that $x^2\congr1\pmod p$ has only the solutions $x\congr\pm1$ when $p$ is prime. Find a composite modulus where there are more than two solutions. \exlevel{Challenge}
+  \item Run the forward extended-gcd table for $83$ and $29$, recording
+  $r=83s+29t$ in every row. Find $29^{-1}\pmod{83}$ and check it by
+  multiplication. \exlevel{Fluency}
+  \item Solve $18x\congr24\pmod{42}$ using a B\'ezout certificate and
+  list all residues modulo $42$. Explain why $18x\congr25\pmod{42}$
+  has no solution. \exlevel{Fluency}
+  \item For the CRT selectors, prove $e_i^2\congr e_i$,
+  $e_ie_j\congr0$ when $i\ne j$, and $\sum_i e_i\congr1\pmod N$.
+  Explain how these identities recover componentwise arithmetic.
+  \exlevel{Reasoning}
+  \item Solve $x\congr2\pmod6$, $x\congr5\pmod9$. Give the modulus
+  of uniqueness. Why is $x\congr1\pmod6$, $x\congr2\pmod9$
+  incompatible? \exlevel{Reasoning}
+  \item Construct the polynomial of degree at most $2$ over $\Q$ with
+  $f(-1)=2$, $f(0)=1$, $f(2)=3$ using Lagrange selectors.
+  State all polynomials with these values. \exlevel{Fluency}
+  \item Work in $\F_7$. Use Lagrange interpolation to find the
+  polynomial of degree at most $2$ with $f(0)=1$, $f(1)=4$, $f(3)=2$.
+  Certify each denominator inverse by an integer B\'ezout identity.
+  \exlevel{Reasoning}
+  \item Prove that no polynomial over $\Z/8\Z$ can satisfy
+  $f(0)=0$, $f(2)=1$. Which hypothesis of the interpolation theorem
+  fails? \exlevel{Reasoning}
+  \item List the Fibonacci pair orbits modulo $2$ and $3$. Why is the
+  first positive zero of $F_n\pmod3$ not the period? \exlevel{Fluency}
+  \item Use CRT and $\pi(2)=3$, $\pi(3)=8$, $\pi(5)=20$ to find
+  $\pi(6)$ and $\pi(15)$. Explain why the least common multiple,
+  rather than the product, is the appropriate operation.
+  \exlevel{Reasoning}
+  \item Iterate $(a,b)\mapsto(b,2a+b)$ modulo $2$, starting at $(1,0)$.
+  Show that the orbit has an initial segment before it repeats.
+  Locate the failure of the Fibonacci reversibility proof.
+  \exlevel{Reasoning}
+  \item List the squares modulo $7$ and show that $X^2-X-1$ has no
+  root in $\F_7$. Explain why the real Binet formula cannot simply
+  be reduced modulo $7$ without first enlarging the arithmetic system.
+  \exlevel{Bridge}
 \end{enumerate}
 \end{exercisebox}
