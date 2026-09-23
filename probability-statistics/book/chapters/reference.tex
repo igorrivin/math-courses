@@ -73,6 +73,21 @@ average has mean $m$ and variance $v/r$.
 For the correct-hat count, the mean is one for $n\ge1$ and the variance
 is one for $n\ge2$ (zero for $n=1$).
 
+\section*{Coupon collection}
+For independent uniform draws from $n\ge1$ types, let $T_n$ be the
+number of draws to see them all. With $H_n=\sum_{j=1}^n1/j$,
+\[
+ \E[T_n]=nH_n,\qquad
+ \Var(T_n)=n^2\sum_{j=1}^n\frac1{j^2}-nH_n.
+\]
+For integers $m\ge1$, the number $M_m$ of missing types has mean
+$n(1-1/n)^m$, and $\P(T_n>m)\le\min\{1,ne^{-m/n}\}$.
+For an independent $K\sim\Pois(t)$, $t>0$, instead
+$M_K\sim\Bin(n,e^{-t/n})$ and
+$\P(T_n\le K)=(1-e^{-t/n})^n$.
+This product uses a random number of draws; see
+Section~\ref{sec:coupon-collector} for the fixed-draw formula.
+
 \section*{Calculus used in the course}
 \begin{align*}
  \int_a^b f(x)\,dx&=G(b)-G(a)\quad(G'=f),\\
@@ -103,6 +118,7 @@ worked integrations, and quantitative error estimates.
 \rho_{X,Y}&=\Cov(X,Y)/(\sigma_X\sigma_Y).
 \end{align*}
 
+\needspace{20\baselineskip}
 \section*{Common distributions}
 The hypergeometric row uses $N\ge2$ population objects, $K$ marked,
 $m$ sampled without replacement, and $p=K/N$.

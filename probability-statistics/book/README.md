@@ -43,8 +43,13 @@ densities, and moment-generating functions are separated as later material.
 Chapter 5 develops the next distribution examples from their experiments:
 discrete uniform, Bernoulli, binomial, and hypergeometric, with derivations of
 probabilities, means, and variances. Geometric and Poisson laws follow as
-countably infinite models; continuous families are marked for later.
-Its ten discrete and three continuous exercises have worked solutions.
+countably infinite models. The coupon collector connects their ideas:
+independent geometric stages give the mean `n H_n` and variance, while
+missing-type indicators, a tail bound, and inclusion-exclusion answer
+deadline questions. An optional discrete Poissonization argument derives
+independent coupon counts by randomizing the number of draws. Continuous
+families are marked for later. Its fourteen discrete and three continuous
+exercises have worked solutions.
 
 Appendix A, `chapters/calculus_refresher.tex`, is a substantial review of
 algebra and finite sums, limits, derivatives, likelihood optimization,

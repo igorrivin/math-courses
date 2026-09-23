@@ -25,7 +25,10 @@ derangement arguments, and random variables with concrete threshold events.
 The `#expectation` reading link leads to finite weighted averages, linearity,
 indicators, variance, independent sums, and 18 discrete exercises with worked
 answers. The `#distributions` link continues with uniform, Bernoulli, binomial,
-and hypergeometric examples; geometric and Poisson laws follow. Continuous
+and hypergeometric examples; geometric and Poisson laws follow. The
+`#coupon-collector` reading link leads to geometric stages, harmonic numbers,
+the expected collection time and its variance, completion deadlines, and a discrete
+Poissonization bonus. Four new exercises have worked solutions. Continuous
 models and their exercises are marked as later reading in the book.
 
 Appendix A is a calculus refresher with worked examples and 18 exercises

@@ -143,7 +143,7 @@ the later continuous section.
 \end{enumerate}
 
 \section*{Chapter 5}
-Exercises 1--10 concern discrete families; Exercises 11--13 use
+Exercises 1--14 concern discrete families and coupon collection; Exercises 15--17 use
 continuous distributions.
 \begin{enumerate}
  \item The complement gives
@@ -193,6 +193,34 @@ continuous distributions.
  $(21/25)(16/19)=336/475$.
  The draws have the same marginal marked probability; without
  replacement, their dependence reduces the variance.
+ \item Decompose the collection time into independent geometric stages
+ with success probabilities $1,5/6,4/6,3/6,2/6,1/6$.
+ The mean is $6H_6=147/10=14.7$ and the variance is
+ $36\sum_{j=1}^6j^{-2}-6H_6=3899/100=38.99$.
+ When two faces remain, the expected further wait is $6/2+6/1=9$ rolls.
+ \item Stop the stage sum after $W_{r-1}$:
+ \[
+  \E[T_{n,r}]=\sum_{k=0}^{r-1}\frac{n}{n-k}
+   =n(H_n-H_{n-r}).
+ \]
+ The remaining stages have expected total $nH_{n-r}$, even conditional
+ on the particular history up to seeing $r$ types. For $r=n$ this is
+ zero, using $H_0=0$.
+ \item Require $100e^{-m/100}\le.05$, or
+ $m\ge100\log2000\approx760.09025$.
+ Thus 761 draws suffice. The mean $100H_{100}\approx518.74$ describes
+ an average collection time; it does not specify a $95\%$ completion
+ deadline. The exponential bound is sufficient and may be conservative.
+ \item With a Poisson total, the six face counts are independent
+ Poisson variables of mean two. Each is zero with probability $e^{-2}$,
+ so the unseen-face count is $\Bin(6,e^{-2})$, with mean $6e^{-2}$.
+ The completion probability is $(1-e^{-2})^6\approx.41791$.
+ For exactly 12 rolls, inclusion--exclusion instead gives
+ \[
+  \sum_{j=0}^6(-1)^j\binom6j(1-j/6)^{12}\approx.43782.
+ \]
+ Those face counts are dependent because they sum to 12. Randomizing
+ the total changes the experiment and its completion probability.
  \item The median solves $e^{-\lambda m}=1/2$, giving
  $m=(\log2)/\lambda$.
  \item The standard deviation is three, so standardization gives
