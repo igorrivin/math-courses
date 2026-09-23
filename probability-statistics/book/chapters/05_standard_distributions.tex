@@ -1,36 +1,293 @@
 \chapter{A library of chance mechanisms}
-\chaptertag{Standard discrete and continuous distributions}
+\label{ch:standard-distributions}
+\chaptertag{Discrete distributions first; continuous models later}
 
 \begin{question}
 Which probability laws recur because the same mechanisms recur?
 \end{question}
 
-\section{Discrete families}
+For a discrete variable, its distribution lists the possible values and
+their probabilities.
+The coin counts, dice, and hat counts of Chapter 4 already have
+distributions. A \emph{named family} collects experiments whose probability
+tables have the same form. Learn the experiment before memorizing the name.
 
-\begin{center}\small
-\begin{tabularx}{\textwidth}{lXll}
-\toprule
-Law & Mechanism and mass function & Mean & Variance \\
-\midrule
-Bernoulli$(p)$ & one success indicator; $p^x(1-p)^{1-x}$ & $p$ & $p(1-p)$ \\
-Binomial$(n,p)$ & successes in $n$ independent trials; $\binom nkp^k(1-p)^{n-k}$ & $np$ & $np(1-p)$ \\
-Geometric$(p)$ & trials through first success; $(1-p)^{k-1}p$ & $1/p$ & $(1-p)/p^2$ \\
-Poisson$(\lambda)$ & rare-event count; $e^{-\lambda}\lambda^k/k!$ & $\lambda$ & $\lambda$ \\
-\bottomrule
-\end{tabularx}
-\end{center}
+\begin{bigidea}[title={A route through the next topics}]
+Start with finite distributions: a uniform choice, one success indicator,
+a count of independent successes, and sampling without replacement.
+For each, identify the possible values, calculate their probabilities,
+then find the mean and variance.
+Geometric waiting times and Poisson counts come next as countably infinite
+examples. The continuous section is for later, after the calculus refresher.
+\end{bigidea}
 
-The geometric law is memoryless:
+\section{A uniform choice from a finite list}
+\label{sec:discrete-families}
+
+Choose one of $1,\ldots,m$ uniformly, where $m\ge1$. Then
+$\P(U=k)=1/m$ for $k=1,\ldots,m$, and zero for other values.
+The usual sum and sum-of-squares identities give
 \[
-\P(X>s+t\mid X>s)=\P(X>t).
+ \E[U]=\frac{m+1}{2},\qquad
+ \E[U^2]=\frac{(m+1)(2m+1)}6,\qquad
+ \Var(U)=\frac{m^2-1}{12}.
 \]
-The Poisson law arises as a limit of $\Bin(n,p)$ when $n$ is large, $p$ is small, and $np\approx\lambda$.
+For example, choosing a label uniformly from $1,\ldots,8$ gives
+mean $9/2$ and variance $21/4$.
+The case $m=1$ is constant, with variance zero.
 
-\section{Continuous families}
+A uniform distribution on any finite set $\{u_1,\ldots,u_m\}$ averages
+those values with weights $1/m$. The formulas above are specifically for
+the consecutive integers $1,\ldots,m$.
+Uniform outcomes also need not produce uniform recorded values:
+the sum of two fair dice is not uniform on $2,\ldots,12$.
 
-Uniform$(a,b)$ assigns constant density $1/(b-a)$ to an interval. Exponential$(\lambda)$ has density $\lambda e^{-\lambda x}$ on $x\ge0$ and is the continuous memoryless law.
+\section{Bernoulli: one event, recorded as zero or one}
+\label{sec:bernoulli}
 
-The normal density with mean $\mu$ and variance $\sigma^2$ is
+If an event has probability $p$, its indicator $I$ has distribution
+\[
+ \P(I=1)=p,\qquad \P(I=0)=1-p,\qquad 0\le p\le1.
+\]
+We call this the \emph{Bernoulli distribution} with parameter $p$.
+There are only two values, so directly
+\[
+ \E[I]=p,\qquad \E[I^2]=p,\qquad \Var(I)=p(1-p).
+\]
+The parameter $p$ is a probability, the value of $I$ is zero or one,
+and its expectation can lie between these values.
+At $p=0$ or $1$ the result is certain and the variance vanishes.
+
+\begin{example}
+Let $I$ record whether a fair die shows a six. Then $p=1/6$,
+$\E[I]=1/6$, and $\Var(I)=5/36$.
+A success may mean a correct answer, a defective item, or a birthday
+match for a specified pair; a \emph{success} need not mean something desirable.
+\end{example}
+
+\section{Binomial: count successes in a fixed number of trials}
+\label{sec:binomial}
+
+Perform $n$ independent trials, each with success probability $p$,
+and let $X$ count the successes. For $0<p<1$ and $k=0,\ldots,n$,
+\[
+ \P(X=k)=\binom nkp^k(1-p)^{n-k}.
+\]
+A specified success/failure string has probability $p^k(1-p)^{n-k}$;
+choose its $k$ success positions in $\binom nk$ ways.
+The binomial theorem verifies that the masses sum to one.
+We write $X\sim\Bin(n,p)$.
+If $p=0$, $X=0$; if $p=1$, $X=n$; if $n=0$, $X=0$.
+
+Write $X=I_1+\cdots+I_n$. Linearity and the independent-variance rule give
+\[
+ \E[X]=np,\qquad \Var(X)=np(1-p).
+\]
+This calculation avoids summing $k^2$ against the binomial probabilities.
+
+\begin{example}[Five trials]
+For $X\sim\Bin(5,1/3)$,
+\[
+ \P(X=3)=\binom53(1/3)^3(2/3)^2=\frac{40}{243},
+ \qquad \E[X]=\frac53,\qquad \Var(X)=\frac{10}{9}.
+\]
+For a threshold it can be easier to use a complement:
+$\P(X\ge2)=1-\P(X=0)-\P(X=1)$.
+\end{example}
+
+\begin{warningbox}
+A count is binomial only when its experiment satisfies the assumptions:
+a fixed number of trials, two outcomes per trial, a common success
+probability, and independence.
+Recording the same toss ten times gives a count of either zero or ten,
+not a binomial count of ten independent tosses.
+Sampling from a finite population without replacement also requires
+a different model.
+\end{warningbox}
+
+\section{Hypergeometric: sample without replacement}
+\label{sec:hypergeometric}
+
+A population contains $K$ marked objects among $N$ distinct objects.
+Choose a subset of $m$ objects uniformly, and let $X$ count marked objects
+in the sample. There are $\binom Nm$ equally likely samples.
+To obtain exactly $k$ marked objects, choose those $k$ from the marked
+group and the other $m-k$ from the unmarked group:
+\[
+ \P(X=k)=\frac{\binom Kk\binom{N-K}{m-k}}{\binom Nm}.
+\]
+Here $N\ge1$, $0\le K,m\le N$, and the possible values satisfy
+$\max(0,m-(N-K))\le k\le\min(m,K)$.
+The formula is normalized because these disjoint cases partition all
+$m$-element samples. This is the \emph{hypergeometric distribution}.
+
+\begin{example}[Two draws from five balls]
+An urn contains three red and two blue balls. For a uniform sample of
+two balls without replacement, the number $X$ of red balls has table
+\[
+\begin{array}{c|ccc}
+k&0&1&2\\\hline
+\P(X=k)&1/10&6/10&3/10
+\end{array}
+\]
+Thus $\E[X]=6/5$, $\E[X^2]=9/5$, and $\Var(X)=9/25$.
+With replacement the count would instead be $\Bin(2,3/5)$, with the
+same mean but variance $12/25$.
+\end{example}
+
+For the general moments, regard the sample as the first $m$ positions
+in a uniform random ordering of the population.
+Put $p=K/N$ and let $I_j$ indicate a marked object in position $j$.
+Every position has marked probability $p$, so $\E[X]=mp$.
+For $N\ge2$ and $i\ne j$,
+\[
+ \E[I_iI_j]=\frac{K(K-1)}{N(N-1)},\qquad
+ \E[I_iI_j]-p^2=-\frac{p(1-p)}{N-1}.
+\]
+The variance-of-a-sum expansion from Chapter 4 gives
+\[
+ \Var(X)=mp(1-p)-m(m-1)\frac{p(1-p)}{N-1}
+        =mp(1-p)\frac{N-m}{N-1}.
+\]
+For $1\le m\le N$, the last factor is at most one: sampling without
+replacement has no more variance than the corresponding binomial count.
+When $m=N$, the count is the fixed number $K$, so its variance is zero.
+For a one-object population the count is constant as well.
+
+\section{For later: geometric waiting times}
+\label{sec:geometric}
+
+Now allow a countably infinite list of possible values.
+In independent trials with fixed success probability $0<p\le1$,
+let $T$ count trials up to and including the first success. Then
+\[
+ \P(T=k)=(1-p)^{k-1}p,\qquad k=1,2,\ldots.
+\]
+For $0<p<1$, the first $k-1$ trials must fail and the $k$th succeed.
+The geometric series sums the masses to one.
+For $p=1$, $T=1$ with certainty. If $p=0$, there is no finite waiting
+time to a success, so it is excluded from this distribution.
+
+The event $T>r$ means $r$ initial failures, hence
+$\P(T>r)=(1-p)^r$ for nonnegative integers $r$.
+For $r=0$ the probability is one, including at $p=1$.
+For $0<p<1$ and integers $s,t\ge0$,
+\[
+ \P(T>s+t\mid T>s)
+ =\frac{(1-p)^{s+t}}{(1-p)^s}
+ =(1-p)^t=\P(T>t).
+\]
+This is \emph{memorylessness}: after any number of failures, the
+distribution of the additional wait is unchanged.
+For $p=1$, only conditioning events of positive probability can be used.
+
+\subsection*{Mean and variance from tail sums}
+A positive integer $T$ satisfies
+$T=\sum_{j\ge1}\ind_{\{T\ge j\}}$ and
+$T^2=\sum_{j\ge1}(2j-1)\ind_{\{T\ge j\}}$.
+First truncate these nonnegative sums; letting the truncation grow gives
+\[
+ \E[T]=\sum_{j\ge1}\P(T\ge j)=\sum_{j\ge1}(1-p)^{j-1}=\frac1p.
+\]
+The geometric-series calculation
+$\sum_{j\ge1}j r^{j-1}=1/(1-r)^2$, reviewed in
+Section~\ref{sec:calc-series}, similarly gives
+\[
+ \E[T^2]=\frac2{p^2}-\frac1p=\frac{2-p}{p^2},
+ \qquad \Var(T)=\frac{1-p}{p^2}.
+\]
+These sums converge for $p>0$; at $p=1$ the values follow directly.
+Waiting for a six on independent fair rolls gives mean $6$,
+variance $30$, and $\P(T>5)=(5/6)^5$.
+
+\begin{warningbox}
+Some books count \emph{failures before} the first success.
+That variable is $T-1$, supported on $0,1,\ldots$, with mean
+$(1-p)/p$ and the same variance. State which convention you use.
+\end{warningbox}
+
+\section{For later: Poisson counts}
+\label{sec:poisson}
+
+For $\lambda>0$, the \emph{Poisson distribution} assigns
+\[
+ \P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!},
+ \qquad k=0,1,2,\ldots.
+\]
+The exponential series makes the total mass
+$e^{-\lambda}\sum_{k\ge0}\lambda^k/k!=1$.
+The limiting case $\lambda=0$ places all mass at zero.
+Shifting indices in absolutely convergent sums gives
+\[
+ \E[X]=e^{-\lambda}\lambda\sum_{j\ge0}\frac{\lambda^j}{j!}
+ =\lambda,\qquad
+ \E[X(X-1)]=\lambda^2.
+\]
+Consequently $\E[X^2]=\lambda^2+\lambda$ and $\Var(X)=\lambda$.
+Factorial moments make this calculation short, just as they did for hats.
+
+The law arises from many independent rare opportunities. For fixed
+$\lambda>0$ and fixed integer $k\ge0$,
+\[
+ \binom nk(\lambda/n)^k(1-\lambda/n)^{n-k}
+ \longrightarrow e^{-\lambda}\frac{\lambda^k}{k!}.
+\]
+Indeed, $(n)_k/n^k\to1$ and $(1-\lambda/n)^n\to e^{-\lambda}$.
+This explains a Poisson approximation to $\Bin(n,p)$ when $p$ is small
+and $np$ is near $\lambda$; it does not make every count Poisson.
+In particular, the model's equality of mean and variance is a consequence
+to check, not a rule for all counts.
+
+For $X$ Poisson with mean $3$, $\P(X\ge2)=1-4e^{-3}$.
+The number of fixed points of a large uniform permutation approaches
+Poisson with mean one, as derived in
+Section~\ref{sec:calc-derangements}.
+For a finite permutation this is an approximation; the exact law is
+$\P(N=k)=\binom nkD_{n-k}/n!$.
+
+\section{Practice: choose and use a discrete model}
+\label{sec:discrete-distribution-exercises}
+
+\begin{exercisebox}
+\begin{enumerate}
+ \item For $X\sim\Bin(5,.3)$, find $\P(X\ge2)$, its mean, and variance.
+ \exlevel{Fluency}
+ \item Prove the geometric memoryless property, stating the allowed
+ values and the condition that the conditioning event has positive
+ probability. \exlevel{Reasoning}
+ \item Approximate $\Bin(1000,.002)$ by a Poisson law and compare
+ the exact and approximate $\P(X=0)$. \exlevel{Exploration}
+ \item Choose a label uniformly from $1,\ldots,8$. Find its mean,
+ variance, and probability of exceeding its mean. \exlevel{Fluency}
+ \item An event has probability $.2$. Find the mean and variance
+ of its indicator. Compare counting successes in ten independent
+ repetitions with recording one indicator ten times. \exlevel{Reasoning}
+ \item Draw two balls without replacement from three red and two blue
+ balls. Derive the complete red-count distribution, mean, and variance.
+ Repeat with replacement. \exlevel{Fluency}
+ \item For each discrete family, describe one experiment that fits
+ and one that violates a stated modeling assumption. \exlevel{Exploration}
+ \item Roll a fair die independently until the first six. Find the
+ mean and variance of the number of rolls and the probability it exceeds
+ five. What is the mean number of failures? \exlevel{Fluency}
+ \item For a Poisson variable of mean three, find $\P(X\ge2)$ and
+ $\E[X(X-1)]$. Recover its variance. \exlevel{Fluency}
+ \item A population has six marked objects among twenty. Take four
+ draws. Compare the count's mean and variance with and without replacement.
+ State why the probability models differ. \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}
+
+\section{For later: continuous families}
+\label{sec:continuous-families}
+
+This section uses densities and integrals from
+Section~\ref{sec:rv-continuous} and Appendix~\ref{app:calculus}.
+It can be left until after the discrete expectation and variance material.
+
+For $a<b$, Uniform$(a,b)$ assigns constant density $1/(b-a)$ to an interval. For $\lambda>0$, Exponential$(\lambda)$ has density $\lambda e^{-\lambda x}$ on $x\ge0$ and is the continuous memoryless law.
+
+The normal density with mean $\mu$ and variance $\sigma^2>0$ is
 \[
 f(x)=\frac1{\sigma\sqrt{2\pi}}
 \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right).
@@ -51,20 +308,22 @@ Z=\frac{X-\mu}{\sigma}\sim\Normal(0,1).
 \end{tikzpicture}
 \end{center}
 
-The beta family on $[0,1]$ has density proportional to $x^{\alpha-1}(1-x)^{\beta-1}$. It is useful for proportions and becomes a natural prior for a Bernoulli probability.
+For $\alpha,\beta>0$, the beta family on $[0,1]$ has density proportional to $x^{\alpha-1}(1-x)^{\beta-1}$. It is useful for proportions and becomes a natural prior for a Bernoulli probability.
 
 \section{Choose by mechanism, not by silhouette}
 
-A bell-shaped histogram does not prove normality. Ask what generated the observations, what values are possible, whether trials are independent, whether rates are stable, and what approximation error is acceptable.
+A bell-shaped histogram does not prove normality. Ask what generated the
+observations, what values are possible, whether trials are independent,
+whether rates are stable, and what approximation error is acceptable.
+A named distribution is useful because its assumptions describe an
+experiment and its formulas then answer questions about that experiment.
 
-\begin{exercisebox}
-\begin{enumerate}
-  \item Compute $\P(X\ge2)$ for $X\sim\Bin(5,.3)$. \exlevel{Fluency}
-  \item Prove the geometric memoryless property. \exlevel{Reasoning}
-  \item Approximate $\Bin(1000,.002)$ by a Poisson law and compare $\P(X=0)$. \exlevel{Exploration}
-  \item Find the median of an exponential distribution. \exlevel{Fluency}
-  \item If $X\sim\Normal(10,9)$, express $\P(8<X<13)$ using the standard normal CDF. \exlevel{Fluency}
-  \item Derive the mean and variance of Uniform$(a,b)$. \exlevel{Reasoning}
-  \item For each family in the chapter, invent one plausible and one implausible real-world use. \exlevel{Exploration}
+\begin{exercisebox}[title={Later practice: continuous families}]
+\begin{enumerate}[start=11]
+ \item Find the median of an exponential distribution. \exlevel{Fluency}
+ \item If $X\sim\Normal(10,9)$, express $\P(8<X<13)$ using the
+ standard normal CDF. \exlevel{Fluency}
+ \item Derive the mean and variance of Uniform$(a,b)$ for $a<b$.
+ \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}

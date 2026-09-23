@@ -1,10 +1,20 @@
 \chapter{Numbers attached to outcomes}
 \label{ch:random-variables}
-\chaptertag{Random variables, events, distributions, and averages}
+\chaptertag{Discrete random variables, expectation, and variance}
 
 \begin{question}
 How can a numerical record of an experiment answer a probability question?
 \end{question}
+
+\begin{bigidea}[title={The next step: averages on discrete spaces}]
+Begin with the finite experiments already studied: coins, dice, hats, and
+birthdays. Probability tables lead to expectation, linearity, and variance
+using sums and algebra. Work through
+Sections~\ref{sec:discrete-expectation}--\ref{sec:discrete-bounds} and the
+18 discrete exercises before moving to the named distributions in Chapter 5.
+The two sections marked ``For later'' extend the ideas to infinite lists
+and continuous models.
+\end{bigidea}
 
 \section{A rule for recording a number}
 
@@ -149,7 +159,380 @@ The distinction matters when $X$ can equal $a$ with positive probability.
 In the toss example, $\P(X>2)=1/8$ but $\P(X\ge2)=1/2$.
 \end{warningbox}
 
-\section{Continuous variables: probability is area}
+\section{Expectation is a weighted average}
+\label{sec:discrete-expectation}
+
+Suppose the experiment has a finite sample space, with outcome weights
+$w_\omega=\P(\{\omega\})$. The \emph{expectation}, or \emph{mean}, of $X$ is
+\[
+ \E[X]=\sum_{\omega\in\Omega}X(\omega)w_\omega.
+\]
+Multiply each recorded value by the probability of its outcome, then add.
+If the $N$ outcomes are equally likely, this becomes the ordinary average
+$\frac1N\sum_\omega X(\omega)$. Otherwise the weights matter.
+
+We can do the same calculation from the distribution:
+\[
+ \boxed{\quad \E[X]=\sum_x x\,p_X(x).\quad}
+\]
+Here the sum runs over the distinct values of $X$. To prove the equality,
+group outcomes with the same recorded value $x$. Their contribution is
+$x\sum_{\omega:X(\omega)=x}w_\omega=x\,p_X(x)$.
+
+\begin{example}[A mean need not be a possible result]
+A fair die $U$ has mean $(1+2+\cdots+6)/6=7/2$.
+The number of heads in three independent fair tosses has mean
+$0(1/8)+1(3/8)+2(3/8)+3(1/8)=3/2$.
+Neither $3.5$ on a die nor $1.5$ heads is an outcome of one experiment.
+Expectation is a balance point, not a prediction of the next individual result.
+\end{example}
+
+\begin{example}[A game with unequal weights]
+Roll a fair die. The net payoff $X$ is $-2$ on faces $1,2,3$,
+$1$ on faces $4,5$, and $4$ on face $6$. Its distribution and two
+useful weighted columns are
+\[
+\begin{array}{c|ccc|c}
+x&-2&1&4&\text{sum}\\\hline
+p_X(x)&1/2&1/3&1/6&1\\
+x\,p_X(x)&-1&1/3&2/3&0\\
+x^2p_X(x)&2&1/3&8/3&5
+\end{array}
+\]
+Thus $\E[X]=0$. Averaging the three possible payoffs equally would give
+$1$, which is wrong: the three values do not have equal probabilities.
+The game is \emph{fair in expectation}. It still loses money half the time.
+The last row will measure its variability.
+\end{example}
+
+With many independent repetitions, averages tend to settle near the mean;
+Chapter 7 will state the hypotheses and prove a law of large numbers.
+The definition of expectation itself is the weighted sum above.
+It does not require running a simulation or assuming that a short run
+will resemble the average.
+
+\section{Functions and sums of random variables}
+\label{sec:discrete-linearity}
+
+If $Y=g(X)$, apply $g$ to the value actually observed. The event
+$\{Y\ge a\}$ is $\{\omega:g(X(\omega))\ge a\}$.
+Several values of $X$ may give the same value of $Y$; their probabilities
+must be combined when finding the distribution of $Y$.
+
+\begin{theorem}[Expectation of a function, often called LOTUS]
+On a finite probability space,
+\[
+ \E[g(X)]=\sum_x g(x)p_X(x).
+\]
+\end{theorem}
+\begin{proof}
+Group the original outcome sum by $X(\omega)=x$. Within each group,
+$g(X(\omega))$ has the constant value $g(x)$.
+\end{proof}
+In particular, $\E[X^2]=\sum_x x^2p_X(x)$: square the values, leaving
+their probabilities unchanged. There is no need to compute the
+distribution of $X^2$ first.
+
+\begin{theorem}[Linearity]
+For random variables on the same finite probability space and constants $a,b$,
+\[
+ \E[aX+bY]=a\E[X]+b\E[Y].
+\]
+More generally, the expectation of a finite sum is the sum of its expectations.
+Independence is not required.
+\end{theorem}
+\begin{proof}
+Expand the defining sum:
+\[
+ \sum_{\omega\in\Omega}
+ (aX(\omega)+bY(\omega))w_\omega
+ =a\sum_\omega X(\omega)w_\omega+
+ b\sum_\omega Y(\omega)w_\omega.
+\]
+\end{proof}
+
+\begin{example}[Two dice, and one die recorded twice]
+For two fair dice $U,V$, $\E[U+V]=7$ and $\E[U-V]=0$.
+These statements hold whenever each die is marginally fair, even if the
+dice are dependent. If the second record is the first die again,
+$V=U$, linearity still gives $\E[U+V]=7$.
+Independence will matter when we ask about the spread of that sum.
+\end{example}
+
+\begin{warningbox}
+Linearity applies to sums and constant multiples. In general,
+$\E[g(X)]\ne g(\E[X])$. In the payoff example,
+$\E[X^2]=5$ but $(\E[X])^2=0$.
+Likewise $\E[XY]=\E[X]\E[Y]$ requires an additional justification;
+putting $Y=X$ already supplies a counterexample.
+\end{warningbox}
+
+\section{Variance measures spread around the mean}
+\label{sec:discrete-variance}
+
+Write $m=\E[X]$. The signed deviations cancel:
+$\E[X-m]=0$. To measure spread, square before averaging.
+
+\begin{definition}
+The \emph{variance} and \emph{standard deviation} are
+\[
+ \Var(X)=\E[(X-m)^2]=\sum_x(x-m)^2p_X(x),
+ \qquad \sigma_X=\sqrt{\Var(X)}.
+\]
+\end{definition}
+Variance is nonnegative. It is zero exactly when $X=m$ on every outcome
+with positive probability. The standard deviation has the same units as
+$X$; variance has squared units. In the game above, variance is $5$
+and standard deviation is $\sqrt5$, in payoff units.
+
+\begin{proposition}[A useful computation formula]
+\[
+ \Var(X)=\E[X^2]-(\E[X])^2.
+\]
+\end{proposition}
+\begin{proof}
+Expand $(X-m)^2=X^2-2mX+m^2$ and use linearity:
+$\E[(X-m)^2]=\E[X^2]-2m^2+m^2$.
+\end{proof}
+The square of an average and the average of squares are different.
+The formula also proves $(\E[X])^2\le\E[X^2]$.
+
+\begin{example}[Compute both moments before subtracting]
+For a fair die,
+\[
+ \E[U]=\frac72,\qquad
+ \E[U^2]=\frac{1+4+9+16+25+36}{6}=\frac{91}{6},
+ \qquad
+ \Var(U)=\frac{91}{6}-\frac{49}{4}=\frac{35}{12}.
+\]
+For the three-toss head count, $\E[X]=3/2$ and
+$\E[X^2]=(3+12+9)/8=3$, so $\Var(X)=3/4$.
+\end{example}
+
+\begin{checkpoint}[title={A reliable calculation}]
+List distinct values and their probabilities; check the probabilities
+sum to one. Compute $\sum_x xp_X(x)$ and $\sum_x x^2p_X(x)$.
+Subtract the \emph{square} of the first total from the second total.
+A negative result signals a calculation error.
+These are properties of a specified probability model; no sample-variance
+denominator such as $n-1$ appears here.
+\end{checkpoint}
+
+\begin{proposition}[Shifts and changes of scale]
+For constants $a,b$,
+\[
+ \E[aX+b]=a\E[X]+b,\qquad
+ \Var(aX+b)=a^2\Var(X),\qquad
+ \sigma_{aX+b}=|a|\sigma_X.
+\]
+\end{proposition}
+The new mean is $am+b$, so the deviation from it is $a(X-m)$.
+Adding a constant shifts all values and their mean together.
+For example, charging a fixed fee changes a game's expected net return
+but does not change its variance.
+
+Mean alone does not determine variability. A constant payoff of zero
+and the game with payoffs $-2,1,4$ both have mean zero, but their variances
+are zero and five. Even mean and variance together do not determine the
+whole distribution; Exercise 7 asks for an example.
+
+\section{Indicators connect counting to averages}
+\label{sec:discrete-indicators}
+
+For an event $A$, its \emph{indicator} $\ind_A$ is $1$ when $A$ occurs
+and $0$ otherwise. If $p=\P(A)$, then
+\[
+ \E[\ind_A]=p,\qquad
+ \E[\ind_A^2]=p,\qquad
+ \Var(\ind_A)=p(1-p).
+\]
+The second equality follows because squaring zero or one changes nothing.
+Chapter 5 gives this two-value distribution the name \emph{Bernoulli}.
+
+If $N=\sum_{i=1}^r\ind_{A_i}$ counts how many events occur, linearity gives
+\[
+ \boxed{\quad \E[N]=\sum_{i=1}^r\P(A_i).\quad}
+\]
+The events can overlap and can be dependent. A useful strategy is to
+find the mean of a count before attempting its full distribution.
+
+\begin{example}[The expected number of correct hats]
+For a uniform permutation of $n\ge1$ hats, let $I_i$ indicate that
+person $i$ gets the right hat. Then $N=\sum_{i=1}^n I_i$ and
+$\E[N]=n(1/n)=1$. No derangement sum is needed.
+This does not mean every assignment has one fixed point:
+$\P(N=0)=D_n/n!$ approaches $1/e$.
+\end{example}
+
+\begin{example}[Matching birthday pairs]
+Let $I_{ij}$ indicate a match between people $i$ and $j$.
+The number of matching pairs is $C=\sum_{i<j}I_{ij}$, so
+$\E[C]=\binom n2/d$ in the independent uniform $d$-day model.
+With $n=23,d=365$, the mean is $253/365\approx.69315$, while
+$\P(C\ge1)\approx.50730$.
+Several matching pairs may occur together; an expected count and the
+probability of at least one occurrence answer different questions.
+\end{example}
+
+\section{When variances of sums add}
+\label{sec:variance-sums}
+
+For finite-valued variables, independence means
+$\P(X=x,Y=y)=p_X(x)p_Y(y)$ for all possible $x,y$.
+Under that hypothesis,
+\[
+ \E[XY]=\sum_{x,y}xy\,p_X(x)p_Y(y)
+ =\left(\sum_x xp_X(x)\right)\left(\sum_y yp_Y(y)\right).
+\]
+Thus $\E[XY]=\E[X]\E[Y]$. This is a consequence of independence,
+unlike linearity.
+
+Put $m_X=\E[X]$ and $m_Y=\E[Y]$. Expanding the centered square gives
+\[
+ \Var(X+Y)=\Var(X)+\Var(Y)
+       +2\E[(X-m_X)(Y-m_Y)].
+\]
+The last expectation is called the \emph{covariance}; Chapter 6 studies
+it systematically. For independent variables it vanishes. The same
+expansion works for a finite sum:
+\[
+ \Var\left(\sum_{i=1}^r X_i\right)=\sum_{i=1}^r\Var(X_i)
+ \quad\text{when the variables are independent.}
+\]
+Pairwise independence already suffices, because only products of pairs
+appear in the expanded square.
+
+\begin{example}[Independent dice versus repeating the same die]
+If $U,V$ are independent fair dice, $\Var(U+V)=2(35/12)=35/6$.
+If instead $V=U$, the sum is $2U$ and its variance is $35/3$.
+Both sums have mean seven, but repeating the same random result
+produces twice the variance.
+If $V=7-U$, each individual die record is still fair, while $U+V=7$
+is constant and has variance zero.
+\end{example}
+
+\begin{example}[Averages of independent observations]
+If $X_1,\ldots,X_r$ are independent copies of a finite-valued variable
+with mean $m$ and variance $v$, then
+\[
+ \E\left[\frac{X_1+\cdots+X_r}{r}\right]=m,\qquad
+ \Var\left(\frac{X_1+\cdots+X_r}{r}\right)=\frac{v}{r}.
+\]
+The standard deviation of the average is $\sqrt v/\sqrt r$.
+Quadrupling the number of independent observations halves this spread.
+\end{example}
+
+\begin{checkpoint}[title={Return to the hats: variance without the full distribution}]
+For $n\ge2$, two specified people both get their hats back with probability
+$1/[n(n-1)]$. Since
+$N(N-1)=\sum_{i\ne j}I_iI_j$ counts \emph{ordered} pairs of fixed points,
+\[
+ \E[N(N-1)]=n(n-1)\frac1{n(n-1)}=1.
+\]
+Therefore $\E[N^2]=\E[N(N-1)]+\E[N]=2$ and $\Var(N)=2-1=1$.
+For $n=1$ the single hat always returns correctly, so the variance is zero.
+The indicators are dependent; their variances cannot simply be added.
+\end{checkpoint}
+
+\section{Two bounds from averages}
+\label{sec:discrete-bounds}
+
+\begin{theorem}[Markov and Chebyshev]
+If $X\ge0$, $\E[X]<\infty$, and $a>0$, then
+$\P(X\ge a)\le\E[X]/a$.
+If $X$ has mean $m$ and finite variance $v$, then, for $t>0$,
+\[
+ \P(|X-m|\ge t)\le\frac{v}{t^2}.
+\]
+In particular, if $\sigma=\sqrt v>0$ and $k>0$, then
+$\P(|X-m|\ge k\sigma)\le1/k^2$.
+\end{theorem}
+\begin{proof}
+The pointwise inequality $X\ge a\ind_{\{X\ge a\}}$ gives
+$\E[X]\ge a\P(X\ge a)$.
+Apply this result to $(X-m)^2$ at threshold $t^2$ to obtain Chebyshev.
+\end{proof}
+For the birthday pair count, Markov at $a=1$ gives
+$\P(C\ge1)\le\E[C]=\binom n2/d$, recovering the union bound.
+These estimates use averages alone; a full distribution can give a
+much sharper answer.
+
+\section{Practice with discrete variables}
+\label{sec:discrete-moments-exercises}
+
+\begin{exercisebox}
+\begin{enumerate}
+ \item Find the CDF of the number of heads in two fair independent flips.
+ \exlevel{Fluency}
+ \item On $\{1,2,3,4\}$, let $\P(X=k)=k/10$. Find $\E[X]$,
+ $\E[X^2]$, $\Var(X)$, and $\P(X\ge3)$. Explain why averaging the four
+ values equally gives the wrong mean. \exlevel{Fluency}
+ \item Prove $\Var(X)=\E[X^2]-(\E[X])^2$. \exlevel{Reasoning}
+ \item Find the expected number of fixed points in a uniform permutation
+ of $n\ge1$ objects using indicators. \exlevel{Reasoning}
+ \item Give a net-payoff distribution with mean zero and large variance.
+ Compute both quantities and explain the risk of one play. \exlevel{Exploration}
+ \item Use Chebyshev to bound the chance of lying at least three standard
+ deviations from the mean. For a fair die, find that probability exactly.
+ \exlevel{Reasoning}
+ \item Construct two different discrete distributions with the same
+ mean and variance. \exlevel{Exploration}
+ \item For two independent fair dice, list the ordered outcomes in
+ $\{U+V\ge10\}$ and calculate its probability. \exlevel{Fluency}
+ \item Toss independently twice with heads probability $1/3$. Find
+ the PMF and CDF of the head count, its mean and variance, and $\P(X\ge1)$.
+ \exlevel{Fluency}
+ \item For the three-fair-toss count $X$, let $Y=(X-1)^2$.
+ Find its distribution and mean, combining repeated values correctly.
+ \exlevel{Reasoning}
+ \item A fair die gives net payoff $-2$ on $1,2,3$, $1$ on $4,5$,
+ and $4$ on $6$. Find the mean, variance, and chance of a positive
+ payoff. What changes if a fee of one unit is charged? \exlevel{Fluency}
+ \item For four uniformly assigned hats, use $\binom4rD_{4-r}/4!$
+ to find the fixed-point distribution, its mean and variance.
+ Explain why three fixed points are impossible. \exlevel{Reasoning}
+ \item For 23 independent uniform birthdays on 365 days, find the mean
+ pair count and bound the collision probability. Why do they differ?
+ \exlevel{Reasoning}
+ \item For a fair die $U$, find the mean, variance, and standard deviation
+ of $2U-3$. \exlevel{Fluency}
+ \item Let $I$ indicate heads in one fair toss and put $J=1-I$.
+ Compare $\Var(I+J)$ with $\Var(I)+\Var(J)$.
+ Repeat with $J$ the head indicator of an independent fair toss.
+ \exlevel{Reasoning}
+ \item For two independent fair dice $U,V$, find the means and variances
+ of $U+V$, $U-V$, and $(U+V)/2$. \exlevel{Fluency}
+ \item Use $N(N-1)$ to prove that the number $N$ of correct hats has
+ variance one for $n\ge2$. Explain the exceptional case $n=1$.
+ \exlevel{Reasoning}
+ \item Prove $\E[(X-a)^2]=\Var(X)+(\E[X]-a)^2$ for a constant $a$.
+ Which constant minimizes this expected squared error?
+ \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}
+
+\section{For later: a countably infinite list of values}
+\label{sec:rv-countable}
+
+The finite calculations above require only sums and algebra.
+For countably many values, use the same formulas as limits of partial sums.
+We call the expectation finite when $\sum_x|x|p_X(x)<\infty$.
+This condition permits regrouping terms and preserves linearity.
+A finite second moment similarly makes the variance formulas valid.
+
+A nonnegative variable may instead have expectation $+\infty$.
+For example, assign the positive integer $k$ probability
+\[
+ p(k)=\frac1{k(k+1)}=\frac1k-\frac1{k+1}.
+\]
+The first $m$ probabilities telescope to $1-1/(m+1)$, so the total is one.
+But $\E[X]=\sum_{k=1}^{\infty}1/(k+1)=\infty$.
+A valid probability distribution need not have a finite mean.
+Appendix~\ref{app:calculus} reviews the series involved; Chapter 5
+introduces geometric and Poisson distributions with finite moments.
+
+\section{For later: densities and continuous averages}
+\label{sec:rv-continuous}
 
 A \emph{probability density} $f_X$ is a nonnegative function with total
 area one. For a variable described by this density,
@@ -157,185 +540,45 @@ area one. For a variable described by this density,
  \P(a<X\le b)=\int_a^b f_X(t)\,dt,\qquad
  F_X(x)=\int_{-\infty}^x f_X(t)\,dt.
 \]
-An interval of zero width has zero area, so $\P(X=a)=0$. Endpoint
-choices therefore do not affect interval probabilities for these variables.
-The height $f_X(a)$ is not the probability of the single value $a$;
-it may exceed one. Section~\ref{sec:calc-integrals} reviews the area
-calculation and the fundamental theorem of calculus.
+An interval of zero width has zero area, so $\P(X=a)=0$.
+Endpoint choices do not affect interval probabilities for these variables.
+The height $f_X(a)$ is not a point probability and may exceed one.
+Section~\ref{sec:calc-integrals} reviews the calculus needed here.
+
+The corresponding average of a function is
+\[
+ \E[g(X)]=\int_{-\infty}^{\infty}g(x)f_X(x)\,dx
+\]
+when the integral with $|g(x)|$ is finite. Taking $g(x)=x$ or $x^2$
+gives the first two moments; the variance identity remains the same.
 
 \begin{example}[An increasing density]
-Let $f_X(x)=2x$ for $0\le x\le1$ and zero otherwise.
-Its total area is $\int_0^1 2x\,dx=1$, and
+Let $f_X(x)=2x$ on $[0,1]$ and zero elsewhere. Its total area is one, and
 \[
- F_X(x)=\begin{cases}0,&x<0,\\x^2,&0\le x\le1,\\1,&x>1.\end{cases}
+ F_X(x)=
+ \begin{cases}0,&x<0,\\x^2,&0\le x\le1,\\1,&x>1.\end{cases}
 \]
-For example, $\P(X\ge1/2)=\int_{1/2}^1 2x\,dx=3/4$.
-Also $f_X(3/4)=3/2$, while $\P(X=3/4)=0$.
-Where the density is continuous, the fundamental theorem says
-$F_X'(x)=f_X(x)$: the rate at which probability accumulates is its density.
+Thus $\P(X\ge1/2)=3/4$, $\E[X]=\int_0^1 2x^2\,dx=2/3$, and
+$\E[X^2]=\int_0^1 2x^3\,dx=1/2$, giving variance $1/18$.
+Although $f_X(3/4)=3/2$, the probability of the single value $3/4$ is zero.
+Where the density is continuous, $F_X'=f_X$.
 \end{example}
 
-\section{Expectation is a weighted average}
-
-For discrete $X$ with values $x_i$,
-\[
- \E[X]=\sum_i x_i\P(X=x_i).
-\]
-For a variable with density $f_X$,
-\[
- \E[X]=\int_{-\infty}^{\infty}x f_X(x)\,dx.
-\]
-The weights are probabilities, not an instruction to average the list of
-possible values equally. For infinite sums or integrals we require the
-same expression with $|x|$ to be finite when calling the expectation
-finite. A nonnegative variable can instead have expectation $+\infty$;
-Section~\ref{sec:calc-improper} gives an example.
-
-The three-toss count has mean
-$0(1/8)+1(3/8)+2(3/8)+3(1/8)=3/2$.
-No toss sequence contains $1.5$ heads. An expectation is a center of mass,
-so it need not be a possible value. For the increasing density above,
-$\E[X]=\int_0^1 x(2x)\,dx=2/3$.
-
-\subsection*{Functions of a random variable}
-If $Y=g(X)$, apply $g$ to the value actually observed. The event
-$\{Y\ge a\}$ is $\{\omega:g(X(\omega))\ge a\}$.
-Several values of $X$ may give the same value of $Y$; add their masses
-when finding its distribution.
-
-\begin{theorem}[Expectation of a function, often called LOTUS]
-When the sum or integral of the absolute value is finite,
-\[
- \E[g(X)]=\sum_x g(x)p_X(x)
- \quad\text{or}\quad
- \E[g(X)]=\int_{-\infty}^{\infty}g(x)f_X(x)\,dx.
-\]
-\end{theorem}
-For a discrete variable this is just grouping equal recorded values:
-every outcome with $X=x$ contributes the same number $g(x)$.
-We can therefore average $g(x)$ using the known distribution of $X$,
-without first computing a new distribution for $g(X)$.
-
-\begin{theorem}[Linearity]
-For constants $a,b$ and random variables $X,Y$ with finite expected
-absolute values,
-\[
- \E[aX+bY]=a\E[X]+b\E[Y].
-\]
-Independence is not required.
-\end{theorem}
-On a finite sample space, multiply
-$aX(\omega)+bY(\omega)$ by each outcome's weight and add; distributing
-the sum proves the formula. The same addition rule extends to the
-convergent sums and integrals used here.
-
-\section{Variance measures spread around the mean}
-
-Put $m=\E[X]$. When the second moment is finite,
-\[
- \Var(X)=\E[(X-m)^2]=\E[X^2]-m^2.
-\]
-Expand the square and use linearity to obtain the second expression.
-The standard deviation $\sigma=\sqrt{\Var(X)}$ has the same units as $X$;
-variance has squared units. For the three-toss count,
-$\E[X^2]=3$, so $\Var(X)=3-(3/2)^2=3/4$.
-For density $2x$ on $[0,1]$, $\E[X^2]=1/2$, so the variance is
-$1/2-(2/3)^2=1/18$.
-
-\begin{proposition}
-For constants $a,b$, $\Var(aX+b)=a^2\Var(X)$.
-\end{proposition}
-The new mean is $am+b$, so the deviation from it is $a(X-m)$.
-Adding a constant shifts every value and its mean together; multiplying
-by $a$ multiplies every squared deviation by $a^2$.
-
-\begin{warningbox}
-In general $\E[g(X)]\ne g(\E[X])$.
-For the toss count, $\E[X^2]=3$ whereas $(\E[X])^2=9/4$.
-Linearity applies to sums and constant multiples; a nonlinear operation
-needs its own calculation.
-\end{warningbox}
-
-The $k$th raw moment is $\E[X^k]$ and the $k$th central moment is
-$\E[(X-m)^k]$, when they exist. Later we sometimes package moments
-in $M_X(t)=\E[e^{tX}]$. If this moment-generating function is finite
-on an interval around zero, $M_X^{(k)}(0)=\E[X^k]$.
-Appendix~\ref{app:calculus} reviews the exponential series behind this
-connection; the finite examples can be differentiated term by term directly.
-
-\section{Indicators connect counting to averages}
-
-For an event $A$, its \emph{indicator} $\ind_A$ is $1$ when $A$ occurs
-and $0$ otherwise. Its mean is
-$\E[\ind_A]=1\P(A)+0\P(A^c)=\P(A)$.
-If $N=\sum_i\ind_{A_i}$ counts how many events occur, linearity gives
-\[
- \E[N]=\sum_i\P(A_i)
-\]
-without any independence assumption.
-
-\begin{example}[Correct hats and matching birthdays]
-For a uniform permutation of $n\ge1$ hats, let $I_i$ indicate that
-person $i$ gets the right hat. Then $N=\sum_{i=1}^n I_i$ is the number
-of fixed points, and $\E[N]=n(1/n)=1$.
-This does not assert that every assignment has one fixed point:
-$\P(N=0)=D_n/n!$ is near $.368$ for large $n$.
-
-For birthdays, let $I_{ij}$ indicate a match between people $i$ and $j$.
-The number of matching pairs is $C=\sum_{i<j}I_{ij}$, so
-$\E[C]=\binom n2/d$ in the independent uniform $d$-day model.
-With $n=23,d=365$, the mean is $253/365\approx.69315$, while
-$\P(C\ge1)\approx.50730$. One experiment may contain several matching
-pairs; a mean count and a chance of at least one occurrence differ.
-\end{example}
-
-\section{Two bounds from averages}
-
-\begin{theorem}[Markov and Chebyshev]
-If $X\ge0$, $\E[X]<\infty$, and $a>0$, then
-$\P(X\ge a)\le\E[X]/a$.
-If $X$ has mean $m$ and variance $\sigma^2$ with $0<\sigma<\infty$,
-then for $k>0$,
-\[
- \P(|X-m|\ge k\sigma)\le\frac1{k^2}.
-\]
-\end{theorem}
-\begin{proof}
-The pointwise inequality $X\ge a\ind_{\{X\ge a\}}$ gives
-$\E[X]\ge a\P(X\ge a)$, proving Markov. Apply it to
-the nonnegative variable $(X-m)^2$ at threshold $k^2\sigma^2$
-to obtain Chebyshev.
-\end{proof}
-For the birthday pair count, Markov at $a=1$ gives
-$\P(C\ge1)\le\E[C]=\binom n2/d$, the union bound encountered earlier.
-
-\begin{exercisebox}
-\begin{enumerate}
-  \item Find the CDF of the number of heads in two fair independent flips. \exlevel{Fluency}
-  \item A density is proportional to $x$ on $[0,2]$ and zero elsewhere. Normalize it and find its mean. \exlevel{Fluency}
-  \item Prove $\Var(X)=\E[X^2]-(\E X)^2$. \exlevel{Reasoning}
-  \item Find the expected number of fixed points in a random permutation of $n\ge1$ objects. \exlevel{Reasoning}
-  \item Give a net-payoff distribution for a fair lottery with large variance. Interpret ``fair'' as expected net payoff zero. \exlevel{Exploration}
-  \item Use Chebyshev to bound the chance of lying at least three standard deviations from the mean. Compare with a normal distribution. \exlevel{Reasoning}
-  \item Construct two different distributions with the same mean and variance. \exlevel{Exploration}
-  \item For two independent fair dice, write $\{S\ge10\}$ as a set of
-  ordered outcomes and calculate its probability. \exlevel{Fluency}
-  \item Toss independently twice with heads probability $1/3$. Find
-  the PMF and CDF of the number of heads and compute $\P(X\ge1)$.
-  \exlevel{Fluency}
-  \item For the three-fair-toss count $X$, let $Y=(X-1)^2$.
-  Find its distribution and mean, combining repeated values correctly.
-  \exlevel{Reasoning}
-  \item A CDF equals $0$ for $x<0$, $x^3$ for $0\le x\le1$,
-  and $1$ for $x>1$. Find its density, $\P(X\ge1/2)$, mean, and
-  variance. \exlevel{Fluency}
-  \item For four uniformly assigned hats, use $\binom4rD_{4-r}/4!$
-  to find the distribution of the number of fixed points. Check its
-  mean and variance, and explain why three fixed points are impossible.
-  \exlevel{Reasoning}
-  \item Find the expected number of matching birthday pairs among
-  23 people on a 365-day calendar. Explain why this differs from the
-  collision probability, and use it to give an upper bound.
-  \exlevel{Reasoning}
+\begin{exercisebox}[title={Later practice: continuous models}]
+\begin{enumerate}[start=19]
+ \item A density is proportional to $x$ on $[0,2]$ and zero elsewhere.
+ Normalize it and find its mean and variance. \exlevel{Fluency}
+ \item A CDF is $0$ below zero, $x^3$ on $[0,1]$, and $1$ above one.
+ Find its density, $\P(X\ge1/2)$, mean, and variance. \exlevel{Fluency}
 \end{enumerate}
 \end{exercisebox}
+
+\subsection*{Further moments}
+The $k$th raw moment is $\E[X^k]$, and the $k$th central moment is
+$\E[(X-\E[X])^k]$, when these expectations are finite.
+One later tool packages moments in $M_X(t)=\E[e^{tX}]$.
+If this moment-generating function is finite on an interval around zero,
+$M_X^{(k)}(0)=\E[X^k]$.
+For finite-valued variables this follows by differentiating a finite sum.
+Neither this tool nor continuous densities are needed for the discrete
+expectation and variance calculations in this chapter.

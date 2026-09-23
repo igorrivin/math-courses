@@ -54,6 +54,25 @@ For a density, integrate over the requested range:
 For integer-valued $X$ and integer $k$, $\P(X\ge k)=1-F_X(k-1)$.
 For a variable with a density, individual values have probability zero.
 
+\section*{Discrete expectation and variance}
+For a finite probability table,
+\begin{align*}
+ \E[X]&=\sum_x xp_X(x),&
+ \E[g(X)]&=\sum_xg(x)p_X(x),\\
+ \Var(X)&=\sum_x(x-\E[X])^2p_X(x)
+          =\E[X^2]-(\E[X])^2,&
+ \sigma_X&=\sqrt{\Var(X)},\\
+ \E[aX+b]&=a\E[X]+b,&
+ \Var(aX+b)&=a^2\Var(X).
+\end{align*}
+Linearity of expectation needs no independence.
+Variances of independent sums add; dependent sums need the covariance
+terms below. An event indicator has mean $p$ and variance $p(1-p)$.
+For independent copies with mean $m$ and variance $v$, their $r$-term
+average has mean $m$ and variance $v/r$.
+For the correct-hat count, the mean is one for $n\ge1$ and the variance
+is one for $n\ge2$ (zero for $n=1$).
+
 \section*{Calculus used in the course}
 \begin{align*}
  \int_a^b f(x)\,dx&=G(b)-G(a)\quad(G'=f),\\
@@ -85,13 +104,18 @@ worked integrations, and quantitative error estimates.
 \end{align*}
 
 \section*{Common distributions}
+The hypergeometric row uses $N\ge2$ population objects, $K$ marked,
+$m$ sampled without replacement, and $p=K/N$.
+Its feasible counts are given in Section~\ref{sec:hypergeometric}.
 \begin{center}\small
 \begin{tabular}{llll}
 \toprule
 Distribution & Support & Mean & Variance \\
 \midrule
+Discrete uniform & $1,\ldots,m$ & $(m+1)/2$ & $(m^2-1)/12$ \\
 Bernoulli$(p)$ & $\{0,1\}$ & $p$ & $p(1-p)$ \\
 Binomial$(n,p)$ & $0,\ldots,n$ & $np$ & $np(1-p)$ \\
+Hypergeometric & feasible $k$ & $mp$ & $mp(1-p)(N-m)/(N-1)$ \\
 Geometric$(p)$ & $1,2,\ldots$ & $1/p$ & $(1-p)/p^2$ \\
 Poisson$(\lambda)$ & $0,1,\ldots$ & $\lambda$ & $\lambda$ \\
 Uniform$(a,b)$ & $[a,b]$ & $(a+b)/2$ & $(b-a)^2/12$ \\
@@ -102,6 +126,7 @@ Beta$(\alpha,\beta)$ & $[0,1]$ & $\alpha/(\alpha+\beta)$ & $\alpha\beta/[(\alpha
 \end{tabular}
 \end{center}
 
+\needspace{14\baselineskip}
 \section*{Inference checklist}
 \begin{enumerate}
   \item What is the target population and parameter?

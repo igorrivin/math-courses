@@ -65,55 +65,142 @@ For the coin problem,
 A pairwise-not-mutual example: flip two fair coins; let $A$ be first-heads, $B$ second-heads, and $C$ equal-results.
 
 \section*{Chapter 4}
+Exercises 1--18 use discrete variables. Exercises 19--20 belong to
+the later continuous section.
 \begin{enumerate}
  \item The masses at $0,1,2$ are $1/4,1/2,1/4$. The CDF is $0$
  for $x<0$, $1/4$ for $0\le x<1$, $3/4$ for $1\le x<2$, and
  $1$ for $x\ge2$.
- \item Normalization gives $c\int_0^2x\,dx=2c=1$, so $c=1/2$.
- The mean is $\int_0^2 x(x/2)\,dx=4/3$.
+ \item $\E[X]=(1+4+9+16)/10=3$ and
+ $\E[X^2]=(1+8+27+64)/10=10$, so $\Var(X)=1$.
+ Also $\P(X\ge3)=(3+4)/10=7/10$.
+ The equally weighted average $5/2$ uses the wrong probabilities.
  \item Write $m=\E[X]$ and expand:
  $\E[(X-m)^2]=\E[X^2]-2m\E[X]+m^2=\E[X^2]-m^2$.
  \item Let $I_i$ indicate that $i$ is fixed and write $N=\sum I_i$.
  Since $\P(I_i=1)=1/n$, linearity gives $\E[N]=1$ for $n\ge1$.
  No independence is used.
- \item Let the net payoff be $999$ with probability $1/1000$ and
- $-1$ otherwise. Its mean is zero and its variance is
- $999^2/1000+999/1000=999$.
- \item Chebyshev gives at most $1/9\approx.1111$. For a normal
- distribution, the probability is about $.00270$. A general bound
- need not be close to the value for a particular distribution.
+ \item One example pays $999$ with probability $1/1000$ and $-1$
+ otherwise. Its mean is zero and its variance is
+ $999^2/1000+999/1000=999$. A single play loses one unit with
+ probability $999/1000$; a zero mean does not make the payoff certain
+ or the chance of a loss small.
+ \item Chebyshev gives at most $1/9$. For a fair die the mean is
+ $7/2$, the standard deviation is $\sqrt{35/12}$, and every value
+ is within $5/2$ of the mean. Since $3\sqrt{35/12}>5/2$, the exact
+ probability is zero. The bound is valid but loose.
  \item Equal masses at $-1,1$ have mean zero and variance one.
  Another example has masses $1/4,1/2,1/4$ at
- $-\sqrt2,0,\sqrt2$, respectively; its mean is zero and second
- moment is also one.
- \item The event is
- $\{(4,6),(5,5),(6,4),(5,6),(6,5),(6,6)\}$, with probability $6/36=1/6$.
+ $-\sqrt2,0,\sqrt2$; its mean is zero and second moment is also one.
+ \item The event consists of
+ $(4,6),(5,5),(6,4),(5,6),(6,5),(6,6)$, so its probability is $6/36=1/6$.
  \item The masses at $0,1,2$ are $4/9,4/9,1/9$. The CDF is
  $0$ below zero, $4/9$ on $[0,1)$, $8/9$ on $[1,2)$, and $1$
- on $[2,\infty)$. Thus $\P(X\ge1)=1-4/9=5/9$.
+ on $[2,\infty)$. The first two moments are $2/3$ and $8/9$,
+ giving variance $8/9-4/9=4/9$. Also $\P(X\ge1)=5/9$.
  \item The values of $Y$ at $X=0,1,2,3$ are $1,0,1,4$.
  Its masses at $0,1,4$ are $3/8,1/2,1/8$, giving mean
  $0(3/8)+1(1/2)+4(1/8)=1$.
- \item The density is $3x^2$ on $[0,1]$, zero elsewhere; values
- at the endpoints do not affect integrals. The tail probability is
- $1-(1/2)^3=7/8$. The first two moments are $3/4$ and $3/5$,
- hence the variance is $3/5-9/16=3/80$.
+ \item The payoff probabilities are $1/2,1/3,1/6$.
+ The mean is $-1+1/3+2/3=0$, and the second moment is
+ $2+1/3+8/3=5$, so the variance is five.
+ The positive-payoff probability is $1/3+1/6=1/2$.
+ After a fee of one, the net values are $-3,0,3$: the mean is $-1$,
+ variance remains five, and the probability of a positive net payoff
+ becomes $1/6$.
  \item At $r=0,1,2,3,4$, the permutation counts are $9,8,6,0,1$,
  respectively, out of $24$. Thus $\E[N]=(8+12+4)/24=1$ and
  $\E[N^2]=(8+24+16)/24=2$, giving variance one.
  Fixing three of four objects forces the fourth to be fixed as well.
  \item There are $\binom{23}{2}=253$ pairs, each matching with
  probability $1/365$, so the mean is $253/365\approx.69315$.
- Multiple matches can occur together, while a collision event is
- counted only once. Markov at threshold one gives the upper bound
- $\P(C\ge1)\le253/365$.
+ Multiple pairs can match in one outcome. Markov at threshold one
+ gives $\P(C\ge1)\le253/365$, whereas the exact probability is about $.50730$.
+ \item The new mean is $2(7/2)-3=4$, variance is
+ $4(35/12)=35/3$, and standard deviation is $\sqrt{35/3}$.
+ \item Each of $I,J=1-I$ has variance $1/4$, but $I+J=1$
+ has variance zero. With an independent second indicator, the
+ sum instead has variance $1/4+1/4=1/2$.
+ \item The sum has mean seven and variance $35/6$.
+ The difference has mean zero and variance $35/6$:
+ negation changes the mean's sign but not the variance.
+ The average has mean $7/2$ and variance $(35/6)/4=35/24$.
+ \item For $n\ge2$, expand
+ $N(N-1)=\sum_{i\ne j}I_iI_j$. Each of the $n(n-1)$ ordered
+ terms has expectation $1/[n(n-1)]$, so $\E[N(N-1)]=1$.
+ Adding $\E[N]=1$ gives $\E[N^2]=2$ and variance one.
+ For $n=1$, $N=1$ is constant and its variance is zero.
+ \item Write $X-a=(X-m)+(m-a)$, where $m=\E[X]$.
+ The cross term has expectation $2(m-a)\E[X-m]=0$.
+ Thus $\E[(X-a)^2]=\Var(X)+(m-a)^2$, uniquely minimized by $a=m$.
+ \item Normalization gives $c\int_0^2x\,dx=2c=1$, so $c=1/2$.
+ The mean is $\int_0^2x^2/2\,dx=4/3$ and the second moment is
+ $\int_0^2x^3/2\,dx=2$. The variance is $2-16/9=2/9$.
+ \item The density is $3x^2$ on $[0,1]$, zero elsewhere.
+ The tail probability is $1-(1/2)^3=7/8$.
+ The first two moments are $3/4$ and $3/5$,
+ hence the variance is $3/5-9/16=3/80$.
 \end{enumerate}
 
 \section*{Chapter 5}
-For an exponential variable, $\P(X>m)=e^{-\lambda m}=1/2$, hence $m=(\log2)/\lambda$. For $X\sim\Normal(10,9)$,
-\[
-\P(8<X<13)=\Phi(1)-\Phi(-2/3).
-\]
+Exercises 1--10 concern discrete families; Exercises 11--13 use
+continuous distributions.
+\begin{enumerate}
+ \item The complement gives
+ $1-.7^5-5(.3)(.7)^4=.47178$.
+ The mean is $5(.3)=1.5$ and the variance is $5(.3)(.7)=1.05$.
+ \item For $0<p<1$ and nonnegative integers $s,t$, divide
+ $(1-p)^{s+t}$ by $(1-p)^s$ to get $(1-p)^t$.
+ The denominator is positive. If $p=1$, only $s=0$ is admissible;
+ conditioning on an event of probability zero is not defined.
+ \item Here $np=2$. The exact probability is
+ $.998^{1000}\approx.135064522$, compared with
+ $e^{-2}\approx.135335283$ for a Poisson variable of mean two.
+ The absolute error is about $.000270761$.
+ \item The mean is $9/2$, variance $(8^2-1)/12=21/4$,
+ and the probability of exceeding $9/2$ is $4/8=1/2$.
+ \item The indicator has mean $.2$ and variance $.2(.8)=.16$.
+ Ten independent repetitions have a count of mean two and variance $1.6$.
+ Recording one indicator ten times gives $10I$, still of mean two but
+ variance $100(.16)=16$. Its only possible values are zero and ten.
+ \item Without replacement, count each possible number of red balls:
+ $\binom22/\binom52=1/10$ for zero reds,
+ $\binom31\binom21/\binom52=6/10$ for one, and
+ $\binom32/\binom52=3/10$ for two.
+ The mean is $6/5$ and variance $9/25$.
+ With replacement the masses are $4/25,12/25,9/25$,
+ with mean $6/5$ and variance $12/25$.
+ \item Examples: a fair die fits discrete uniform, whereas a loaded
+ die generally does not. A success indicator fits Bernoulli, whereas
+ a count taking values $0,1,2$ does not.
+ A count of independent fair tosses fits binomial; repeated copies of
+ one toss do not. A uniform subset of a fixed urn fits hypergeometric;
+ draws with replacement generally do not.
+ Independent repeated trials with a fixed success chance fit geometric;
+ changing that chance after each failure generally does not.
+ For a Poisson example, take the limiting count of $n$ independent
+ opportunities each of probability $\lambda/n$.
+ A binomial count with a fixed finite maximum and positive mean cannot
+ be exactly Poisson, which has an unbounded set of possible counts.
+ \item The roll count is geometric with $p=1/6$, so its mean is six,
+ variance is thirty, and $\P(T>5)=(5/6)^5\approx.40188$.
+ The failure count $T-1$ has mean five.
+ \item $\P(X\ge2)=1-e^{-3}(1+3)=1-4e^{-3}\approx.80085$.
+ Also $\E[X(X-1)]=9$, hence $\E[X^2]=9+3=12$ and variance $12-9=3$.
+ \item With replacement, the count is $\Bin(4,3/10)$ with
+ mean $6/5$ and variance $21/25$.
+ Without replacement, the mean is still $6/5$ but the variance is
+ $(21/25)(16/19)=336/475$.
+ The draws have the same marginal marked probability; without
+ replacement, their dependence reduces the variance.
+ \item The median solves $e^{-\lambda m}=1/2$, giving
+ $m=(\log2)/\lambda$.
+ \item The standard deviation is three, so standardization gives
+ $\P(8<X<13)=\Phi(1)-\Phi(-2/3)$.
+ \item For $V$ uniform on $[0,1]$,
+ $\E[V]=1/2$ and $\E[V^2]=1/3$, so $\Var(V)=1/12$.
+ Write $X=a+(b-a)V$ to obtain mean $(a+b)/2$ and variance $(b-a)^2/12$.
+\end{enumerate}
 
 \section*{Chapter 6}
 For $X$ uniform on $\{-1,0,1\}$ and $Y=X^2$, symmetry gives $\E X=\E[XY]=0$, hence covariance zero, but knowing $X$ determines $Y$. For the tower property, take the weighted average of group means; each observation receives exactly its population weight.

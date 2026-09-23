@@ -11,7 +11,12 @@ The point is not merely to calculate a probability or a confidence interval, but
 
 \section*{Audience and prerequisites}
 
-This packet is designed for a first undergraduate course or a mathematically ambitious secondary course. Students should be comfortable with algebra, functions, summation notation, and basic differentiation and integration. Multivariable calculus is not required. Proofs are included, but the emphasis is on modeling, interpretation, and the disciplined use of computation.
+This packet is designed for a first undergraduate course or a mathematically
+ambitious secondary course. Algebra, functions, and summation notation
+suffice for the finite probability models and their expectations and variances.
+Differentiation, integration, and series enter later with continuous models
+and approximations. Multivariable calculus is not required. Proofs are
+included, with an emphasis on modeling, interpretation, and computation.
 
 Appendix~\ref{app:calculus} rebuilds the calculus as it is needed: limits,
 derivatives, optimization, definite and improper integrals, series, and
@@ -21,10 +26,17 @@ develop the exact finite counting arguments before using those approximations.
 The probability-space and random-variable introductions use concrete
 outcomes, events, weights, and inequalities.
 
+For the current discrete route, work through Chapter 4's weighted averages,
+linearity, indicators, variance, and sums, then its 18 discrete exercises.
+Chapter 5 next develops uniform, Bernoulli, binomial, and hypergeometric
+distributions from their experiments. Countably infinite models and
+continuous densities are marked for later reading.
+
 \section*{Learning goals}
 
 By the end, students should be able to:
 \begin{enumerate}
+  \interlinepenalty=10000
   \item translate verbal questions into sets, events, and probability models;
   \item use counting, conditioning, independence, and Bayes' rule correctly;
   \item distinguish permutations from combinations, prove basic binomial identities, and apply inclusion--exclusion to both counts and probabilities;
@@ -56,10 +68,10 @@ Week & Core mathematics & Suggested lab or assessment \\
 2 & Probability spaces and axioms & Build and critique sample spaces \\
 3 & Conditional probability and trees & Medical-test simulation \\
 4 & Independence, total probability, Bayes & Monty Hall and base-rate lab \\
-5 & Random variables, CDFs, PMFs, densities & One distribution in three representations \\
-6 & Expectation, variance, moments & Indicator-variable studio \\
-7 & Bernoulli, binomial, geometric, Poisson & Rare-event approximation lab \\
-8 & Uniform, exponential, normal, beta & Memorylessness and normal areas \\
+5 & Discrete random variables, PMFs, CDFs & Outcomes, values, and probability tables \\
+6 & Expectation, variance, indicators, sums & Dice, payoffs, hats, and birthday pairs \\
+7 & Discrete families and waiting times & Sampling with and without replacement \\
+8 & Densities; uniform, exponential, normal, beta & Integrals, memorylessness, and normal areas \\
 9 & Joint, marginal, conditional laws & Heat maps and independence \\
 10 & Covariance, correlation, conditional expectation & Correlation counterexamples \\
 11 & Laws of large numbers; Monte Carlo & Running-average experiment \\
@@ -79,8 +91,9 @@ development of permutations, combinations, binomial coefficients, both forms
 of inclusion--exclusion, finite probability spaces, and the birthday paradox.
 Problem Sets 2 and 3 revisit these foundations and connect counting to
 birthdays and derangements. Chapter 4 follows the same examples into
-distributions and expected counts. The calculus refresher can be assigned
-in short sections alongside this material. Assignment solutions are
+probability tables, expected counts, and variances. Chapter 5 gives the
+next sequence of distribution examples. The calculus refresher can be
+assigned in short sections as its tools become needed. Assignment solutions are
 supplied separately through the instructor library.
 
 One workable balance is 35\% problem sets, 20\% short quizzes, 20\% computational labs, and 25\% a modeling capstone. Exercises use three labels:

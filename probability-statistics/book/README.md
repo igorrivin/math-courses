@@ -32,9 +32,19 @@ for birthdays and derangements. It uses elementary event descriptions
 without a formal sigma-algebra introduction.
 
 Chapter 4 explains random variables as numerical records, explicitly turns
-conditions such as `X >= a` into events, and develops PMFs, CDFs, densities,
-expectation, variance, and indicators through coins, dice, hats, and birthdays.
-New and existing Chapter 4 exercises have worked solutions.
+conditions such as `X >= a` into events, and develops PMFs, CDFs,
+expectation, variance, and indicators through coins, dice, payoffs, hats,
+and birthdays. Its main route uses finite sums throughout: grouping outcome
+weights, linearity, expectations of functions, variance identities, independent
+sums and averages, and bounds. It has 18 discrete exercises and two later
+continuous exercises, all with worked solutions. Countably infinite examples,
+densities, and moment-generating functions are separated as later material.
+
+Chapter 5 develops the next distribution examples from their experiments:
+discrete uniform, Bernoulli, binomial, and hypergeometric, with derivations of
+probabilities, means, and variances. Geometric and Poisson laws follow as
+countably infinite models; continuous families are marked for later.
+Its ten discrete and three continuous exercises have worked solutions.
 
 Appendix A, `chapters/calculus_refresher.tex`, is a substantial review of
 algebra and finite sums, limits, derivatives, likelihood optimization,
