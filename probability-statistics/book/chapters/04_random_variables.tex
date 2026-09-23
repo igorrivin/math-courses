@@ -1,90 +1,341 @@
 \chapter{Numbers attached to outcomes}
-\chaptertag{Random variables, distributions, expectation, and moments}
+\label{ch:random-variables}
+\chaptertag{Random variables, events, distributions, and averages}
 
 \begin{question}
-How can one function compress a complicated experiment into a numerical quantity of interest?
+How can a numerical record of an experiment answer a probability question?
 \end{question}
 
+\section{A rule for recording a number}
+
 \begin{definition}
-A random variable is a function $X:\Omega\to\R$. Its cumulative distribution function is
-\[
-F_X(x)=\P(X\le x).
-\]
+A \emph{random variable} $X$ assigns a real number $X(\omega)$ to each
+outcome $\omega$ of an experiment. The rule is fixed; the outcome to which
+we apply it is uncertain. Conditions such as $X\ge a$ must describe events
+in the probability model, so that their probabilities are defined.
 \end{definition}
 
-Every CDF is nondecreasing, right-continuous, approaches 0 to the left and 1 to the right. For a discrete variable, jumps encode probabilities. For a continuous variable with density $f$, areas encode probabilities:
-\[
-F_X(x)=\int_{-\infty}^x f(t)\,dt,
-\qquad
-\P(a<X\le b)=\int_a^b f(t)\,dt.
-\]
+On a finite sample space this last requirement is automatic: every set
+of outcomes is an event. For the continuous examples in this course,
+we use familiar functions and events described by intervals and
+inequalities. Think of $X$ as the answer to a numerical question about
+the outcome: the number of heads, a waiting time, a sum of dice, or the
+number of people receiving the correct hat.
 
-\section{Expectation}
+\begin{example}[Three tosses, one count]
+Toss a fair coin independently three times, and let $X$ be the number
+of heads. The eight equally likely outcomes are grouped by their recorded value:
+\[
+\begin{array}{c|l|c}
+x&\text{outcomes with }X=x&\P(X=x)\\\hline
+0&TTT&1/8\\
+1&HTT,\ THT,\ TTH&3/8\\
+2&HHT,\ HTH,\ THH&3/8\\
+3&HHH&1/8
+\end{array}
+\]
+The outcome $HTH$ is a string; the value $X(HTH)=2$ is a number.
+Different outcomes can give the same number. Consequently, the four
+possible values $0,1,2,3$ are not equally likely.
+\end{example}
+
+\section{An inequality defines an event}
+\label{sec:rv-events}
+
+The notation $\{X\ge a\}$ abbreviates
+\[
+ \{\omega\in\Omega:X(\omega)\ge a\}.
+\]
+It is a subset of the \emph{original} sample space. To find it, keep the
+outcomes whose recorded numbers satisfy the inequality. For the
+three-toss example,
+\[
+ \{X\ge2\}=\{HHT,HTH,THH,HHH\},\qquad \P(X\ge2)=\frac48.
+\]
+Likewise, $\{X>2\}=\{HHH\}$ has probability $1/8$.
+We usually omit the braces when writing probabilities.
+
+Event operations follow the same logic as before:
+\[
+ \{a<X\le b\}=\{X>a\}\cap\{X\le b\},\qquad
+ \{X\ge a\}^c=\{X<a\}.
+\]
+This is all the event structure needed for most calculations with a
+random variable.
+
+\begin{example}[Several records of the same dice]
+For two dice, an outcome is an ordered pair $(i,j)$. We can record
+$S(i,j)=i+j$, $M(i,j)=\max(i,j)$, or
+$I(i,j)=1$ if $i=j$ and $0$ otherwise. The event $S=4$ consists of
+$(1,3),(2,2),(3,1)$, while $M=4$ contains seven pairs.
+For independent fair dice their probabilities are $3/36$ and $7/36$.
+The functions answer different questions about the same experiment.
+\end{example}
+
+\section{The distribution collects the weights}
+
+For a variable with finitely or countably many possible values, its
+\emph{probability mass function} (PMF) is
+\[
+ p_X(x)=\P(X=x).
+\]
+It is nonnegative and its sum over all possible values is one. To find
+the distribution, group the original outcomes that have the same value
+and add their probabilities. For any set $B$ of possible recorded values,
+\[
+ \P(X\in B)=\sum_{x\in B}p_X(x).
+\]
+Thus we can answer questions about $X$ without retaining every detail
+of the original outcome.
+
+\begin{checkpoint}[title={Outcome, value, event, probability}]
+For the three-toss example, $HHT$ is an outcome, $2$ is its recorded
+value, $\{X\ge2\}$ is an event, and $1/2$ is that event's probability.
+These four objects play different roles.
+\end{checkpoint}
+
+\section{The cumulative distribution function}
+
+The \emph{cumulative distribution function} (CDF) records all threshold
+probabilities at once:
+\[
+ F_X(x)=\P(X\le x).
+\]
+For the number of heads in three fair tosses,
+\[
+ F_X(x)=
+ \begin{cases}
+ 0,&x<0,\\
+ 1/8,&0\le x<1,\\
+ 1/2,&1\le x<2,\\
+ 7/8,&2\le x<3,\\
+ 1,&x\ge3.
+ \end{cases}
+\]
+The jump at each value is its probability mass. A larger threshold
+includes more outcomes, so a CDF cannot decrease. It approaches zero
+far to the left and one far to the right, and is right-continuous:
+the value at a jump includes the mass at that point.
+
+\begin{center}
+\begin{tikzpicture}[x=1.35cm,y=3cm]
+ \draw[->,muted] (-.6,0)--(3.65,0) node[right] {$x$};
+ \draw[->,muted] (-.5,0)--(-.5,1.12) node[above] {$F_X(x)$};
+ \foreach \x/\y/\z in {0/0/.125,1/.125/.5,2/.5/.875,3/.875/1}{
+   \draw[mint,very thick] (\x-.45,\y)--(\x,\y);
+   \draw[mint,very thick] (\x,\z)--(\x+.55,\z);
+   \draw[mint,fill=paper] (\x,\y) circle (2pt);
+   \fill[mint] (\x,\z) circle (2pt);
+   \node[below=5pt] at (\x,0) {$\x$};
+ }
+ \foreach \y/\lab in {.125/{1/8},.5/{1/2},.875/{7/8},1/{1}}{
+   \node[left] at (-.5,\y) {$\lab$};
+ }
+\end{tikzpicture}
+\end{center}
+
+If $a<b$, subtraction of nested events gives
+\[
+ \P(a<X\le b)=F_X(b)-F_X(a),\qquad
+ \P(X>a)=1-F_X(a).
+\]
+For an integer-valued variable and an integer $k$,
+$\P(X=k)=F_X(k)-F_X(k-1)$ and
+$\P(X\ge k)=1-F_X(k-1)$.
+
+\begin{warningbox}
+$1-F_X(a)$ means $\P(X>a)$, not $\P(X\ge a)$.
+The distinction matters when $X$ can equal $a$ with positive probability.
+In the toss example, $\P(X>2)=1/8$ but $\P(X\ge2)=1/2$.
+\end{warningbox}
+
+\section{Continuous variables: probability is area}
+
+A \emph{probability density} $f_X$ is a nonnegative function with total
+area one. For a variable described by this density,
+\[
+ \P(a<X\le b)=\int_a^b f_X(t)\,dt,\qquad
+ F_X(x)=\int_{-\infty}^x f_X(t)\,dt.
+\]
+An interval of zero width has zero area, so $\P(X=a)=0$. Endpoint
+choices therefore do not affect interval probabilities for these variables.
+The height $f_X(a)$ is not the probability of the single value $a$;
+it may exceed one. Section~\ref{sec:calc-integrals} reviews the area
+calculation and the fundamental theorem of calculus.
+
+\begin{example}[An increasing density]
+Let $f_X(x)=2x$ for $0\le x\le1$ and zero otherwise.
+Its total area is $\int_0^1 2x\,dx=1$, and
+\[
+ F_X(x)=\begin{cases}0,&x<0,\\x^2,&0\le x\le1,\\1,&x>1.\end{cases}
+\]
+For example, $\P(X\ge1/2)=\int_{1/2}^1 2x\,dx=3/4$.
+Also $f_X(3/4)=3/2$, while $\P(X=3/4)=0$.
+Where the density is continuous, the fundamental theorem says
+$F_X'(x)=f_X(x)$: the rate at which probability accumulates is its density.
+\end{example}
+
+\section{Expectation is a weighted average}
 
 For discrete $X$ with values $x_i$,
 \[
-\E[X]=\sum_i x_i\P(X=x_i).
+ \E[X]=\sum_i x_i\P(X=x_i).
 \]
-For continuous $X$ with density $f$,
+For a variable with density $f_X$,
 \[
-\E[X]=\int_{-\infty}^{\infty}x f(x)\,dx.
+ \E[X]=\int_{-\infty}^{\infty}x f_X(x)\,dx.
 \]
-Expectation is a center of mass, not necessarily a possible value.
+The weights are probabilities, not an instruction to average the list of
+possible values equally. For infinite sums or integrals we require the
+same expression with $|x|$ to be finite when calling the expectation
+finite. A nonnegative variable can instead have expectation $+\infty$;
+Section~\ref{sec:calc-improper} gives an example.
 
-\begin{theorem}[LOTUS]
-For a suitable function $g$,
+The three-toss count has mean
+$0(1/8)+1(3/8)+2(3/8)+3(1/8)=3/2$.
+No toss sequence contains $1.5$ heads. An expectation is a center of mass,
+so it need not be a possible value. For the increasing density above,
+$\E[X]=\int_0^1 x(2x)\,dx=2/3$.
+
+\subsection*{Functions of a random variable}
+If $Y=g(X)$, apply $g$ to the value actually observed. The event
+$\{Y\ge a\}$ is $\{\omega:g(X(\omega))\ge a\}$.
+Several values of $X$ may give the same value of $Y$; add their masses
+when finding its distribution.
+
+\begin{theorem}[Expectation of a function, often called LOTUS]
+When the sum or integral of the absolute value is finite,
 \[
-\E[g(X)]=\sum_x g(x)\P(X=x)
-\quad\text{or}\quad
-\E[g(X)]=\int g(x)f_X(x)\,dx.
+ \E[g(X)]=\sum_x g(x)p_X(x)
+ \quad\text{or}\quad
+ \E[g(X)]=\int_{-\infty}^{\infty}g(x)f_X(x)\,dx.
 \]
 \end{theorem}
+For a discrete variable this is just grouping equal recorded values:
+every outcome with $X=x$ contributes the same number $g(x)$.
+We can therefore average $g(x)$ using the known distribution of $X$,
+without first computing a new distribution for $g(X)$.
 
 \begin{theorem}[Linearity]
-For constants $a,b$ and integrable random variables $X,Y$,
+For constants $a,b$ and random variables $X,Y$ with finite expected
+absolute values,
 \[
-\E[aX+bY]=a\E[X]+b\E[Y],
+ \E[aX+bY]=a\E[X]+b\E[Y].
 \]
-whether or not $X$ and $Y$ are independent.
+Independence is not required.
 \end{theorem}
+On a finite sample space, multiply
+$aX(\omega)+bY(\omega)$ by each outcome's weight and add; distributing
+the sum proves the formula. The same addition rule extends to the
+convergent sums and integrals used here.
 
-\section{Variance and moments}
+\section{Variance measures spread around the mean}
 
+Put $m=\E[X]$. When the second moment is finite,
 \[
-\Var(X)=\E[(X-\E X)^2]=\E[X^2]-(\E X)^2.
+ \Var(X)=\E[(X-m)^2]=\E[X^2]-m^2.
 \]
-Standard deviation has the same units as $X$. The $k$th raw moment is $\E[X^k]$; the $k$th central moment is $\E[(X-\E X)^k]$. The moment-generating function, when finite near zero, is $M_X(t)=\E[e^{tX}]$ and satisfies $M_X^{(k)}(0)=\E[X^k]$.
+Expand the square and use linearity to obtain the second expression.
+The standard deviation $\sigma=\sqrt{\Var(X)}$ has the same units as $X$;
+variance has squared units. For the three-toss count,
+$\E[X^2]=3$, so $\Var(X)=3-(3/2)^2=3/4$.
+For density $2x$ on $[0,1]$, $\E[X^2]=1/2$, so the variance is
+$1/2-(2/3)^2=1/18$.
 
 \begin{proposition}
-For constants $a,b$,
-\[
-\Var(aX+b)=a^2\Var(X).
-\]
+For constants $a,b$, $\Var(aX+b)=a^2\Var(X)$.
 \end{proposition}
+The new mean is $am+b$, so the deviation from it is $a(X-m)$.
+Adding a constant shifts every value and its mean together; multiplying
+by $a$ multiplies every squared deviation by $a^2$.
 
-\section{Indicator variables}
+\begin{warningbox}
+In general $\E[g(X)]\ne g(\E[X])$.
+For the toss count, $\E[X^2]=3$ whereas $(\E[X])^2=9/4$.
+Linearity applies to sums and constant multiples; a nonlinear operation
+needs its own calculation.
+\end{warningbox}
 
-For an event $A$, let $\ind_A=1$ on $A$ and $0$ otherwise. Then $\E[\ind_A]=\P(A)$. If $N=\sum_i\ind_{A_i}$ counts occurrences, linearity gives
+The $k$th raw moment is $\E[X^k]$ and the $k$th central moment is
+$\E[(X-m)^k]$, when they exist. Later we sometimes package moments
+in $M_X(t)=\E[e^{tX}]$. If this moment-generating function is finite
+on an interval around zero, $M_X^{(k)}(0)=\E[X^k]$.
+Appendix~\ref{app:calculus} reviews the exponential series behind this
+connection; the finite examples can be differentiated term by term directly.
+
+\section{Indicators connect counting to averages}
+
+For an event $A$, its \emph{indicator} $\ind_A$ is $1$ when $A$ occurs
+and $0$ otherwise. Its mean is
+$\E[\ind_A]=1\P(A)+0\P(A^c)=\P(A)$.
+If $N=\sum_i\ind_{A_i}$ counts how many events occur, linearity gives
 \[
-\E[N]=\sum_i\P(A_i)
+ \E[N]=\sum_i\P(A_i)
 \]
-without independence.
+without any independence assumption.
+
+\begin{example}[Correct hats and matching birthdays]
+For a uniform permutation of $n\ge1$ hats, let $I_i$ indicate that
+person $i$ gets the right hat. Then $N=\sum_{i=1}^n I_i$ is the number
+of fixed points, and $\E[N]=n(1/n)=1$.
+This does not assert that every assignment has one fixed point:
+$\P(N=0)=D_n/n!$ is near $.368$ for large $n$.
+
+For birthdays, let $I_{ij}$ indicate a match between people $i$ and $j$.
+The number of matching pairs is $C=\sum_{i<j}I_{ij}$, so
+$\E[C]=\binom n2/d$ in the independent uniform $d$-day model.
+With $n=23,d=365$, the mean is $253/365\approx.69315$, while
+$\P(C\ge1)\approx.50730$. One experiment may contain several matching
+pairs; a mean count and a chance of at least one occurrence differ.
+\end{example}
+
+\section{Two bounds from averages}
 
 \begin{theorem}[Markov and Chebyshev]
-If $X\ge0$, then $\P(X\ge a)\le \E[X]/a$. Consequently,
+If $X\ge0$, $\E[X]<\infty$, and $a>0$, then
+$\P(X\ge a)\le\E[X]/a$.
+If $X$ has mean $m$ and variance $\sigma^2$ with $0<\sigma<\infty$,
+then for $k>0$,
 \[
-\P(|X-\E X|\ge k\sigma)\le \frac1{k^2}.
+ \P(|X-m|\ge k\sigma)\le\frac1{k^2}.
 \]
 \end{theorem}
+\begin{proof}
+The pointwise inequality $X\ge a\ind_{\{X\ge a\}}$ gives
+$\E[X]\ge a\P(X\ge a)$, proving Markov. Apply it to
+the nonnegative variable $(X-m)^2$ at threshold $k^2\sigma^2$
+to obtain Chebyshev.
+\end{proof}
+For the birthday pair count, Markov at $a=1$ gives
+$\P(C\ge1)\le\E[C]=\binom n2/d$, the union bound encountered earlier.
 
 \begin{exercisebox}
 \begin{enumerate}
-  \item Find the CDF of the number of heads in two fair flips. \exlevel{Fluency}
-  \item A density is proportional to $x$ on $[0,2]$. Normalize it and find its mean. \exlevel{Fluency}
+  \item Find the CDF of the number of heads in two fair independent flips. \exlevel{Fluency}
+  \item A density is proportional to $x$ on $[0,2]$ and zero elsewhere. Normalize it and find its mean. \exlevel{Fluency}
   \item Prove $\Var(X)=\E[X^2]-(\E X)^2$. \exlevel{Reasoning}
-  \item Find the expected number of fixed points in a random permutation of $n$ objects. \exlevel{Reasoning}
-  \item Show that a fair lottery can still have a large variance. Interpret. \exlevel{Exploration}
-  \item Use Chebyshev's inequality to bound the chance that a variable lies at least three standard deviations from its mean. Compare with the normal distribution. \exlevel{Reasoning}
+  \item Find the expected number of fixed points in a random permutation of $n\ge1$ objects. \exlevel{Reasoning}
+  \item Give a net-payoff distribution for a fair lottery with large variance. Interpret ``fair'' as expected net payoff zero. \exlevel{Exploration}
+  \item Use Chebyshev to bound the chance of lying at least three standard deviations from the mean. Compare with a normal distribution. \exlevel{Reasoning}
   \item Construct two different distributions with the same mean and variance. \exlevel{Exploration}
+  \item For two independent fair dice, write $\{S\ge10\}$ as a set of
+  ordered outcomes and calculate its probability. \exlevel{Fluency}
+  \item Toss independently twice with heads probability $1/3$. Find
+  the PMF and CDF of the number of heads and compute $\P(X\ge1)$.
+  \exlevel{Fluency}
+  \item For the three-fair-toss count $X$, let $Y=(X-1)^2$.
+  Find its distribution and mean, combining repeated values correctly.
+  \exlevel{Reasoning}
+  \item A CDF equals $0$ for $x<0$, $x^3$ for $0\le x\le1$,
+  and $1$ for $x>1$. Find its density, $\P(X\ge1/2)$, mean, and
+  variance. \exlevel{Fluency}
+  \item For four uniformly assigned hats, use $\binom4rD_{4-r}/4!$
+  to find the distribution of the number of fixed points. Check its
+  mean and variance, and explain why three fixed points are impossible.
+  \exlevel{Reasoning}
+  \item Find the expected number of matching birthday pairs among
+  23 people on a 365-day calendar. Explain why this differs from the
+  collision probability, and use it to give an upper bound.
+  \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}

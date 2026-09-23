@@ -2,23 +2,39 @@
 
 This site is the interactive companion to the probability and statistics course packet.
 
-It includes nine browser-based labs, the expanded printable PDF edition, a student problem set, and four downloadable Jupyter notebooks. The site uses the OpenAI Sites starter runtime.
+It includes ten browser-based labs, the expanded printable PDF edition,
+a student assessment library, four Python notebooks, and a SageMath
+exchangeability notebook. The site uses the OpenAI Sites starter runtime.
 
 The ten-chapter PDF now includes an optional exchangeability capstone:
 de Finetti's Bernoulli representation, a shared hidden coin, Pólya's urn,
 random limiting frequencies, finite counterexamples, and nine exercises.
 The optional proof connects finite sampling to the birthday-collision
 bound. A short Chapter 3 preview prepares the distinction from independence.
-The existing nine labs and four notebooks are unchanged by this addition.
+The core Python labs are joined by an exchangeability lab and Sage notebook.
 
 The early-course labs cover permutations and combinations, Pascal's triangle,
 cardinality and probabilistic inclusion-exclusion, and the birthday paradox.
 The birthday model assumes independent, uniformly distributed birthdays;
 its simulation is compared with the exact product formula.
 
-`public/problem-set-02.pdf` and `public/problem-set-03.pdf` are the student
-handouts. Instructor solutions are kept with the separate course materials,
-outside the public site.
+The foundations reading section links directly into Chapters 1, 2, and 4
+of the PDF. It covers elementary counting and the binomial theorem,
+probability spaces built from events and weights, full birthday and
+derangement arguments, and random variables with concrete threshold events.
+
+Appendix A is a calculus refresher with worked examples and 18 exercises
+with answers. It covers limits, derivatives, likelihood optimization,
+definite and improper integrals, substitution, integration by parts,
+series, and Taylor error bounds. Its applications justify the birthday
+approximation and the derangement limit and rounding formula. The homepage
+links to it at `#calculus`; the editable source is
+`../book/chapters/calculus_refresher.tex`. Keep `public/course-packet.pdf`
+identical to `../book/chance_data_decisions.pdf` after rebuilding.
+
+`public/problem-set-02.pdf` and `public/problem-set-03.pdf` are student
+handouts. Instructor editions are stored in `private/` and served through
+the authenticated instructor library.
 
 ## Local development
 

@@ -32,6 +32,40 @@ For a designated person among $n\ge1$, the probability of a match with
 someone else is $1-(1-1/d)^{n-1}$, taking it to be zero when $n=1$.
 For 365 days, the any-pair probability first exceeds $1/2$ at 23 people.
 
+\section*{Derangements and fixed points}
+For a uniform permutation of $n$ objects,
+\[
+ D_n=n!\sum_{k=0}^n\frac{(-1)^k}{k!},\qquad
+ \P(\text{exactly }r\text{ fixed points})=\frac{\binom nrD_{n-r}}{n!}.
+\]
+Here $D_0=1$, $D_1=0$, and $D_n=nD_{n-1}+(-1)^n$.
+The error in $D_n/n!\approx e^{-1}$ is less than $1/(n+1)!$;
+for $n\ge1$, $D_n$ is the nearest integer to $n!/e$.
+
+\section*{Random variables and threshold events}
+The event $\{X\ge a\}$ means $\{\omega:X(\omega)\ge a\}$.
+For a PMF, group outcome probabilities with the same value of $X$.
+For a density, integrate over the requested range:
+\[
+ F_X(x)=\P(X\le x),\qquad
+ \P(a<X\le b)=F_X(b)-F_X(a),\qquad
+ \P(X>a)=1-F_X(a).
+\]
+For integer-valued $X$ and integer $k$, $\P(X\ge k)=1-F_X(k-1)$.
+For a variable with a density, individual values have probability zero.
+
+\section*{Calculus used in the course}
+\begin{align*}
+ \int_a^b f(x)\,dx&=G(b)-G(a)\quad(G'=f),\\
+ e^x&=\sum_{k=0}^{\infty}\frac{x^k}{k!},\\
+ \log(1-x)&=-\sum_{k=1}^{\infty}\frac{x^k}{k}\quad(0\le x<1),\\
+ \sum_{k=0}^{\infty}r^k&=\frac1{1-r}\quad(|r|<1).
+\end{align*}
+The birthday estimate is $q_d(n)\approx1-e^{-n(n-1)/(2d)}$;
+it is a lower bound when $0\le n\le d$.
+See Appendix~\ref{app:calculus} for the derivations, hypotheses,
+worked integrations, and quantitative error estimates.
+
 \section*{Core probability identities}
 \begin{align*}
 \P(A^c)&=1-\P(A),\\

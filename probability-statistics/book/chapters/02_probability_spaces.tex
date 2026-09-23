@@ -1,27 +1,49 @@
 \chapter{A measure of possibility}
-\chaptertag{Probability spaces, inclusion--exclusion, and the birthday paradox}
+\label{ch:probability-spaces}
+\chaptertag{Outcomes, events, birthdays, and derangements}
 
 \begin{question}
 What rules must any coherent numerical description of uncertainty obey?
 \end{question}
 
-\section{The axioms}
+\section{A probability space is a model}
 
 \begin{definition}
-A \emph{probability space} is a triple $(\Omega,\mathcal F,\P)$: a sample space $\Omega$, a collection $\mathcal F$ of events containing $\Omega$ and closed under complements and countable unions, and a function $\P:\mathcal F\to[0,1]$ satisfying
+A \emph{probability space} describes three things: the possible outcomes
+$\Omega$, the events we can ask about, and a rule $\P$ assigning their
+probabilities. An event is a set of outcomes; it occurs when the observed
+outcome belongs to that set. For a finite space, every subset is an event.
+The probability rule satisfies
 \begin{enumerate}
+  \item probabilities are nonnegative;
   \item $\P(\Omega)=1$;
-  \item if $A_1,A_2,\ldots$ are pairwise disjoint, then
-  \[
-  \P\!\left(\bigcup_i A_i\right)=\sum_i\P(A_i).
-  \]
+  \item probabilities add for disjoint events: if $A\cap B=\varnothing$,
+  then $\P(A\cup B)=\P(A)+\P(B)$.
 \end{enumerate}
+The last rule also applies to a finite or countably infinite list of
+pairwise disjoint events, by adding all their probabilities.
 \end{definition}
 
-The collection $\mathcal F$ is called a \emph{sigma-algebra}. For a finite
-sample space we usually take $\mathcal F=2^\Omega$, the collection of all
-subsets of $\Omega$. The more careful notation becomes important for
-continuous spaces.
+The basic examples in this course use finite sets, lists of integers,
+or points in intervals and planar regions. In continuous models we will
+describe events using intervals, inequalities, and their unions,
+intersections, and complements. These are enough for the calculations here.
+
+\begin{example}[One outcome, several events]
+Roll a die. An outcome is a number such as $4$. The event ``even'' is
+$\{2,4,6\}$; the event ``at least five'' is $\{5,6\}$.
+The single-outcome event $\{4\}$ is a set too. For a fair die,
+the two larger events have probabilities $1/2$ and $1/3$.
+If the die is weighted, the outcomes and events can stay the same while
+their probabilities change.
+\end{example}
+
+\begin{checkpoint}[title={Build the model before taking a ratio}]
+Write down what one outcome records, list the possible outcomes, assign
+their probabilities, and then identify the event in the question.
+Use ``favorable divided by total'' only after explaining why the
+individual outcomes are equally likely.
+\end{checkpoint}
 
 \section{Building a finite probability space}
 
@@ -33,8 +55,8 @@ $\sum_{\omega\in\Omega}w_\omega=1$, and define
 The total mass is one; for disjoint events, the sums use disjoint outcomes,
 which gives additivity. Since $\Omega$ is finite, only finitely many events
 in a disjoint family can be nonempty, so countable additivity also follows.
-This construction gives every probability measure on a finite space with
-all subsets measurable. The uniform model is the special choice
+Conversely, the probabilities of individual outcomes determine every
+event probability by addition. The uniform model is the special choice
 $w_\omega=1/|\Omega|$ for each outcome.
 
 \begin{example}[Unequal weights]
@@ -47,6 +69,22 @@ For $A=\{a,b\}$ and $B=\{b,d\}$,
 Although $A$ contains half the outcomes, it does not have probability
 $1/2$. Counting outcomes and adding their probability masses are different
 operations unless all outcomes have equal mass.
+\end{example}
+
+\begin{example}[A coin need not be fair]
+Toss a coin independently twice, with heads probability $1/3$ each time.
+The ordered outcomes and their probabilities are
+\[
+\begin{array}{c|rrrr}
+\omega&TT&TH&HT&HH\\\hline
+\P(\{\omega\})&4/9&2/9&2/9&1/9
+\end{array}
+\]
+Exactly one head is the event $\{TH,HT\}$, with probability $4/9$.
+At least one head is its union with $\{HH\}$, with probability $5/9$;
+the complement calculation is $1-\P(\{TT\})=1-4/9$.
+Independence justifies multiplying the two single-toss probabilities.
+It does not say that the four strings are equally likely.
 \end{example}
 
 \begin{proposition}
@@ -91,7 +129,7 @@ For events $A_1,\ldots,A_r$ in any probability space,
 \end{theorem}
 \begin{proof}
 Partition the sample space by the exact list of events that occur.
-There are at most $2^r$ such disjoint measurable regions. A region in
+There are at most $2^r$ such disjoint regions. A region in
 exactly $t\ge1$ events contributes its probability mass with coefficient
 $\sum_{k=1}^t(-1)^{k+1}\binom tk=1$ on the right. The region in no event
 contributes zero. Finite additivity therefore gives the probability of
@@ -141,8 +179,7 @@ How large must a class be before a shared birthday is more likely than not?
 State the model first. There are $n$ labeled people and $d\ge1$ possible days.
 Their birthdays are independent and uniform on those days. Thus
 \[
-\Omega=\{1,\ldots,d\}^n,\qquad \mathcal F=2^\Omega,
-\qquad \P(\{\omega\})=d^{-n}.
+\Omega=\{1,\ldots,d\}^n,\qquad \P(\{\omega\})=d^{-n}.
 \]
 For the usual classroom model set $d=365$: ignore leap days and seasonal
 variation. Independence and equal daily probabilities are modeling
@@ -178,6 +215,11 @@ $q_{365}(n)$ & .11695 & .41144 & .47570 & .50730 & .70632 \\
 Adding a person cannot destroy an existing match, so the probability is
 nondecreasing. Since $q_{365}(22)<1/2<q_{365}(23)$, the first class size
 above $50\%$ is $23$.
+
+The familiar approximation $1-e^{-n(n-1)/(2d)}$ comes from taking
+logarithms of the product. Section~\ref{sec:calc-birthdays} derives it,
+explains its error, and checks the threshold against the exact formula.
+The counting argument itself requires no calculus.
 
 \begin{checkpoint}[title={Any pair versus one particular person}]
 In a class of $n\ge1$ people, the probability that someone else shares one
@@ -221,9 +263,92 @@ simulate classes. Change the calendar from 365 days to 30 or 10 days.
 Separate sampling fluctuations from changes in the underlying model.
 \end{labbox}
 
+\section{Derangements: nobody gets their own hat}
+\label{sec:derangements}
+
+Return $n$ labeled hats to their $n$ owners, giving each person one hat.
+Model the return by a uniformly chosen permutation $\pi$, where
+$\pi(i)$ is the hat given to person $i$. There are $n!$ equally likely
+outcomes. A \emph{fixed point} is an $i$ with $\pi(i)=i$; a
+\emph{derangement} has no fixed points. Let $D_n$ count derangements,
+and set $D_0=1$ for the one empty arrangement.
+
+For $n=3$, write the three received hats in recipient order. The six
+permutations are
+\[
+ 123,\quad132,\quad213,\quad231,\quad312,\quad321.
+\]
+Only $231$ and $312$ have
+no fixed point, so $D_3=2$ and the probability is $1/3$.
+
+\begin{theorem}[The derangement formula]
+For $n\ge0$,
+\[
+ D_n=n!\sum_{k=0}^n\frac{(-1)^k}{k!},\qquad
+ \P(\text{no fixed point})=\frac{D_n}{n!}.
+\]
+\end{theorem}
+\begin{proof}
+Let $A_i$ be the event that person $i$ gets their own hat. If a specified
+set of $k$ people gets its own hats, the remaining hats can be assigned
+in $(n-k)!$ ways. There are $\binom nk$ choices of that specified set.
+Inclusion--exclusion for avoiding all the $A_i$ gives
+\[
+ D_n=\sum_{k=0}^n(-1)^k\binom nk(n-k)!
+     =n!\sum_{k=0}^n\frac{(-1)^k}{k!}.
+\]
+The term $k=0$ counts all permutations. Divide by $n!$ to obtain the
+probability under the stated uniform model.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$n$&0&1&2&3&4&5&6\\\midrule
+$D_n$&1&0&1&2&9&44&265\\
+$D_n/n!$&1&0&.5&.33333&.375&.36667&.36806\\\bottomrule
+\end{tabular}
+\end{center}
+Subtracting the formulas for $D_n$ and $nD_{n-1}$ leaves just the last
+term, giving the convenient exact recurrence
+\[
+ D_n=nD_{n-1}+(-1)^n\quad(n\ge1),\qquad D_0=1.
+\]
+For example, $D_5=5\cdot9-1=44$ and $D_6=6\cdot44+1=265$.
+
+\begin{warningbox}
+For $n\ge2$, $\P(A_i)=1/n$, but for $i\ne j$,
+$\P(A_i\cap A_j)=1/[n(n-1)]\ne1/n^2$.
+Getting one person's hat right changes the remaining assignments.
+The probability that nobody gets their own hat is therefore not
+$(1-1/n)^n$.
+\end{warningbox}
+
+\begin{example}[Exactly one correct hat]
+For four people, choose the one fixed point and derange the other three:
+$\binom41D_3=8$ permutations, giving probability $8/24=1/3$.
+More generally, exactly $r$ fixed points can be chosen and arranged in
+$\binom nrD_{n-r}$ ways. Requiring a \emph{derangement} on the rest is
+essential: an arbitrary permutation could introduce more fixed points.
+\end{example}
+
+Why do the probabilities settle near $.367879$? The sum is an initial
+segment of the series for $e^{-1}$. Section~\ref{sec:calc-derangements}
+derives that series and proves the explicit error bound
+$|D_n/n!-e^{-1}|<1/(n+1)!$. Thus the approximation is accompanied by
+a quantitative guarantee. Chapter~\ref{ch:random-variables} returns to
+the number of correct hats as a random variable.
+
 \section{Continuity and geometry}
 
 Choose a point uniformly from $[0,1]$. Every individual point has probability zero, yet the entire interval has probability one. Probabilities attach to regions: $\P([a,b])=b-a$. Zero probability does not mean impossible; it means negligible under the model.
+
+Here $0\le a\le b\le1$. For example, the event ``the point is at least
+$3/4$'' is the interval $[3/4,1]$ and has probability $1/4$.
+There is no positive equal weight to put on each individual point:
+probability is assigned through lengths. In a uniform unit square the
+corresponding rule uses areas. The event $x+y<1$ is a triangle of area
+$1/2$.
 
 \begin{center}
 \begin{tikzpicture}[x=10cm,y=1cm]
@@ -233,6 +358,13 @@ Choose a point uniformly from $[0,1]$. Every individual point has probability ze
   \node[above=6pt,mint!70!black] at (.475,0) {$\P([a,b])=b-a$};
 \end{tikzpicture}
 \end{center}
+
+\subsection*{An infinite list can also carry probabilities}
+On $\Omega=\{1,2,3,\ldots\}$, assign outcome $k$ probability $2^{-k}$.
+The geometric series $1/2+1/4+1/8+\cdots=1$ makes this a valid model.
+The event $\{4,5,6,\ldots\}$ has probability $1/8$ by the same series.
+An infinite sum means the limit of its finite partial sums;
+Section~\ref{sec:calc-series} reviews exactly this calculation.
 
 \section{Simulation and the model--world gap}
 
@@ -260,5 +392,18 @@ The events need not be disjoint. Double counting makes the right side larger, wh
   \item With independent uniform birthdays on 30 days, find the first class size whose collision probability exceeds $1/2$. \exlevel{Fluency}
   \item For four people and a five-day calendar, count the no-collision lists and calculate the collision probability. \exlevel{Fluency}
   \item Explain why $\binom n2/d$ can exceed one without contradicting the probability axioms. \exlevel{Reasoning}
+  \item An urn contains three labeled red balls and two labeled blue
+  balls. Draw twice without replacement. Describe a uniform ordered
+  sample space and find the probability of two reds. Check using
+  unordered pairs. \exlevel{Fluency}
+  \item In a uniform permutation of five objects, find the probability
+  of exactly two fixed points. \exlevel{Reasoning}
+  \item For four hats, compute $\P(A_1)$ and $\P(A_1\cap A_2)$.
+  Compare with $\P(A_1)\P(A_2)$. \exlevel{Fluency}
+  \item Deduce $D_n=(n-1)(D_{n-1}+D_{n-2})$ for $n\ge2$ from
+  the alternating-sign recurrence, and calculate $D_7$. \exlevel{Reasoning}
+  \item In the model $\P(\{k\})=2^{-k}$ on the positive integers,
+  find the probability of an even outcome by summing a geometric series.
+  \exlevel{Fluency}
 \end{enumerate}
 \end{exercisebox}

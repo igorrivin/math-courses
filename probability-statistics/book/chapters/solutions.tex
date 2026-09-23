@@ -11,6 +11,22 @@ The repeated-letter count for $\texttt{LEVEL}$ is $5!/(2!2!)=30$.
 The coefficient of $x^2$ in $(1+3x)^5$ is $\binom52 3^2=90$.
 The length-five strings using all three symbols number
 $3^5-3\cdot2^5+3=150$.
+For Exercise 3, choose the three letter positions, then fill all positions:
+$\binom83 26^3 10^5$.
+For Exercises 13--16:
+\begin{enumerate}[start=13]
+ \item A specified string with three successes has probability
+ $(1/3)^3(2/3)^2=4/243$. There are $\binom53=10$ such strings,
+ giving total probability $40/243$.
+ \item The ordered count is $3^4=81$. The unordered count is
+ $\binom{4+3-1}{4}=15$. A selection $AAAA$ has one ordering,
+ whereas $AAAB$ has four; the multiplicity is not constant.
+ \item There are 11 letters, with four I's, four S's, two P's,
+ and one M. The count is $11!/(4!4!2!)=34650$.
+ \item Count by subset size to obtain $\sum_k k\binom nk$.
+ Alternatively, choose the distinguished member in $n$ ways and
+ any subset of the remaining $n-1$ members in $2^{n-1}$ ways.
+\end{enumerate}
 
 \section*{Chapter 2}
 For the maximum of two dice to equal 4, both dice must be at most 4 but not both at most 3, giving $(4^2-3^2)/36=7/36$. For two uniform points $X,Y$, the band $|X-Y|<.1$ has area $1-2(.9)^2/2=.19$.
@@ -23,6 +39,23 @@ $5\cdot4\cdot3\cdot2=120$ distinct-birthday lists among $5^4=625$ lists,
 so the collision probability is $1-120/625=101/125$.
 The quantity $\binom n2/d$ sums probabilities of overlapping events.
 It is an upper bound, not necessarily a probability.
+For Exercises 12--16:
+\begin{enumerate}[start=12]
+ \item There are $5\cdot4=20$ equally likely ordered pairs of distinct
+ labeled balls. Exactly $3\cdot2=6$ have two reds, giving $3/10$.
+ Unordered pairs give $\binom32/\binom52=3/10$ as well.
+ \item Choose the fixed pair and derange the remaining three:
+ $\binom52D_3/5!=10\cdot2/120=1/6$.
+ \item $\P(A_1)=1/4$ and $\P(A_1\cap A_2)=2!/4!=1/12$.
+ The product of the single probabilities is $1/16$, so the events
+ are dependent.
+ \item The preceding recurrence gives
+ $(-1)^n=(n-1)D_{n-2}-D_{n-1}$.
+ Substitute into $D_n=nD_{n-1}+(-1)^n$ to get the claimed formula.
+ Then $D_7=6(265+44)=1854$.
+ \item The probability is $\sum_{j=1}^{\infty}4^{-j}
+ =(1/4)/(1-1/4)=1/3$.
+\end{enumerate}
 
 \section*{Chapter 3}
 For the coin problem,
@@ -32,7 +65,49 @@ For the coin problem,
 A pairwise-not-mutual example: flip two fair coins; let $A$ be first-heads, $B$ second-heads, and $C$ equal-results.
 
 \section*{Chapter 4}
-For fixed points, write $N=\sum_{i=1}^n I_i$. Since $\P(I_i=1)=1/n$, linearity gives $\E N=1$. The variance identity follows by expanding $(X-\mu)^2$.
+\begin{enumerate}
+ \item The masses at $0,1,2$ are $1/4,1/2,1/4$. The CDF is $0$
+ for $x<0$, $1/4$ for $0\le x<1$, $3/4$ for $1\le x<2$, and
+ $1$ for $x\ge2$.
+ \item Normalization gives $c\int_0^2x\,dx=2c=1$, so $c=1/2$.
+ The mean is $\int_0^2 x(x/2)\,dx=4/3$.
+ \item Write $m=\E[X]$ and expand:
+ $\E[(X-m)^2]=\E[X^2]-2m\E[X]+m^2=\E[X^2]-m^2$.
+ \item Let $I_i$ indicate that $i$ is fixed and write $N=\sum I_i$.
+ Since $\P(I_i=1)=1/n$, linearity gives $\E[N]=1$ for $n\ge1$.
+ No independence is used.
+ \item Let the net payoff be $999$ with probability $1/1000$ and
+ $-1$ otherwise. Its mean is zero and its variance is
+ $999^2/1000+999/1000=999$.
+ \item Chebyshev gives at most $1/9\approx.1111$. For a normal
+ distribution, the probability is about $.00270$. A general bound
+ need not be close to the value for a particular distribution.
+ \item Equal masses at $-1,1$ have mean zero and variance one.
+ Another example has masses $1/4,1/2,1/4$ at
+ $-\sqrt2,0,\sqrt2$, respectively; its mean is zero and second
+ moment is also one.
+ \item The event is
+ $\{(4,6),(5,5),(6,4),(5,6),(6,5),(6,6)\}$, with probability $6/36=1/6$.
+ \item The masses at $0,1,2$ are $4/9,4/9,1/9$. The CDF is
+ $0$ below zero, $4/9$ on $[0,1)$, $8/9$ on $[1,2)$, and $1$
+ on $[2,\infty)$. Thus $\P(X\ge1)=1-4/9=5/9$.
+ \item The values of $Y$ at $X=0,1,2,3$ are $1,0,1,4$.
+ Its masses at $0,1,4$ are $3/8,1/2,1/8$, giving mean
+ $0(3/8)+1(1/2)+4(1/8)=1$.
+ \item The density is $3x^2$ on $[0,1]$, zero elsewhere; values
+ at the endpoints do not affect integrals. The tail probability is
+ $1-(1/2)^3=7/8$. The first two moments are $3/4$ and $3/5$,
+ hence the variance is $3/5-9/16=3/80$.
+ \item At $r=0,1,2,3,4$, the permutation counts are $9,8,6,0,1$,
+ respectively, out of $24$. Thus $\E[N]=(8+12+4)/24=1$ and
+ $\E[N^2]=(8+24+16)/24=2$, giving variance one.
+ Fixing three of four objects forces the fourth to be fixed as well.
+ \item There are $\binom{23}{2}=253$ pairs, each matching with
+ probability $1/365$, so the mean is $253/365\approx.69315$.
+ Multiple matches can occur together, while a collision event is
+ counted only once. Markov at threshold one gives the upper bound
+ $\P(C\ge1)\le253/365$.
+\end{enumerate}
 
 \section*{Chapter 5}
 For an exponential variable, $\P(X>m)=e^{-\lambda m}=1/2$, hence $m=(\log2)/\lambda$. For $X\sim\Normal(10,9)$,

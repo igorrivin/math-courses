@@ -1,0 +1,763 @@
+\chapter[Calculus refresher]{Calculus refresher: tools for probability}
+\label{app:calculus}
+\chaptertag{A second encounter with limits, derivatives, integrals, and series}
+
+Calculus returns in probability whenever a sum becomes an area, a product
+needs an approximation, or a parameter must be chosen to maximize a
+likelihood. This appendix rebuilds those tools through worked examples.
+Read with a pencil: pause before each calculation and predict its sign,
+scale, or limiting value. The exercises at the end have worked answers.
+
+\begin{bigidea}[title={Choose a route through the refresher}]
+For birthdays, review logarithms, finite sums, and Taylor approximation,
+then read Section~\ref{sec:calc-birthdays}. For derangements, review
+series and the exponential function, then read
+Section~\ref{sec:calc-derangements}. For continuous random variables,
+start with definite integrals and the fundamental theorem in
+Section~\ref{sec:calc-integrals}. The final beta-integral example is an
+optional bridge to Bayesian inference.
+\end{bigidea}
+
+\section{Algebra, functions, and finite sums}
+
+\subsection*{Keep track of the variable}
+In $f(x)=\lambda e^{-\lambda x}$, $x$ is the input and $\lambda>0$ is a
+fixed parameter. Differentiating with respect to $x$ holds $\lambda$
+constant. Later, maximizing a likelihood in $\lambda$ holds the observed
+data constant instead. Before differentiating, say which symbol is allowed
+to vary.
+
+The natural logarithm $\log x$ is defined for $x>0$ and is the inverse
+of the exponential function. Its essential rules are
+\[
+ e^{u+v}=e^u e^v,\qquad
+ \log(ab)=\log a+\log b,\qquad
+ \log(a^r)=r\log a\quad(a,b>0).
+\]
+Also $e^0=1$, $\log1=0$, and $e^{\log a}=a$.
+Taking logarithms turns a product of positive factors into a sum.
+It does not turn a sum into a sum of logarithms:
+$\log(1+1)=\log2\ne0=\log1+\log1$.
+
+\subsection*{A sum is an instruction, not a new operation}
+The index in $\sum_{j=0}^{n-1}j$ runs through $0,1,\ldots,n-1$;
+there are $n$ terms. The two sums needed for birthday estimates are
+\[
+ \sum_{j=0}^{n-1}j=\frac{n(n-1)}2,\qquad
+ \sum_{j=0}^{n-1}j^2=\frac{n(n-1)(2n-1)}6.
+\]
+Pair the first sum with its reversed order: each of the $n$ paired
+terms is $n-1$. For the second identity, induction works: increasing
+$n$ to $n+1$ adds $n^2$ to both sides. Both sides start at zero
+when $n=1$.
+
+The product notation $\prod_{j=0}^{n-1}(1-j/d)$ means
+$1(1-1/d)\cdots(1-(n-1)/d)$. A sum with no terms is zero; a product
+with no factors is one. These conventions make the cases $n=0$ work
+without separate algebraic exceptions.
+
+Factorials are finite products, $n!=1\cdot2\cdots n$, with $0!=1$.
+Cancel common factors before using a calculator:
+\[
+ \frac{n!}{(n-2)!}=n(n-1),\qquad
+ \frac{\binom nk(n-k)!}{n!}=\frac1{k!}.
+\]
+The second cancellation explains the simple denominators in the
+derangement probability.
+
+\section{Limits and continuity}
+
+The statement $f(x)\to L$ as $x\to a$ says that $f(x)$ can be made
+as close as desired to $L$ by taking $x$ sufficiently close to $a$,
+with $x\ne a$. The value at $a$ itself is a separate question.
+For example,
+\[
+ \lim_{x\to1}\frac{x^2-1}{x-1}
+ =\lim_{x\to1}(x+1)=2.
+\]
+The fraction is undefined at $1$, but the nearby values have a limit.
+A function is \emph{continuous} at $a$ when the limit equals $f(a)$.
+Polynomials are continuous everywhere; rational functions are continuous
+where their denominators are nonzero. Exponentials are continuous, and
+logarithms are continuous on their positive domain.
+
+For a sequence $a_n$, the notation $a_n\to L$ means that all sufficiently
+late terms stay arbitrarily close to $L$. Thus $1/n\to0$, while
+$(-1)^n$ has no limit. The expression
+\[
+ \left(1+\frac1n\right)^n\longrightarrow e\approx2.7182818
+\]
+is one familiar appearance of the exponential constant. Another,
+$e=\sum_{k=0}^{\infty}1/k!$, will follow from Taylor's theorem below.
+
+\begin{warningbox}
+A small term can accumulate. Although $1/n\to0$, a sum of $n$ copies
+of $1/n$ is always one. Likewise, replacing every birthday factor by
+something ``close'' to it needs an estimate for the total error.
+\end{warningbox}
+
+\subsection*{Two practical limit tools}
+If $0\le a_n\le b_n$ and $b_n\to0$, then $a_n\to0$ by squeezing.
+For example, $0\le n/(n^2+1)\le1/n$.
+For quotients with the indeterminate forms $0/0$ or $\infty/\infty$,
+l'H\^opital's rule can replace a quotient by the quotient of its
+derivatives, provided the functions are differentiable nearby, the
+denominator derivative is nonzero there, and the latter quotient has a
+limit. It is not a rule for arbitrary fractions. A useful example is
+\[
+ \lim_{x\to\infty}\frac{x}{e^x}
+ =\lim_{x\to\infty}\frac1{e^x}=0.
+\]
+Repeated application shows $x^m e^{-\lambda x}\to0$ for a fixed
+nonnegative integer $m$ and $\lambda>0$. This justifies the boundary
+terms in exponential moment calculations.
+
+\section{Derivatives describe local change}
+\label{sec:calc-derivatives}
+
+The derivative is the limiting slope
+\[
+ f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}h.
+\]
+For $f(x)=x^2$, the difference quotient is $2a+h$, so $f'(a)=2a$.
+For small $h$, the tangent-line estimate is
+$f(a+h)\approx f(a)+f'(a)h$. This is an approximation near $a$;
+Taylor's theorem will quantify its error.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Function or operation & Derivative \\\midrule
+$c$; $x^r$ & $0$; $r x^{r-1}$ where defined \\
+$e^x$; $\log x$ & $e^x$; $1/x$ for $x>0$ \\
+$af+bg$ & $af'+bg'$ \\
+$fg$ & $f'g+fg'$ \\
+$f/g$ & $(f'g-fg')/g^2$ where $g\ne0$ \\
+$f(g(x))$ & $f'(g(x))g'(x)$ \\\bottomrule
+\end{tabular}
+\end{center}
+
+The last identity is the \emph{chain rule}: differentiate the outer
+function and multiply by the derivative of the inner function. For example,
+\[
+ \frac{d}{dx}e^{-3x}=-3e^{-3x},\qquad
+ \frac{d}{dx}\log(1-x)=-\frac1{1-x}\quad(x<1).
+\]
+The product and chain rules together give
+$\frac{d}{dx}(x^2e^{-3x})=(2x-3x^2)e^{-3x}$.
+The second derivative $f''$ describes change in the slope: $f''>0$
+means the graph bends upward, and $f''<0$ means it bends downward.
+
+\begin{example}[Differentiation remembers a counting identity]
+Differentiate the \emph{finite} binomial identity
+$(1+x)^n=\sum_{k=0}^n\binom nkx^k$. For $n\ge1$,
+\[
+ n(1+x)^{n-1}=\sum_{k=1}^n k\binom nkx^{k-1}.
+\]
+At $x=1$ this is $\sum_{k=0}^n k\binom nk=n2^{n-1}$.
+The same quantity counts subsets with a distinguished member: choose
+the member in $n$ ways, then decide which of the other $n-1$ objects to include.
+\end{example}
+
+\section{Optimization: logarithms simplify a likelihood}
+
+A differentiable function can have an interior maximum only where its
+derivative is zero. That is a candidate, not a conclusion: check the
+sign of the derivative or the second derivative, and check boundaries.
+
+Suppose $s$ successes and $f=n-s$ failures have been observed in
+independent trials with unknown success probability $p$. For a specified
+observed string the likelihood is $L(p)=p^s(1-p)^f$. If only the count
+is recorded, the extra factor $\binom ns$ does not depend on $p$ and
+does not change the maximizing value.
+
+When $0<s<n$, maximize its logarithm on $0<p<1$:
+\[
+ \ell(p)=s\log p+f\log(1-p),\qquad
+ \ell'(p)=\frac{s}{p}-\frac{f}{1-p}.
+\]
+Logarithm is increasing, so the maximizer is preserved. Setting the
+derivative to zero gives $s(1-p)=fp$, hence $p=s/n$. Moreover,
+\[
+ \ell''(p)=-\frac{s}{p^2}-\frac{f}{(1-p)^2}<0,
+\]
+so this is the unique interior maximum. The likelihood is zero at
+both endpoints when both counts are positive.
+If $s=0<n$, $L(p)=(1-p)^n$ is maximized at $p=0$; if $s=n>0$,
+$L(p)=p^n$ is maximized at $p=1$. With no observations, the likelihood
+is constant and selects no unique parameter.
+
+\begin{checkpoint}
+With 7 successes in 10 trials the maximizing parameter is $.7$.
+Explain why this calculation treats the data as fixed and $p$ as
+variable. A likelihood is not, by itself, a probability density for $p$.
+\end{checkpoint}
+
+\section{Integrals: area and accumulated change}
+\label{sec:calc-integrals}
+
+Divide $[a,b]$ into narrow intervals of widths $\Delta x_i$, and choose
+a sample point $t_i$ in each one. The sum
+$\sum_i f(t_i)\Delta x_i$ adds the areas of thin rectangles.
+For a continuous $f$, these sums tend to the definite integral
+$\int_a^b f(x)\,dx$ as the largest width tends to zero.
+If $f\ge0$, this is area; below the axis, contributions are signed.
+Probability densities must be nonnegative so that their areas are probabilities.
+
+\begin{theorem}[Fundamental theorem of calculus]
+If $f$ is continuous on $[a,b]$, then
+$A(x)=\int_a^x f(t)\,dt$ satisfies $A'(x)=f(x)$ in the interior.
+If $G'=f$, then
+\[
+ \int_a^b f(x)\,dx=G(b)-G(a).
+\]
+\end{theorem}
+An antiderivative turns an area calculation into an endpoint calculation.
+The indefinite integral $\int f(x)\,dx=G(x)+C$ is a family of functions;
+the definite integral is a number. The arbitrary constant cancels between
+the endpoints.
+
+The power rule gives
+\[
+ \int x^r\,dx=\frac{x^{r+1}}{r+1}+C\quad(r\ne-1),\qquad
+ \int\frac{dx}{x}=\log|x|+C\quad(x\ne0).
+\]
+Use intervals on which the integrand is defined. Integrals distribute over
+finite sums and constant multiples, but not over products.
+
+\begin{example}[Normalize, accumulate, average]
+Suppose a proposed density is $cx$ on $[0,1]$ and zero elsewhere.
+Normalization requires $1=\int_0^1 cx\,dx=c/2$, so $c=2$.
+For $0\le t\le1$, its CDF is
+$F(t)=\int_0^t2x\,dx=t^2$. Its first two moments are
+\[
+ \E[X]=\int_0^1 x(2x)\,dx=\frac23,\qquad
+ \E[X^2]=\int_0^1 x^2(2x)\,dx=\frac12.
+\]
+Consequently $\Var(X)=1/2-4/9=1/18$.
+The event $X\ge1/2$ has probability
+$\int_{1/2}^1 2x\,dx=[x^2]_{1/2}^1=3/4$.
+\end{example}
+
+\begin{center}
+\begin{tikzpicture}[x=3.7cm,y=1.65cm]
+ \fill[mint!25] (.5,0)--(.5,1)--(1,2)--(1,0)--cycle;
+ \draw[->,muted] (0,0)--(1.15,0) node[right] {$x$};
+ \draw[->,muted] (0,0)--(0,2.3) node[above] {$f(x)$};
+ \draw[indigo,very thick] (0,0)--(1,2);
+ \node[below] at (.5,0) {$1/2$}; \node[below] at (1,0) {$1$};
+ \node[left] at (0,2) {$2$};
+ \node[fill=paper,inner sep=2pt] at (.78,.45) {area $3/4$};
+ \begin{scope}[xshift=6cm,y=3.3cm]
+  \draw[->,muted] (0,0)--(1.15,0) node[right] {$x$};
+  \draw[->,muted] (0,0)--(0,1.15) node[above] {$F(x)$};
+  \draw[violet,very thick,domain=0:1,samples=50] plot (\x,{\x*\x});
+  \draw[dashed,muted] (.5,0)--(.5,.25)--(0,.25);
+  \node[below] at (.5,0) {$1/2$}; \node[below] at (1,0) {$1$};
+  \node[left] at (0,.25) {$1/4$}; \node[left] at (0,1) {$1$};
+ \end{scope}
+\end{tikzpicture}
+\end{center}
+The shaded area under the density equals $1-F(1/2)$.
+The height of the CDF already represents accumulated probability.
+
+\section{Substitution and integration by parts}
+\label{sec:calc-techniques}
+
+\subsection*{Substitution reverses the chain rule}
+If $u=g(x)$, then $du=g'(x)\,dx$. For example,
+\[
+ \int_0^1 2x e^{-x^2}\,dx
+ =\int_0^1 e^{-u}\,du=1-e^{-1},\qquad u=x^2.
+\]
+Both endpoints have been changed into $u$-values. In general,
+\[
+ \int_a^b h(g(x))g'(x)\,dx
+ =\int_{g(a)}^{g(b)}h(u)\,du
+\]
+under the usual continuity and differentiability assumptions.
+This identity also handles reversed endpoints correctly.
+
+\begin{warningbox}
+After a substitution, change both the differential and the bounds.
+The expression $\int_a^b h(u)\,du$ still uses $u$ as its input; old
+$x$-bounds cannot be retained unless they happen to give the same numbers.
+\end{warningbox}
+
+\subsection*{Integration by parts reverses the product rule}
+Integrating $(uv)'=u'v+uv'$ gives
+\[
+ \int_a^b u(x)v'(x)\,dx
+ =[u(x)v(x)]_a^b-\int_a^b u'(x)v(x)\,dx.
+\]
+Choose $u$ so that differentiating it simplifies the remaining integral.
+For example, $u=x$, $v'=e^x$, and $v=e^x$ give
+\[
+ \int_0^1 xe^x\,dx=[xe^x]_0^1-\int_0^1e^x\,dx
+ =e-(e-1)=1.
+\]
+This technique will also compute the mean and variance of an exponential
+waiting time and the beta integral used in Bayesian updating.
+
+\section{Improper integrals and infinite expectations}
+\label{sec:calc-improper}
+
+An infinite endpoint is a limit:
+$\int_0^\infty f(x)\,dx=\lim_{R\to\infty}\int_0^R f(x)\,dx$,
+when that limit exists. A singular finite endpoint is treated similarly;
+for example $\int_0^1 x^{-1/2}\,dx=\lim_{\varepsilon\downarrow0}
+[2\sqrt{x}]_{\varepsilon}^1=2$.
+Do not substitute infinity as if it were an ordinary number.
+
+\begin{example}[Exponential waiting times]
+For $\lambda>0$, let $f(x)=\lambda e^{-\lambda x}$ on $x\ge0$.
+Its integral on $[0,R]$ is $1-e^{-\lambda R}$, tending to one.
+Thus it is a density, and
+$\P(X>t)=\int_t^\infty\lambda e^{-\lambda x}\,dx=e^{-\lambda t}$
+for $t\ge0$.
+Integration by parts on a finite interval gives
+\[
+ \int_0^R x\lambda e^{-\lambda x}\,dx
+ =-R e^{-\lambda R}+\frac{1-e^{-\lambda R}}{\lambda}.
+\]
+Since $R e^{-\lambda R}\to0$, the mean is $1/\lambda$.
+Another integration by parts, using $R^2e^{-\lambda R}\to0$, gives
+\[
+ \E[X^2]=2\int_0^\infty xe^{-\lambda x}\,dx=\frac2{\lambda^2},
+ \qquad \Var(X)=\frac1{\lambda^2}.
+\]
+The median solves $e^{-\lambda m}=1/2$, hence $m=\log2/\lambda$.
+It differs from the mean because the long right tail pulls the mean upward.
+\end{example}
+
+\begin{example}[A density can have no finite mean]
+Let $f(x)=1/(1+x)^2$ on $x\ge0$ and zero elsewhere.
+Its total area is one, because
+$\int_0^R(1+x)^{-2}\,dx=1-1/(1+R)\to1$.
+But
+\[
+ \int_0^R\frac{x}{(1+x)^2}\,dx
+ =\log(1+R)+\frac1{1+R}-1\longrightarrow\infty.
+\]
+The distribution is valid and its expected value is $+\infty$.
+Normalizing a density and proving its mean finite are different calculations.
+\end{example}
+
+The general tail check is
+$\int_1^\infty x^{-r}\,dx<\infty$ exactly when $r>1$.
+Integrate $x^{-r}$ for $r\ne1$ and use $\log x$ for $r=1$ to verify
+the boundary between convergence and divergence.
+
+\section{Sequences, series, and geometric probabilities}
+\label{sec:calc-series}
+
+An infinite series $\sum_{k=0}^{\infty}a_k$ is defined as the limit of
+its partial sums $S_m=\sum_{k=0}^m a_k$, when this limit exists.
+The terms $a_k$ and their sums $S_m$ are different sequences.
+Convergence requires $a_k\to0$, since $a_k=S_k-S_{k-1}$, but that
+condition alone is insufficient. The harmonic series diverges:
+\[
+ 1+\frac12+\left(\frac13+\frac14\right)
+ +\left(\frac15+\cdots+\frac18\right)+\cdots.
+\]
+Every displayed group after the first two terms contributes at least $1/2$.
+There are arbitrarily many such groups.
+
+\subsection*{The geometric series}
+For $r\ne1$, subtracting $r$ times a finite sum from itself gives
+\[
+ 1+r+\cdots+r^m=\frac{1-r^{m+1}}{1-r}.
+\]
+If $|r|<1$, the final power tends to zero, so
+\[
+ \sum_{k=0}^{\infty}r^k=\frac1{1-r}.
+\]
+For $0\le r<1$, the tail after $r^m$ is exactly $r^{m+1}/(1-r)$.
+The condition $|r|<1$ matters: substituting $r=2$ into the infinite
+formula would produce a negative answer for a growing positive sum.
+
+\begin{example}[Wait until the first success]
+In independent trials with success probability $0<p\le1$, let $N$
+count trials up to and including the first success. With $r=1-p$,
+$\P(N=k)=pr^{k-1}$ for $k\ge1$, and the geometric series checks
+that these probabilities sum to one. For $0<p<1$, differentiating
+the geometric power series inside $|r|<1$ gives
+\[
+ \sum_{k=1}^{\infty}kr^{k-1}=\frac1{(1-r)^2},\qquad
+ \E[N]=\sum_{k=1}^{\infty}kpr^{k-1}=\frac1p.
+\]
+Power series can be differentiated term by term strictly inside their
+interval of convergence. Alternatively, differentiate the finite
+geometric identity first and let its length tend to infinity;
+the extra terms involve $m r^m$ and tend to zero.
+For $p=1$, $N=1$ with certainty, so the same mean formula holds directly.
+\end{example}
+
+\subsection*{Alternating sums come with a useful error bound}
+If $b_k$ decreases to zero through positive values, the partial sums of
+$b_0-b_1+b_2-\cdots$ alternate above and below its limit.
+The magnitude of the error is at most the first omitted term. To see
+why, group consecutive terms: the even partial sums decrease, the odd
+partial sums increase, and their difference tends to zero. The limit is
+trapped between the two adjacent partial sums.
+For a strictly decreasing positive tail, the limit is strictly between them.
+This is exactly the estimate needed for derangements.
+
+\section{Taylor polynomials and a reason to trust them}
+\label{sec:calc-taylor}
+
+The degree-$m$ Taylor polynomial at $a$ matches the first $m$ derivatives
+of a function there:
+\[
+ T_m(x)=\sum_{k=0}^m\frac{f^{(k)}(a)}{k!}(x-a)^k.
+\]
+The factorial appears because the $k$th derivative of $(x-a)^k$ at
+$a$ is $k!$. The first two terms give the tangent line; the quadratic
+term also records curvature.
+
+\begin{theorem}[Taylor's error estimate]
+Suppose $f$ has continuous derivatives through order $m+1$ on the
+interval between $a$ and $x$, and $|f^{(m+1)}(t)|\le M$ there.
+Then
+\[
+ |f(x)-T_m(x)|\le\frac{M|x-a|^{m+1}}{(m+1)!}.
+\]
+\end{theorem}
+One way to understand the bound is to repeatedly integrate the derivative
+error using the fundamental theorem. The remainder has the form
+\[
+ R_m(x)=\frac1{m!}\int_a^x (x-t)^m f^{(m+1)}(t)\,dt.
+\]
+Taking absolute values and integrating $M|x-t|^m/m!$ gives the estimate,
+with the same conclusion when $x<a$ after reversing the limits.
+
+\subsection*{The exponential series}
+All derivatives of $e^x$ are $e^x$. Expanding at zero gives
+\[
+ e^x=1+x+\frac{x^2}{2!}+\cdots+\frac{x^m}{m!}+R_m(x),
+ \qquad |R_m(x)|\le\frac{e^{|x|}|x|^{m+1}}{(m+1)!}.
+\]
+For fixed $x$, the successive factorial-denominator terms have ratio
+$|x|/(m+2)$, eventually less than $1/2$. They therefore tend to zero,
+proving
+\[
+ e^x=\sum_{k=0}^{\infty}\frac{x^k}{k!}\quad\text{for every real }x.
+\]
+For example, $e^{.1}\approx1+.1+.1^2/2=1.105$; the error is at most
+$e^{.1}(.1)^3/6<.000185$. The estimate is accurate because it includes
+a small remainder bound, not merely because a few terms were retained.
+
+\subsection*{Logarithms from a geometric series}
+For $0\le x<1$, integrate the finite geometric identity for $1/(1-t)$
+from $0$ to $x$. For $m\ge1$ this gives
+\[
+ -\log(1-x)=\sum_{k=1}^m\frac{x^k}{k}
+       +\int_0^x\frac{t^m}{1-t}\,dt.
+\]
+Since $1/(1-t)\le1/(1-x)$ on this interval, the remainder is between
+zero and $x^{m+1}/[(m+1)(1-x)]$. It tends to zero for fixed $x<1$,
+so
+\[
+ \log(1-x)=-x-\frac{x^2}{2}-\frac{x^3}{3}-\cdots.
+\]
+At $x=.1$, the first two terms give $-.105$, with error less than
+$.1^3/[3(.9)]<.000371$. At $x=1$, the logarithm is undefined and
+the corresponding harmonic series diverges. An expansion's domain
+is part of the formula.
+
+\begin{warningbox}
+A function is not automatically equal to its infinite Taylor series
+just because many derivatives exist. For the exponential and logarithm
+used here, the explicit remainders above prove equality on the stated
+domains. For an approximation, keep enough terms to control the error
+at the inputs you actually use.
+\end{warningbox}
+
+\section{Birthdays: logarithms turn the product into a sum}
+\label{sec:calc-birthdays}
+
+In the independent uniform $d$-day birthday model, write $q_d(n)$ for
+the chance of a collision and $r_d(n)=1-q_d(n)$ for the chance of no
+collision. For $1\le n\le d$,
+\[
+ r_d(n)=\prod_{j=0}^{n-1}(1-j/d),\qquad
+ \log r_d(n)=\sum_{j=0}^{n-1}\log(1-j/d).
+\]
+Keeping just the linear term $\log(1-x)\approx-x$ yields
+\[
+ \log r_d(n)\approx-\frac{n(n-1)}{2d},\qquad
+ q_d(n)\approx1-\exp\!\left(-\frac{n(n-1)}{2d}\right).
+\]
+There are $\binom n2$ pairs, so this exponent already suggests why a
+class much smaller than $d$ can produce a match.
+
+\subsection*{An error estimate, with a direction}
+For $0\le x\le c<1$,
+\[
+ -\log(1-x)-x=\int_0^x\frac{t}{1-t}\,dt.
+\]
+Bounding the integrand between $t$ and $t/(1-c)$ gives
+\[
+ -x-\frac{x^2}{2(1-c)}\le\log(1-x)
+ \le-x-\frac{x^2}{2}\le-x.
+\]
+Set
+\[
+ c=\frac{n-1}{d},\qquad S_1=\frac{n(n-1)}{2d},\qquad
+ S_2=\frac{n(n-1)(2n-1)}{6d^2}.
+\]
+Sum the inequalities over the birthday factors and exponentiate:
+\[
+ \boxed{\quad
+ 1-e^{-S_1-S_2/2}\ \le\ q_d(n)\ \le\
+ 1-e^{-S_1-S_2/[2(1-c)]}.
+ \quad}
+\]
+In particular, the simpler estimate $1-e^{-S_1}$ is a lower bound.
+Its omitted correction in the logarithm is at most $S_2/[2(1-c)]$.
+The approximation is useful when this correction is small; having
+each individual factor close to one is not by itself an error guarantee.
+For $n=0$, the exact collision probability is zero; for $n>d$, it is one,
+and we use those exact cases instead of the logarithmic approximation.
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ on 365 days & $1-e^{-S_1}$ & $1-e^{-S_1-S_2/2}$ & Exact $q_{365}(n)$\\\midrule
+10&.115991&.116936&.116948\\
+22&.468938&.475496&.475695\\
+23&.500002&.507073&.507297\\
+30&.696320&.705916&.706316\\
+50&.965131&.970040&.970374\\\bottomrule
+\end{tabular}
+\end{center}
+The entries are rounded, not exact inequalities between the printed
+decimals. At $n=23$, the rigorous bounds give
+$.50707<q_{365}(23)<.50753$; direct multiplication gives about $.507297$.
+
+\subsection*{Where the number 23 comes from}
+Set the first approximation equal to $1/2$. Taking logarithms gives
+$n(n-1)=2d\log2$, hence the positive solution
+\[
+ n\approx\frac{1+\sqrt{1+8d\log2}}2.
+\]
+For $d=365$, this is about $22.99994$, suggesting a threshold of 23.
+The exact probabilities at 22 and 23, $.475695$ and $.507297$,
+verify the conclusion. This use of a smooth expression estimates an
+integer class size; the exact model still checks the adjacent integers.
+
+\begin{labbox}[title={Calculate with small tails intact}]
+For numerical work, sum $\log(1-j/d)$ and then exponentiate instead of
+multiplying many factors. Software functions named \texttt{log1p(z)}
+compute $\log(1+z)$ accurately near zero, and \texttt{expm1(z)} computes
+$e^z-1$. Thus $q_d(n)=-\texttt{expm1}(\sum_j\texttt{log1p}(-j/d))$
+is a useful evaluation for $n\le d$. It evaluates the exact product
+formula with floating-point arithmetic; it is not the Taylor approximation.
+\end{labbox}
+
+\section{Derangements: why the limiting probability is one over e}
+\label{sec:calc-derangements}
+
+Section~\ref{sec:derangements} obtained an exact finite expression:
+\[
+ \frac{D_n}{n!}=1-1+\frac1{2!}-\frac1{3!}+\cdots+\frac{(-1)^n}{n!}.
+\]
+Now set $x=-1$ in the exponential series. Its sum is $e^{-1}$.
+The positive terms in every omitted tail strictly decrease to zero, so
+the alternating-series estimate gives, for $n\ge0$,
+\[
+ \left|\frac{D_n}{n!}-e^{-1}\right|<\frac1{(n+1)!}.
+\]
+Even partial sums are above the limit and odd partial sums below it.
+For example,
+\[
+ \frac{44}{120}<e^{-1}<\frac{265}{720},
+ \qquad e^{-1}\approx.3678794412.
+\]
+At $n=10$, the exact probability is
+$1334961/3628800\approx.3678794643$, within $1/11!<2.51\cdot10^{-8}$
+of the limit. This is why the approximation becomes excellent so quickly.
+
+\begin{proposition}[Recover an integer count by rounding]
+For every $n\ge1$, $D_n$ is the nearest integer to $n!/e$.
+\end{proposition}
+\begin{proof}
+Multiply the strict error bound by $n!$ to obtain
+$|D_n-n!/e|<1/(n+1)\le1/2$. Thus the integer $D_n$ lies strictly
+within half a unit of $n!/e$.
+\end{proof}
+The condition $n\ge1$ matters: $D_0=1$, whereas $1/e$ rounds to zero.
+For large $n$, the exact recurrence is preferable for computer
+calculations because ordinary floating-point arithmetic may not retain
+unit accuracy in $n!/e$.
+
+\subsection*{A further connection: the number of fixed points}
+For a uniform permutation, the probability of exactly $k$ fixed points is
+\[
+ \frac{\binom nk D_{n-k}}{n!}
+ =\frac1{k!}\frac{D_{n-k}}{(n-k)!}\longrightarrow\frac{e^{-1}}{k!}
+\]
+as $n\to\infty$ with $k$ fixed. These limiting probabilities sum to one
+by the exponential series. They form the Poisson distribution with mean
+one, introduced in Chapter 5. Already, indicators tell us that the
+expected number of fixed points is exactly one for every $n\ge1$.
+
+Birthdays and derangements both lead to exponentials, through different
+calculations: birthdays use a logarithmic expansion of a product;
+derangements produce a finite alternating exponential sum by
+inclusion--exclusion. In each case, the remainder explains the accuracy.
+
+\section{Optional: a beta integral for Bayesian updating}
+\label{sec:calc-beta}
+
+For nonnegative integers $s,f$, consider
+\[
+ I_{s,f}=\int_0^1p^s(1-p)^f\,dp.
+\]
+This integral normalizes the likelihood from $s$ successes and $f$
+failures when a uniform prior density is used. For $s\ge1$, integration
+by parts with $u=p^s$ and $v'= (1-p)^f$ gives
+\[
+ I_{s,f}=\frac{s}{f+1}I_{s-1,f+1}.
+\]
+The boundary term is zero at both ends. Starting from
+$I_{0,m}=1/(m+1)$ and applying the recurrence $s$ times gives
+\[
+ I_{s,f}=\frac{s!f!}{(s+f+1)!}.
+\]
+For example, $I_{3,1}=1/20$, so $20p^3(1-p)$ is a density on $[0,1]$.
+Its mean is $I_{4,1}/I_{3,1}=(1/30)/(1/20)=2/3$.
+More generally the mean is
+$I_{s+1,f}/I_{s,f}=(s+1)/(s+f+2)$.
+Chapter 9 interprets this as a posterior mean and predictive probability.
+
+\clearpage
+\section{Practice: rebuild the tools}
+\label{sec:calc-exercises}
+
+\begin{exercisebox}
+\begin{enumerate}
+ \item Simplify $\binom n3(n-3)!/n!$ for $n\ge3$. Evaluate
+ $\sum_{j=0}^{5}j$ and $\sum_{j=0}^{5}j^2$. \exlevel{Fluency}
+ \item Find $\lim_{x\to2}(x^2-4)/(x-2)$ and
+ $\lim_{n\to\infty}n/(n^2+1)$. Explain why direct substitution is
+ insufficient for the first. \exlevel{Fluency}
+ \item Differentiate $x^2e^{-x}$ and $\log(1-x^2)$, specifying
+ the real domain of the second function. \exlevel{Fluency}
+ \item Use a tangent line at zero to approximate $e^{.05}$.
+ Use Taylor's estimate to bound its absolute error. \exlevel{Reasoning}
+ \item Maximize $p^8(1-p)^2$ on $[0,1]$. Explain why maximizing
+ $p^{10}$ needs a boundary check instead. \exlevel{Fluency}
+ \item Differentiate the binomial identity twice and set $x=1$
+ to prove $\sum_{k=0}^n k(k-1)\binom nk=n(n-1)2^{n-2}$ for $n\ge2$.
+ \exlevel{Reasoning}
+ \item Let a density be $cx^2$ on $[0,1]$, zero elsewhere.
+ Find $c$, its CDF, $\P(X>1/2)$, its mean, and its variance.
+ \exlevel{Fluency}
+ \item Evaluate $\int_0^2 2x e^{-x^2}\,dx$ using substitution.
+ Show the new bounds. \exlevel{Fluency}
+ \item Evaluate $\int_0^1 x e^{2x}\,dx$ by parts.
+ \exlevel{Fluency}
+ \item Normalize $c e^{-3x}$ on $x\ge0$. Find its mean, variance,
+ and median. \exlevel{Fluency}
+ \item For density $1/(1+x)^2$ on $x\ge0$, find the survival
+ probability $\P(X>t)$ for $t\ge0$ and the median. Explain how a
+ finite median is compatible with an infinite mean. \exlevel{Reasoning}
+ \item Sum $\sum_{k=4}^{\infty}(1/2)^k$. If a geometric waiting
+ time has success probability $.2$, find its mean and
+ $\P(N>5)$. \exlevel{Fluency}
+ \item Explain why terms tending to zero do not guarantee that a
+ series converges. Contrast $\sum 1/k$ with $\sum (1/2)^k$.
+ \exlevel{Reasoning}
+ \item Approximate $\log(.95)$ using $-x-x^2/2$ at $x=.05$.
+ Bound the error using the logarithmic remainder. \exlevel{Fluency}
+ \item For $n=23,d=365$, compute $S_1,S_2,c$ and use the two
+ logarithmic bounds to bracket the collision probability. Compare
+ with the first-order estimate. \exlevel{Reasoning}
+ \item Compute $D_8$ using the exact recurrence. Bound the error
+ in $D_8/8!\approx e^{-1}$, determine which is larger, and check
+ the nearest-integer conclusion. \exlevel{Reasoning}
+ \item Evaluate $\int_0^1p^2(1-p)^2\,dp$ both by expanding and
+ by the beta formula. Normalize the integrand and find the resulting
+ density's mean. \exlevel{Fluency}
+ \item For a uniform permutation of four objects, find the probability
+ of exactly two fixed points. Compare it with the limiting value
+ $e^{-1}/2!$. Explain why a limiting formula need not be accurate
+ for such a small permutation. \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}
+
+\section{Worked answers to the refresher}
+\begin{enumerate}
+ \item Cancel factorials to get $1/3!=1/6$. The sums are
+ $5\cdot6/2=15$ and $5\cdot6\cdot11/6=55$.
+ \item Away from $x=2$, the fraction equals $x+2$, so the first
+ limit is $4$. At $2$ the original denominator is zero.
+ For the sequence, $0\le n/(n^2+1)\le1/n\to0$.
+ \item The product rule gives $(2x-x^2)e^{-x}$.
+ The logarithm requires $1-x^2>0$, so $-1<x<1$;
+ its derivative is $-2x/(1-x^2)$ by the chain rule.
+ \item The approximation is $1+.05=1.05$. On $[0,.05]$,
+ the second derivative of $e^x$ is at most $e^{.05}$, so the error
+ is at most $e^{.05}(.05)^2/2<.001315$. The positive quadratic
+ and later terms show the tangent estimate is too small.
+ \item On $0<p<1$, the log derivative is $8/p-2/(1-p)$,
+ which vanishes at $p=.8$. Its derivative is negative, so this is
+ the maximum; the original function is zero at both endpoints.
+ The function $p^{10}$ increases on $[0,1]$ and is maximized at $1$.
+ \item Twice differentiating gives
+ $n(n-1)(1+x)^{n-2}=\sum_{k=2}^n k(k-1)\binom nkx^{k-2}$.
+ Set $x=1$. The terms $k=0,1$ contribute zero to the requested sum.
+ \item Normalization gives $c/3=1$, hence $c=3$.
+ The CDF is $0$ below zero, $x^3$ on $[0,1]$, and $1$ above one.
+ Thus $\P(X>1/2)=7/8$,
+ $\E[X]=3\int_0^1x^3\,dx=3/4$, and
+ $\E[X^2]=3/5$. The variance is $3/5-9/16=3/80$.
+ \item With $u=x^2$, $du=2x\,dx$ and the bounds become $0,4$.
+ The integral is $\int_0^4e^{-u}\,du=1-e^{-4}$.
+ \item Set $u=x$ and $v'=e^{2x}$, so $v=e^{2x}/2$.
+ The result is
+ $[xe^{2x}/2]_0^1-\frac12\int_0^1e^{2x}\,dx
+ =e^2/2-(e^2-1)/4=(e^2+1)/4$.
+ \item The total integral is $c/3$, so $c=3$.
+ This is an exponential density with rate $3$: its mean is $1/3$,
+ variance $1/9$, and median $(\log2)/3$.
+ \newpage
+ \item Integrating the tail gives
+ $\P(X>t)=1/(1+t)$. Setting this to $1/2$ gives median $1$.
+ A median divides probability in half; a mean weights outcomes by
+ their magnitudes. The tail is heavy enough that those weighted
+ contributions have infinite total.
+ \item The geometric tail is $(1/2)^4/(1-1/2)=1/8$.
+ The waiting-time mean is $1/.2=5$. The event $N>5$ means five
+ initial failures, with probability $.8^5=.32768$.
+ \item Harmonic terms tend to zero, but grouping indices between
+ consecutive powers of two supplies infinitely many contributions
+ of at least $1/2$. The geometric partial sums instead approach a
+ finite limit because the remainder is a vanishing power divided
+ by $1-r$.
+ \item The approximation is $-.05-.05^2/2=-.05125$.
+ The omitted magnitude is at most
+ $.05^3/[3(.95)]<.00004386$. The exact logarithm is more negative,
+ so $-.05129386<\log(.95)<-.05125$.
+ \item Here $S_1=253/365$, $S_2=3795/133225$, and $c=22/365$.
+ The lower and upper expressions are approximately $.507072664$
+ and $.507522764$. Thus an outward-rounded bracket is
+ $.50707<q_{365}(23)<.50753$. The first-order estimate is
+ $.500001752$, which is noticeably lower.
+ \item Continuing from $D_6=265$ gives $D_7=7\cdot265-1=1854$
+ and $D_8=8\cdot1854+1=14833$.
+ Since $8$ is even, $D_8/8!>e^{-1}$, with error less than
+ $1/9!\approx.000002756$. Multiplying by $8!$ puts $14833$
+ within $1/9$ of $8!/e$, so it is the nearest integer.
+ \item Expand $p^2(1-p)^2=p^2-2p^3+p^4$; its integral is
+ $1/3-1/2+1/5=1/30$, also $2!2!/5!$.
+ The density is $30p^2(1-p)^2$, with mean
+ $30(1/4-2/5+1/6)=1/2$.
+ \item Choose the fixed pair and swap the other two, giving
+ $\binom42D_2/4!=6/24=1/4$.
+ The limiting probability is about $.18394$. In the exact formula
+ $\frac1{2!}D_2/2!$, only two objects remain to derange; their
+ probability $1/2$ is still far from $1/e$.
+\end{enumerate}

@@ -1,4 +1,5 @@
 \chapter{The grammar of uncertainty}
+\label{ch:counting}
 \chaptertag{Sets, permutations, combinations, and inclusion--exclusion}
 
 \begin{question}
@@ -41,6 +42,16 @@ In everyday speech, ``or'' is sometimes exclusive. In probability, $A\cup B$ is 
 The Cartesian product $A\times B$ contains ordered pairs $(a,b)$. Repeated trials naturally live in product spaces. Three coin flips have sample space $\{H,T\}^3$, with eight ordered strings. Order matters: $HTT$ and $THT$ are different outcomes.
 
 \section{The multiplication principle}
+
+Start by deciding what one outcome records. An ordered list, an unordered
+group, and a list with repetitions are different objects. Before using a
+formula, describe when two proposed outcomes count as the same.
+
+The \emph{addition principle} says that counts add over disjoint cases.
+For example, a club offers either one of three morning sessions or one of
+five afternoon sessions. Choosing exactly one session gives $3+5=8$
+possibilities. Choosing one session in \emph{each} period gives $3\cdot5=15$.
+The words ``either'' and ``each'' describe different experiments.
 
 If a first choice has $m$ possibilities and, after \emph{each} first choice,
 a second choice has $n$ possibilities, there are $mn$ ordered outcomes.
@@ -85,6 +96,7 @@ Experiment & What distinguishes outcomes? & Count \\
 $k$ draws with replacement & Order matters; repetition allowed & $n^k$ \\
 $k$ draws without replacement & Order matters; objects distinct & $(n)_k$ \\
 A $k$-element subset & Order ignored; no repetition & $\binom nk$ \\
+An unordered selection with repetition & Only the number of each type matters & $\binom{n+k-1}{k}$ \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -109,6 +121,24 @@ the labels comes from exactly $n_1!\cdots n_r!$ labeled arrangements.
 Dividing by that constant multiplicity gives the result.
 \end{proof}
 For example, $\texttt{BANANA}$ has $6!/(3!2!)=60$ distinct arrangements.
+
+\subsection*{Unordered selections with repetition}
+Suppose $k$ scoops are chosen from $n\ge1$ flavors, with repetition allowed
+and order ignored. An outcome specifies nonnegative counts
+$x_1+\cdots+x_n=k$. Arrange $k$ stars and $n-1$ bars in a row: stars
+before the first bar count flavor 1, those between the first two bars
+count flavor 2, and so on. Empty groups are allowed. Choosing the $k$
+star positions among $n+k-1$ positions gives $\binom{n+k-1}{k}$ outcomes.
+For two scoops from three flavors $A,B,C$, these are
+$AA,AB,AC,BB,BC,CC$, a total of $\binom42=6$.
+
+\begin{warningbox}
+Divide a count only when every desired outcome has the same number of
+representations. Ordered pairs $AB,BA$ both become $AB$, but $AA$ has
+only one ordering. Thus dividing $3^2$ by $2!$ does not count the six
+two-scoop selections. The equal-multiplicity argument for combinations
+applies to distinct objects.
+\end{warningbox}
 
 \section{Binomial coefficients count in two directions}
 
@@ -141,6 +171,24 @@ Expand the product of $n$ copies of $(x+y)$. To produce $x^{n-k}y^k$,
 choose the $k$ factors that supply $y$; all the others supply $x$.
 There are $\binom nk$ choices.
 \end{proof}
+
+\begin{example}[Coefficients carry both counts and weights]
+In $(2-x)^4$, choosing $k$ copies of $-x$ and $4-k$ copies of $2$ gives
+\[
+ (2-x)^4=16-32x+24x^2-8x^3+x^4.
+\]
+For instance, the $x^2$ coefficient is $\binom42 2^2(-1)^2=24$.
+The binomial coefficient counts the positions; the remaining factors
+give the contribution from each choice.
+\end{example}
+
+The same distinction explains a probability formula. In $n$ independent
+trials with success probability $p$, a \emph{specified} string with $k$
+successes has probability $p^k(1-p)^{n-k}$. There are $\binom nk$ such
+strings, so the probability of exactly $k$ successes is
+$\binom nk p^k(1-p)^{n-k}$. Their sum is
+$(p+(1-p))^n=1$. Chapter 5 develops this binomial distribution; for
+$p=0$ or $1$, every trial has its certain outcome.
 
 Taking $x=y=1$ gives $\sum_{k=0}^n\binom nk=2^n$. This also counts all
 subsets in two ways: by their sizes, or by making an include/exclude
@@ -237,7 +285,7 @@ determine a unique diagram.
 \begin{enumerate}
   \item Write $(A\cap B^c)\cup(A^c\cap B)$ in words. \exlevel{Fluency}
   \item Verify both De Morgan laws using membership tables. \exlevel{Reasoning}
-  \item How many eight-character strings contain exactly three letters and five digits? \exlevel{Fluency}
+  \item How many eight-character strings contain exactly three letters and five digits? Use 26 letters and 10 digits, allow repetition, and allow a leading zero. \exlevel{Fluency}
   \item Count five-card hands containing at least one ace. \exlevel{Reasoning}
   \item Prove $\binom nk=\binom n{n-k}$ by a counting argument. \exlevel{Reasoning}
   \item Among integers from 1 to 1,000, how many are divisible by 2 or 3 or 5? \exlevel{Reasoning}
@@ -247,5 +295,17 @@ determine a unique diagram.
   \item Prove Pascal's identity by deciding whether a distinguished object is selected. \exlevel{Reasoning}
   \item Find the coefficient of $x^2$ in $(1+3x)^5$, and explain its binomial coefficient. \exlevel{Fluency}
   \item Count length-five strings over $\{A,B,C\}$ that use all three symbols. \exlevel{Reasoning}
+  \item In five independent trials with success probability $1/3$, find
+  the probability of exactly three successes. Distinguish one specified
+  string from all strings with three successes. \exlevel{Fluency}
+  \item Choose four scoops from three flavors, allowing repetition.
+  Count ordered lists and unordered selections. Explain why dividing
+  the first count by $4!$ is invalid. \exlevel{Reasoning}
+  \item Count the distinct arrangements of $\texttt{MISSISSIPPI}$.
+  Identify every repeated-letter factor. \exlevel{Fluency}
+  \item Prove $\sum_{k=0}^n k\binom nk=n2^{n-1}$ for $n\ge1$ by
+  counting subsets with one distinguished member in two ways.
+  Appendix~\ref{app:calculus} also obtains this identity by differentiation.
+  \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}

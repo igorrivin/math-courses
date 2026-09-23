@@ -6,21 +6,44 @@ This folder contains an adaptable one-semester introduction to probability and s
 
 - `main.tex`: master LaTeX source.
 - `chapters/`: course design, ten teaching chapters, selected solutions, and reference sheets.
-- `notebooks/`: four optional Jupyter labs using standard Python scientific libraries.
+- `notebooks/`: four Python labs and a SageMath exchangeability capstone.
 - `chance_data_decisions.pdf`: compiled course packet.
 
 ## Compile
 
-Run `latexmk -pdf main.tex` in this folder. The source uses standard TeX Live packages including TikZ, tcolorbox, amsmath, hyperref, and booktabs.
+Run the following in this folder to rebuild both distributed copies:
 
-## Counting and probability-space revision
+```bash
+latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+cp main.pdf chance_data_decisions.pdf
+cp main.pdf ../website/public/course-packet.pdf
+```
 
-Chapters 1–2 now develop the multiplication principle, permutations,
-combinations, repeated objects, Pascal's identity, and the binomial theorem.
-They include proofs of finite-set and probabilistic inclusion–exclusion,
-weighted finite spaces, and the exact birthday calculation with explicit
-independence and uniformity assumptions. New exercises, selected answers,
-and the reference sheets accompany the expanded exposition.
+The source uses standard TeX Live packages including TikZ, tcolorbox,
+amsmath, hyperref, and booktabs.
+
+## Elementary foundations and calculus refresher
+
+Chapter 1 develops addition and multiplication, permutations, combinations,
+selections with repetition, repeated-letter arrangements, Pascal's identity,
+the binomial theorem, and inclusion–exclusion. Chapter 2 builds probability
+spaces from outcomes, events, and weights, then gives full counting proofs
+for birthdays and derangements. It uses elementary event descriptions
+without a formal sigma-algebra introduction.
+
+Chapter 4 explains random variables as numerical records, explicitly turns
+conditions such as `X >= a` into events, and develops PMFs, CDFs, densities,
+expectation, variance, and indicators through coins, dice, hats, and birthdays.
+New and existing Chapter 4 exercises have worked solutions.
+
+Appendix A, `chapters/calculus_refresher.tex`, is a substantial review of
+algebra and finite sums, limits, derivatives, likelihood optimization,
+definite and improper integrals, substitution, integration by parts, series,
+and Taylor remainders. Applications derive and bound the birthday
+approximation, prove the derangement limit and nearest-integer formula,
+and optionally normalize an integer-parameter beta density. It contains
+18 practice problems with worked answers. The reference sheets and course
+guide link the refresher to the main chapters.
 
 The website at https://introproba.dimensionreducers.ai has companion counting,
 inclusion–exclusion, and birthday labs. Problem Set 2 is maintained separately
@@ -50,4 +73,5 @@ birthday-collision bound. It explicitly states its compactness input,
 proves uniqueness of the mixing law, and supplies the Bernoulli strong
 law needed for the almost-sure interpretation. Chapter 3 has a short
 preview; Chapter 9, the course guide, and the reference sheets cross-link
-the capstone. The existing 14-week core and four notebooks are retained.
+the capstone. The existing 14-week core, four Python notebooks, and
+SageMath capstone are retained.
