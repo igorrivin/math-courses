@@ -1,0 +1,333 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.7in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,booktabs,array,enumitem,fancyhdr,hyperref}
+
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Discrete and Continuous Distributions: 50-minute Quiz},
+  pdfauthor={Chance, Data, and Decisions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student quiz\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[4]{\par\addvspace{8pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points} $\cdot$ about #4 minutes}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{.8in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Distributions and coupon collection}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{quiz-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+
+\begin{document}
+
+{\LARGE\bfseries\color{indigo}Discrete and Continuous Distributions}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 50 points
+  \quad $\bullet$ \quad \edition}\par
+\ifanswers
+  \textbf{Grading note.} Award method credit after an earlier error and
+  avoid repeated arithmetic deductions. In Problem 4, grade each step
+  separately to distinguish modeling, geometric means, and adding stages.\par
+\else
+  \smallskip
+  \textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+  \textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all four problems and show your reasoning.
+No calculator is needed; exact expressions with powers, binomial
+coefficients, or $e$ are acceptable. You may quote standard distribution
+formulas. In Problem 4, build the answer from the stages instead of simply
+quoting a coupon-collector formula. Geometric variables count trials
+\emph{including the first success}; exponential parameters are \emph{rates}.
+The suggested times leave 4 minutes for checking.
+
+\problem{1}{One trial, a count, and a wait}{12}{11}
+A device makes independent attempts to send a message. Each attempt
+succeeds with probability $1/3$.
+\begin{enumerate}
+  \item Let $I=1$ if the first attempt succeeds and $I=0$ otherwise.
+  Name the distribution of $I$, including its parameter, and find
+  $\E[I]$ and $\Var(I)$. \partpts{3}
+  \begin{solution}[1.1in]
+    $I\sim\operatorname{Bernoulli}(1/3)$, with
+    $\Prob(I=1)=1/3$ and $\Prob(I=0)=2/3$. Thus
+    \[
+      \E[I]=\frac13,\qquad
+      \Var(I)=\frac13\left(1-\frac13\right)=\frac29.
+    \]
+    \credit{Family and parameter: 1; mean: 1; variance: 1.}
+  \end{solution}
+
+  \item Let $N$ be the number of successes in the first six attempts.
+  Name its distribution and parameters. Find $\Prob(N=2)$,
+  $\E[N]$, and $\Var(N)$. \partpts{5}
+  \begin{solution}[1.8in]
+    $N\sim\operatorname{Bin}(6,1/3)$ because the number of independent
+    trials is fixed and the success probability is constant.
+    \[
+      \Prob(N=2)=\binom62\left(\frac13\right)^2
+                         \left(\frac23\right)^4=\frac{80}{243},
+      \qquad
+      \E[N]=6\cdot\frac13=2,
+      \qquad \Var(N)=6\cdot\frac13\cdot\frac23=\frac43.
+    \]
+    The binomial factor chooses the two successful positions.
+    \credit{Family and parameters: 1; probability, including the
+    binomial factor: 2; mean: 1; variance: 1.}
+  \end{solution}
+
+  \item Let $T$ be the number of attempts up to and including the first
+  success. Name its distribution and parameter, state its possible values,
+  and find $\Prob(T>3)$ and $\E[T]$. \partpts{4}
+  \begin{solution}[1.65in]
+    $T\sim\operatorname{Geom}(1/3)$, with possible values $1,2,3,\ldots$.
+    The event $T>3$ means three failures, so
+    \[
+      \Prob(T>3)=\left(\frac23\right)^3=\frac8{27},
+      \qquad \E[T]=\frac1{1/3}=3.
+    \]
+    \credit{Family and parameter: 1; support: 1; tail probability: 1;
+    mean: 1. A failures-before-success convention does not match $T$.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{2}{Counts and waiting times}{10}{9}
+A service receives requests according to this model: the number arriving
+in any interval of length $t$ minutes has a Poisson distribution with
+parameter $2t$, and counts in disjoint intervals are independent.
+Let $N$ be the number of requests in the next \emph{30 seconds}, and let
+$W$ be the waiting time, in \emph{minutes}, from now until the next request.
+\begin{enumerate}
+  \item State the distribution and parameter of $N$, and find
+  $\E[N]$ and $\Var(N)$. \partpts{3}
+  \begin{solution}[1.15in]
+    Thirty seconds is $1/2$ minute, so the Poisson parameter is
+    $2(1/2)=1$. Hence $N\sim\operatorname{Poisson}(1)$ and
+    $\E[N]=\Var(N)=1$.
+    \credit{Distribution with correctly converted parameter: 1;
+    mean: 1; variance: 1.}
+  \end{solution}
+
+  \item Find $\Prob(N\ge2)$. \partpts{2}
+  \begin{solution}[1.15in]
+    \[
+      \Prob(N\ge2)=1-\Prob(N=0)-\Prob(N=1)
+        =1-e^{-1}-e^{-1}=1-2e^{-1}.
+    \]
+    \credit{Correct complement or equivalent sum: 1;
+    substituted Poisson probabilities: 1.}
+  \end{solution}
+
+  \item Use the probability of \emph{zero requests} in the next $t$
+  minutes to find $\Prob(W>t)$ for $t\ge0$. Identify the distribution
+  of $W$, including its rate, and find $\E[W]$. \partpts{3}
+  \begin{solution}[1.6in]
+    Waiting longer than $t$ means that the next $t$ minutes contain
+    no requests. Therefore
+    \[
+      \Prob(W>t)=\Prob(\operatorname{Poisson}(2t)=0)=e^{-2t}.
+    \]
+    This is $W\sim\operatorname{Exp}(\text{rate }2)$, supported on
+    $[0,\infty)$, with $\E[W]=1/2$ minute (30 seconds).
+    At $t=0$, the survival probability is $1$.
+    \credit{Zero-count connection and survival probability: 1;
+    exponential family and rate: 1; mean with correct units: 1.}
+  \end{solution}
+
+  \item Find $\Prob(W>3\mid W>2)$ and justify your answer by a
+  calculation or the memoryless property. \partpts{2}
+  \begin{solution}[1.3in]
+    Since $\{W>3\}\subseteq\{W>2\}$,
+    \[
+      \Prob(W>3\mid W>2)=\frac{e^{-6}}{e^{-4}}=e^{-2}.
+    \]
+    Equivalently, the extra wait is more than one minute with the
+    same probability $e^{-2}$ as a fresh exponential wait.
+    \credit{Conditional ratio or correctly applied memorylessness: 1;
+    value: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{A continuous uniform wait}{8}{8}
+For a different service, the waiting time $U$, in minutes, has a
+\emph{continuous} uniform distribution on $[0,6]$.
+\begin{enumerate}
+  \item Write the density $f_U(u)$, including its value outside $[0,6]$.
+  Find $\Prob(2<U<5)$ and $\Prob(U=3)$. \partpts{3}
+  \begin{solution}[2in]
+    \[
+      f_U(u)=\begin{cases}1/6,&0\le u\le6,\\0,&\text{otherwise}.
+      \end{cases}
+      \qquad \Prob(2<U<5)=\frac{5-2}{6}=\frac12,
+      \qquad \Prob(U=3)=0.
+    \]
+    Interval probability is area under the density. A single point
+    has zero probability, even though its density is $1/6$.
+    Endpoint values of a density do not affect probabilities.
+    \credit{Density and support: 1; interval probability: 1;
+    point probability: 1.}
+  \end{solution}
+
+  \item Find $\E[U]$ and $\Var(U)$. \partpts{2}
+  \begin{solution}[1.5in]
+    \[
+      \E[U]=\frac{0+6}{2}=3\text{ minutes},
+      \qquad \Var(U)=\frac{(6-0)^2}{12}=3\text{ minutes squared}.
+    \]
+    Direct integration gives the same values:
+    $\E[U^2]=\int_0^6u^2/6\,du=12$, so the variance is $12-3^2=3$.
+    \credit{Mean: 1; variance: 1.}
+  \end{solution}
+
+  \item Is this uniform waiting time memoryless? Compute
+  $\Prob(U>5\mid U>2)$ and $\Prob(U>3)$, then compare them.
+  \partpts{3}
+  \begin{solution}[2in]
+    \[
+      \Prob(U>5\mid U>2)
+        =\frac{\Prob(U>5)}{\Prob(U>2)}
+        =\frac{1/6}{4/6}=\frac14,
+      \qquad \Prob(U>3)=\frac36=\frac12.
+    \]
+    These are unequal, so $U$ is not memoryless. After two minutes
+    have elapsed, the remaining wait is at most four minutes; its
+    distribution has changed.
+    \credit{Conditional probability: 1; unconditional tail: 1;
+    conclusion from their inequality: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{4}{Coupon collection, one stage at a time}{20}{18}
+Each pack contains one sticker, equally likely to be of type $A,B,C$, or
+$D$. Packs are independent; duplicates are possible. You start with no
+stickers. Let $C$ be the number of packs needed to collect all four types.
+After exactly $k$ distinct types have been collected, let $W_k$ count
+\emph{additional packs up to and including the next new type}, for
+$k=0,1,2,3$.
+
+\textbf{You may use:} if $G\sim\operatorname{Geom}(p)$ counts trials
+through the first success, then $\E[G]=1/p$.
+\begin{enumerate}
+  \item Your first five stickers are $A,A,C,A,C$. Which types would
+  make the next sticker new, and what is the probability it is new?
+  \partpts{2}
+  \begin{solution}[.3in]
+    Only $B$ and $D$ are new, so the probability is $2/4=1/2$.
+    The relevant count is two distinct types, not five packs.
+    \credit{Missing types: 1; probability: 1.}
+  \end{solution}
+
+  \item After $k$ distinct types have been collected, find the probability
+  $p_k$ that the next pack gives a new type. Why does this probability
+  stay the same when a duplicate appears? \partpts{3}
+  \begin{solution}[.5in]
+    There are $4-k$ missing types out of four equally likely types, so
+    $p_k=(4-k)/4$. A duplicate does not change the set of collected
+    types, and the next pack is still independent and uniform.
+    \credit{Number missing: 1; success probability: 1;
+    unchanged collection and draw law after a duplicate: 1.}
+  \end{solution}
+
+  \item State the distribution of $W_k$ for $k=1,2,3$. Fill in the
+  table, treating $W_0$ directly. \partpts{5}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}ccc@{}}
+    \toprule
+    Distinct types $k$ & New-type probability $p_k$ & Expected wait $\E[W_k]$\\
+    \midrule
+    \ifanswers
+      $0$ & $1$ & $1$\\
+      $1$ & $3/4$ & $4/3$\\
+      $2$ & $1/2$ & $2$\\
+      $3$ & $1/4$ & $4$\\
+    \else
+      $0$ & \rule{.85in}{.3pt} & \rule{.85in}{.3pt}\\
+      $1$ & \rule{.85in}{.3pt} & \rule{.85in}{.3pt}\\
+      $2$ & \rule{.85in}{.3pt} & \rule{.85in}{.3pt}\\
+      $3$ & \rule{.85in}{.3pt} & \rule{.85in}{.3pt}\\
+    \fi
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \begin{solution}[.2in]
+    Within each stage the independent draws have fixed success
+    probability $p_k$, so $W_k\sim\operatorname{Geom}(p_k)$ and
+    $\E[W_k]=1/p_k$. The first pack is certainly new, so $W_0=1$.
+    \credit{Geometric identification with the stage parameter: 1;
+    each complete table row: 1 (half per correct entry).
+    Accept $\operatorname{Geom}(1)$ for the deterministic $W_0$.}
+  \end{solution}
+
+  \item Express $C$ in terms of $W_0,W_1,W_2,W_3$ and compute $\E[C]$.
+  Name the expectation rule you use. Does that rule require the stages
+  to be independent? \partpts{4}
+  \begin{solution}[.6in]
+    $C=W_0+W_1+W_2+W_3$. By linearity of expectation,
+    $\E[C]=1+4/3+2+4=25/3$ packs.
+    Linearity does not require independence of the stages.
+    \credit{Decomposition: 1; linearity: 1; sum and value: 1;
+    no independence requirement: 1. A quoted $4H_4$ alone earns
+    only the numerical-result point.}
+  \end{solution}
+
+  \item Suppose you currently have exactly two distinct types.
+  What is the expected number of \emph{additional} packs to finish?
+  Explain why $4/2=2$ is not the answer to this question. \partpts{3}
+  \begin{solution}[.55in]
+    Two stages remain, so the expected additional wait is
+    $\E[W_2]+\E[W_3]=2+4=6$ packs.
+    The value $4/2=2$ is only the expected wait for the next new type;
+    after that, the final missing type has success probability $1/4$.
+    \credit{Two remaining stages: 1; sum $6$: 1;
+    explain what the value $2$ actually measures: 1.}
+  \end{solution}
+
+  \item A student claims that $C$ itself has a geometric distribution
+  with parameter $1/4$. Is this correct? Give a reason using the
+  possible values of $C$ or the changes between stages. \partpts{3}
+  \begin{solution}[.7in]
+    No. At least four packs are needed, so $\Prob(C=1)=0$,
+    but a $\operatorname{Geom}(1/4)$ variable equals $1$ with
+    probability $1/4$. Alternatively, each stage waits for one
+    new type with a different success probability; completion
+    requires all four stages, not one fixed-probability first success.
+    \credit{Reject the claim: 1; a valid support comparison or
+    explanation of the changing stages: 2.}
+  \end{solution}
+\end{enumerate}
+
+\label{quiz-last-page}
+\end{document}

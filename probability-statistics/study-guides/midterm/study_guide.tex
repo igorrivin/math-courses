@@ -1,0 +1,502 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.75in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb,booktabs,array,xcolor,enumitem,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{17243A}
+\definecolor{indigo}{HTML}{293D70}
+\definecolor{mint}{HTML}{2A8C82}
+\definecolor{muted}{HTML}{647084}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=mint,urlcolor=mint,
+ pdfauthor={Igor Rivin},pdftitle={Probability Midterm Study Guide: Through Continuous Distributions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=6pt,topsep=4pt}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\ind}{\mathbf1}
+\newcommand{\topic}[1]{{\Large\bfseries\color{indigo}#1}\par\medskip}
+\newcommand{\subtopic}[1]{\par\addvspace{7pt}{\bfseries\color{mint}#1}\par\nobreak}
+\newcommand{\checkitem}[1]{\item[$\square$] #1}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Midterm study guide}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}Through continuous distributions}
+\fancyfoot[R]{\small\color{mint}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+\topic{Midterm study guide}
+{\large Everything through continuous distributions}\par
+\textbf{Reading scope.} Chapters 1--5 of \emph{Chance, Data, and Decisions},
+including the sections marked ``For later'' on geometric and Poisson laws,
+coupon collection, densities, and continuous families. Appendix A supplies
+the calculus used here. This guide ends before the joint-distribution chapter;
+limit theorems, estimation, testing, and Bayesian inference belong to later units.
+Bayes' rule for events is part of this midterm scope.
+
+\subtopic{What you should be able to do without looking up a solution}
+\begin{itemize}
+\checkitem{Translate a story into outcomes, events, a random variable, and
+probabilities; explain any uniformity or independence assumption.}
+\checkitem{Count ordered and unordered choices, with and without repetition;
+use complements and inclusion--exclusion to avoid overcounting.}
+\checkitem{Derive birthday and derangement probabilities rather than guess
+from a memorized approximation.}
+\checkitem{Use conditional probability, total probability, and Bayes' rule;
+distinguish disjointness, pairwise independence, and mutual independence.}
+\checkitem{Read or construct a PMF or CDF, normalize a density, and compute
+interval probabilities, quantiles, expectations, and variances.}
+\checkitem{Use linearity and indicators; know when variances add and when
+cross terms are needed. Apply Markov and Chebyshev with their hypotheses.}
+\checkitem{Choose a named distribution by its mechanism; state its support,
+parameters, mean, and variance, and recognize memorylessness.}
+\checkitem{Build coupon-collector stages, find expected remaining waits,
+and distinguish a mean collection time from a completion deadline.}
+\checkitem{Work with uniform, exponential, and normal laws; standardize with
+the standard deviation and use a CDF to transform a variable.}
+\end{itemize}
+
+\subtopic{A practical review sequence}
+\begin{enumerate}
+\item \textbf{Recover the ideas.} Read pages 2--6. Close the guide and write
+one example of each mechanism. Explain why a nearby wrong model fails.
+\item \textbf{Recover the calculations.} Rework a counting problem,
+a conditioning problem, an indicator variance problem, a coupon-stage
+problem, and a density problem from the earlier assignments and quizzes.
+\item \textbf{Try the mixed practice.} Work page 7 before consulting page 8.
+For every error, identify the event or modeling step where it started.
+\item \textbf{Use the new assignment for depth.} Problem Set 4 extends the
+coupon collector and tail formulas. Its unequal-coupon challenge and
+infinite-mean prize are guided enrichment, not extra named laws to memorize.
+\end{enumerate}
+\textbf{Exam logistics.} This guide describes mathematical scope; it does
+not set the exam duration, calculator policy, or allowed formula sheet.
+
+\newpage
+\topic{1. Counting and probability spaces}
+\subtopic{Choose the experiment before the formula}
+For $r$ choices from $n$ objects:
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & Without repetition & With repetition\\
+\midrule
+Ordered & $n(n-1)\cdots(n-r+1)$ & $n^r$\\[3pt]
+Unordered & $\binom nr$ & $\binom{n+r-1}r$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last entry counts multisets from $n$ types, equivalently nonnegative
+integer solutions of $x_1+\cdots+x_n=r$. A repeated-letter word with
+multiplicities $a_1,\ldots,a_k$ has $(\sum_i a_i)!/\prod_i a_i!$ arrangements.
+Divide by a factorial only when changing the order does not change the object.
+
+\textbf{Binomial identities.}
+$\binom nr=\binom n{n-r}$,
+$\binom nr=\binom{n-1}{r-1}+\binom{n-1}r$,
+$(a+b)^n=\sum_{r=0}^n\binom nr a^r b^{n-r}$.
+Vandermonde's identity
+$\sum_j\binom mj\binom n{r-j}=\binom{m+n}r$
+counts a committee by how many members come from each group.
+
+\subtopic{Events, weights, and inclusion--exclusion}
+A discrete probability space has outcome weights $w_\omega\ge0$ with
+$\sum_\omega w_\omega=1$, and
+$\P(A)=\sum_{\omega\in A}w_\omega$.
+Only for equally likely outcomes is $\P(A)=|A|/|\Omega|$.
+A countably infinite set cannot have a uniform probability giving every
+outcome the same weight: zero weights sum to zero, and positive equal
+weights have infinite sum.
+
+Know union, intersection, complement, and De Morgan's laws:
+$(A\cup B)^c=A^c\cap B^c$ and $(A\cap B)^c=A^c\cup B^c$.
+\[
+\P(A\cup B)=\P(A)+\P(B)-\P(A\cap B),\qquad
+\P\Bigl(\bigcup_i A_i\Bigr)\le\sum_i\P(A_i).
+\]
+For three events, add single-event probabilities, subtract pair
+intersections, then add the triple intersection. For more events, continue
+alternating by the size of the intersected set.
+
+\subtopic{Two recurring applications}
+\textbf{Birthdays.} With $n$ independent uniform birthdays on $d$ days,
+\[
+\P(\text{collision})=1-\prod_{k=0}^{n-1}(1-k/d)\quad(n\le d),
+\]
+and the collision probability is one if $n>d$. For $n\le d$,
+\[
+1-e^{-n(n-1)/(2d)}\le\P(\text{collision})
+\le\min\{1,\tbinom n2/d\}.
+\]
+The left inequality uses $1-u\le e^{-u}$; the right is a union bound over
+pairs. The familiar exponential approximation is close when the accumulated
+quadratic terms in $\log(1-u)=-u+O(u^2)$ are small.
+
+\textbf{Derangements.} For a uniform random permutation of $n$ objects,
+\[
+D_n=n!\sum_{j=0}^n\frac{(-1)^j}{j!},\qquad
+\P(\text{exactly }k\text{ fixed points})=\frac{\binom nkD_{n-k}}{n!}.
+\]
+Set $D_0=1,D_1=0$; $D_n=(n-1)(D_{n-1}+D_{n-2})$ for $n\ge2$.
+The no-fixed-point probability approaches $e^{-1}$, with error less than
+$1/(n+1)!$. For $n\ge2$, $D_n$ is the nearest integer to $n!/e$.
+Exactly $n-1$ fixed points is impossible. The expected number of fixed
+points is 1 for $n\ge1$, by indicators.
+
+\newpage
+\topic{2. Conditioning, independence, and Bayes}
+\subtopic{Three formulas, three jobs}
+For $\P(B)>0$,
+\[
+\P(A\mid B)=\frac{\P(A\cap B)}{\P(B)},\qquad
+\P(A\cap B)=\P(B)\P(A\mid B).
+\]
+Conditioning restricts the possible outcomes to $B$ and rescales their
+weights. The order of conditions matters: $\P(A\mid B)$ and
+$\P(B\mid A)$ answer different questions.
+
+For a partition $B_1,\ldots,B_r$ with positive probabilities, and $\P(A)>0$
+when using Bayes' rule,
+\[
+\P(A)=\sum_i\P(A\mid B_i)\P(B_i),\qquad
+\P(B_j\mid A)=\frac{\P(A\mid B_j)\P(B_j)}
+{\sum_i\P(A\mid B_i)\P(B_i)}.
+\]
+The first is total probability; the second reverses a condition using Bayes.
+A tree multiplies probabilities along a path and adds them across disjoint paths.
+
+\subtopic{Worked example: a positive screening test}
+Suppose $\P(D)=.01$, $\P(+\mid D)=.9$, and $\P(+\mid D^c)=.05$.
+These are stipulated probabilities for a mathematical model.
+\[
+\P(+)=.9(.01)+.05(.99)=.0585,\qquad
+\P(D\mid+)=\frac{.009}{.0585}=\frac2{13}\approx.1538.
+\]
+A high true-positive rate is not the probability that a positive result
+came from a member of group $D$. Both paths to a positive result belong
+in the denominator.
+
+\subtopic{Independence must be checked, not inferred from symmetry}
+$A,B$ are independent when $\P(A\cap B)=\P(A)\P(B)$.
+If $\P(B)>0$, this is equivalent to $\P(A\mid B)=\P(A)$.
+Independence is preserved by taking complements.
+Two disjoint events of positive probability are dependent: their intersection
+has probability zero while the product is positive.
+
+\textbf{Pairwise versus mutual.} Toss two fair coins. Let $A$ mean the first
+is heads, $B$ the second is heads, and $C$ that the coins agree.
+Each event has probability $1/2$, and each pair intersection has probability
+$1/4$. Yet $\P(A\cap B\cap C)=1/4\ne1/8$: the three are pairwise,
+but not mutually, independent.
+
+\textbf{A shared hidden coin.} Choose a coin of heads probability $1/4$ or
+$3/4$, equally likely, and toss that same coin twice. Then
+$\P(H_1)=\P(H_2)=1/2$, but $\P(H_1\cap H_2)=5/16$ and
+$\P(H_2\mid H_1)=5/8$. Tosses are independent conditional on the chosen
+coin, but dependent when that information is hidden. Equal marginal laws
+or symmetry under reordering do not imply independence.
+
+\textbf{Monty Hall.} In the standard model, the host knows the prize location,
+always opens a different door containing no prize, and always offers a switch.
+Staying wins with probability $1/3$; switching wins with probability $2/3$.
+Changing the host's rules changes the conditioning problem. State those rules
+before using this answer.
+
+\newpage
+\topic{3. Random variables, moments, and bounds}
+\subtopic{PMF and CDF}
+$X$ assigns a number to each outcome. The event $\{X\ge a\}$ is the set
+of original outcomes whose recorded values satisfy that inequality.
+$p_X(x)=\P(X=x)$ and $F_X(x)=\P(X\le x)$.
+A CDF is nondecreasing and right-continuous, with limits 0 and 1.
+\[
+\P(a<X\le b)=F_X(b)-F_X(a),\qquad \P(X>a)=1-F_X(a).
+\]
+At an atom, $\P(X=a)=F_X(a)-F_X(a^-)$, where $F_X(a^-)$ is the left limit.
+For integer $X$ and integer $k$,
+$\P(X\ge k)=1-F_X(k-1)$.
+
+\subtopic{Weighted averages and spread}
+\[
+\E[g(X)]=\sum_xg(x)p_X(x),\qquad
+\Var(X)=\E[(X-\E[X])^2]=\E[X^2]-\E[X]^2.
+\]
+For infinite sums, absolute integrability guarantees a finite expectation;
+a nonnegative variable can have mean $+\infty$. A valid distribution
+need not have finite moments.
+\[
+\E[aX+bY+c]=a\E[X]+b\E[Y]+c,\qquad
+\Var(aX+b)=a^2\Var(X).
+\]
+Linearity does not require independence. For a sum,
+\[
+\Var(X+Y)=\Var(X)+\Var(Y)+2\bigl(\E[XY]-\E[X]\E[Y]\bigr).
+\]
+Independent variables make the last term zero. For $m$ independent
+variables with common mean $\mu$ and variance $\sigma^2$, their sum has
+mean $m\mu$, variance $m\sigma^2$; their average has variance $\sigma^2/m$.
+Variance has squared units; standard deviation has the original units.
+
+\subtopic{Indicators and tail methods}
+For $I=\ind_A$, $\E[I]=\P(A)$ and $\Var(I)=\P(A)(1-\P(A))$.
+For a count $N=\sum_i\ind_{A_i}$, $\E[N]=\sum_i\P(A_i)$, even with dependence.
+For independent uniform birthdays, the expected number of matching
+\emph{pairs} is $\binom n2/d$; this is not the collision probability.
+
+For nonnegative integer $N$ and nonnegative real $Y$,
+\[
+\E[N]=\sum_{m=0}^\infty\P(N>m),\qquad
+\E[Y]=\int_0^\infty\P(Y>t)\,dt.
+\]
+For integrable real $X$ the signed formula is
+\[
+\boxed{\E[X]=\int_0^\infty(1-F_X(t))\,dt-\int_{-\infty}^0F_X(t)\,dt.}
+\]
+Adding the two areas instead gives $\E[|X|]$. Apply the nonnegative tail
+formula to $X_+=\max(X,0)$ and $X_-=\max(-X,0)$ to see why.
+These identities also work for discrete or mixed distributions.
+
+\subtopic{Bounds with hypotheses}
+If $Y\ge0$ and $a>0$, $\P(Y\ge a)\le\E[Y]/a$ (Markov).
+If $X$ has finite mean $\mu$ and variance $\sigma^2$, then for $t>0$,
+$\P(|X-\mu|\ge t)\le\sigma^2/t^2$ (Chebyshev).
+Prove Markov using $Y\ge a\ind_{\{Y\ge a\}}$; apply it to
+$(X-\mu)^2$ to prove Chebyshev. A bound may be loose or exceed one;
+probabilities are always at most one.
+
+\newpage
+\topic{4. Discrete laws and coupon collection}
+{\small All geometric waits below count trials including the first success.
+For $\lambda=0$ the Poisson law is constantly zero.}\par
+\begin{center}\footnotesize
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.18in}p{2.32in}p{.61in}p{1.23in}@{}}
+\toprule
+Law / support & PMF and mechanism & Mean & Variance\\
+\midrule
+Uniform on $1,\ldots,n$ & $1/n$; uniform label & $(n+1)/2$ & $(n^2-1)/12$\\
+Bernoulli$(p)$; $0,1$ & $p$ at 1, $1-p$ at 0; one indicator & $p$ & $p(1-p)$\\
+Binomial$(n,p)$; $0,\ldots,n$ & $\binom nkp^k(1-p)^{n-k}$; independent trials with fixed $n,p$ & $np$ & $np(1-p)$\\
+Hypergeometric\newline $(N,K,m)$ & $\binom Kk\binom{N-K}{m-k}/\binom Nm$; $m$ draws without replacement & $mp$ & $mp(1-p)\dfrac{N-m}{N-1}$\\
+Geometric$(p)$; $1,2,\ldots$ & $(1-p)^{k-1}p$; first success & $1/p$ & $(1-p)/p^2$\\
+Poisson$(\lambda)$; $0,1,\ldots$ & $e^{-\lambda}\lambda^k/k!$; rare-event count & $\lambda$ & $\lambda$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For hypergeometric, $p=K/N$, $N>1$, and
+$\max(0,m-(N-K))\le k\le\min(m,K)$.
+For $N=1$ the count is constant. Bernoulli/binomial allow $0\le p\le1$;
+geometric requires $0<p\le1$. If geometric counts \emph{failures}, subtract 1
+from its mean and support, leaving variance unchanged.
+
+\textbf{Memorylessness.} For geometric $G$,
+$\P(G>s+t\mid G>s)=(1-p)^t=\P(G>t)$ for nonnegative integer $s,t$
+when the conditioning event has positive probability.
+
+\textbf{Poisson approximation.} Many independent rare trials with $np\approx\lambda$
+can be approximated by $\operatorname{Poisson}(\lambda)$.
+$\E[Q(Q-1)]=\lambda^2$ is the quickest route to its variance.
+A count of occurrences is not automatically Poisson.
+
+\subtopic{Coupon collection: uniform independent types}
+With $k$ distinct types already seen, the next-new-type probability is
+$(n-k)/n$ and the stage $W_k$ is geometric with this parameter.
+The stage laws remain the same after any past completed history, so the
+stages are independent. For $T_n=\sum_{k=0}^{n-1}W_k$,
+\[
+\E[T_n]=nH_n,\qquad
+\Var(T_n)=n^2\sum_{j=1}^n\frac1{j^2}-nH_n.
+\]
+The expected remaining wait with $j$ types missing is $nH_j$.
+The expected time to see $r$ types is $n(H_n-H_{n-r})$.
+Integral comparison gives $\log(n+1)\le H_n\le1+\log n$.
+
+For $m\ge1$ draws, missing-type indicators have mean $(1-1/n)^m$, so
+\[
+\E[M_m]=n(1-1/n)^m,\qquad
+\P(T_n>m)\le\min\{1,ne^{-m/n}\}.
+\]
+They are generally dependent; the stage independence does not imply
+missing-type independence. Inclusion--exclusion gives
+\[
+\P(T_n\le m)=\sum_{j=0}^n(-1)^j\binom nj(1-j/n)^m.
+\]
+Before any draw, $M_0=n$ and $\P(T_n\le0)=0$. A sufficient $(1-\delta)$
+completion deadline is $\lceil n(\log n+\log(1/\delta))\rceil$.
+The mean $nH_n$ is not a guarantee. Unequal type probabilities require
+a different analysis; the challenge in Problem Set 4 supplies one.
+
+{\small\textbf{Book bonus: Poissonization.} If an independent
+$K\sim\operatorname{Poisson}(t)$ determines the draw count, type counts
+are independent Poisson$(t/n)$, so the missing count is
+Binomial$(n,e^{-t/n})$ and completion has probability $(1-e^{-t/n})^n$.
+This product is for a Poisson draw count, not a fixed draw count.}
+
+\newpage
+\topic{5. Continuous distributions}
+\subtopic{Density, CDF, and quantiles}
+A density satisfies $f(x)\ge0$ and $\int_{-\infty}^\infty f(x)\,dx=1$.
+\[
+F(x)=\int_{-\infty}^x f(t)\,dt,\qquad
+\P(a<X<b)=\int_a^bf(t)\,dt,\qquad
+\E[g(X)]=\int_{-\infty}^\infty g(x)f(x)\,dx.
+\]
+The last integral is a finite expectation when $\int |g(x)|f(x)\,dx<\infty$.
+For a density-based law, $\P(X=a)=0$, so interval endpoints do not matter.
+A density height may exceed one. Where the density is continuous,
+$F'=f$; a jump in a CDF is an atom, not an ordinary density value.
+A continuous law's median solves $F(m)=1/2$; its $q$-quantile solves $F(x)=q$.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.55}
+\begin{tabular}{@{}p{1.16in}p{3.14in}p{1.18in}@{}}
+\toprule
+Family & Density and CDF & Mean / variance\\
+\midrule
+Uniform$(a,b)$ & $f=1/(b-a)$ on $[a,b]$; $F(x)=(x-a)/(b-a)$ inside the interval, 0 below, 1 above & $(a+b)/2$; $(b-a)^2/12$\\
+Exponential$(\lambda)$ & $f(x)=\lambda e^{-\lambda x}$, $F(x)=1-e^{-\lambda x}$ for $x\ge0$; both zero for $x<0$ & $1/\lambda$; $1/\lambda^2$\\
+Normal$(\mu,\sigma^2)$ & $f(x)=\dfrac{e^{-(x-\mu)^2/(2\sigma^2)}}{\sigma\sqrt{2\pi}}$ on $\mathbb R$; $F(x)=\Phi((x-\mu)/\sigma)$ & $\mu$; $\sigma^2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $a<b$, $\lambda>0$, and $\sigma>0$.
+\textbf{Units matter.} An exponential \emph{rate} has units reciprocal to time;
+a Poisson count parameter for an interval of length $t$ is rate times $t$.
+If counts on intervals of length $t$ are Poisson with parameter $\lambda t$,
+$\P(\text{next arrival}>t)=\P(\text{zero arrivals})=e^{-\lambda t}$.
+
+\subtopic{Memorylessness and normal standardization}
+For exponential $W$ and $s,t\ge0$,
+$\P(W>s+t\mid W>s)=e^{-\lambda t}=\P(W>t)$.
+Its median is $(\log2)/\lambda$, smaller than its mean.
+A uniform wait is not memoryless: its remaining possible interval shrinks.
+
+For $X\sim\operatorname{Normal}(\mu,\sigma^2)$, standardize by
+$Z=(X-\mu)/\sigma$, dividing by standard deviation, not variance.
+\[
+\P(a<X<b)=\Phi\left(\frac{b-\mu}{\sigma}\right)
+-\Phi\left(\frac{a-\mu}{\sigma}\right),\qquad \Phi(-z)=1-\Phi(z).
+\]
+You can leave answers in terms of $\Phi$ when no table is supplied.
+An affine transform $aX+b$ is normal with mean $a\mu+b$ and variance
+$a^2\sigma^2$ for $a\ne0$; at $a=0$ it is constant.
+
+\subtopic{Transformations and the beta shape mentioned in Chapter 5}
+For a monotone transform, rewrite the event before doing calculus.
+If $F_X(x)=x^2$ on $[0,1]$ and $Y=X^2$, then
+$F_Y(y)=\P(X\le\sqrt y)=y$ on $[0,1]$: $Y$ is uniform.
+For $Y=X^2$ on a support crossing zero, use
+$\{-\sqrt y\le X\le\sqrt y\}$ for $y\ge0$; both branches matter.
+
+A beta density on $[0,1]$ has shape
+$c x^{\alpha-1}(1-x)^{\beta-1}$ with $\alpha,\beta>0$.
+Determine $c$ by integration when asked. For example $c x(1-x)$ normalizes
+with $c=6$ and has CDF $3x^2-2x^3$ on $[0,1]$.
+The general normalizing constant and Bayesian use are later tools.
+
+\newpage
+\topic{6. Mixed practice: try before reading the answers}
+These questions are a diagnostic, not a prediction of the exam's length or
+point weights. Give exact answers or expressions in $\Phi$; show the modeling step.
+\begin{enumerate}
+\item \textbf{Counting.} A committee of 3 is selected uniformly from 4 women
+and 6 men. Find the probability of exactly 2 women and of at least 1 woman.
+How many distinguishable arrangements of \texttt{BANANA} are there?
+\item \textbf{Birthdays and hats.} Four people have independent uniform
+birth months on 12 months. Find the chance of a shared month.
+For a random permutation of 4 hats, find the chance of no correct hats,
+of exactly 2 correct hats, and the expected number of correct hats.
+\item \textbf{Bayes.} Choose a box uniformly. Box A has 2 red and 1 blue
+ball; box B has 1 red and 3 blue balls. Draw one ball uniformly from the
+chosen box. Given red, what is the probability you chose A?
+\item \textbf{Independence.} Roll a fair die. Let $A$ mean even and $B$
+mean at least 4. Are they independent? If events $C,D$ are disjoint and
+each has positive probability, can they be independent?
+\item \textbf{Moments and a CDF.} Let $X=-1,0,2$ with probabilities
+$1/4,1/2,1/4$. Find its full CDF, mean, variance, and $\P(X\ge0)$.
+For two independent copies, find the mean and variance of their sum.
+\item \textbf{Choose a law.} An attempt succeeds independently with
+probability $1/4$. Find the chance of exactly 2 successes in 5 attempts;
+the chance that the first success is after attempt 3; and the mean and
+variance of that waiting time. If $Q\sim\operatorname{Poisson}(2)$, find
+$\P(Q\ge2)$ and $\E[Q(Q-1)]$.
+\item \textbf{Coupon collection.} An album has 4 equally likely types.
+Find its mean completion time and expected remaining wait when 2 types
+are missing. Find the completion probability after 5 draws by
+inclusion--exclusion. Which calculation needs independence of stages:
+adding their means or adding their variances?
+\item \textbf{Densities.} A density is $f(x)=c(1+x)$ on $[0,1]$, zero
+elsewhere. Find $c$, the full CDF, $\P(X>1/2)$, the mean, variance,
+and median. What is $\P(X=1/2)$?
+\item \textbf{Continuous laws.} For $W\sim\operatorname{Exp}(2)$, find
+$\P(W>3\mid W>1)$ and its median. For $U\sim\operatorname{Uniform}(0,4)$,
+find $\P(U>3\mid U>1)$ and its variance.
+For $X\sim\operatorname{Normal}(5,4)$, express $\P(3<X<8)$ using $\Phi$.
+\item \textbf{Bounds and tails.} A nonnegative variable has mean 3.
+Bound $\P(Y\ge12)$. A variable has mean 10 and variance 4;
+bound $\P(|X-10|\ge6)$. If $Z$ is uniform on $[-1,2]$, compute
+its negative and positive tail areas separately, then find $\E[Z]$
+and $\E[|Z|]$.
+\end{enumerate}
+\subtopic{Final checks before you turn in a solution}
+Do probabilities lie in $[0,1]$? Does the PMF sum or the density integrate
+to one? Does the CDF include the full support? Is variance nonnegative?
+Did you convert time units? Did you explain independence where needed?
+For a signed payoff, did you subtract the negative area?
+
+\newpage
+\topic{7. Answers and short explanations}
+\begin{enumerate}
+\item There are $\binom{10}3$ committees. The probabilities are
+$\binom42\binom61/\binom{10}3=3/10$ and
+$1-\binom63/\binom{10}3=5/6$.
+\texttt{BANANA} has $6!/(3!2!)=60$ arrangements.
+\item The shared-month probability is
+$1-(12\cdot11\cdot10\cdot9)/12^4=41/96$.
+$D_4=9$, so no correct hats has probability $9/24=3/8$.
+Exactly 2 has probability $\binom42D_2/24=1/4$.
+The expected correct count is $4(1/4)=1$; indicators need not be independent.
+\item Total red probability is $(1/2)(2/3)+(1/2)(1/4)=11/24$.
+Bayes gives $\P(A\mid\text{red})=(1/3)/(11/24)=8/11$.
+\item $\P(A)=\P(B)=1/2$, but $\P(A\cap B)=2/6=1/3\ne1/4$.
+They are dependent. Disjoint events of positive probability cannot be
+independent, because zero intersection differs from their positive product.
+\item $F_X(x)=0$ below $-1$, $1/4$ on $[-1,0)$,
+$3/4$ on $[0,2)$, and 1 on $[2,\infty)$.
+$\E[X]=1/4$, $\E[X^2]=5/4$, $\Var(X)=19/16$,
+and $\P(X\ge0)=3/4$. The sum has mean $1/2$ and variance $19/8$.
+\item Fixed trial count: $\binom52(1/4)^2(3/4)^3=135/512$.
+First-success wait: $\P(G>3)=(3/4)^3=27/64$,
+$\E[G]=4$, $\Var(G)=12$.
+For Poisson, $\P(Q\ge2)=1-3e^{-2}$ and $\E[Q(Q-1)]=4$.
+\item Mean completion: $4H_4=25/3$ draws. Remaining wait:
+$4H_2=6$ draws. Completion after 5 draws:
+\[
+1-4(3/4)^5+6(1/2)^5-4(1/4)^5=15/64.
+\]
+Adding means uses linearity alone; adding variances needs the independence
+of stages (or a separate justification that all cross terms vanish).
+\item $c\int_0^1(1+x)\,dx=1$, so $c=2/3$.
+$F(x)=0$ below 0, $(2x+x^2)/3$ on $[0,1]$, and 1 above 1.
+$\P(X>1/2)=7/12$, $\E[X]=5/9$, $\E[X^2]=7/18$,
+$\Var(X)=13/162$.
+The median solves $(2m+m^2)/3=1/2$, giving $m=-1+\sqrt{5/2}$.
+$\P(X=1/2)=0$.
+\item Exponential: $e^{-6}/e^{-2}=e^{-4}$ and median $(\log2)/2$.
+Uniform: $(1/4)/(3/4)=1/3$ and variance $4^2/12=4/3$.
+Normal: $\sigma=2$, so the answer is $\Phi(3/2)-\Phi(-1)$.
+\item Markov gives $3/12=1/4$; Chebyshev gives $4/36=1/9$.
+For $Z$, the CDF is $(z+1)/3$ on $[-1,2]$.
+The negative area is $\int_{-1}^0(z+1)/3\,dz=1/6$;
+the positive area is $\int_0^2(2-z)/3\,dz=2/3$.
+Thus $\E[Z]=2/3-1/6=1/2$, while $\E[|Z|]=2/3+1/6=5/6$.
+\end{enumerate}
+\end{document}

@@ -33,6 +33,22 @@
       "instructorSource": "problem-sets/problem-set-04/number_theory_problem_set_04_instructor.pdf"
     },
     {
+      "id": "multiplicative-functions", "kind": "problem-set", "label": "Topic problem set",
+      "title": "Multiplicative functions",
+      "description": "Prime-power values, divisor functions, totients, convolution, Möbius cancellation, and counting applications.",
+      "details": "8 problems + challenge · 100 points · 2–3 hours", "studentFile": "multiplicative-functions.pdf",
+      "studentSource": "problem-sets/multiplicative-functions/number_theory_multiplicative_functions_student.pdf",
+      "instructorSource": "problem-sets/multiplicative-functions/number_theory_multiplicative_functions_instructor.pdf"
+    },
+    {
+      "id": "valuations-and-p-adics", "kind": "problem-set", "label": "Topic problem set",
+      "title": "Valuations, primes, and p-adic distance",
+      "description": "Factorial and binomial valuations, Chebyshev growth bounds, and a first introduction to p-adic distance, the ultrametric inequality, and convergence.",
+      "details": "7 problems + challenge · 100 points · 3–4 hours", "studentFile": "valuations-and-p-adics.pdf",
+      "studentSource": "problem-sets/valuations-and-p-adics/number_theory_valuations_and_p_adics_student.pdf",
+      "instructorSource": "problem-sets/valuations-and-p-adics/number_theory_valuations_and_p_adics_instructor.pdf"
+    },
+    {
       "id": "weekly-quizzes", "kind": "quiz", "label": "Weekly quiz collection",
       "title": "Ten checkpoints from Euclid to primes",
       "description": "Short, self-contained quizzes following the course sequence, with space to write calculations and proofs.",
@@ -67,6 +83,17 @@
       "instructorSource": "problem-sets/problem-set-03/probability_problem_set_03_instructor.pdf"
     },
     {
+      "id": "problem-set-04",
+      "kind": "problem-set",
+      "label": "Problem Set 4",
+      "title": "Distributions, tails, and coupon collection",
+      "description": "Discrete and continuous laws, coupon completion deadlines, signed tail areas, a capped carnival prize, and a highest-bid pizza auction.",
+      "details": "8 core problems + challenge · 100 points · About 4 hours",
+      "studentFile": "problem-set-04.pdf",
+      "studentSource": "problem-sets/problem-set-04/probability_problem_set_04_student.pdf",
+      "instructorSource": "problem-sets/problem-set-04/probability_problem_set_04_instructor.pdf"
+    },
+    {
       "id": "conditional-probability-quiz", "kind": "quiz", "label": "Class quiz",
       "title": "Conditional probability and Bayes’ rule",
       "description": "Finite probability spaces, conditioning from a table, total probability, and a guided solution to Monty Hall.",
@@ -81,6 +108,22 @@
       "details": "50 minutes · 50 points", "studentFile": "birthday-derangements-quiz.pdf",
       "studentSource": "quizzes/birthday-derangements/birthday_derangements_quiz_student.pdf",
       "instructorSource": "quizzes/birthday-derangements/birthday_derangements_quiz_instructor.pdf"
+    },
+    {
+      "id": "expectation-distributions-quiz", "kind": "quiz", "label": "Class quiz",
+      "title": "Expectation, variance, and discrete distributions",
+      "description": "Discrete probability spaces, moments, Bernoulli indicators, binomial counts, and geometric waiting times.",
+      "details": "50 minutes · 50 points", "studentFile": "expectation-distributions-quiz.pdf",
+      "studentSource": "quizzes/expectation-distributions/expectation_distributions_quiz_student.pdf",
+      "instructorSource": "quizzes/expectation-distributions/expectation_distributions_quiz_instructor.pdf"
+    },
+    {
+      "id": "distributions-coupon-collector-quiz", "kind": "quiz", "label": "Class quiz",
+      "title": "Discrete and continuous distributions",
+      "description": "Bernoulli, binomial, geometric, Poisson, exponential, and uniform distributions, with a guided coupon-collector problem.",
+      "details": "50 minutes · 50 points", "studentFile": "distributions-coupon-collector-quiz.pdf",
+      "studentSource": "quizzes/distributions-coupon-collector/distributions_coupon_collector_quiz_student.pdf",
+      "instructorSource": "quizzes/distributions-coupon-collector/distributions_coupon_collector_quiz_instructor.pdf"
     },
     {
       "id": "weekly-quizzes", "kind": "quiz", "label": "Weekly quiz collection",

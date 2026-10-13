@@ -36,6 +36,24 @@
     "studentFile": "problem-set-04.pdf"
   },
   {
+    "id": "multiplicative-functions",
+    "kind": "problem-set",
+    "label": "Topic problem set",
+    "title": "Multiplicative functions",
+    "description": "Prime-power values, divisor functions, totients, convolution, Möbius cancellation, and counting applications.",
+    "details": "8 problems + challenge · 100 points · 2–3 hours",
+    "studentFile": "multiplicative-functions.pdf"
+  },
+  {
+    "id": "valuations-and-p-adics",
+    "kind": "problem-set",
+    "label": "Topic problem set",
+    "title": "Valuations, primes, and p-adic distance",
+    "description": "Factorial and binomial valuations, Chebyshev growth bounds, and a first introduction to p-adic distance, the ultrametric inequality, and convergence.",
+    "details": "7 problems + challenge · 100 points · 3–4 hours",
+    "studentFile": "valuations-and-p-adics.pdf"
+  },
+  {
     "id": "weekly-quizzes",
     "kind": "quiz",
     "label": "Weekly quiz collection",

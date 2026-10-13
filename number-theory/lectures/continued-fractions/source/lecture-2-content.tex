@@ -1,270 +1,842 @@
-\teachcover{Lagrange, Galois,\\and reduced surds}{1}{
-Which continued fractions repeat?
-\[
- x>1,\qquad -1<x'<0
-\]
+\teachcover{Why quadratic surds\\have repeating continued fractions}{1}{
+First: the converse of Lagrange's theorem.
+
+Then: when the repetition starts at the first digit.
 }{
-Begin with a quick reminder of the end of Lecture 1:
-a repeating tail is a fixed point, and attaching a prefix
-conjugates its matrix. Today's new work proves the converse
-and the exact pure-periodicity criterion. Students need the
-complete-quotient algorithm and convergence of $p_k/q_k$,
-but no algebraic number theory. Source: book 3.8--3.9.
+Begin with the question left open by Lecture 1. We know how a
+repeating continued fraction produces a quadratic equation.
+Today we start with a quadratic surd and prove that its continued
+fraction must eventually repeat. Establish that result before
+introducing Galois's additional criterion.
+The proof uses rationalization, convergence of convergents,
+and the pigeonhole principle. Source: book 3.8--3.9.
 }
 
-\teachslide{Recall: the complete quotient}{2}{
+\teachslide{The converse we still need}{1}{
+\textbf{Lecture 1 proved}
 \[
- x_0=x,\qquad a_n=\floor{x_n},\qquad
- \key{x_{n+1}=\frac1{x_n-a_n}}
+ \text{eventually periodic CF}
+ \quad\Longrightarrow\quad
+ \text{quadratic irrational}.
 \]
-\spacer
-The number $x_n=[a_n;a_{n+1},\ldots]$ is the remaining tail.
+\textbf{Today we prove}
 \[
- x=[a_0;a_1,\ldots,a_{n-1},x_n].
+ \key{\text{quadratic irrational}
+ \quad\Longrightarrow\quad
+ \text{eventually periodic CF}.}
 \]
-For $n\ge1$,
+Every quadratic surd has an expansion of the form
 \[
- x_n>1,\qquad a_n\ge1.
+ [a_0;\ldots,a_{r-1},\overline{b_0,\ldots,b_{\ell-1}}].
 \]
+The finite prefix is allowed to be empty.
 }{
-Rebuild the notation rather than assuming everyone remembers
-the subscript convention. The integer part of the original
-number can be zero or negative. Every later complete quotient
-is greater than 1, since it is the reciprocal of a nonzero
-fractional part. A repeated complete quotient makes all future
-digits repeat because the algorithm is deterministic.
+The two implications together are usually called Lagrange's
+theorem. Here \emph{the converse} means the direction left for
+this lecture. A quadratic surd is an irrational real root of an
+integer quadratic; we will spell out its square-root form shortly.
+An overline means that the indicated block repeats forever.
+The theorem makes no claim yet about where the repetition begins.
+All continued fractions here are simple; rational finite expansions
+are not called eventually periodic. Source: book Theorem 3.13.
+}
+
+\teachslide{The algorithm and its remaining tails}{2}{
+Start with an irrational $x_0=x$ and repeat
+\[
+ a_n=\floor{x_n},\qquad
+ \key{x_{n+1}=\frac1{x_n-a_n}}.
+\]
+Since $0<x_n-a_n<1$, we have $x_{n+1}>1$.
+\[
+ x_n=a_n+\frac1{x_{n+1}}
+     =[a_n;a_{n+1},\ldots].
+\]
+The \key{complete quotient} $x_n$ is the remaining tail.
+
+For $n\ge1$, $a_n\ge1$; the first digit $a_0$ can be any integer.
+}{
+Explain why the strict fractional-part inequalities continue to
+hold. If a later complete quotient were rational, then
+$x_n=a_n+1/x_{n+1}$ would make every preceding one rational.
+Thus the algorithm never terminates for our irrational input.
+Rebuild the index convention: $x_0$ is the original number,
+$a_0$ its integer part, and $x_1$ the first remaining tail.
 Source: book 3.5 and 3.8.
 }
 
-\teachslide{The target theorem}{2}{
-\textbf{Lagrange: the direction still to prove}
+\teachslide{First see repetition happen: $\sqrt3$}{2}{
+Here $x_0=\sqrt3$ and $a_0=1$. Rationalizing gives
 \[
- \key{\text{quadratic irrational}\quad\Longrightarrow\quad
- \text{eventually periodic}}
+ \begin{aligned}
+ x_1&=\frac1{\sqrt3-1}=\frac{\sqrt3+1}{2},
+       &a_1&=1,\\[5pt]
+ x_2&=\frac1{(\sqrt3+1)/2-1}=\sqrt3+1,
+       &a_2&=2,\\[5pt]
+ x_3&=\frac1{\sqrt3+1-2}=\frac{\sqrt3+1}{2}=x_1.
+ \end{aligned}
 \]
-\spacer
-\textbf{Galois}
+The same tail gives the same next digit and the same next tail.
 \[
- \key{\text{purely periodic}\quad\Longleftrightarrow\quad
- x>1,\ -1<x'<0}
-\]
-The second statement concerns quadratic irrationals.
-\spacer
-We will use integer states and a reversible step.
-}{
-Recall that $x'$ means the other root of the rational
-quadratic equation, or the value obtained by reversing
-the sign of its square root. The reducedness conditions
-are not a conclusion about arbitrary real numbers;
-they are defined for quadratic irrationals.
-The key logical distinction is eventual versus pure
-periodicity. Source: book Theorems 3.13 and 3.17.
-External cross-check: Corless, \href{https://www.cecm.sfu.ca/organics/papers/corless/confrac/html/node6-an.shtml}{Periodic and Fixed Points of the Gauss Map}.
-}
-
-\teachslide{Conjugates follow the same algebra}{2}{
-\[
- x_{n+1}=\frac1{x_n-a_n}
- \qquad\Longrightarrow\qquad
- \key{x_{n+1}'=\frac1{x_n'-a_n}}
-\]
-\spacer
-The digit is still \key{$a_n=\floor{x_n}$}.
-
-We do not take the integer part of $x_n'$.
-\spacer
-If $x_n'<0$ and $a_n\ge1$, then
-\[
- x_n'-a_n<-1,\qquad -1<x_{n+1}'<0.
+ \key{\sqrt3=[1;\overline{1,2}].}
 \]
 }{
-This is a common source of confusion. Conjugation changes
-the algebraic number but leaves the rational integer $a_n$
-fixed. It does not commute with taking a floor.
-The inequality uses the floor of the positive complete
-quotient. Ask students why the reciprocal of a number
-less than $-1$ lies in $(-1,0)$. Once a negative
-conjugate appears, the next tail is reduced.
-Source: book 3.8, Step 1.
+Lecture 1 started from repeating digits and identified their value.
+Here the direction is reversed: start with $\sqrt3$ and run the
+algorithm until an exact tail returns. Use $1<\sqrt3<2$ to check
+the two later integer parts. In the middle line,
+$2/(\sqrt3-1)=\sqrt3+1$.
+Stress that the certificate is equality of whole tails, not merely
+the occurrence of the same digit twice. Source: book Example 3.16.
 }
 
-\teachslide{Reduced tails stay reduced}{2}{
-Suppose
+\teachslide{What will force a tail to return?}{1}{
+We will write every tail using the same square root:
 \[
- x_n>1,\qquad -1<x_n'<0.
+ \key{x_n=\frac{P_n+\sqrt D}{Q_n}},
+ \qquad P_n,Q_n\in\Z.
+\]
+\spacer
+\textbf{1.} Find an exact rule for the two integers.
+
+\textbf{2.} Prove that, eventually, both integers are bounded.
+
+\textbf{3.} Apply the pigeonhole principle: a pair must repeat.
+\spacer
+The conjugate will supply the bounds in Step 2.
+}{
+Give the proof's purpose before introducing its algebra.
+Keeping the same square root is not enough: there are infinitely
+many integer pairs. We need both integrality and bounds.
+The word \emph{state} below will mean just the pair $(P_n,Q_n)$.
+The next slides establish the elementary facts about conjugates
+that this proof needs, including why a conjugate follows the same
+rational formulas. Source: book 3.8.
+}
+
+\teachslide{A surd and its other root}{2}{
+Write $x=u+v\sqrt D$, where $u,v\in\Q$, $v\ne0$, and
+$D$ is a positive nonsquare integer.
+
+The factorization
+\[
+ \begin{aligned}
+ &(t-(u+v\sqrt D))(t-(u-v\sqrt D))\\
+ &\hspace{25pt}=(t-u)^2-v^2D
+               =t^2-2ut+u^2-v^2D
+ \end{aligned}
+\]
+has rational coefficients and two distinct roots.
+
+Thus the other root, called the \key{conjugate}, is
+\[
+ \key{x'=u-v\sqrt D.}
+\]
+}{
+This proves the connection between the square-root expression and
+the other root; it is not just a rule to memorize. Clear denominators
+in the displayed polynomial to get integer coefficients.
+Conversely, the quadratic formula puts every real quadratic
+irrational in this form. Its discriminant is positive and nonsquare.
+The representation in a fixed square root is unique: equality of
+two different rational coefficients of $\sqrt D$ would make
+$\sqrt D$ rational. Any rational quadratic having $x$ as a root
+is a scalar multiple of this one: cancel their quadratic terms,
+and a remaining nonzero linear polynomial could not vanish at
+the irrational $x$. Thus the other root is unambiguous.
+The prime is not a derivative. Source: book 3.7.
+}
+
+\teachslide{Why conjugation respects arithmetic}{2}{
+Let $z=u+v\sqrt D$ and $w=r+s\sqrt D$, with rational coefficients.
+\[
+ (z+w)'=(u+r)-(v+s)\sqrt D=z'+w'.
+\]
+For multiplication, expand both products:
+\[
+ \begin{aligned}
+ zw&=(ur+vsD)+(us+vr)\sqrt D,\\
+ z'w'&=(ur+vsD)-(us+vr)\sqrt D=(zw)'.
+ \end{aligned}
+\]
+Rational numbers stay fixed: \key{$c'=c$ for $c\in\Q$}.
+\spacer
+In particular, $(z-a)'=z'-a$ for an integer $a$.
+}{
+Extend the sign-change operation to all numbers in the same
+square-root field, including rational ones with square-root
+coefficient zero. No field terminology is needed on the slide.
+The multiplication identity works because $(\sqrt D)^2=D$ and
+$(-\sqrt D)^2=D$; the rational term is unchanged and the
+square-root term changes sign. This is the explicit justification
+for the arithmetic assertion at the end of Lecture 1.
+It concerns algebraic conjugation of numbers; the matrix operation
+$MNM^{-1}$ from Lecture 1 is a different use of the word.
+Source: book 3.7, with the arithmetic expanded.
+}
+
+\teachslide{Why conjugation respects reciprocals}{2}{
+For $z=u+v\sqrt D\ne0$, rationalize:
+\[
+ \frac1z=\frac{u-v\sqrt D}{u^2-v^2D}.
+\]
+Since $\sqrt D$ is irrational, $z\ne0$ also gives $z'\ne0$.
+Thus $zz'=u^2-v^2D$ is a nonzero rational number.
+
+Now change the sign of the square root:
+\[
+ \key{\left(\frac1z\right)'
+       =\frac{u+v\sqrt D}{u^2-v^2D}
+       =\frac1{z'}.}
+\]
+For $a,b,c,d\in\Q$ and $cz+d\ne0$, this gives
+\[
+ \left(\frac{az+b}{cz+d}\right)'
+       =\frac{az'+b}{cz'+d}.
+\]
+}{
+Justify nonvanishing, rather than silently dividing.
+If $z'=u-v\sqrt D=0$ and $v\ne0$, then $\sqrt D=u/v$
+would be rational. If $v=0$, then $z'=u=z\ne0$.
+Thus $z'\ne0$ whenever $z\ne0$, and $zz'$ is nonzero.
+The last line assumes rational $a,b,c,d$ and a nonzero
+denominator. Its conjugate denominator is nonzero by the
+same argument. These two arithmetic slides prove, in particular,
+$(T_M(x))'=T_M(x')$ for Lecture 1's rational matrices.
+Source: book 3.7--3.8, with the rationalization expanded.
+}
+
+\teachslide{Step 1: start with an integer pair}{2}{
+Take $Ax^2+Bx+C=0$ with $A,B,C\in\Z$, $A\ne0$.
+
+Choose the common sign of $A,B,C$ so that
+\[
+ x=\frac{-B+\sqrt D}{2A},\qquad D=B^2-4AC.
 \]
 Then
 \[
- x_{n+1}>1,\qquad -1<x_{n+1}'<0.
+ \key{P_0=-B,\quad Q_0=2A,\quad
+ x=\frac{P_0+\sqrt D}{Q_0}.}
 \]
-\spacer
-\key{Once reduced, every later complete quotient is reduced.}
-\spacer
-We still have to show that an arbitrary quadratic irrational
-eventually reaches this region.
+Moreover,
+\[
+ D-P_0^2=-4AC=Q_0(-2C),\qquad
+ \key{Q_0\mid D-P_0^2.}
+\]
+$D$ is positive and nonsquare; $Q_0$ may be negative.
 }{
-The first inequality follows from the fractional-part
-algorithm. The second follows from the previous slide.
-Do not skip the last sentence: forward invariance is not
-the same as eventual entry. This logical separation also
-prevents a circular proof of Lagrange's theorem.
-Source: book 3.8, Step 1.
+This shows existence of the integer representation, including
+the divisibility condition that will make the recurrence integral.
+If the desired root initially has a minus sign before the square
+root, replace $(A,B,C)$ by $(-A,-B,-C)$:
+$(B+\sqrt D)/(-2A)=(-B-\sqrt D)/(2A)$.
+The discriminant does not change. Since $x$ is a real irrational,
+$D>0$ and $D$ cannot be a square.
+There is no need to make $D$ squarefree. For special examples we
+can choose a smaller $D$ directly: $\sqrt3=(0+\sqrt3)/1$ has
+the required divisibility. Source: book 3.8, Step 2.
 }
 
-\teachslide{Every quadratic irrational reaches a reduced tail}{3}{
-The inverse prefix matrix gives, for $n\ge2$,
+\teachslide{Derive the rule by rationalizing}{3}{
+Suppose $x_n=(P_n+\sqrt D)/Q_n$ and $a_n=\floor{x_n}$.
+Set
 \[
- \key{x_n'=-\frac{q_{n-2}x'-p_{n-2}}
-                    {q_{n-1}x'-p_{n-1}}.}
-\]
-The convergents tend to $x$, and $x'\ne x$.
-
-For large $n$, numerator and denominator have the same sign.
-\[
- x_n'<0\quad\text{eventually}.
-\]
-One more step puts the conjugate in $(-1,0)$.
-}{
-Give the full sign argument aloud. Since $p_k/q_k\to x$
-and $x'\ne x$, the difference $x'-p_k/q_k$ eventually
-has the fixed sign of $x'-x$. Multiplication by positive
-$q_k$ preserves that sign. The two expressions in the
-ratio therefore have the same sign, and the minus sign
-makes $x_n'$ negative. Lecture 1's inverse formula gives
-the displayed identity. A backup derives it in detail.
-This covers negative original numbers too.
-Source: book 3.8, Step 1.
-}
-
-\teachslide{An integer description of a surd}{2}{
-Choose a fixed positive nonsquare integer $D$.
-\[
- \key{x_n=\frac{P_n+\sqrt D}{Q_n}},
- \qquad P_n,Q_n\in\Z,\quad Q_n\ne0.
-\]
-We can choose the initial representation so that
-\[
- \key{Q_n\mid D-P_n^2}
-\]
-holds at every step.
-\spacer
-$D$ need not be squarefree. Initially, $Q_n$ may be negative.
-}{
-Explain what the state remembers: the fixed square root
-never changes, so only two integers need to evolve.
-For completeness, if $Ax^2+Bx+C=0$, choose the common
-sign of the coefficients so that
-$x=(-B+\sqrt{B^2-4AC})/(2A)$.
-Then $D=B^2-4AC$, $P_0=-B$, $Q_0=2A$, and
-$D-P_0^2=-4AC$ is divisible by $Q_0$.
-Do not automatically insist that the initial denominator
-be positive. The first backup shows this normalization.
-Source: book 3.8, Step 2.
-}
-
-\teachslide{The exact recurrence}{3}{
-Set $a_n=\floor{x_n}$ and
-\[
- \key{P_{n+1}=a_nQ_n-P_n.}
+ \key{P_{n+1}=a_nQ_n-P_n}.
 \]
 Then
 \[
  \begin{aligned}
- \frac1{x_n-a_n}
- &=\frac{Q_n}{\sqrt D-P_{n+1}}\\[5pt]
- &=\frac{P_{n+1}+\sqrt D}{(D-P_{n+1}^2)/Q_n}.
+ x_{n+1}
+ &=\frac{Q_n}{\sqrt D-P_{n+1}}\\[4pt]
+ &=\frac{Q_n(\sqrt D+P_{n+1})}{D-P_{n+1}^2}
+  =\frac{P_{n+1}+\sqrt D}{Q_{n+1}},
  \end{aligned}
 \]
-Thus
+where
 \[
  \key{Q_{n+1}=\frac{D-P_{n+1}^2}{Q_n}.}
 \]
 }{
-Rationalize the denominator explicitly.
-The sign in $P_{n+1}=a_nQ_n-P_n$ is easy to reverse
-accidentally, so check it against
-$x_n-a_n=(\sqrt D-P_{n+1})/Q_n$.
-After rationalization, the numerator has precisely the
-same form as before. We have not yet proved the new
-denominator is an integer; that is the next slide.
-Source: book 3.8, equation (3.4).
+Start by subtracting the digit explicitly:
+$x_n-a_n=(P_n+\sqrt D-a_nQ_n)/Q_n
+             =(\sqrt D-P_{n+1})/Q_n$.
+Taking the reciprocal gives the first displayed line.
+Multiply numerator and denominator by $\sqrt D+P_{n+1}$
+to get the second. This derives both formulas and explains the
+sign in $P_{n+1}$.
+The new denominator is not yet known to be an integer;
+the next slide proves exactly that. The square root and $D$
+stay fixed throughout. Source: book equation (3.4).
 }
 
-\teachslide{Why the recurrence stays integral}{2}{
+\teachslide{Why the new pair is still integral}{2}{
+Assume $Q_n\mid D-P_n^2$. Since
 \[
  P_{n+1}^2-P_n^2
- =a_nQ_n(a_nQ_n-2P_n).
+       =a_nQ_n(a_nQ_n-2P_n),
 \]
-So $Q_n$ divides both $D-P_n^2$ and $D-P_{n+1}^2$.
+$Q_n$ also divides $D-P_{n+1}^2$. Therefore
 \[
- \key{Q_{n+1}=(D-P_{n+1}^2)/Q_n\in\Z.}
+ \key{Q_{n+1}=\frac{D-P_{n+1}^2}{Q_n}\in\Z.}
 \]
-Also,
+$Q_{n+1}\ne0$, because $D$ is not a square.
+
+Finally,
 \[
- D-P_{n+1}^2=Q_nQ_{n+1}.
+ D-P_{n+1}^2=Q_nQ_{n+1}
+ \quad\Longrightarrow\quad Q_{n+1}\mid D-P_{n+1}^2.
 \]
-This supplies the divisibility condition for the next step.
+The same hypothesis is ready for the next step.
 }{
-This version uses divisibility directly, so students need
-not already know congruence notation. Since $D$ is a
-nonsquare integer, $D-P_{n+1}^2$ is never zero.
-Thus $Q_{n+1}$ is a nonzero integer. The final equality
-says that $Q_{n+1}$ itself divides
-$D-P_{n+1}^2$, completing the induction.
+This is an induction with a base case on the initialization slide.
+The recurrence makes $P_{n+1}$ an integer immediately.
+To see the divisibility for $Q_{n+1}$, subtract
+$P_{n+1}^2-P_n^2$ from $D-P_n^2$; both are multiples of $Q_n$.
+The final equality establishes the next induction hypothesis.
+Divisibility is valid with negative denominators as well, so no
+positivity assumption has slipped into Step 1.
 Source: book 3.8, Step 2.
 }
 
-\teachslide{The bounds from reducedness}{3}{
-For a reduced state,
+\teachslide{Step 2: can these integers keep growing?}{1}{
+We now have, for every $n$,
 \[
- x=\frac{P+\sqrt D}{Q}>1,\qquad
- -1<x'=\frac{P-\sqrt D}{Q}<0.
+ x_n=\frac{P_n+\sqrt D}{Q_n},
+ \qquad P_n,Q_n\in\Z,\quad Q_n\ne0.
 \]
-Subtract:
+There are still infinitely many possible integer pairs.
+\spacer
+Track the other root as well:
 \[
- x-x'=\frac{2\sqrt D}{Q}>1
- \quad\Longrightarrow\quad \key{0<Q<2\sqrt D.}
+ \key{x_n'=\frac{P_n-\sqrt D}{Q_n}.}
 \]
-The conjugate inequalities give
+We will first locate $x_n'$, then use $x_n$ and $x_n'$
+together to bound $P_n$ and $Q_n$.
+}{
+Pause at the gap in the argument. The same square root has
+persisted, but that fact alone does not force any repetition.
+The new ingredient is an inequality for the conjugate.
+Avoid introducing Galois's theorem or the name \emph{reduced} here:
+the inequalities are being proved as tools for Lagrange's converse.
+Source: book 3.8.
+}
+
+\teachslide{The conjugate follows the same algebraic step}{2}{
+The arithmetic we proved gives
 \[
- \sqrt D-Q<P<\sqrt D
- \quad\Longrightarrow\quad \key{|P|<\sqrt D.}
+ \begin{aligned}
+ x_{n+1}'&=\left(\frac1{x_n-a_n}\right)'
+           =\frac1{(x_n-a_n)'}\\[4pt]
+          &=\key{\frac1{x_n'-a_n}}.
+ \end{aligned}
+\]
+The digit in both formulas is \key{$a_n=\floor{x_n}$}.
+
+For $x_0=\sqrt3$, we use $a_0=1$, so
+\[
+ x_1'=\frac1{-\sqrt3-1}=\frac{1-\sqrt3}{2}.
+\]
+Here $\floor{-\sqrt3}=-2$: taking a floor does not commute with conjugation.
+}{
+Every equality on the first display follows from the previous
+arithmetic slides: reciprocals commute with conjugation, and
+the integer $a_n$ remains fixed.
+This sequence of conjugates is usually not the ordinary
+continued-fraction algorithm started at $x'$.
+The example makes the difference concrete. Each $x_n'$ is
+irrational and hence cannot equal the integer $a_n$, so every
+displayed denominator is nonzero. Source: book 3.8, Step 1.
+}
+
+\teachslide{Express a tail using the original number}{2}{
+Let $p_k/q_k=[a_0;\ldots,a_k]$. Lecture 1's prefix matrix gives,
+for $n\ge2$,
+\[
+ x=\frac{p_{n-1}x_n+p_{n-2}}
+          {q_{n-1}x_n+q_{n-2}}.
+\]
+Cross-multiply and collect the terms containing $x_n$:
+\[
+ (q_{n-1}x-p_{n-1})x_n=p_{n-2}-q_{n-2}x.
+\]
+Thus
+\[
+ \key{x_n=-\frac{q_{n-2}x-p_{n-2}}
+                    {q_{n-1}x-p_{n-1}}.}
 \]
 }{
-This is the compactness argument entirely in elementary
-integer language. The positive difference $x-x'$ first
-forces $Q>0$, so it is safe to multiply the conjugate
-inequalities by $Q$. The lower bound becomes
-$P>\sqrt D-Q>-\sqrt D$ because $Q<2\sqrt D$.
-No uniform bound on the period length is needed.
+Recall the prefix matrix explicitly:
+$D(a_0)\cdots D(a_{n-1})
+ =\left(\begin{smallmatrix}p_{n-1}&p_{n-2}\\
+                          q_{n-1}&q_{n-2}\end{smallmatrix}\right)$.
+It acts on the unprocessed tail $x_n$ to give $x$.
+The displayed rearrangement derives the inverse-prefix identity
+instead of citing it without calculation.
+The denominator cannot vanish: $x$ is irrational whereas
+$p_{n-1}/q_{n-1}$ is rational. For $n\ge2$, both relevant
+$q$'s are positive. Source: book 3.2 and 3.8.
+}
+
+\teachslide{Why the conjugates eventually become negative}{3}{
+Since $p_k/q_k\to x$ and $x'\ne x$, for all large $k$,
+\[
+ \left|\frac{p_k}{q_k}-x\right|<\frac{|x'-x|}{2}.
+\]
+Thus $x'-p_k/q_k$ has the same sign as $x'-x$.
+
+Conjugate the tail formula and factor out the positive $q$'s:
+\[
+ x_n'=-\frac{q_{n-2}\bigl(x'-p_{n-2}/q_{n-2}\bigr)}
+                 {q_{n-1}\bigl(x'-p_{n-1}/q_{n-1}\bigr)}.
+\]
+For large $n$, numerator and denominator have the same sign.
+\[
+ \key{x_n'<0\quad\text{for all sufficiently large }n.}
+\]
+}{
+Spend time on the sign argument. The convergent lies within half
+the distance from $x$ to $x'$, so it is on the same side of $x'$
+as $x$. Equivalently,
+$x'-p_k/q_k=(x'-x)+(x-p_k/q_k)$, and the second term has
+magnitude less than half that of the nonzero first term.
+The difference is therefore positive if $x'>x$ and negative if
+$x'<x$. For large $n$ this applies at both indices $n-2,n-1$.
+The two positive denominators $q_{n-2},q_{n-1}$ preserve the signs,
+and the minus sign in front of the ratio makes $x_n'$ negative.
+Only convergence has been used, with no periodicity assumption.
+The argument covers $x<0$ and $x'>x$ as well.
+Source: book 3.8, Step 1.
+}
+
+\teachslide{One more step gives a fixed interval}{1}{
+Once $x_n'<0$ with $n\ge1$, we have $a_n\ge1$, so
+\[
+ x_n'-a_n<-1.
+\]
+Taking the reciprocal gives
+\[
+ \key{-1<x_{n+1}'=\frac1{x_n'-a_n}<0.}
+\]
+The same argument applies at every later step.
+\spacer
+Therefore all sufficiently late tails satisfy
+\[
+ \key{x_n>1,\qquad -1<x_n'<0.}
+\]
+}{
+The interval follows from an elementary reciprocal inequality:
+if $t<-1$, then $-1<1/t<0$.
+Negativity was proved on the previous slide; this slide proves
+entry into the smaller interval and that later conjugates stay
+there. These are separate facts.
+The restriction $n\ge1$ ensures $a_n\ge1$, even if the original
+number has a negative integer part. Source: book 3.8, Step 1.
+}
+
+\teachslide{Bound the denominator first}{1}{
+For all sufficiently large $n$,
+\[
+ x_n=\frac{P_n+\sqrt D}{Q_n}>1,
+ \qquad -1<x_n'=\frac{P_n-\sqrt D}{Q_n}<0.
+\]
+Subtract the two expressions:
+\[
+ x_n-x_n'=\frac{2\sqrt D}{Q_n}>1.
+\]
+The numerator is positive, so first $Q_n>0$.
+
+Multiplying by this positive denominator then gives
+\[
+ \key{0<Q_n<2\sqrt D.}
+\]
+}{
+Keep the sign check visible. We are not assuming that the
+initial denominator was positive: the eventual inequalities
+force positivity here. Only after that check is it legitimate
+to multiply an inequality by $Q_n$ without reversing its sign.
+The upper bound depends solely on the fixed integer $D$.
 Source: book 3.8, equation (3.5).
 }
 
-\teachslide{Finitely many states}{2}{
-For fixed $D$, only finitely many integer pairs satisfy
+\teachslide{Now bound the numerator integer}{1}{
+Use $Q_n>0$ in the conjugate inequalities:
 \[
- \key{|P|<\sqrt D,\qquad 0<Q<2\sqrt D.}
-\]
-Every sufficiently late state lies in this finite set.
-
-Each state determines its digit and its next state.
-\[
- (P_i,Q_i)=(P_j,Q_j)
+ -1<\frac{P_n-\sqrt D}{Q_n}<0
  \quad\Longrightarrow\quad
- a_{i+k}=a_{j+k}\quad(k\ge0).
+ -Q_n<P_n-\sqrt D<0.
 \]
-\key{This proves the converse direction of Lagrange's theorem.}
+Therefore
+\[
+ \sqrt D-Q_n<P_n<\sqrt D.
+\]
+Since $Q_n<2\sqrt D$,
+\[
+ P_n>\sqrt D-Q_n>-\sqrt D.
+\]
+Together,
+\[
+ \key{|P_n|<\sqrt D,\qquad 0<Q_n<2\sqrt D.}
+\]
 }{
-Name the pigeonhole principle. Repetition of a pair means
-repetition of the complete quotient, and deterministic
-updating reproduces the entire future, not just one digit.
-We have now proved both directions of Lagrange using
-fixed points, convergence, rationalization, and finite
-integer bounds. We still have not removed an initial
-segment for a reduced starting state. Source: book 3.8.
+This is the second half of the integer bounds. Every inequality
+now appears on the slide: multiply by a positive $Q_n$, add
+$\sqrt D$, and substitute the already proved upper bound on $Q_n$.
+Students should see why both the original number and its conjugate
+were useful. One bounded real expression alone would not have
+bounded both integers. Source: book 3.8, equation (3.5).
 }
 
-\teachslide{The cycle for $\sqrt3$}{2}{
+\teachslide{Step 3: only finitely many pairs remain}{2}{
+Fix $D$. Every sufficiently late pair lies in
+\[
+ \key{|P_n|<\sqrt D,\qquad 0<Q_n<2\sqrt D},
+ \qquad P_n,Q_n\in\Z.
+\]
+Each integer has only finitely many choices.
+
+For example, with $D=3$ the possible bounds are
+\[
+ P_n\in\{-1,0,1\},\qquad Q_n\in\{1,2,3\}.
+\]
+There are infinitely many tails but only finitely many such pairs.
+\[
+ \key{(P_i,Q_i)=(P_j,Q_j)\quad\text{for some }i<j.}
+\]
+}{
+Invoke the pigeonhole principle explicitly. For $D=3$ the box
+contains at most nine integer pairs; some do not satisfy all
+the original conditions, which only makes the possible set smaller.
+We do not need to enumerate the actual orbit.
+For general $D$, there are at most
+$(2\lfloor\sqrt D\rfloor+1)\lfloor2\sqrt D\rfloor$ pairs in
+the box. Finiteness is all the proof needs.
+The first repeated pair need not involve index zero.
+Source: book 3.8, Step 3.
+}
+
+\teachslide{A repeated pair forces repeating digits}{1}{
+Equal pairs give $x_i=x_j$. Hence
+\[
+ a_i=\floor{x_i}=\floor{x_j}=a_j,
+ \qquad
+ x_{i+1}=\frac1{x_i-a_i}=\frac1{x_j-a_j}=x_{j+1}.
+\]
+Repeat the argument:
+\[
+ \key{x_{i+k}=x_{j+k},\qquad a_{i+k}=a_{j+k}\quad(k\ge0).}
+\]
+With $\ell=j-i$, the expansion is
+\[
+ \key{x=[a_0;\ldots,a_{i-1},\overline{a_i,\ldots,a_{j-1}}].}
+\]
+This proves the converse of Lagrange's theorem.
+}{
+This is the precise link from pigeonhole to continued fractions.
+The update rule is deterministic: equal complete quotients
+produce equal digits and equal successors. Induction gives the
+entire repeated future. The displayed period has positive length
+$j-i$, although it need not be the shortest period.
+The prefix is omitted if $i=0$.
+At minute 34 the main existence theorem is fully proved, without
+using Galois's theorem. Source: book 3.8.
+}
+
+\teachslide{Your turn: find the period of $\sqrt6$}{3}{
+Start with $D=6$ and $(P_0,Q_0)=(0,1)$.
+\[
+ a_n=\floor{\frac{P_n+\sqrt6}{Q_n}},
+ \qquad 2<\sqrt6<3.
+\]
+\[
+ P_{n+1}=a_nQ_n-P_n,\qquad
+ Q_{n+1}=\frac{6-P_{n+1}^2}{Q_n}.
+\]
+\spacer
+Record $(P_n,Q_n,a_n)$ until an entire pair repeats.
+
+Then write the continued fraction, marking where the period begins.
+}{
+Allow two minutes of calculation and one minute for comparison.
+The first digit is 2; the states are $(0,1)$, $(2,2)$,
+$(2,1)$, $(2,2)$, with digits $2,2,4,2$.
+If a student stops when a digit repeats, point to the requirement
+that the entire pair repeat. If a denominator is unexpectedly
+negative here, check the sign in $P_{n+1}$.
+No decimal approximation is needed: $2<\sqrt6<3$ determines
+every digit in this example. Source: book equation (3.4).
+}
+
+\teachslide{The calculation for $\sqrt6$}{1}{
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{ccccc}
+\toprule
+$n$ & $P_n$ & $Q_n$ & $x_n$ & $a_n$\\
+\midrule
+$0$ & $0$ & $1$ & $\sqrt6$ & $2$\\
+$1$ & $2$ & $2$ & $(2+\sqrt6)/2$ & $2$\\
+$2$ & $2$ & $1$ & $2+\sqrt6$ & $4$\\
+$3$ & $2$ & $2$ & $(2+\sqrt6)/2$ & $2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+ \key{x_3=x_1,\qquad \sqrt6=[2;\overline{2,4}].}
+\]
+The equal first two digits alone would not have proved repetition.
+}{
+Check the first transition explicitly:
+$P_1=2\cdot1-0=2$, $Q_1=(6-4)/1=2$.
+The next pair is $(2,1)$, then $(2,2)$ returns.
+Although $a_0=a_1=2$, their next digits differ: $a_1=2$
+and $a_2=4$. Equal digits do not determine the next tail.
+The equality at indices 1 and 3 is the certificate.
+The two cyclic tails have conjugates in $(-1,0)$, just as
+the proof predicts.
+}
+
+\teachslide{Lagrange's theorem is now complete}{1}{
+\[
+ \key{\text{eventually periodic CF}
+ \quad\Longleftrightarrow\quad
+ \text{quadratic irrational}.}
+\]
+\textbf{Lecture 1:} a repeating tail gives a quadratic equation;
+a finite prefix preserves quadratic irrationality.
+\spacer
+\textbf{Today:} integer pairs, eventual bounds, and a repeated tail.
+\spacer
+We have proved that repetition must occur.
+
+The remaining question is when it starts at the first digit.
+}{
+This is a natural checkpoint at minute 39, after proof and practice.
+Ask a student to recall what the conjugate contributed: it supplied
+the inequalities that bounded the two integers.
+Only now move to Galois's additional assertion.
+If the class needs more time, use the final eleven minutes to
+revisit the bounds and the exercise, and begin the next meeting
+with the following slide. The complete Lagrange proof stands alone.
+Source: book Theorem 3.13.
+}
+
+\teachslide{Now ask for pure periodicity}{2}{
+A quadratic irrational $x$ is called \key{reduced} if
+\[
+ \key{x>1,\qquad -1<x'<0.}
+\]
+We proved that all sufficiently late tails have these inequalities,
+and that the inequalities persist under the next step.
+\spacer
+\textbf{Galois's theorem}
+\[
+ \key{x\text{ is purely periodic}
+ \quad\Longleftrightarrow\quad x\text{ is reduced}.}
+\]
+For example, $\sqrt3$ is not reduced, but $(1+\sqrt3)/2$ is.
+}{
+Define the name using the inequalities already established.
+Galois adds an exact criterion for removing the initial segment;
+Lagrange has already established existence of a period for every
+quadratic surd. In the example, $-\sqrt3<-1$, whereas
+$(1-\sqrt3)/2$ is between $-1$ and 0 and its partner exceeds 1.
+We will first prove sufficiency, then necessity.
+A reduced $x_0$ has $a_0\ge1$, so the invariance argument
+applies from the very first step as well.
+Source: book Theorem 3.17.
+}
+
+\teachslide{Finiteness alone permits an initial segment}{1}{
+A function on the finite set $\{0,1\}$ can satisfy
+\[
+ F(0)=1,\qquad F(1)=1.
+\]
+Starting at $0$ gives
+\[
+ 0,\ 1,\ 1,\ 1,\ldots
+\]
+Finiteness forces a repeated state, but the start need not return.
+\spacer
+To remove the initial segment for a reduced surd, we will show:
+
+\key{A tail has at most one reduced predecessor.}
+}{
+This isolates the additional logical task. Knowing that reduced
+tails stay reduced and lie in a finite set does not yet imply
+pure periodicity. The example is a finite forward-invariant
+system with a transient first state.
+The next slide proves uniqueness of a reduced predecessor;
+existence of an arbitrary predecessor is not needed for rewinding
+the actual orbit. Source: book 3.9.
+}
+
+\teachslide{Recover the previous digit from the conjugate}{3}{
+Suppose a reduced $u$ has digit $a=\floor u$ and next tail $z$:
+\[
+ z=\frac1{u-a},\qquad z'=\frac1{u'-a}.
+\]
+Solve the second equation for $-1/z'$:
+\[
+ -\frac1{z'}=a-u'.
+\]
+Since $-1<u'<0$, we have $0<-u'<1$, and therefore
+\[
+ a<-\frac1{z'}<a+1.
+\]
+Thus the digit and the predecessor are determined by $z$:
+\[
+ \key{a=\floor{-1/z'},\qquad u=a+\frac1z.}
+\]
+}{
+Give the inequality its full justification: add the integer $a$
+to $0<-u'<1$. The unique integer part of $-1/z'$ is then $a$.
+Once $a$ is known, the original equation recovers $u$.
+This proves at most one reduced predecessor, not uniqueness
+among all possible numbers preceding the same tail.
+Equal values of $z$ have equal conjugates by the well-defined
+sign-change operation proved earlier.
+For a numerical check using exact surds, let $z=(1+\sqrt3)/2$.
+Then $-1/z'=1+\sqrt3$, so the previous digit is 2 and
+$u=2+1/z=1+\sqrt3$. Source: book equation (3.6).
+}
+
+\teachslide{Rewind the repetition to the start}{1}{
+If $x_0$ is reduced, every $x_n$ is reduced.
+
+The finite-pair proof gives $x_i=x_j$ for some $i<j$.
+\[
+ \begin{aligned}
+ x_i&=x_j\\
+ &\Downarrow\quad\text{unique reduced predecessors}\\
+ x_{i-1}&=x_{j-1}\\
+ &\ \vdots\\
+ \key{x_0}&\key{=x_{j-i}.}
+ \end{aligned}
+\]
+The deterministic algorithm now repeats from its first digit.
+}{
+If $i=0$, we already have the desired conclusion. Otherwise
+apply uniqueness at indices $i,j$, then $i-1,j-1$, and continue
+for exactly $i$ steps. Each actual predecessor is reduced because
+the starting point was reduced and the condition persists.
+The index difference stays $j-i$ throughout.
+Forward iteration from $x_0=x_{j-i}$ gives equality of all
+corresponding digits, including $a_0$.
+This proves the sufficient direction of Galois. Source: book 3.9.
+}
+
+\teachslide{A pure period must also be reduced}{1}{
+Suppose $x=[\overline{a_0,\ldots,a_{\ell-1}}]$.
+
+Lecture 1 proves that $x$ is quadratic.
+
+Removing whole periods gives
+\[
+ x_{k\ell}=x_0=x\qquad(k=1,2,\ldots).
+\]
+We proved that every sufficiently late tail satisfies
+\[
+ x_n>1,\qquad -1<x_n'<0.
+\]
+Choose $k$ large enough. Since $x_{k\ell}=x$, these hold for $x$.
+\spacer
+\key{This completes both directions of Galois's theorem.}
+}{
+The convergence argument in Lagrange's proof supplies eventual
+entry into the inequalities independently of Galois.
+Pure periodicity repeatedly returns to the original value, so that
+value must itself have the eventual inequalities.
+This proves necessity without another matrix calculation.
+The proof of Galois is complete at minute 47.
+Source: book 3.9.
+}
+
+\teachslide{The distinction in two examples}{2}{
+All quadratic surds are eventually periodic. For pure periodicity,
+check the two inequalities:
+\[
+ x>1,\qquad -1<x'<0.
+\]
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{lll}
+\toprule
+$x$ & $x'$ & Purely periodic?\\
+\midrule
+$\sqrt2$ & $-\sqrt2<-1$ & No\\
+$1+\sqrt2$ & $-1<1-\sqrt2<0$ & Yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+ \sqrt2=[1;\overline2],
+ \qquad \key{1+\sqrt2=[\overline2].}
+\]
+}{
+Pause before reading the last column and invite the class to
+check the inequalities. Both original numbers exceed 1;
+it is their conjugates that distinguish them.
+Lagrange gives eventual periodicity in both cases, and Galois
+decides whether the expansion repeats from the start.
+The optional four-number exercise includes an example below 1
+to test the other inequality. Source: book 3.9.
+}
+
+\teachslide{Exit question: what does each step prove?}{1}{
+\textbf{Lagrange:} why did we need
+\[
+ \key{\text{integer pairs}\quad+\quad\text{bounds}?}
+\]
+\spacer
+\textbf{Galois:} what extra fact let us turn
+\[
+ x_i=x_j\quad\text{into}\quad x_0=x_{j-i}?
+\]
+\spacer
+Explain why $\sqrt3$ has a period even though its conjugate is below $-1$.
+}{
+Expected answers: bounded integer pairs form a finite set,
+so some complete quotient and then the whole future repeat.
+Bounds on real numbers alone do not give a finite set, and
+integer pairs without bounds can escape forever.
+Unique reduced predecessors let us rewind a repeated state to
+index zero. The number $\sqrt3$ is a quadratic surd, so Lagrange
+applies; its later tails become reduced even though it is not
+reduced itself. Its expansion is eventually, not purely, periodic.
+Stop here at 50 minutes. Suggested follow-up: compute the period
+of $\sqrt{13}$ or use the optional reducedness exercise.
+}
+
+\backups
+
+\backupslide{Why the initial denominator can be negative}{
+If the desired root is
+\[
+ x=\frac{-B-\sqrt D}{2A},
+\]
+replace the equation by $-Ax^2-Bx-C=0$. Its plus-sign formula is
+\[
+ x=\frac{B+\sqrt D}{-2A}.
+\]
+For example, $x=-\sqrt2$ satisfies $-x^2+2=0$, giving
+\[
+ D=8,\qquad P_0=0,\qquad Q_0=-2,
+ \qquad x=\frac{0+\sqrt8}{-2}.
+\]
+Here $Q_0\mid D-P_0^2$, since $-2\mid8$.
+}{
+This expands the sign choice in the initialization slide.
+Neither $D$ nor its nonsquare property changes when all
+coefficients change sign. The numerator can always carry
+$+\sqrt D$ if the denominator is allowed either sign.
+For this example, the first digit is $-2$, and the recurrence
+gives $(P_1,Q_1)=(4,4)$, representing $(2+\sqrt2)/2$.
+Its conjugate is positive; eventual entry into $(-1,0)$ is a
+theorem, not an assumption about the first step.
+Source: book 3.8, Step 2.
+}
+
+\backupslide{The integer pairs for $\sqrt3$}{
 \begin{center}
 \renewcommand{\arraystretch}{1.4}
 \begin{tabular}{ccccc}
@@ -279,187 +851,21 @@ $3$ & $1$ & $2$ & $(1+\sqrt3)/2$ & $1$\\
 \end{tabular}
 \end{center}
 \[
- \key{\sqrt3=[1;\overline{1,2}]}
+ \key{\sqrt3=[1;\overline{1,2}].}
 \]
-The initial state lies outside the reduced cycle.
+The initial tail is not reduced. The next two form a reduced cycle.
 }{
-Do one transition explicitly:
-from $(P,Q,a)=(0,1,1)$ we get $P_{\rm new}=1$,
-$Q_{\rm new}=2$. From $(1,2,1)$ we get $(1,1)$.
-The equality of states at $n=1$ and $n=3$ certifies
-period two. The finite table illustrates the proof,
-but the bounds explain why every quadratic irrational
-must eventually produce such a repetition.
+This revisits the opening calculation using the integer recurrence.
+From $(P,Q,a)=(0,1,1)$ we get $P_{\rm new}=1$ and
+$Q_{\rm new}=2$. From $(1,2,1)$ we get $(1,1)$, and from
+$(1,1,2)$ we return to $(1,2)$.
+The original pair happens to lie in the coarse finite box as well,
+but the original tail is not reduced. The box is a necessary
+bound for reduced states, not an equivalent definition.
 Source: book Example 3.16.
 }
 
-\teachslide{Your turn: $\sqrt6$}{3}{
-Start with $D=6$ and $(P_0,Q_0)=(0,1)$.
-\[
- P_{n+1}=a_nQ_n-P_n,\qquad
- Q_{n+1}=\frac{6-P_{n+1}^2}{Q_n}.
-\]
-\spacer
-Find the first repeated state.
-
-Read off the continued fraction of $\sqrt6$.
-\spacer
-\key{Record the triples $(P_n,Q_n,a_n)$.}
-}{
-Give about two minutes of working time and one minute
-to compare. The first digit is 2. The states are
-$(0,1)$, $(2,2)$, $(2,1)$, $(2,2)$, with digits
-$2,2,4,2$. If a student gets a negative denominator
-after the first step, check the sign of $P_{n+1}$.
-The interval $2<\sqrt6<3$ is enough to determine all
-digits in this example without a decimal calculator.
-This is a new worked classroom example using book (3.4).
-}
-
-\teachslide{The period of $\sqrt6$}{1}{
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{cccc}
-\toprule
-$n$ & $P_n$ & $Q_n$ & $a_n$\\
-\midrule
-$0$ & $0$ & $1$ & $2$\\
-$1$ & $2$ & $2$ & $2$\\
-$2$ & $2$ & $1$ & $4$\\
-$3$ & $2$ & $2$ & $2$\\
-\bottomrule
-\end{tabular}
-\end{center}
-\[
- \key{\sqrt6=[2;\overline{2,4}]}
-\]
-}{
-Keep the answer reveal brief. The first two reduced
-complete quotients are $(2+\sqrt6)/2$ and $2+\sqrt6$.
-Their conjugates are $(2-\sqrt6)/2$ and $2-\sqrt6$,
-both in $(-1,0)$. This example gives a quick independent
-check that the recurrence and reducedness conditions
-are working together.
-}
-
-\teachslide{Finiteness allows an initial segment}{2}{
-A function on the finite set $\{0,1\}$ can satisfy
-\[
- F(0)=1,\qquad F(1)=1.
-\]
-Starting at 0 gives
-\[
- 0,\ 1,\ 1,\ 1,\ldots
-\]
-\spacer
-Finiteness guarantees eventual repetition.
-
-\key{To prove pure periodicity, we need to recover predecessors.}
-}{
-This is the conceptual turning point of the second lecture.
-The reduced states form a finite forward-invariant set,
-but that alone would not prove that an orbit starts on
-its cycle. The little finite-map example exhibits the
-missing possibility. Galois's criterion succeeds because
-the continued-fraction step has unique reduced
-predecessors. Source: book 3.9.
-}
-
-\teachslide{Galois's criterion}{2}{
-For a quadratic irrational $x$,
-\[
- \key{x\text{ is purely periodic}}
-\]
-\[
- \Longleftrightarrow
-\]
-\[
- \key{x>1\qquad\text{and}\qquad -1<x'<0.}
-\]
-\spacer
-We first prove that a reduced starting point has no preperiod.
-}{
-Recall the definition from Lecture 1. We already know
-that every reduced orbit stays reduced and eventually
-repeats. The next two slides strengthen that conclusion
-to pure periodicity. Afterward we prove necessity.
-Keep the logical direction explicit throughout.
-Source: book Theorem 3.17.
-}
-
-\teachslide{A successor remembers its reduced predecessor}{3}{
-Suppose $u$ is reduced, $a=\floor u$, and
-\[
- z=\frac1{u-a}.
-\]
-Conjugating gives
-\[
- -\frac1{z'}=a-u',\qquad
- a<-\frac1{z'}<a+1.
-\]
-Therefore
-\[
- \key{a=\floor{-1/z'},\qquad u=a+\frac1z.}
-\]
-Both the previous digit and the reduced predecessor are unique.
-}{
-The strict inequalities use precisely $-1<u'<0$.
-This is why the definition of reducedness is so well
-chosen. Stress that the assertion concerns reduced
-predecessors. Without that restriction, many different
-integers could be placed before the same tail.
-For a quick check, take $z=(1+\sqrt3)/2$.
-Then $-1/z'=1+\sqrt3$, so $a=2$ and the predecessor
-is $1+\sqrt3$. Source: book 3.9, equation (3.6).
-}
-
-\teachslide{Rewinding a repeated state}{2}{
-Suppose all $x_n$ are reduced and $x_i=x_j$ with $i<j$.
-\[
- \begin{aligned}
- x_i&=x_j\\
- x_{i-1}&=x_{j-1}\\
- &\ \vdots\\
- x_0&=x_{j-i}.
- \end{aligned}
-\]
-Every backward step uses the unique reduced predecessor.
-\spacer
-\key{The complete-quotient sequence repeats from its start.}
-}{
-If $i=0$, the conclusion already holds. Otherwise apply
-the predecessor formula repeatedly until reaching index
-zero. Equal quadratic numbers have equal conjugates,
-so the recovered digit and predecessor agree.
-Now deterministic forward updating gives pure periodicity.
-The point is not that we ran the ordinary floor algorithm
-backward on arbitrary reals, but that reduced surds
-carry enough information in their conjugates.
-Source: book 3.9.
-}
-
-\teachslide{Why a pure period must be reduced}{2}{
-Suppose the pure period has length $\ell$.
-
-Lecture 1 shows that $x$ is quadratic.
-
-All sufficiently late complete quotients are reduced.
-\[
- \key{x_{k\ell}=x_0\qquad(k=1,2,\ldots)}
-\]
-Choose $k$ large enough.
-\spacer
-\key{The starting value is itself one of those reduced tails.}
-}{
-This is the other implication of Galois.
-There is no circular appeal to Galois in the eventual-entry
-argument: it used convergence of the ordinary convergents
-and the inverse prefix matrix.
-Together with the preceding two slides, this completes
-the characterization. Source: book 3.9.
-}
-
-\teachslide{A reducedness test}{3}{
+\backupslide{Your turn: check both inequalities}{
 Which of these have purely periodic continued fractions?
 \[
  \sqrt2,\qquad
@@ -475,17 +881,15 @@ Check \key{both} inequalities:
 \spacer
 Which of the four are eventually periodic?
 }{
-Allow about 90 seconds, then ask for reasons rather than
-just yes/no answers. The middle two are reduced.
-For $\sqrt2$ the conjugate is below $-1$.
-For $\sqrt2/2$ the original number is below 1.
-All four are quadratic irrationals, so all four are
-eventually periodic by Lagrange. Do not reveal the
-next slide until the discussion finishes.
-Source: book 3.9 and Exercise 23.
+Give about 90 seconds for the comparisons, then ask for reasons.
+The middle two are reduced. For $\sqrt2$ the conjugate is
+below $-1$. For $\sqrt2/2$ the original number is below 1.
+All four are quadratic irrationals, so Lagrange gives eventual
+periodicity for all four. Keep the next slide hidden until the
+discussion finishes. Source: book 3.9 and Exercise 23.
 }
 
-\teachslide{The test, checked}{2}{
+\backupslide{The four tests, checked}{
 \begin{center}
 \renewcommand{\arraystretch}{1.4}
 \begin{tabular}{lll}
@@ -502,131 +906,30 @@ $\sqrt2/2$ & $-\sqrt2/2$ & No\\
 \spacer
 \key{All four are eventually periodic.}
 }{
-For the golden ratio, the inequalities follow from
-$2<\sqrt5<3$. Its period consists of the digit 1.
-For $1+\sqrt3$, the period is $2,1$.
-Ask a student to distinguish the roles of the two theorems
-in the final line. Source: book 3.9.
+For the golden ratio, use $2<\sqrt5<3$ to see that its
+conjugate lies in $(-1,0)$ and the number itself exceeds 1.
+Its period is the digit 1. The period of $1+\sqrt3$ is $2,1$.
+The last example shows why the condition on the original number
+cannot be dropped even when the conjugate is in the right interval.
+Source: book 3.9.
 }
 
-\teachslide{A visible prefix can belong to the period}{1}{
+\backupslide{A visible prefix can belong to the period}{
 \[
- \key{[2;\overline{1,2}]=1+\sqrt3=[\overline{2,1}]}
+ \key{[2;\overline{1,2}]=1+\sqrt3=[\overline{2,1}].}
 \]
 \spacer
 Its conjugate is $1-\sqrt3\in(-1,0)$.
 
-Galois detects pure periodicity independently of how
-we first write the digit string.
+Galois detects pure periodicity independently of where
+we first place the bar.
 }{
-Return to the example from Lecture 1.
-The earlier calculation established the value.
-Galois now explains the classification.
-A written bar need not mark the earliest possible
-start of repetition. Source: book 3.9.
-}
-
-\teachslide{Lagrange and Galois}{2}{
-\textbf{Lagrange}
-\[
- \text{eventually periodic}
- \quad\Longleftrightarrow\quad
- \text{quadratic irrational}
-\]
-Fixed points prove one direction. Bounded integer states prove the other.
-\spacer
-\textbf{Galois}
-\[
- \text{purely periodic}
- \quad\Longleftrightarrow\quad
- x>1,\ -1<x'<0
-\]
-Unique reduced predecessors remove the initial segment.
-}{
-Keep the quadratic-irrational hypothesis on the Galois
-line explicit orally. The two lectures together used
-only matrix algebra, convergence of convergents,
-rationalization, inequalities, and the pigeonhole
-principle. Mention optional links to Pell's equation
-and reversal of the period only if time remains.
-Both appear in the backup slides. Source: book 3.7--3.10.
-}
-
-\teachslide{Exit question}{1}{
-In the proof, where did we use
-\[
- \key{\text{finiteness?}}
-\]
-Where did we use
-\[
- \key{\text{reversibility?}}
-\]
-\spacer
-What can go wrong if only the first property holds?
-}{
-Expected answer: finiteness forces some repeated state
-and therefore eventual periodicity. Unique reduced
-predecessors let us rewind that repetition to index zero,
-which gives pure periodicity. Without reversibility,
-an orbit can have a transient initial segment, as in
-$0,1,1,\ldots$. This is the 50-minute stopping point.
-Suggested follow-up: book Exercises 24--26, or derive
-the period of $\sqrt{13}$ using the exact recurrence.
-}
-
-\backups
-
-\backupslide{Choosing the initial integer state}{
-Start with $Ax^2+Bx+C=0$, where $A,B,C\in\Z$ and $A\ne0$.
-
-Change all coefficient signs if needed so that
-\[
- x=\frac{-B+\sqrt D}{2A},\qquad D=B^2-4AC>0.
-\]
-Then choose
-\[
- P_0=-B,\qquad Q_0=2A.
-\]
-\[
- D-P_0^2=-4AC=Q_0(-2C).
-\]
-Thus $Q_0\mid D-P_0^2$. Its sign need not be positive.
-}{
-The discriminant is nonsquare because $x$ is irrational.
-If the desired root initially has the minus sign before
-the square root, replacing $(A,B,C)$ by $(-A,-B,-C)$
-puts that root in the displayed plus-sign form.
-For example, $x=-\sqrt2$ can be represented with
-$D=8$, $P_0=0$, $Q_0=-2$.
-This explains why a proof for all real quadratic
-irrationals must allow initial negative denominators.
-Source: book 3.8, Step 2.
-}
-
-\backupslide{The inverse-prefix formula}{
-\[
- x=\frac{p_{n-1}x_n+p_{n-2}}
-          {q_{n-1}x_n+q_{n-2}}.
-\]
-Solving for $x_n$ gives
-\[
- x_n=-\frac{q_{n-2}x-p_{n-2}}
-               {q_{n-1}x-p_{n-1}}.
-\]
-Conjugating gives
-\[
- \key{x_n'=-\frac{q_{n-2}x'-p_{n-2}}
-                     {q_{n-1}x'-p_{n-1}}.}
-\]
-For large $k$, $q_kx'-p_k=q_k(x'-p_k/q_k)$ has a fixed sign.
-}{
-Use this if the sign argument in main slide 6 needs
-more time. The denominators are nonzero because the
-conjugate is irrational and the convergents are rational.
-For $n\ge2$, the relevant denominators $q_{n-2}$ and
-$q_{n-1}$ are positive. Convergence toward $x$, not
-any assumption of periodicity, gives the common sign.
-Source: book 3.8, Step 1.
+Return to the different-prefix example from Lecture 1.
+The digit stream is $2,1,2,1,\ldots$, so the first digit
+already belongs to the period. A displayed prefix need not be
+a shortest preperiod.
+The earlier matrix calculation established the value;
+Galois now explains its classification. Source: book 3.9.
 }
 
 \backupslide{The conjugate reverses the period}{
@@ -638,9 +941,9 @@ Each digit matrix is symmetric, so reversing a product
 transposes it.
 \[
  N=\mat ABC{D_0}:
- \quad Cx^2+(D_0-A)x-B=0
+ \quad Cx^2+(D_0-A)x-B=0.
 \]
-Substitute $x'=-1/z$:
+The conjugate satisfies this equation too. Substitute $x'=-1/z$:
 \[
  Bz^2+(D_0-A)z-C=0,
 \]
@@ -648,11 +951,12 @@ the fixed-point equation for $N^T$.
 }{
 Both $B$ and $C$ are positive. The transformed quadratic
 therefore has one positive root and one negative root.
-By Galois, $-1/x'>0$; the reversed periodic continued
-fraction is positive too, so they are the same root.
-For a concrete check,
-$[\overline{1,2,3}]=(4+\sqrt{37})/7$, while the reversed
-period is $(4+\sqrt{37})/3$.
+By Galois, $-1/x'>1$; the reversed periodic continued fraction
+is positive too, so they are the same root.
+The substitution gives $C-(D_0-A)z-Bz^2=0$ after multiplying
+by $z^2$; multiply by $-1$ to get the displayed equation.
+For a check, $[\overline{1,2,3}]=(4+\sqrt{37})/7$ and
+the reversed period is $(4+\sqrt{37})/3$.
 Source: book Corollary 3.19 and Exercise 26.
 }
 
@@ -671,16 +975,16 @@ Ordinary matrix multiplication gives
 \]
 Starting from $(1,0)$ produces
 \[
- (2,1),\ (7,4),\ (26,15),\ldots
+ (2,1),\ (7,4),\ (26,15),\ldots,
 \]
-Each satisfies $p^2-3q^2=1$.
+each satisfying $p^2-3q^2=1$.
 }{
-This is an optional connection, not an additional theorem
-needed for either periodicity proof. The determinant-one
-matrix acts both as a M\"obius transformation fixing
-$\sqrt3$ and as an ordinary linear transformation
+This optional connection is not needed for either periodicity
+proof. The determinant-one matrix acts both as a fractional
+transformation fixing $\sqrt3$ and as a linear transformation
 preserving the quadratic form $p^2-3q^2$.
-Avoid claiming that this calculation alone proves the
-classification of all Pell solutions.
-Source: book 3.10 and Exercise 18.
+Expanding the two squares gives
+$4p^2+12pq+9q^2-3p^2-12pq-12q^2=p^2-3q^2$.
+This generates infinitely many solutions, but does not by itself
+classify all Pell solutions. Source: book 3.10 and Exercise 18.
 }

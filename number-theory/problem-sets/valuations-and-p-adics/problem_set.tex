@@ -1,0 +1,331 @@
+\input{../inversion-style}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\setname}{Valuations and $p$-adic distance}
+\hypersetup{pdftitle={Number Theory: Valuations, Primes, and p-adic Distance},
+  pdfsubject={Factorial and binomial valuations, Chebyshev estimates, and introductory p-adic analysis}}
+\begin{document}
+\handouttitle{From factorials and prime counting to a new notion of closeness}
+{7 problems \textbar\ 100 points + 10 challenge points
+\textbar\ Suggested time: 3--4 hours}
+{The lecture on Chebyshev's estimate and factorial/binomial valuations;
+course packet Chapters 7--8. No prior study of metric spaces is assumed.}
+
+\textbf{Instructions.} Write solutions on separate paper and justify your
+answers. You may use unique factorization, the binomial theorem, and
+integrality of binomial coefficients. You may use results of earlier problems
+even if you have not proved them. All logarithms are natural.
+
+\textbf{Notation.} For a prime $p$ and a nonzero integer $m$, $v_p(m)$ is
+the exponent of $p$ in $|m|$. Set $v_p(0)=+\infty$, with
+$+\infty+t=+\infty$ for finite $t$. Recall that
+$\pi(x)=\#\{p\le x:p\text{ prime}\}$.
+
+\ifsolutions
+\textbf{Grading guidance.} Subpart scores total 100; the challenge contributes
+10 extra points. Problems 1--3 review and apply the lecture, and Problems
+4--7 introduce $p$-adic distance and convergence entirely on $\Q$.
+Accept equivalent proofs and carry forward arithmetic errors when the later
+method is correct. Do not require a construction of $\Q_p$ or any general
+theory of metric spaces.
+\fi
+
+\topic{I. Factorials, binomial coefficients, and primes}
+
+\problem{Count the powers of a prime}{12}
+\begin{enumerate}
+ \item Prove Legendre's formula by counting multiples of $p,p^2,\ldots$:
+ \[
+ v_p(n!)=\sum_{j\ge1}\left\lfloor\frac{n}{p^j}\right\rfloor.
+ \]
+ Explain why multiples of $p^2$ must be counted more than once and why
+ the sum has only finitely many nonzero terms. \partpts{4}
+ \item Compute $v_2(50!)$, $v_3(50!)$, and $v_5(50!)$.
+ How many trailing zeros does $50!$ have in base ten? \partpts{4}
+ \item Show that $v_p((pn)!)=n+v_p(n!)$. Deduce that, for $r\ge1$,
+ \[
+ v_p((p^r)!)=1+p+\cdots+p^{r-1}=\frac{p^r-1}{p-1}.
+ \]
+ \partpts{4}
+\end{enumerate}
+\begin{solution}
+Each integer $m\le n$ contributes one copy of $p$ for each $j\ge1$ with
+$p^j\mid m$. Thus summing these contributions first over $m$, then over
+$j$, gives the formula. A multiple of $p^2$ contributes at least two copies;
+no $p^j>n$ contributes.
+The requested values are
+\[
+ v_2(50!)=25+12+6+3+1=47,\quad
+ v_3(50!)=16+5+1=22,\quad v_5(50!)=10+2=12.
+\]
+Since $10^k\mid50!$ exactly when both $2^k$ and $5^k$ divide it, the
+number of trailing zeros is $\min(47,12)=12$.
+Separating the first term of Legendre's formula gives
+$v_p((pn)!)=n+\sum_{j\ge1}\lfloor n/p^j\rfloor$.
+Apply this repeatedly, starting with $v_p(1!)=0$, to get the geometric sum.
+\end{solution}
+
+\problem{Why the middle of Pascal's triangle fits inside an lcm}{16}
+Let $n\ge1$ and $B_n=\binom{2n}{n}$.
+\begin{enumerate}
+ \item Use Problem 1 to show that
+ \[
+ v_p(B_n)=\sum_{j\ge1}\left(
+ \left\lfloor\frac{2n}{p^j}\right\rfloor
+ -2\left\lfloor\frac{n}{p^j}\right\rfloor\right).
+ \]
+ Prove that every summand is either $0$ or $1$.
+ \emph{Hint:} Write $n/p^j=q+t$, with $q\in\Z$ and $0\le t<1$.
+ \partpts{5}
+ \item Compute $v_2\binom{20}{10}$, $v_3\binom{20}{10}$, and
+ $v_5\binom{20}{10}$ without expanding the binomial coefficient.
+ \partpts{3}
+ \item Put $L_n=\operatorname{lcm}(1,2,\ldots,2n)$. Determine $v_p(L_n)$
+ and prove that $B_n\mid L_n$ by comparing valuations for every prime.
+ \partpts{5}
+ \item Prove that if $n<p\le2n$, then $v_p(B_n)=1$.
+ \partpts{3}
+\end{enumerate}
+\begin{solution}
+Subtract twice the valuation of $n!$ from the valuation of $(2n)!$.
+Writing $n/p^j=q+t$ gives
+$\lfloor2(q+t)\rfloor-2\lfloor q+t\rfloor=\lfloor2t\rfloor\in\{0,1\}$.
+For $n=10$, Legendre's formula yields
+\[
+ v_2(B_{10})=18-2\cdot8=2,\quad
+ v_3(B_{10})=8-2\cdot4=0,\quad
+ v_5(B_{10})=4-2\cdot2=0.
+\]
+The largest power of $p$ occurring among $1,\ldots,2n$ is $p^e$, where
+$e=\lfloor\log(2n)/\log p\rfloor$ (this is $0$ when $p>2n$).
+Thus $v_p(L_n)=e$. There are at most $e$ nonzero summands in part (a),
+each at most $1$, so $v_p(B_n)\le e$. Unique factorization proves divisibility.
+Finally, $n<p\le2n$ gives $\lfloor2n/p\rfloor=1$ and
+$\lfloor n/p\rfloor=0$. Also $p^2>2n$: since $p\ge n+1$,
+$p^2\ge(n+1)^2>2n$. All later terms vanish.
+\end{solution}
+
+\studentbreak
+\problem{Recover the scale of prime counting}{16}
+\begin{enumerate}
+ \item Explain why the central coefficient is largest in row $2n$, and prove
+ $\frac{4^n}{2n+1}\le B_n<4^n$.
+ \emph{Hint:} Compare consecutive coefficients and sum the row. \partpts{4}
+ \item Using Problem 2, prove
+ \[
+ \log B_n\le\pi(2n)\log(2n),\qquad
+ \pi(2n)\ge\frac{2n\log2-\log(2n+1)}{\log(2n)}.
+ \]
+ Explain why monotonicity of $\pi$ gives a constant $c>0$ such that
+ $\pi(x)\ge c\,x/\log x$ for all sufficiently large real $x$.
+ \partpts{6}
+ \item You may take the following lecture estimate as given:
+ $\vartheta(x)=\sum_{p\le x}\log p\le Ax$ for $x\ge2$, where $A>0$
+ is a fixed constant. Split the primes at $\sqrt{x}$ to prove
+ $\pi(x)\le\sqrt{x}+\frac{2Ax}{\log x}$ for $x\ge4$.
+ Deduce $\pi(x)\le Cx/\log x$ for some fixed $C$ and sufficiently large $x$.
+ \partpts{4}
+ \item Do these bounds prove $\pi(x)\sim x/\log x$? Explain the distinction
+ between $\asymp$ and $\sim$. \partpts{2}
+\end{enumerate}
+\begin{solution}
+The ratio of consecutive coefficients is
+$\binom{2n}{k+1}/\binom{2n}{k}=(2n-k)/(k+1)$, so they increase up to
+$k=n$ and decrease afterward. Their sum is $4^n$, giving the lower
+bound; positive terms other than $B_n$ make the upper bound strict.
+For each $p\le2n$, Problem 2 gives
+$v_p(B_n)\log p\le\lfloor\log(2n)/\log p\rfloor\log p\le\log(2n)$.
+Sum over these primes and combine with part (a).
+For real $x$, take $n=\lfloor x/2\rfloor$. Then $2n\le x$,
+$2n/x\to1$, and $\log(2n)/\log x\to1$.
+The resulting lower bound, divided by $x/\log x$, tends to $\log2$;
+thus $c=(\log2)/2$ works for sufficiently large $x$.
+Every prime in $(\sqrt{x},x]$ contributes at least $\tfrac12\log x$ to
+$\vartheta(x)$, so
+$(\pi(x)-\pi(\sqrt{x}))\tfrac12\log x\le Ax$.
+Use $\pi(\sqrt{x})\le\sqrt{x}$ and then
+$\log x/\sqrt{x}\to0$; for example $C=2A+1$ eventually works.
+The two bounds prove $\pi(x)\asymp x/\log x$, meaning that the ratio is
+bounded above and below by positive constants for large $x$.
+They do not prove $\sim$, which requires the ratio to tend to $1$.
+\end{solution}
+
+\topic{II. Divisibility becomes a notion of distance}
+
+\problem{Extend the valuation to rational numbers}{14}
+For $a,b\in\Z\setminus\{0\}$, define
+$v_p(a/b)=v_p(a)-v_p(b)$; keep $v_p(0)=+\infty$.
+\begin{enumerate}
+ \item Prove that this definition is independent of the representation
+ of a rational number as a fraction. \partpts{4}
+ \item For nonzero $x,y\in\Q$, prove $v_p(xy)=v_p(x)+v_p(y)$ and
+ $v_p(x^{-1})=-v_p(x)$. Compute
+ $v_2(12/25)$, $v_5(12/25)$, and $v_3(9/14)$. \partpts{4}
+ \item Prove, for all $x,y\in\Q$, that
+ \[
+ v_p(x+y)\ge\min\{v_p(x),v_p(y)\}.
+ \]
+ Show that equality holds when $v_p(x)\ne v_p(y)$.
+ Give nonzero $x,y$ for which the inequality is strict and $x+y\ne0$.
+ \emph{Hint:} First work with integers, factor out the smaller power of $p$,
+ then use a common denominator. \partpts{6}
+\end{enumerate}
+\begin{solution}
+If $a/b=c/d$, then $ad=bc$, so
+$v_p(a)+v_p(d)=v_p(b)+v_p(c)$ and the two definitions agree.
+Multiplication and inversion follow by adding or subtracting the integer
+valuations of numerators and denominators. The numerical answers are
+$2,-2,2$, respectively.
+For nonzero integers $a,b$, let $r=\min(v_p(a),v_p(b))$ and write
+$a=p^ru$, $b=p^rv$. Then $p^r\mid a+b$.
+If the valuations differ, exactly one of $u,v$ is divisible by $p$, so
+$u+v$ is not divisible by $p$, proving equality.
+For rational $x=a/d$, $y=b/d$, with a common nonzero integer denominator,
+subtract $v_p(d)$ from the integer inequality; the equality statement
+also follows. Zero arguments are immediate under our convention.
+For strict inequality, take $x=1$, $y=p-1$: both have valuation $0$,
+but $x+y=p$ has valuation $1$.
+\end{solution}
+
+\problem{The ultrametric inequality}{14}
+Define the \emph{$p$-adic absolute value} by $|0|_p=0$ and
+$|x|_p=p^{-v_p(x)}$ for $x\ne0$. Define the \emph{$p$-adic distance}
+by $d_p(x,y)=|x-y|_p$.
+\begin{enumerate}
+ \item Prove $|xy|_p=|x|_p|y|_p$ and the \emph{ultrametric inequality}
+ \[
+ |x+y|_p\le\max\{|x|_p,|y|_p\}.
+ \]
+ When $|x|_p\ne|y|_p$, prove that equality holds. \partpts{6}
+ \item Verify the defining properties of a metric: $d_p(x,y)\ge0$,
+ equality to $0$ exactly when $x=y$, symmetry, and the triangle inequality.
+ In fact, prove the stronger statement
+ $d_p(x,z)\le\max\{d_p(x,y),d_p(y,z)\}$.
+ \partpts{5}
+ \item Compute $|81|_3$, $|1/27|_3$, and $|10|_3$.
+ Which is closer to $0$ in $d_3$: $81$ or $1/27$?
+ Compare with ordinary absolute value. \partpts{3}
+\end{enumerate}
+\begin{solution}
+For nonzero factors, exponentiate the product identity from Problem 4;
+zero factors also satisfy it. Since $t\mapsto p^{-t}$ is decreasing,
+the valuation inequality becomes the ultrametric inequality, and unequal
+valuations give equality. The case $x+y=0$ follows from $|0|_p=0$.
+Nonnegativity and definiteness follow from the definition. Symmetry follows
+from $v_p(-u)=v_p(u)$. Apply the ultrametric inequality to
+$x-z=(x-y)+(y-z)$. Because $\max(a,b)\le a+b$ for nonnegative $a,b$,
+the ordinary triangle inequality follows too.
+The three absolute values are $3^{-4}=1/81$, $3^3=27$, and $1$.
+Thus $81$ is closer to $0$ in $d_3$, whereas $1/27$ is closer in ordinary distance.
+\end{solution}
+
+\studentbreak
+\problem{Closeness means agreement modulo a prime power}{12}
+\begin{enumerate}
+ \item For integers $a,b$ and $k\ge0$, prove
+ \[
+ d_p(a,b)\le p^{-k}\quad\Longleftrightarrow\quad a\equiv b\pmod{p^k}.
+ \]
+ \partpts{4}
+ \item Compute $d_5(7,32)$, $d_5(7,132)$, and $d_5(7,8)$.
+ Which of $32,132,8$ is closest to $7$ in this metric? \partpts{3}
+ \item List all integers $b$ with $0\le b<125$ and $d_5(7,b)\le5^{-2}$.
+ Explain why the full set of integers satisfying this distance bound
+ forms a congruence class. \partpts{3}
+ \item Show that $|m|_p\le1$ for every integer $m$.
+ Must this hold for every rational number? Give a reason or counterexample.
+ \partpts{2}
+\end{enumerate}
+\begin{solution}
+For $a\ne b$, the distance bound is equivalent to $v_p(a-b)\ge k$,
+which is exactly $p^k\mid a-b$. When $a=b$, both assertions hold.
+The distances are $1/25$, $1/125$, and $1$, respectively, so $132$ is
+closest. The integers in part (c) are $7,32,57,82,107$: all are $7$ modulo
+$25$. The criterion asks for divisibility of a difference, which allows
+arbitrarily large ordinary differences.
+Nonzero integers have nonnegative valuation, so their absolute values
+are at most $1$; zero also satisfies the bound. For a rational counterexample,
+$|1/p|_p=p>1$.
+\end{solution}
+
+\topic{III. First examples of $p$-adic convergence}
+
+\textbf{Definition.} A sequence $(x_n)$ of rational numbers
+\emph{converges $p$-adically} to $L\in\Q$ if, for every real $\varepsilon>0$,
+there is an integer $N$ such that $|x_n-L|_p<\varepsilon$ whenever $n\ge N$.
+Equivalently, the ordinary real sequence $|x_n-L|_p$ tends to $0$.
+For integer $x_n,L$, Problem 6 says this happens exactly when, for every
+$k\ge1$, eventually $x_n\equiv L\pmod{p^k}$.
+
+\problem{Large integers can converge to zero}{16}
+\begin{enumerate}
+ \item Prove $p^n\to0$ $p$-adically. Use Problem 1 to prove $n!\to0$
+ $p$-adically for every fixed prime $p$. In each case give a bound on
+ $|x_n|_p$ that tends to $0$. \partpts{5}
+ \item Let $S_n=1+p+p^2+\cdots+p^n$. Use the finite geometric-sum identity
+ to prove
+ \[
+ S_n\longrightarrow\frac{1}{1-p}\quad\text{$p$-adically}.
+ \]
+ Compute the exact distance to the proposed limit. Specialize to $p=2$:
+ what is the limit of $1+2+4+\cdots+2^n$? \partpts{5}
+ \item Let $T_n=\sum_{j=1}^n j!$. For any $m>n$, use the ultrametric
+ inequality repeatedly to show
+ \[
+ |T_m-T_n|_p\le p^{-\lfloor(n+1)/p\rfloor}.
+ \]
+ Deduce that $(T_n)$ is \emph{Cauchy}: for every $\varepsilon>0$, there
+ is $N$ such that $|T_m-T_n|_p<\varepsilon$ for all $m,n\ge N$.
+ You are not asked to find a rational limit. \partpts{4}
+ \item Prove that a sequence of rational numbers has at most one rational
+ $p$-adic limit. \emph{Hint:} Apply the ultrametric inequality to
+ $L-M=(L-x_n)+(x_n-M)$. \partpts{2}
+\end{enumerate}
+\begin{solution}
+We have $|p^n|_p=p^{-n}\to0$. Legendre's formula gives
+$v_p(n!)\ge\lfloor n/p\rfloor$, so $|n!|_p\le p^{-\lfloor n/p\rfloor}\to0$.
+The geometric-sum identity gives
+\[
+ S_n-\frac{1}{1-p}=-\frac{p^{n+1}}{1-p}.
+\]
+Since $p\nmid(1-p)$, the distance is exactly $p^{-(n+1)}$, which tends
+to $0$. For $p=2$ the limit is $-1$, with
+$S_n=2^{n+1}-1\equiv-1\pmod{2^k}$ as soon as $n+1\ge k$.
+For $m>n$, the finite-sum ultrametric inequality gives
+\[
+ |T_m-T_n|_p\le\max_{n+1\le j\le m}|j!|_p
+ \le p^{-\lfloor(n+1)/p\rfloor}.
+\]
+Choose $N$ making the last expression less than $\varepsilon$ for
+$n\ge N$. Symmetry covers $m<n$, and $m=n$ gives distance $0$.
+This proves the Cauchy assertion; it does not by itself establish a limit
+in $\Q$. The completion of $\Q$ for this metric is denoted $\Q_p$;
+its construction lies beyond this assignment.
+If $L$ and $M$ were both limits, then
+$|L-M|_p\le\max(|L-x_n|_p,|x_n-M|_p)\to0$.
+Definiteness forces $L=M$.
+\end{solution}
+
+\challenge{the geometry of an ultrametric}
+\begin{enumerate}
+ \item For three distinct rational numbers, prove that the largest of
+ their three pairwise $p$-adic distances occurs at least twice. Thus every
+ triangle is isosceles, with its two largest sides equal (equilateral
+ triangles are allowed). \partpts{4}
+ \item For a real $r>0$, define the closed ball
+ $B(a,r)=\{x\in\Q:d_p(x,a)\le r\}$. Prove that if $b\in B(a,r)$,
+ then $B(b,r)=B(a,r)$. \partpts{3}
+ \item Prove that two closed balls are either disjoint or one is contained
+ in the other. \emph{Hint:} If the balls intersect, choose a point in their
+ intersection and apply part (b). \partpts{3}
+\end{enumerate}
+\begin{solution}
+If one distance were strictly larger than the other two, the ultrametric
+inequality applied to that pair through the third point would contradict it.
+If $b\in B(a,r)$ and $x\in B(a,r)$, then
+$d_p(x,b)\le\max(d_p(x,a),d_p(a,b))\le r$.
+This proves $B(a,r)\subseteq B(b,r)$; interchange $a,b$ for the reverse inclusion.
+If $B(a,r)$ and $B(b,s)$ contain a common point $c$, part (b) rewrites
+them as $B(c,r)$ and $B(c,s)$. Assuming $r\le s$, the first is contained
+in the second.
+\end{solution}
+\end{document}

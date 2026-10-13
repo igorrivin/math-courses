@@ -1,0 +1,296 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.7in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,booktabs,array,enumitem,fancyhdr,hyperref}
+
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Expectation, Variance, and Discrete Distributions: 50-minute Quiz},
+  pdfauthor={Chance, Data, and Decisions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student quiz\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[4]{\par\addvspace{8pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points} $\cdot$ about #4 minutes}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{.8in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Expectation and distributions quiz}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{quiz-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+
+\begin{document}
+
+{\LARGE\bfseries\color{indigo}Expectation, Variance,\\[2pt]
+and Discrete Distributions}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 50 points
+  \quad $\bullet$ \quad \edition}\par
+\ifanswers
+  \textbf{Grading note.} Award method credit for correct reasoning after an
+  earlier error; avoid repeated deductions for the same arithmetic mistake.
+  Suggested working time is 46 minutes, leaving 4 minutes for checking.\par
+\else
+  \smallskip
+  \textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+  \textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all four problems and show your reasoning.
+No calculator is needed; exact fractions or exact expressions with powers
+and binomial coefficients are acceptable. You may use the standard binomial
+and geometric mean and variance formulas without proof.
+Geometric waiting times count trials \emph{including the first success}.
+The suggested times leave 4 minutes to check your work.
+
+\problem{1}{From outcomes to moments}{14}{13}
+Let $\Omega=\{a,b,c,d\}$, with every subset an event. The outcome probabilities
+and the values of a random variable $X$ are given below; $q$ is a constant.
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Outcome $\omega$ & $a$ & $b$ & $c$ & $d$\\
+\midrule
+$\Prob(\{\omega\})$ & $q$ & $2q$ & $q$ & $4q$\\[2pt]
+$X(\omega)$ & $-2$ & $0$ & $2$ & $2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{enumerate}
+  \item Find $q$. List the outcomes in the event $\{X>0\}$ and find
+  $\Prob(X>0)$. \partpts{3}
+  \begin{solution}[.55in]
+    The total mass is $8q=1$, so $q=1/8$; all masses are nonnegative.
+    The event is $\{c,d\}$ and its probability is $q+4q=5/8$.
+    \credit{Normalization and $q$: 1; event: 1; probability: 1.}
+  \end{solution}
+
+  \item Give the probability mass function of $X$: list each distinct
+  possible value and its probability. \partpts{3}
+  \begin{solution}[.65in]
+    $\Prob(X=-2)=1/8$, $\Prob(X=0)=1/4$, and
+    $\Prob(X=2)=5/8$, with probability zero at all other values.
+    The outcomes $c,d$ contribute to the same value, so their masses add.
+    \credit{Each value with its correct probability: 1.}
+  \end{solution}
+
+  \item Compute $\E[X]$, $\E[X^2]$, and $\Var(X)$. \partpts{5}
+  \begin{solution}[1.05in]
+    \[
+      \E[X]=(-2)\frac18+0\frac14+2\frac58=1,
+      \qquad \E[X^2]=4\frac18+0\frac14+4\frac58=3.
+    \]
+    Hence $\Var(X)=\E[X^2]-(\E[X])^2=3-1^2=2$.
+    \credit{Weighted first moment and value: 2; second moment: 1;
+    variance identity: 1; variance value: 1.}
+  \end{solution}
+
+  \item Let $Y=3-2X$. Find $\E[Y]$ and $\Var(Y)$, stating the
+  transformation rules you use. \partpts{3}
+  \begin{solution}[.7in]
+    $\E[Y]=3-2\E[X]=1$ and
+    $\Var(Y)=(-2)^2\Var(X)=4\cdot2=8$.
+    Adding a constant leaves variance unchanged; scaling squares the factor.
+    \credit{Mean with linearity: 1; squared scaling rule: 1;
+    variance value: 1. A direct distribution calculation also earns full credit.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{2}{Bernoulli indicators}{10}{9}
+Roll a fair six-sided die once. Let $I=1$ if the result is $5$ or $6$,
+and let $I=0$ otherwise.
+\begin{enumerate}
+  \item State the distribution of $I$, including its parameter, and give
+  $\Prob(I=0)$ and $\Prob(I=1)$. \partpts{2}
+  \begin{solution}[1.25in]
+    $I\sim\operatorname{Bernoulli}(1/3)$, with
+    $\Prob(I=0)=4/6=2/3$ and $\Prob(I=1)=2/6=1/3$.
+    \credit{Bernoulli family and parameter: 1; both masses: 1.}
+  \end{solution}
+
+  \item Use the two possible values of $I$ to calculate $\E[I]$,
+  $\E[I^2]$, and $\Var(I)$. Show the weighted sums rather than only
+  quoting a Bernoulli formula. \partpts{4}
+  \begin{solution}[2in]
+    \[
+      \E[I]=0\cdot\frac23+1\cdot\frac13=\frac13,
+      \qquad
+      \E[I^2]=0^2\cdot\frac23+1^2\cdot\frac13=\frac13.
+    \]
+    Therefore $\Var(I)=1/3-(1/3)^2=2/9$.
+    The identity $I^2=I$ also explains why the first two moments agree.
+    \credit{First-moment sum: 1; second-moment sum or $I^2=I$: 1;
+    variance identity: 1; value: 1.}
+  \end{solution}
+
+  \item On the \emph{same roll}, let $J=1-I$. Find $\E[I+J]$ and
+  $\Var(I+J)$. A student claims
+  $\Var(I+J)=\Var(I)+\Var(J)=4/9$.
+  Explain why this reasoning fails here. \partpts{4}
+  \begin{solution}[2.05in]
+    Since $I+J=1$ on every outcome, $\E[I+J]=1$ and
+    $\Var(I+J)=0$. Linearity of expectation is valid without independence.
+    However, $I$ and $J$ are dependent: knowing either determines the other.
+    Thus the independent-variance addition rule does not apply.
+    For example, $\Prob(I=1,J=1)=0$, whereas
+    $\Prob(I=1)\Prob(J=1)=(1/3)(2/3)=2/9$.
+    \credit{Mean: 1; variance: 1; identify dependence and explain why
+    it invalidates this use of variance addition: 2. A covariance
+    calculation is not required.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{Binomial counts}{12}{11}
+A bag contains one red ball and three blue balls. Draw one ball uniformly
+at random, record its color, and replace it. Repeat for a total of six
+draws. Assume the draws are independent. Let $N$ be the number of red
+balls recorded.
+\begin{enumerate}
+  \item State the distribution of $N$, its parameters, and its possible
+  values. Explain why the model applies. \partpts{3}
+  \begin{solution}[1.2in]
+    $N\sim\operatorname{Bin}(6,1/4)$, supported on $0,1,\ldots,6$.
+    There are six fixed trials, each records red or not red, the red
+    probability stays $1/4$ because of replacement, and the draws are
+    independent by assumption.
+    \credit{Family and parameters: 1; support: 1; modeling assumptions: 1.}
+  \end{solution}
+
+  \item Find $\Prob(N=2)$. Explain the counting factor in your expression.
+  \partpts{3}
+  \begin{solution}[1.5in]
+    \[
+      \Prob(N=2)=\binom62\left(\frac14\right)^2
+                            \left(\frac34\right)^4
+                    =\frac{1215}{4096}.
+    \]
+    The factor $\binom62=15$ chooses the two red positions among the six
+    draws. Each such red/blue sequence has the same probability.
+    \credit{Correct probability of a specified sequence: 1;
+    binomial factor: 1; explanation of that factor: 1.}
+  \end{solution}
+
+  \item Find the probability that at least one red ball is recorded.
+  \partpts{2}
+  \begin{solution}[1.25in]
+    \[
+      \Prob(N\ge1)=1-\Prob(N=0)
+        =1-\left(\frac34\right)^6=\frac{3367}{4096}.
+    \]
+    \credit{Complement or equivalent correct sum: 1;
+    correct probability expression: 1.}
+  \end{solution}
+
+  \item Compute $\E[N]$ and $\Var(N)$. If $N$ is written as a sum of
+  six success indicators, why may their variances be added? \partpts{4}
+  \begin{solution}[1.65in]
+    \[
+      \E[N]=6\cdot\frac14=\frac32,
+      \qquad \Var(N)=6\cdot\frac14\cdot\frac34=\frac98.
+    \]
+    Each indicator records one of the independent draws, so the indicators
+    are independent and their variances add. Their expectations add by
+    linearity, which itself does not require independence.
+    \credit{Mean: 1; variance formula: 1; variance value: 1;
+    independence justification: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{4}{Geometric waiting times}{14}{13}
+A device attempts to send a message repeatedly. Each attempt succeeds
+with probability $1/4$, independently of all other attempts. Let $T$ be
+the number of attempts \emph{up to and including the first success}.
+\begin{enumerate}
+  \item Give the possible values of $T$ and a formula for
+  $\Prob(T=k)$. Explain the formula and use a geometric series to check
+  that its probabilities sum to $1$. \partpts{4}
+  \begin{solution}[1.1in]
+    The support is $1,2,3,\ldots$, and
+    $\Prob(T=k)=(3/4)^{k-1}(1/4)$: the first $k-1$ attempts fail and
+    the $k$th succeeds. Independence lets us multiply these probabilities.
+    \[
+      \sum_{k=1}^{\infty}\Prob(T=k)
+        =\frac14\sum_{j=0}^{\infty}\left(\frac34\right)^j
+        =\frac{1/4}{1-3/4}=1.
+    \]
+    \credit{Support: 1; PMF: 1; failure/success explanation: 1;
+    normalization: 1.}
+  \end{solution}
+
+  \item Find $\Prob(T=3)$ and $\Prob(T>3)$. \partpts{2}
+  \begin{solution}[.75in]
+    $\Prob(T=3)=(3/4)^2(1/4)=9/64$.
+    The event $T>3$ means that the first three attempts fail, so
+    $\Prob(T>3)=(3/4)^3=27/64$.
+    \credit{Each correct probability: 1.}
+  \end{solution}
+
+  \item Find $\E[T]$ and $\Var(T)$. \partpts{3}
+  \begin{solution}[.8in]
+    With $p=1/4$ and trials counted through the first success,
+    \[
+      \E[T]=\frac1p=4,\qquad
+      \Var(T)=\frac{1-p}{p^2}=\frac{3/4}{(1/4)^2}=12.
+    \]
+    \credit{Mean: 1; variance formula: 1; variance value: 1.}
+  \end{solution}
+
+  \item Let $F$ be the number of \emph{failed} attempts before the first
+  success. Express $F$ in terms of $T$, then find $\E[F]$ and $\Var(F)$.
+  \partpts{2}
+  \begin{solution}[.65in]
+    $F=T-1$, so $\E[F]=\E[T]-1=3$ and
+    $\Var(F)=\Var(T)=12$; subtracting a constant does not change variance.
+    \credit{Relation and mean: 1; unchanged variance: 1.}
+  \end{solution}
+
+  \item Given that the first two attempts have failed, find the probability
+  that more than five attempts in total will be needed:
+  $\Prob(T>5\mid T>2)$. Justify your answer. \partpts{3}
+  \begin{solution}[1.05in]
+    Since $\{T>5\}\subseteq\{T>2\}$,
+    \[
+      \Prob(T>5\mid T>2)=\frac{\Prob(T>5)}{\Prob(T>2)}
+        =\frac{(3/4)^5}{(3/4)^2}
+        =\left(\frac34\right)^3=\frac{27}{64}.
+    \]
+    Equivalently, attempts 3, 4, and 5 must all fail; independence keeps
+    their conditional failure probability at $3/4$ each. This is the
+    geometric memoryless property.
+    \credit{Conditional-probability setup or identify three further
+    failures: 1; justified cancellation or independence: 1; result: 1.}
+  \end{solution}
+\end{enumerate}
+
+\label{quiz-last-page}
+\end{document}

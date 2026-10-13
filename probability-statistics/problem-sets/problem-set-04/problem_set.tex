@@ -1,0 +1,426 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.78in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb,booktabs,array,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,needspace,hyperref}
+\definecolor{ink}{HTML}{17243A}
+\definecolor{indigo}{HTML}{293D70}
+\definecolor{mint}{HTML}{2A8C82}
+\definecolor{muted}{HTML}{647084}
+\definecolor{mist}{HTML}{EAF5F2}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=mint,urlcolor=mint,
+ pdfauthor={Igor Rivin},pdftitle={Probability Problem Set 4: Distributions, Tails, and Coupon Collection}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\Pois}{Pois}
+\newcommand{\pts}[1]{\hfill\textcolor{muted}{\small[#1 points]}}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}\mbox{\textcolor{muted}{\small(#1)}}}
+\newcommand{\edition}{\ifsolutions Instructor solutions\else Student handout\fi}
+\newcounter{problem}
+\newcommand{\problem}[2]{\par\addvspace{11pt}\Needspace{7\baselineskip}\stepcounter{problem}{\bfseries\color{indigo}\theproblem.\ #1}\pts{#2}\par\nobreak}
+\newcommand{\topic}[1]{\par\addvspace{9pt}\Needspace{10\baselineskip}{\large\bfseries\color{mint}#1}\par\nobreak}
+\newcommand{\studentbreak}{\ifsolutions\else\newpage\fi}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Problem Set 4}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\small\color{mint}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\NewDocumentEnvironment{solution}{+b}{\ifsolutions
+ \begin{tcolorbox}[enhanced,breakable,colback=mist!45,colframe=mint!45,
+  boxrule=.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=7pt,after skip=7pt,title={Solution},
+  title after break={Solution (continued)},colbacktitle=mist,coltitle=mint,
+  fonttitle=\small\bfseries]\small #1\end{tcolorbox}\fi}{}
+
+\begin{document}
+{\LARGE\bfseries\color{indigo}Problem Set 4}\hfill{\small\color{mint}\edition}\\[4pt]
+{\large Distributions, tails, and coupon collection}\\[4pt]
+{\small\color{muted}100 points + 10 optional challenge points \quad $\bullet$ \quad About 4 hours}\par
+\ifsolutions
+\textbf{Teaching note.} Problems 3--4 deepen the coupon collector; Problems
+6--7 develop tail areas and use both sides of a signed payoff.
+The challenge introduces unequal coupon probabilities.
+Award the indicated subpart points for correct reasoning, allowing follow-through
+credit after arithmetic errors. The tail proofs and challenge are guided enrichment.
+\else
+\textbf{Name:}\ \rule{.46\linewidth}{.4pt}\hfill
+\textbf{Due:}\ \rule{.20\linewidth}{.4pt}
+\fi
+\par\medskip
+\textbf{Instructions.} Show your reasoning and state each distribution's
+support and parameters. Geometric variables count trials including the
+first success; exponential parameters are rates. Write $H_r=\sum_{j=1}^r1/j$
+and $H_0=0$. Exact expressions suffice unless decimals are requested.
+A calculator or short program is allowed for numerical comparisons.
+Independent uniform choices of coupon types are assumed except in the challenge.
+
+\topic{I. Discrete mechanisms}
+\problem{A count is not a wait}{12}
+A box contains 20 distinguishable gadgets, of which 6 are defective.
+\begin{enumerate}
+\item Choose one gadget uniformly. Let $I$ indicate a defect. Give its
+law, mean, and variance. \partpts{2}
+\item Make four independent uniform draws \emph{with replacement}.
+For the number $B$ of defective gadgets drawn, give the law, $\P(B=2)$,
+mean, and variance. \partpts{3}
+\item Choose four gadgets \emph{without replacement}. For the defective
+count $D$, give its support, PMF, mean, and variance. Explain the variance
+comparison with (b). \partpts{4}
+\item Draw independently with replacement until the first defect.
+For the draw count $G$, give its PMF, $\P(G>4)$, mean, and variance.
+Why is it not binomial? \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item $I\sim\operatorname{Bernoulli}(3/10)$ on $\{0,1\}$:
+$\E[I]=3/10$, $\Var(I)=21/100$.
+\item $B\sim\Bin(4,3/10)$ on $\{0,\ldots,4\}$.
+$\P(B=2)=\binom42(3/10)^2(7/10)^2=1323/5000$;
+$\E[B]=6/5$, $\Var(B)=21/25$.
+\item $D$ is hypergeometric with $N=20,K=6,m=4$, supported on
+$\{0,\ldots,4\}$, with
+$\P(D=k)=\binom6k\binom{14}{4-k}/\binom{20}4$.
+$\E[D]=6/5$, $\Var(D)=(21/25)(16/19)=336/475$.
+Removing a defect lowers the chance of a defect next time: the draw
+indicators have negative covariance, reducing the variance.
+\item $G\sim\Geom(3/10)$ on $\{1,2,\ldots\}$,
+$\P(G=k)=(7/10)^{k-1}(3/10)$, $\P(G>4)=(7/10)^4$,
+$\E[G]=10/3$, $\Var(G)=70/9$.
+The number of trials is random; we record the first-success time,
+not the successes in a fixed number of trials.
+\end{enumerate}
+\end{solution}
+
+\problem{Rare errors and a geometric tail}{10}
+Each of 2000 independent transmitted bits is corrupted with probability
+$0.001$. Let $N$ count corrupted bits.
+\begin{enumerate}
+\item Give the exact law of $N$ and a suitable Poisson approximation.
+Compare the exact and approximate $\P(N\ge2)$ to four decimals. \partpts{4}
+\item For $Q\sim\Pois(\lambda)$, derive $\E[Q(Q-1)]=\lambda^2$ by
+shifting the PMF sum, and recover its variance. \partpts{3}
+\item In an unlimited stream with the same independent error probability,
+let $G$ be the bit index of the first error. Use
+$\E[G]=\sum_{m=0}^{\infty}\P(G>m)$ to find its mean, and calculate
+$\P(G>s+t\mid G>s)$ for integers $s,t\ge0$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item $N\sim\Bin(2000,.001)$; the approximation is $\Pois(2)$.
+The probabilities are
+$1-(.999)^{2000}-2000(.001)(.999)^{1999}\approx.5941$ and
+$1-3e^{-2}\approx.5940$. The opportunities are numerous, independent,
+and rare, with mean count $2000(.001)=2$.
+\item For $\lambda>0$,
+$\sum_{k\ge2}k(k-1)e^{-\lambda}\lambda^k/k!
+=\lambda^2e^{-\lambda}\sum_{j\ge0}\lambda^j/j!=\lambda^2$.
+Thus $\E[Q^2]=\lambda^2+\lambda$ and $\Var(Q)=\lambda$.
+At $\lambda=0$ the variable is constantly zero.
+\item $\P(G>m)=.999^m$, so $\E[G]=1/(1-.999)=1000$ bits.
+The conditional probability is $.999^{s+t}/.999^s=.999^t$:
+past failures do not change the extra wait.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{II. What the coupon-collector mean leaves out}
+\problem{The last few stickers}{14}
+An album has $n$ equally likely sticker types. Let $T_{n,r}$ be the number
+of purchases needed to see $r$ distinct types, $1\le r\le n$, and
+let $T_n=T_{n,n}$.
+\begin{enumerate}
+\item Define stages $W_k$, for $0\le k<n$, identify their laws, and
+justify their mutual independence from the conditional distribution after
+any completed history. \partpts{4}
+\item Derive $\E[T_{n,r}]$ and $\Var(T_{n,r})$ as finite sums. Simplify
+the expectation with harmonic numbers. \partpts{4}
+\item For $n=100$, compare the expected purchases for the first 90 types
+with the expected \emph{additional} purchases for the last 10. Give one
+decimal place. Why do the last 10 take so long? \partpts{3}
+\item For $n=6$, find $\E[T_6]$ and $\Var(T_6)$ exactly. If exactly two
+faces are still missing, what is the expected remaining number of rolls?
+Why is $T_6$ not geometric? \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item $W_k$ counts additional draws, including the next new type, after
+$k$ distinct types have appeared. $W_k\sim\Geom((n-k)/n)$.
+Given any particular completed history, future draws are independent and
+uniform; the chance of a new type stays $(n-k)/n$ until success.
+The conditional stage law depends only on $k$, not the previous stage
+lengths or labels. Successively multiplying these conditional PMFs gives
+the product of the marginal PMFs, proving stage independence. $W_0=1$.
+\item $T_{n,r}=\sum_{k=0}^{r-1}W_k$. Hence
+\[
+\E[T_{n,r}]=n\sum_{j=n-r+1}^n\frac1j=n(H_n-H_{n-r}),\qquad
+\Var(T_{n,r})=\sum_{j=n-r+1}^n\left(\frac{n^2}{j^2}-\frac nj\right).
+\]
+Linearity alone proves the mean; independence is needed for the variance.
+\item First 90: $100(H_{100}-H_{10})\approx225.8$.
+Last 10: $100H_{10}\approx292.9$. With $j$ types missing, a new one
+has probability $j/100$, so its expected wait is $100/j$.
+The very last type alone costs 100 purchases on average.
+\item $\E[T_6]=6H_6=147/10$;
+$\Var(T_6)=36\sum_{j=1}^6j^{-2}-6H_6=3899/100$.
+Two missing faces require $6/2+6/1=9$ more rolls on average.
+Completion cannot occur before six rolls, and finding a new face changes
+the success probability; $T_6$ is a sum of stages, not one geometric wait.
+\end{enumerate}
+\end{solution}
+
+\problem{A deadline is not an expectation}{14}
+Let $M_m$ count types missing after $m\ge1$ purchases, with $n\ge2$ types.
+Write $J_i=1$ if type $i$ is missing, $q=(1-1/n)^m$, and
+$b=(1-2/n)^m$.
+\begin{enumerate}
+\item Compute $\E[M_m]$ and $\E[J_iJ_j]$ for $i\ne j$. Deduce
+\[
+\Var(M_m)=nq(1-q)+n(n-1)(b-q^2).
+\]
+Are missing-type indicators independent? \partpts{4}
+\item Derive the exact completion CDF by inclusion--exclusion:
+$\P(T_n\le m)=\sum_{j=0}^n(-1)^j\binom nj(1-j/n)^m$. \partpts{3}
+\item For six types, compute $\P(T_6\le15)$ and $\E[M_{15}]$ to four
+decimals. Find the smallest integer $m$ with $\P(T_6\le m)\ge.95$;
+report probabilities at $m-1$ and $m$. \partpts{4}
+\item Prove $\P(T_n>m)\le ne^{-m/n}$. For 100 types choose an integer
+$m$ guaranteeing at least $95\%$ completion by this bound. Does the bound
+establish the smallest possible deadline? \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item $M_m=\sum_iJ_i$, so $\E[M_m]=nq$.
+Two specified types are both absent with probability $b$, since each
+draw avoids them with probability $1-2/n$. Expanding the variance of
+a sum gives the stated formula. For $m\ge1$, $b<q^2$ because
+$1-2/n<(1-1/n)^2$. Thus the distinct indicators have negative covariance
+and are dependent. (At $m=0$ all indicators are constant.)
+\item Completion is the complement of the union of missing-type events.
+A specified set of $j$ types is absent with probability $(1-j/n)^m$;
+there are $\binom nj$ such sets. Inclusion--exclusion gives the result.
+At $m=0$ the CDF is zero; handle it directly to avoid $0^0$ conventions.
+\item $\P(T_6\le15)\approx.6442$, $\E[M_{15}]=6(5/6)^{15}\approx.3894$.
+The smallest deadline is $m=27$, since
+$\P(T_6\le26)\approx.9480$ and $\P(T_6\le27)\approx.9566$.
+The CDF is nondecreasing. Fifteen rolls are close to the mean 14.7,
+yet completion is far from certain.
+\item The union bound gives $\P(T_n>m)\le n(1-1/n)^m\le ne^{-m/n}$.
+Take $m=\lceil100(\log100+\log20)\rceil=761$.
+This is a sufficient deadline; the bound does not determine the exact
+minimum. At the chosen $m$, its failure bound is about $.04955$.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{III. Densities and tail areas}
+\problem{A density that exceeds one}{12}
+Suppose $f_X(x)=c x^2$ for $0\le x\le2$, and zero elsewhere.
+\begin{enumerate}
+\item Normalize the density and write its full piecewise CDF. \partpts{3}
+\item Find $\P(1/2<X\le1)$, $\E[X]$, and $\Var(X)$. \partpts{3}
+\item Find the median and $\P(X=1)$. Explain why $f_X(2)>1$ is allowed.
+\partpts{3}
+\item Let $Y=(X/2)^3$. Find $F_Y(y)$ by rewriting $\{Y\le y\}$ as an
+event about $X$, and identify the distribution of $Y$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item $1=c\int_0^2x^2\,dx=8c/3$, so $c=3/8$.
+$F_X(x)=0$ for $x<0$, $x^3/8$ for $0\le x\le2$, and 1 for $x>2$.
+\item $\P(1/2<X\le1)=7/64$;
+$\E[X]=\int_0^2(3/8)x^3\,dx=3/2$;
+$\E[X^2]=\int_0^2(3/8)x^4\,dx=12/5$.
+Thus $\Var(X)=12/5-9/4=3/20$.
+\item The median is $2\cdot2^{-1/3}$, solving $F_X(x)=1/2$.
+$\P(X=1)=0$. Density is probability per unit length; only its integrated
+area must be at most one on an interval. Here $f_X(2)=3/2$.
+\item For $0\le y\le1$,
+$F_Y(y)=\P(X\le2y^{1/3})=(2y^{1/3})^3/8=y$.
+The CDF is zero below 0 and one above 1, so $Y\sim\operatorname{Uniform}(0,1)$.
+\end{enumerate}
+\end{solution}
+
+\problem{Tail areas and the suspiciously generous prize}{12}
+For a real variable $Z$, write $F(z)=\P(Z\le z)$ and assume
+$\E[|Z|]<\infty$ in (a)--(b).
+\begin{enumerate}
+\item For $Z_+=\max(Z,0)$ and $Z_-=\max(-Z,0)$, use
+$y=\int_0^\infty\mathbf1_{\{y>t\}}\,dt$ for $y\ge0$ to show
+\[
+\E[Z]=\int_0^\infty(1-F(t))\,dt-\int_{-\infty}^0F(t)\,dt.
+\]
+You may interchange expectation and nonnegative integrals. Explain why
+using $\P(Z<t)$ instead of $\P(Z\le t)$ does not change an integral.
+\partpts{3}
+\item What does the \emph{sum} of these two nonnegative tail areas compute?
+Check both identities for the constant payoff $Z=-2$. \partpts{3}
+\item A carnival advertises a prize $R$ (in dollars) with CDF zero for
+$x<1$ and $F_R(x)=1-1/x$ for $x\ge1$. Show that this is a valid
+continuous law, find its density, and use a tail integral to find its
+mean. Is there a finite fair entry fee for the uncapped game? \partpts{3}
+\item The small print caps the payout at $B>1$ dollars: $C=\min(R,B)$.
+Use its tail to find the fair entry fee. What probability mass is at
+$B$? Evaluate the fee for $B=100$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item Taking expectations in the indicator identity gives
+$\E[Z_+]=\int_0^\infty\P(Z>t)\,dt$ and
+$\E[Z_-]=\int_0^\infty\P(Z<-t)\,dt$.
+A distribution has at most countably many atoms: the jump locations
+can change the integrand only at a set of length zero.
+Substitute $u=-t$ in the second integral and use
+$Z=Z_+-Z_-$. The integrability assumption makes both areas finite.
+\item The sum equals $\E[Z_++Z_-]=\E[|Z|]$.
+For $Z=-2$, the negative-side area is 2 and the positive-side area is 0;
+the signed mean is $-2$, while the sum is 2.
+\item The CDF is continuous and nondecreasing, with limits zero and one.
+Its density is $x^{-2}$ on $x>1$, zero below 1, and has total area one.
+The tail equals 1 on $[0,1)$ and $1/t$ for $t\ge1$. Thus
+$\E[R]=1+\int_1^\infty dt/t=+\infty$.
+There is no finite fee making expected net payoff zero. This is an
+infinite positive mean, not an undefined difference of two infinite areas.
+\item $\P(C>t)=1$ for $0\le t<1$, $1/t$ for $1\le t<B$, and zero
+for $t\ge B$. Therefore $\E[C]=1+\log B$ dollars, the fair entry fee.
+$\P(C=B)=\P(R\ge B)=1/B$: the capped law is a mixture of a density
+below $B$ and an atom at $B$. At $B=100$, the fair fee is
+$1+\log100\approx\$5.61$, despite the uncapped infinite mean.
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{IV. Continuous mechanisms and a signed payoff}
+\problem{The auction for the last slice}{12}
+At a pizza party, $n\ge1$ hungry mathematicians independently submit bids
+$U_1,\ldots,U_n$, each uniform on $[0,1]$ dollars. The seller receives
+the \emph{highest bid} $M=\max_iU_i$, even if it is small. The slice cost
+$c$ dollars, where $0<c<1$, so the seller's net payoff is $Z=M-c$.
+\begin{enumerate}
+\item Find the full CDF of $M$, and then of $Z$, using independence.
+\partpts{3}
+\item Compute separately the negative-tail area
+$L=\int_{-\infty}^0F_Z(z)\,dz$ and positive-tail area
+$G=\int_0^\infty(1-F_Z(z))\,dz$. Use $G-L$ to find the mean profit
+\emph{without differentiating the CDF}. \partpts{4}
+\item Find the loss probability and $\E[|Z|]$. Explain why the latter
+need not equal the absolute value of the mean profit. \partpts{3}
+\item For $n=3,c=3/4$, calculate the mean profit, loss probability, and
+mean absolute payoff. What does this say about calling a game ``fair''?
+\partpts{2}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item On $0\le x\le1$, $F_M(x)=\prod_i\P(U_i\le x)=x^n$;
+it is zero below 0 and one above 1.
+$F_Z(z)=0$ below $-c$, $(z+c)^n$ on $[-c,1-c]$, and 1 above $1-c$.
+\item Substitute $u=z+c$:
+\[
+L=\int_{-c}^0(z+c)^n\,dz=\frac{c^{n+1}}{n+1},\qquad
+G=\int_0^{1-c}[1-(z+c)^n]\,dz
+=\frac n{n+1}-c+\frac{c^{n+1}}{n+1}.
+\]
+Hence $\E[Z]=n/(n+1)-c$; fairness requires $c=n/(n+1)$.
+$L$ is the expected size of losses, counting zero on profitable outcomes;
+$G$ is the expected size of gains, counting zero on losing outcomes.
+Neither is a conditional average given a loss or gain.
+\item $\P(Z<0)=c^n$ and
+$\E[|Z|]=G+L=n/(n+1)-c+2c^{n+1}/(n+1)$.
+The absolute value before averaging removes cancellations between losses
+and gains. At a fair price, the signed mean is zero but the absolute mean
+is positive.
+\item Mean profit: $0$. Loss probability: $(3/4)^3=27/64$.
+Mean absolute payoff: $2(3/4)^4/4=81/512$ dollars.
+Fairness is zero expected net payoff; it need not mean a one-half chance
+of losing or an absence of risk.
+\end{enumerate}
+\end{solution}
+
+\problem{A clock, a bus, and a normal measurement}{14}
+\begin{enumerate}
+\item A service has independent Poisson counts on disjoint intervals,
+with mean $3t$ requests in $t$ minutes. Let $W$ be the time to the next
+request. Derive its survival function from a zero-count probability;
+find its mean, variance, and median. \partpts{4}
+\item Compute $\P(W>5/3\mid W>1)$ and compare it with $\P(W>2/3)$.
+A bus wait $V$ is instead uniform on $[0,2]$ minutes. Compute
+$\P(V>5/3\mid V>1)$ and $\P(V>2/3)$; compare. \partpts{4}
+\item The duration $X$ of a task is modeled as normal with mean 10 and
+variance 9 minutes squared. Express $\P(8<X<13)$ and $\P(X>13)$ in
+terms of the standard normal CDF $\Phi$. \partpts{3}
+\item What density-height or endpoint mistake appears in
+``$\P(X=10)=1/(3\sqrt{2\pi})$''? For $Y=2X-5$, give the distribution,
+mean, and variance. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item $\P(W>t)=\P(\Pois(3t)=0)=e^{-3t}$ for $t\ge0$.
+Thus $W\sim\operatorname{Exp}(3)$, with mean $1/3$ minute,
+variance $1/9$ minutes squared, and median $(\log2)/3$ minute.
+For example, its mean is the tail integral $\int_0^\infty e^{-3t}\,dt$.
+\item For the exponential, $e^{-5}/e^{-3}=e^{-2}=\P(W>2/3)$.
+For the uniform, $(1/6)/(1/2)=1/3$, whereas
+$\P(V>2/3)=2/3$. Only the exponential is memoryless.
+\item The standard deviation is 3. The probabilities are
+$\Phi(1)-\Phi(-2/3)$ and $1-\Phi(1)$.
+\item A density height is not a point probability: $\P(X=10)=0$.
+$Y\sim\operatorname{Normal}(15,36)$, where the second parameter is
+variance. Its mean is $2(10)-5=15$ and variance is $2^2(9)=36$.
+\end{enumerate}
+\end{solution}
+
+\par\addvspace{12pt}\Needspace{8\baselineskip}
+{\bfseries\color{mint}Optional challenge: the rare sticker}\pts{10 extra}\par\nobreak
+Now type $i$ has probability $p_i>0$, with $\sum_{i=1}^np_i=1$.
+Purchases are still independent. Let $T$ count draws until all types appear.
+Write $p_A=\sum_{i\in A}p_i$.
+\begin{enumerate}
+\item Explain why the next-new-type probability after $k$ types have
+appeared can depend on \emph{which} types they were. Derive
+$\P(T>m)=\sum_{\varnothing\ne A\subseteq\{1,\ldots,n\}}
+(-1)^{|A|+1}(1-p_A)^m$ for $m\ge1$. \partpts{3}
+\item Use the discrete tail sum to obtain
+$\E[T]=\sum_{\varnothing\ne A}(-1)^{|A|+1}/p_A$.
+For three types with probabilities $1/2,1/3,1/6$, evaluate it and
+compare with three equally likely types. \partpts{4}
+\item For two types with probabilities $p,1-p$, show the mean is
+$1/p+1/(1-p)-1$ and is minimized uniquely at $p=1/2$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+\item After seeing the set $S$, the new-type probability is
+$1-\sum_{i\in S}p_i$, which need not be determined by $|S|$.
+A specified nonempty set $A$ is missing after $m$ draws with probability
+$(1-p_A)^m$; inclusion--exclusion for the union of these missing events
+gives the tail. Uniform geometric-stage parameters no longer apply.
+\item The $m=0$ tail is 1. The alternating subset coefficients also sum
+to 1, so we can include that term with the convention that each set is
+missing before any draw (including the full set).
+There are finitely many subsets and every $p_A>0$, so their convergent
+geometric series may be summed separately:
+$\sum_{m\ge0}(1-p_A)^m=1/p_A$.
+For three types,
+\[
+\E[T]=2+3+6-\left(\frac65+\frac32+2\right)+1
+=\frac{73}{10}=7.3,
+\]
+compared with $3H_3=11/2=5.5$ for uniform types.
+\item $\E[T]=1/[p(1-p)]-1\ge4-1=3$, since
+$p(1-p)=1/4-(p-1/2)^2\le1/4$. Equality holds exactly at $p=1/2$.
+\end{enumerate}
+\end{solution}
+\end{document}

@@ -1,0 +1,450 @@
+\input{../inversion-style}
+\newcommand{\setname}{Multiplicative functions}
+\newcommand{\instructorbreak}{\ifsolutions\newpage\fi}
+\newcommand{\credit}[1]{\par\smallskip
+  {\footnotesize\color{muted}\textit{Grading:} #1}}
+\ifsolutions
+  \setlength{\parskip}{3pt}
+  \setlength{\abovedisplayskip}{5pt}
+  \setlength{\belowdisplayskip}{5pt}
+  \setlist[enumerate]{label=(\alph*),leftmargin=1.8em,
+    itemsep=2pt,topsep=3pt,parsep=0pt}
+\fi
+\hypersetup{pdftitle={Number Theory: Multiplicative Functions Problem Set},
+  pdfsubject={Prime powers, divisor functions, totients, convolution, and Mobius cancellation}}
+
+\begin{document}
+\handouttitle{A problem set on prime powers and divisor sums}
+{8 problems \textbar\ 100 points + 10 optional challenge points \textbar\ Suggested time: 2--3 hours}
+{Unique factorization, gcds, finite sums, and inclusion--exclusion.}
+
+\textbf{Instructions.} Write on separate paper. Show factorizations and
+justify your answers. When asked for a proof, do not merely cite the
+statement. You may use results from earlier problems even if you have
+not proved them. Computation may check examples but does not replace a proof.
+
+\textbf{Conventions.} All integers and divisors in this assignment are
+positive unless stated otherwise. An arithmetic function is a function
+on the positive integers with real values. It is \emph{multiplicative} if
+$f(1)=1$ and $f(mn)=f(m)f(n)$ whenever $\gcd(m,n)=1$; it is
+\emph{completely multiplicative} if $f(1)=1$ and the product rule holds
+for all $m,n$. Thus $f(\prod_i p_i^{a_i})=\prod_i f(p_i^{a_i})$
+for multiplicative $f$ and distinct primes $p_i$. Empty products have value $1$.
+
+\ifsolutions
+\textbf{Grading note.} Subpart scores total 100; the challenge is extra.
+Accept equivalent proofs and give method credit after a carried arithmetic
+error. Check uses of coprimality and the value at $1$. The time estimate
+excludes the challenge and assumes practice writing short proofs.
+\fi
+
+\topic{I. What prime powers tell us}
+
+\problem{Read the definition carefully}{10}
+Suppose $f$ is multiplicative and
+\[
+ f(2)=2,\qquad f(4)=5,\qquad f(3)=-1,\qquad
+ f(9)=4,\qquad f(5)=0.
+\]
+\begin{enumerate}
+  \item Find $f(1),f(12),f(18),f(36)$, and $f(45)$. \partpts{5}
+  \item Do these data determine $f(8)$? Explain by describing two
+  multiplicative functions satisfying all the given data but having
+  different values at $8$. \partpts{3}
+  \item Could $f$ be completely multiplicative? Justify your answer.
+  \partpts{2}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item The values, in order, are
+  \[
+    1,\quad f(4)f(3)=-5,\quad f(2)f(9)=8,\quad
+    f(4)f(9)=20,\quad f(9)f(5)=0.
+  \]
+  The factors in each displayed product are coprime.
+  \item No. Assign the five specified prime-power values as given.
+  For a first function assign value $0$ at $2^3$; for a second assign
+  value $7$ there. Assign value $1$ at every other unspecified prime
+  power. Set each function's value at $1$ to $1$, and at a general
+  integer take the product over its prime-power factors. Unique
+  factorization makes both functions well defined and multiplicative,
+  since coprime inputs have disjoint prime factors.
+  \item No: complete multiplicativity would require
+  $f(4)=f(2)^2=4$, but the given value is $5$.
+\end{enumerate}
+\credit{(a) One point per value. (b) Nonuniqueness: 1; two consistent
+prime-power assignments: 1; multiplicative extension: 1.
+(c) Required equality and contradiction: 2.}
+\end{solution}
+
+\instructorbreak
+\problem{Which operations preserve multiplicativity?}{10}
+Let $f$ and $g$ be multiplicative functions.
+\begin{enumerate}
+  \item Prove that the pointwise product $h(n)=f(n)g(n)$ is
+  multiplicative. Prove the same for $q(n)=f(n)/g(n)$ if $g(n)\ne0$
+  for every $n$. \partpts{4}
+  \item Explain why the pointwise sum $f+g$ is never multiplicative
+  under our convention. \partpts{2}
+  \item Normalizing the sum fixes its value at $1$. Does it follow that
+  $A(n)=(f(n)+g(n))/2$ is always multiplicative? Prove this or give
+  an explicit counterexample with coprime inputs. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Both $h(1)$ and $q(1)$ are $1$. For coprime $m,n$,
+  \[
+    h(mn)=f(m)f(n)g(m)g(n)=h(m)h(n),
+    \qquad
+    q(mn)=\frac{f(m)f(n)}{g(m)g(n)}=q(m)q(n).
+  \]
+  Nonvanishing of $g$ makes every quotient defined.
+  \item $(f+g)(1)=2$, whereas a multiplicative function has value $1$
+  at $1$.
+  \item Take $f(n)=1$ and $g(n)=n$, which are both completely
+  multiplicative. Then $A(n)=(n+1)/2$. Although $A(1)=1$,
+  \[
+    A(6)=\frac72\ne3=\frac32\cdot2=A(2)A(3),
+    \qquad\gcd(2,3)=1.
+  \]
+\end{enumerate}
+\credit{(a) Each proof, including its value at $1$: 2.
+(b) Value at $1$ and conclusion: 2.
+(c) Valid multiplicative examples: 1; normalized values: 1;
+coprime inputs: 1; failed equality: 1.}
+\end{solution}
+
+\problem{Counting and adding divisors}{14}
+Define $\tau(n)=\sum_{d\mid n}1$ and $\sigma(n)=\sum_{d\mid n}d$.
+Write $n=\prod_{i=1}^r p_i^{a_i}$, with distinct primes $p_i$.
+\begin{enumerate}
+  \item Describe the divisors of $n$ using exponents. Deduce product
+  formulas for $\tau(n)$ and $\sigma(n)$, and explain why both
+  functions are multiplicative. \partpts{6}
+  \item Compute $\tau(540)$ and $\sigma(540)$. \partpts{4}
+  \item Prove that $\tau(n)$ is odd if and only if $n$ is a perfect
+  square. Include $n=1$. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Every divisor is uniquely $\prod_i p_i^{b_i}$ with
+  $0\le b_i\le a_i$. Counting choices, or distributing a product of
+  finite sums, gives
+  \[
+    \tau(n)=\prod_i(a_i+1),\qquad
+    \sigma(n)=\prod_i(1+p_i+\cdots+p_i^{a_i}).
+  \]
+  At $1$ both products are empty and have value $1$. Coprime inputs
+  have disjoint prime factors, so the formulas give multiplicativity.
+  \item $540=2^2\cdot3^3\cdot5$, hence
+  \[
+    \tau(540)=3\cdot4\cdot2=24,\qquad
+    \sigma(540)=(1+2+4)(1+3+9+27)(1+5)=1680.
+  \]
+  \item A product of integers is odd exactly when all factors are odd.
+  Thus $\tau(n)$ is odd exactly when every $a_i+1$ is odd, equivalently
+  when every $a_i$ is even. Unique factorization says this is exactly
+  the condition for $n$ to be a square. Also $\tau(1)=1$ and $1=1^2$.
+  Alternatively, pair divisors $d,n/d$; an unpaired divisor occurs
+  exactly when $d^2=n$.
+\end{enumerate}
+\credit{(a) Unique exponent description: 2; each product formula: 1;
+multiplicativity including $1$: 2. (b) Each calculation: 2.
+(c) Parity criterion: 2; square criterion and both directions: 1;
+case $1$: 1.}
+\end{solution}
+
+\studentbreak
+\instructorbreak
+\topic{II. Totients and divisor sums}
+
+\problem{The totient from excluded multiples}{14}
+Let $\varphi(n)$ count integers $1\le k\le n$ with $\gcd(k,n)=1$;
+in particular, $\varphi(1)=1$.
+\begin{enumerate}
+  \item For a prime $p$ and $a\ge1$, prove
+  $\varphi(p^a)=p^a-p^{a-1}$. \partpts{3}
+  \item Apply inclusion--exclusion to the multiples of the distinct
+  primes dividing $n$ to prove
+  \[
+    \varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right).
+  \]
+  Use this formula to prove that $\varphi$ is multiplicative.
+  \partpts{6}
+  \item Compute $\varphi(540)$. \partpts{2}
+  \item Prove that $\varphi(n)$ is even for every $n>2$.
+  \emph{Hint:} pair $k$ with $n-k$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item An integer is not coprime to $p^a$ exactly when $p$ divides it.
+  Among $1,\ldots,p^a$, there are $p^{a-1}$ such multiples. Subtract
+  these from the $p^a$ integers.
+  \item If the distinct prime divisors are $p_1,\ldots,p_r$, being
+  coprime means avoiding every multiple of these primes. For a subset
+  $S$ of the primes, the number divisible by all of them is
+  $n/\prod_{p\in S}p$; the denominator divides $n$.
+  Inclusion--exclusion therefore gives
+  \[
+    \varphi(n)=\sum_{S\subseteq\{p_1,\ldots,p_r\}}
+      (-1)^{|S|}\frac{n}{\prod_{p\in S}p}
+      =n\prod_{i=1}^r\left(1-\frac1{p_i}\right).
+  \]
+  For coprime $m,n$ the prime sets are disjoint; the product for $mn$
+  separates into the products for $m$ and $n$, with leading factor
+  $mn=m\cdot n$. Also $\varphi(1)=1$.
+  \item $\varphi(540)=540(1-1/2)(1-1/3)(1-1/5)=144$.
+  \item For $n>2$, every counted $k$ lies in $1,\ldots,n-1$.
+  Since $\gcd(n-k,n)=\gcd(k,n)$, the map $k\mapsto n-k$
+  pairs counted integers and is its own inverse. A fixed point would
+  have $2k=n$, so $\gcd(k,n)=k$; coprimality would force $k=1,n=2$.
+  This is excluded. All pairs have two distinct elements, so the count
+  is even.
+\end{enumerate}
+\credit{(a) Exclude exactly the multiples of $p$: 1; count: 1;
+subtraction: 1. (b) Intersection counts: 2; inclusion--exclusion and
+product: 2; multiplicativity including $1$: 2. (c) Setup and value: 2.
+(d) Pair preserves coprimality: 1; no fixed points for $n>2$: 1;
+even count: 1.}
+\end{solution}
+
+\instructorbreak
+\problem{Multiplication by a divisor sum}{14}
+The \emph{Dirichlet convolution} of arithmetic functions is
+\[
+  (f*g)(n)=\sum_{d\mid n}f(d)g(n/d).
+\]
+Let $\one(n)=1$, $\id(n)=n$, and let $\varepsilon(1)=1$,
+$\varepsilon(n)=0$ for $n>1$.
+\begin{enumerate}
+  \item Suppose $\gcd(m,n)=1$. Prove that every divisor of $mn$
+  has a unique expression $ab$ with $a\mid m$ and $b\mid n$.
+  \partpts{4}
+  \item Use (a) to prove that $f*g$ is multiplicative when $f$ and
+  $g$ are multiplicative. Check the value at $1$ and explain each use
+  of coprimality. \partpts{6}
+  \item Identify $\one*\one$ and $\one*\id$ in terms of the
+  functions already studied. For an arbitrary arithmetic function $f$,
+  prove $f*\varepsilon=f$. \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item No prime divides both $m$ and $n$. Assign each prime power in
+  a divisor of $mn$ to the factor coming from $m$ or from $n$.
+  This gives the required $a,b$ and makes them unique. Conversely,
+  every such product $ab$ divides $mn$.
+  \item Set $h=f*g$. We have $h(1)=f(1)g(1)=1$. For coprime $m,n$,
+  both $\gcd(a,b)=1$ and $\gcd(m/a,n/b)=1$, so
+  \[
+  \begin{aligned}
+    h(mn)&=\sum_{a\mid m}\sum_{b\mid n}f(ab)g((m/a)(n/b))\\
+      &=\sum_{a\mid m}\sum_{b\mid n}f(a)f(b)g(m/a)g(n/b)\\
+      &=\left(\sum_{a\mid m}f(a)g(m/a)\right)
+        \left(\sum_{b\mid n}f(b)g(n/b)\right)=h(m)h(n).
+  \end{aligned}
+  \]
+  \item $(\one*\one)(n)=\sum_{d\mid n}1=\tau(n)$.
+  Also $(\one*\id)(n)=\sum_{d\mid n}n/d=\sigma(n)$, since
+  $d\mapsto n/d$ permutes the divisors. Finally, only the term $d=n$
+  survives in $\sum_{d\mid n}f(d)\varepsilon(n/d)$, giving $f(n)$.
+\end{enumerate}
+\credit{(a) Existence: 2; uniqueness and converse: 2.
+(b) Value at $1$: 1; divisor reindexing: 1; both coprimality
+conditions: 2; product factorization: 2.
+(c) $\tau$: 1; $\sigma$: 1; identity proof: 2.}
+\end{solution}
+
+\instructorbreak
+\problem{M\"obius cancellation}{14}
+An integer is \emph{squarefree} if no prime square divides it. Define
+\[
+  \mu(n)=
+  \begin{cases}
+    1,&n=1,\\
+    (-1)^r,&n\text{ is a product of }r\text{ distinct primes},\\
+    0,&n\text{ is not squarefree}.
+  \end{cases}
+\]
+\begin{enumerate}
+  \item Prove that $\mu$ is multiplicative. Show that it is not
+  completely multiplicative. \partpts{3}
+  \item Find $\sum_{d\mid p^a}\mu(d)$ for a prime $p$ and $a\ge1$.
+  Use Problem 5 to prove $\mu*\one=\varepsilon$, including its
+  value at $1$. \partpts{5}
+  \item You may use associativity and commutativity of convolution.
+  Prove the following identities for every $n\ge1$. \partpts{6}
+  \[
+    \sum_{d\mid n}\mu(d)\sigma(n/d)=n,
+    \qquad
+    \sum_{d\mid n}\mu(d)\tau(n/d)=1.
+  \]
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item We have $\mu(1)=1$. If either coprime input has a prime square
+  factor, both $\mu(mn)$ and $\mu(m)\mu(n)$ vanish. Otherwise their
+  disjoint lists of primes concatenate, so the signs multiply.
+  Complete multiplicativity fails since $\mu(p^2)=0$ but
+  $\mu(p)^2=1$.
+  \item The prime-power sum is $\mu(1)+\mu(p)=1-1=0$;
+  all higher powers contribute zero. By Problem 5,
+  $H=\mu*\one$ is multiplicative. Thus for $n>1$, its product
+  over prime-power factors contains a zero, so $H(n)=0$.
+  At $1$, $H(1)=1$. This is precisely $\varepsilon$.
+  \item Problem 5 gives $\sigma=\one*\id$ and
+  $\tau=\one*\one$. Hence
+  \[
+    \mu*\sigma=(\mu*\one)*\id=\varepsilon*\id=\id,
+    \qquad
+    \mu*\tau=(\mu*\one)*\one=\varepsilon*\one=\one.
+  \]
+  Evaluating these function identities at $n$ gives the two requested
+  sums. They also hold at $1$.
+\end{enumerate}
+\credit{(a) Multiplicativity with both cases and $1$: 2;
+counterexample to complete multiplicativity: 1.
+(b) Prime-power sum: 2; multiplicativity and reduction to prime
+powers: 2; value at $1$: 1.
+(c) Each convolution calculation and its translation to the sum: 3.}
+\end{solution}
+
+\studentbreak
+\instructorbreak
+\topic{III. Two applications}
+
+\problem{An alternating divisor sum detects squares}{12}
+For $n=\prod_{i=1}^r p_i^{a_i}$ define
+$\Omega(n)=a_1+\cdots+a_r$, with $\Omega(1)=0$, and set
+$\lambda(n)=(-1)^{\Omega(n)}$. Thus $\Omega$ counts prime factors
+\emph{with multiplicity}.
+\begin{enumerate}
+  \item Prove that $\lambda$ is completely multiplicative.
+  \partpts{4}
+  \item Evaluate $\sum_{j=0}^a\lambda(p^j)$ and deduce, for every $n$,
+  \[
+    \sum_{d\mid n}\lambda(d)=
+    \begin{cases}
+      1,&n\text{ is a perfect square},\\
+      0,&n\text{ is not a perfect square}.
+    \end{cases}
+  \]
+  Justify the passage from prime powers to general $n$, and include
+  $n=1$. \partpts{6}
+  \item Evaluate $\sum_{d\mid 360}\lambda(d)$ and
+  $\sum_{d\mid 900}\lambda(d)$ without listing all the divisors.
+  \partpts{2}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Prime exponents add in a product whether or not its factors
+  are coprime, so $\Omega(mn)=\Omega(m)+\Omega(n)$. Therefore
+  $\lambda(mn)=(-1)^{\Omega(m)+\Omega(n)}=\lambda(m)\lambda(n)$
+  for all $m,n$, and $\lambda(1)=1$.
+  \item The prime-power sum is $1-1+\cdots+(-1)^a$, equal to
+  $1$ for even $a$ and $0$ for odd $a$. By Problem 5 the divisor-sum
+  function $\lambda*\one$ is multiplicative. Its value at
+  $\prod_i p_i^{a_i}$ is the product of these alternating sums,
+  which is $1$ exactly when every $a_i$ is even, and $0$ otherwise.
+  This is the square criterion from unique factorization.
+  At $1$, the divisor sum is $\lambda(1)=1$.
+  \item $360=2^3\cdot3^2\cdot5$ is not a square, so its sum is $0$.
+  Since $900=2^2\cdot3^2\cdot5^2=30^2$, its sum is $1$.
+\end{enumerate}
+\credit{(a) Exponents add without a coprimality restriction: 2;
+sign product and value at $1$: 2. (b) Alternating sum: 2;
+multiplicativity and product: 2; square criterion: 1; case $1$: 1.
+(c) Each evaluated sum: 1.}
+\end{solution}
+
+\instructorbreak
+\problem{A sum of gcds}{12}
+Define $G(n)=\sum_{k=1}^n\gcd(k,n)$.
+\begin{enumerate}
+  \item Group the integers $k$ according to $d=\gcd(k,n)$ to prove
+  \[
+    G(n)=\sum_{d\mid n}d\,\varphi(n/d).
+  \]
+  Explain why the group with gcd equal to $d$ has $\varphi(n/d)$
+  members. \partpts{5}
+  \item Use the earlier problems to deduce that $G$ is multiplicative.
+  \partpts{2}
+  \item For a prime $p$ and $a\ge1$, derive
+  \[
+    G(p^a)=(a+1)p^a-a p^{a-1}.
+  \]
+  Then compute $G(60)$ without summing 60 gcds individually.
+  \partpts{5}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item The group with gcd $d$ consists exactly of $k=dj$ with
+  $1\le j\le n/d$ and $\gcd(j,n/d)=1$. There are
+  $\varphi(n/d)$ choices, each contributing $d$ to the sum.
+  These groups partition $1,\ldots,n$, so their contributions add
+  to the formula. The case $d=n$ contains only $k=n$, consistent
+  with $\varphi(1)=1$.
+  \item The formula says $G=\id*\varphi$; both factors are
+  multiplicative, so Problem 5 applies. In particular $G(1)=1$.
+  \item The term $d=p^a$ contributes $p^a\varphi(1)=p^a$.
+  For $d=p^j$ with $0\le j<a$, the contribution is
+  \[
+    p^j\varphi(p^{a-j})
+      =p^j(p^{a-j}-p^{a-j-1})=p^a-p^{a-1}.
+  \]
+  There are $a$ such terms, giving
+  $G(p^a)=p^a+a(p^a-p^{a-1})$ as required. Finally,
+  \[
+    G(60)=G(4)G(3)G(5)
+      =(3\cdot4-2\cdot2)(2\cdot3-1)(2\cdot5-1)
+      =8\cdot5\cdot9=360.
+  \]
+\end{enumerate}
+\credit{(a) Gcd class bijection: 3; weighted contribution: 1;
+partition and sum: 1. (b) Convolution and multiplicativity: 2.
+(c) Prime-power derivation including its final term: 3;
+factorization and value at $60$: 2.}
+\end{solution}
+
+\challenge{Even perfect numbers}
+An integer $N$ is \emph{perfect} if its positive divisors other than $N$
+sum to $N$, equivalently $\sigma(N)=2N$.
+\begin{enumerate}
+  \item Let $r\ge2$ and suppose $2^r-1$ is prime. Prove that
+  $N=2^{r-1}(2^r-1)$ is perfect. Give the examples from $r=2,3,5$.
+  \partpts{4}
+  \item Prove that every even perfect number has the form in (a).
+  \emph{Hint:} write $N=2^a m$ with $a\ge1$ and $m$ odd, and put
+  $q=2^{a+1}-1$. First show $q\mid m$. Write $m=qt$ and show
+  $\sigma(m)=m+t$. If $t>1$, compare this with the contribution of
+  the three distinct divisors $1,t,m$. \partpts{6}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Set $q=2^r-1$, an odd prime. The factors $2^{r-1}$ and
+  $q$ are coprime, so Problem 3 gives
+  \[
+    \sigma(N)=(1+2+\cdots+2^{r-1})(1+q)
+      =(2^r-1)2^r=2N.
+  \]
+  The examples are $6,28,496$.
+  \item The perfect-number equation is
+  \[
+    (2^{a+1}-1)\sigma(m)=2^{a+1}m,
+    \quad\text{or}\quad q\sigma(m)=(q+1)m.
+  \]
+  Since $\gcd(q,q+1)=1$, Euclid's lemma gives $q\mid m$.
+  Write $m=qt$. Dividing by $q$ gives
+  $\sigma(m)=(q+1)t=m+t$. We have $q\ge3$, so $t<m$.
+  If $t>1$, the three distinct divisors $1,t,m$ imply
+  $\sigma(m)\ge1+t+m>m+t$, a contradiction. Thus $t=1$,
+  $m=q>1$, and $\sigma(m)=m+1$. A composite $m$ would have
+  an additional positive divisor besides $1,m$, so $m$ must be
+  prime. Setting $r=a+1\ge2$ gives the required form.
+\end{enumerate}
+\credit{(a) Coprime factorization and divisor-sum formula: 2;
+perfect-number equality: 1; examples: 1. (b) Equation and $q\mid m$:
+2; substitution and divisor contradiction: 2; $t=1$, primality,
+and the final form: 2.}
+\end{solution}
+
+\end{document}

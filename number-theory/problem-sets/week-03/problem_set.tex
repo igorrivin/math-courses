@@ -1,0 +1,489 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.78in,headheight=15pt,headsep=15pt]{geometry}
+\usepackage{mathtools,amssymb}
+\usepackage{xcolor,booktabs,array}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,needspace,hyperref}
+
+\definecolor{ink}{HTML}{162332}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\definecolor{mist}{HTML}{EDF5F4}
+\definecolor{muted}{HTML}{5D6B78}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,
+  pdfauthor={Igor Rivin},
+  pdftitle={Number Theory: Week 3 Problem Set},
+  pdfsubject={Congruences, modular inverses, Fermat's little theorem, and continued fractions of quadratic surds}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist[enumerate]{label=(\alph*),leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\per}[1]{\overline{#1}}
+\newcommand{\pts}[1]{\hfill\textcolor{muted}{\small[#1 points]}}
+\newcommand{\partpts}[1]{\textcolor{muted}{\small(#1)}}
+\newcommand{\edition}{\ifsolutions Instructor solutions\else Student handout\fi}
+\newcounter{problem}
+\newcommand{\problem}[2]{%
+  \par\addvspace{11pt}\Needspace{6\baselineskip}%
+  \stepcounter{problem}{\bfseries\color{navy}\theproblem.\ #1}\pts{#2}\par\nobreak}
+\newcommand{\topic}[1]{\par\addvspace{9pt}\Needspace{10\baselineskip}{\large\bfseries\color{teal}#1}\par\nobreak}
+\newcommand{\studentbreak}{\ifsolutions\else\newpage\fi}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Week 3 \textbar\ Problem Set 3}
+\fancyhead[R]{\small\color{muted}Patterns, Proofs, and Primes}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\small\color{teal}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\NewDocumentEnvironment{solution}{+b}{%
+  \ifsolutions
+  \begin{tcolorbox}[enhanced,breakable,colback=mist!45,colframe=teal!45,
+    boxrule=0.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+    before skip=7pt,after skip=7pt,
+    title={Solution},title after break={Solution (continued)},
+    colbacktitle=mist,coltitle=teal,fonttitle=\small\bfseries]
+  \small #1
+  \end{tcolorbox}
+  \fi
+}{}
+
+\begin{document}
+{\LARGE\bfseries\color{navy}Problem Set 3}\hfill
+{\small\color{teal}\edition}\\[4pt]
+{\large Clock arithmetic, Fermat's little theorem, and repeating continued fractions}\\[4pt]
+{\small\color{muted}Week 3 \textbar\ 100 points + 10 optional challenge points}
+
+\ifsolutions
+\medskip
+\textbf{Teaching note.} Estimated working time is 2--3 hours, excluding the
+challenge. Problems 1--5 use only congruences, inverses, and Fermat's little
+theorem; the Chinese remainder theorem, Euler's theorem, and the notion of
+order are not assumed. Problems 6--8 use the integer-state algorithm, Galois's
+criterion, and the period-reversal corollary from the second continued-fraction
+lecture. All floors are decided by integer bounds on $\sqrt D$; decimal
+approximations should not receive proof credit. Subpart scores appear in
+parentheses. Avoid repeatedly penalizing a carried arithmetic error.
+\else
+\medskip
+\textbf{Name:}\ \rule{0.46\linewidth}{0.4pt}\hfill
+\textbf{Due:}\ \rule{0.20\linewidth}{0.4pt}
+\fi
+
+\medskip
+\textbf{Instructions.} Work exactly: no decimal approximations. When you need
+the floor of a surd, justify it with integer bounds such as $2<\sqrt7<3$.
+Justify every proof or counterexample. You may use B\'ezout's identity,
+Euclid's lemma in the form ``if $n\mid cm$ and $\gcd(n,c)=1$, then $n\mid m$,''
+and the fact from Problem Set~2 that coprime divisors of $c$ have a product
+dividing $c$.
+
+\textbf{Facts from lecture.} \emph{Fermat's little theorem:} if $p$ is prime,
+then $a^p\equiv a\pmod p$ for every integer $a$, and
+$a^{p-1}\equiv1\pmod p$ when $p\nmid a$.
+\emph{Integer states:} if $x_n=(P_n+\sqrt D)/Q_n$ with
+$Q_n\mid D-P_n^2$ and $a_n=\floor{x_n}$, then
+\[
+  P_{n+1}=a_nQ_n-P_n,\qquad Q_{n+1}=\frac{D-P_{n+1}^2}{Q_n},
+  \qquad x_{n+1}=\frac{P_{n+1}+\sqrt D}{Q_{n+1}}.
+\]
+\emph{Galois:} a quadratic surd $x$ has a purely periodic continued fraction
+exactly when it is \emph{reduced}: $x>1$ and $-1<x'<0$, where $x'$ is the
+conjugate. \emph{Reversal:} if $x=[\per{b_0,\ldots,b_{\ell-1}}]$, then
+$-1/x'=[\per{b_{\ell-1},\ldots,b_0}]$.
+
+\topic{I. Congruences and inverses}
+
+\problem{Warming up the clock}{10}
+\begin{enumerate}
+  \item Find the least nonnegative residue of $-100$ modulo $13$. \partpts{2}
+  \item Find the last two digits of $99\cdot101\cdot103$ without multiplying
+  the numbers out. \partpts{2}
+  \item Prove that every square is congruent to $0$ or $1$ modulo $4$.
+  Deduce that no integer congruent to $3$ modulo $4$ is a sum of two
+  squares. Is $2027$ a sum of two squares? \partpts{6}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item $-100=-8\cdot13+4$, so the residue is $4$.
+  \item Modulo $100$ the factors are $-1$, $1$, and $3$. Their product is
+  $-3\equiv97$, so the last two digits are $97$. (The product is positive,
+  so its last two digits are its residue modulo $100$.)
+  \item Every integer is congruent to $0,1,2$, or $3$ modulo $4$, and
+  congruences may be squared. The squares of these residues are
+  $0,1,4,9\equiv0,1,0,1$. Hence a sum of two squares is congruent to
+  $0+0$, $0+1$, or $1+1$, that is, to $0$, $1$, or $2$; the residue $3$
+  never occurs. Since $2027=4\cdot506+3$, it is not a sum of two squares.
+\end{enumerate}
+\end{solution}
+
+\problem{Inverses by Euclid}{14}
+\begin{enumerate}
+  \item Use the extended Euclidean algorithm to find the inverse of $23$
+  modulo $89$. Check your answer by multiplication. \partpts{5}
+  \item Solve $23x\equiv5\pmod{89}$. \partpts{2}
+  \item Let $n\ge2$. Prove that an inverse modulo $n$, when it exists, is
+  unique modulo $n$: if $ab\equiv1$ and $ac\equiv1\pmod n$, then
+  $b\equiv c\pmod n$. \partpts{3}
+  \item List the units modulo $15$, and give the inverse of each. Which units
+  are their own inverses? \partpts{4}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item The divisions are
+  \[
+  89=3\cdot23+20,\qquad 23=1\cdot20+3,\qquad 20=6\cdot3+2,\qquad 3=1\cdot2+1.
+  \]
+  Working backward,
+  \[
+  1=3-2=7\cdot3-20=7\cdot23-8\cdot20=31\cdot23-8\cdot89.
+  \]
+  Hence $23^{-1}\equiv31\pmod{89}$. Check: $23\cdot31=713=8\cdot89+1$.
+  \item Multiply by $31$: $x\equiv155\equiv66\pmod{89}$.
+  Check: $23\cdot66=1518=17\cdot89+5$. The solution is unique modulo $89$
+  because multiplication by the unit $23$ can be undone.
+  \item Using only associativity and commutativity of multiplication of
+  residues,
+  \[
+  b\equiv b\cdot1\equiv b(ac)\equiv(ab)c\equiv1\cdot c\equiv c\pmod n.
+  \]
+  \item The units are the residues coprime to $15$:
+  $1,2,4,7,8,11,13,14$. The inverse pairs are
+  $2\cdot8=16$, $7\cdot13=91=6\cdot15+1$, and the self-inverse units are
+  $1,4,11,14$ ($4^2=16$, $11^2=121=8\cdot15+1$, $14\equiv-1$).
+  Note that there are four square roots of $1$ here; compare Problem 3(b).
+\end{enumerate}
+\end{solution}
+
+\problem{Cancellation, square roots of one, and Wilson's theorem}{14}
+\begin{enumerate}
+  \item Prove the cancellation law: if $ac\equiv bc\pmod n$ and
+  $\gcd(c,n)=1$, then $a\equiv b\pmod n$. Give an example showing that the
+  conclusion can fail when $\gcd(c,n)>1$. \partpts{5}
+  \item Let $p$ be prime. Prove that $a^2\equiv1\pmod p$ forces
+  $a\equiv\pm1\pmod p$. Where does your proof break for the modulus $8$?
+  \partpts{4}
+  \item Pair each of the residues $2,3,\ldots,9$ with its inverse modulo $11$,
+  and use the pairing to compute $10!$ modulo $11$ with almost no arithmetic.
+  Then prove \emph{Wilson's theorem}: $(p-1)!\equiv-1\pmod p$ for every
+  prime $p$. \partpts{5}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item The hypothesis says $n\mid c(a-b)$. Since $\gcd(n,c)=1$, Euclid's
+  lemma gives $n\mid a-b$. (Alternatively, multiply both sides by an inverse
+  of $c$.) \partpts{3} For a failure, $2\cdot1\equiv2\cdot4\pmod6$ but
+  $1\not\equiv4\pmod6$. \partpts{2}
+  \item The hypothesis says $p\mid a^2-1=(a-1)(a+1)$. A prime dividing a
+  product divides a factor, so $a\equiv1$ or $a\equiv-1\pmod p$.
+  \partpts{3} Modulo $8$ we have $3^2\equiv1$ although $3\not\equiv\pm1$:
+  here $8\mid2\cdot4$ without dividing either factor, so the step
+  ``divides a product, hence divides a factor'' requires a prime. \partpts{1}
+  \item Modulo $11$: $2\cdot6=12$, $3\cdot4=12$, $5\cdot9=45=4\cdot11+1$,
+  and $7\cdot8=56=5\cdot11+1$. Therefore
+  \[
+  10!\equiv1\cdot(2\cdot6)(3\cdot4)(5\cdot9)(7\cdot8)\cdot10
+    \equiv10\equiv-1\pmod{11}.\quad\partpts{2}
+  \]
+  In general, the case $p=2$ is $1!\equiv-1\pmod2$. Let $p$ be odd. Each
+  of $1,\ldots,p-1$ is coprime to $p$, so it has an inverse in the same
+  list, unique by Problem 2(c); and the inverse of the inverse of $a$ is $a$.
+  By (b), $a$ is its own inverse exactly when $a\equiv\pm1$, that is, for
+  $a=1$ and $a=p-1$ only. The remaining residues $2,\ldots,p-2$ therefore
+  split into pairs $\{a,a^{-1}\}$ of distinct elements, each pair with
+  product $1$. Hence $(p-1)!\equiv1\cdot(p-1)\equiv-1\pmod p$. \partpts{3}
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{II. Fermat's little theorem}
+
+\problem{Large powers made small}{12}
+\begin{enumerate}
+  \item Compute $3^{1000}\pmod{13}$. \partpts{3}
+  \item Compute $5^{2026}\pmod{23}$. \partpts{3}
+  \item Let $p$ be prime and $p\nmid a$. Explain why $a^{p-2}$ is an inverse
+  of $a$ modulo $p$. Use this to find the inverse of $7$ modulo $19$ by
+  repeated squaring, and check your answer by multiplication. \partpts{6}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item By Fermat, $3^{12}\equiv1\pmod{13}$. Since $1000=12\cdot83+4$,
+  \[
+  3^{1000}\equiv(3^{12})^{83}\cdot3^4\equiv81\equiv3\pmod{13}.
+  \]
+  (Even faster: $3^3=27\equiv1$ and $1000=3\cdot333+1$.)
+  \item By Fermat, $5^{22}\equiv1\pmod{23}$, and $2026=22\cdot92+2$. Hence
+  $5^{2026}\equiv5^2=25\equiv2\pmod{23}$.
+  \item $a\cdot a^{p-2}=a^{p-1}\equiv1\pmod p$ by Fermat. \partpts{2}
+  For $a=7$, $p=19$ we need $7^{17}=7^{16}\cdot7$. Squaring repeatedly,
+  \[
+  7^2=49\equiv11,\qquad 7^4\equiv121\equiv7,\qquad 7^8\equiv11,\qquad
+  7^{16}\equiv7\pmod{19},
+  \]
+  so $7^{17}\equiv7\cdot7\equiv11$. Check: $7\cdot11=77=4\cdot19+1$.
+  \partpts{4}
+\end{enumerate}
+\end{solution}
+
+\problem{Fermat as a proof tool, and a warning}{14}
+\begin{enumerate}
+  \item Prove that $30\mid n^5-n$ for every integer $n$. \partpts{5}
+  \item Let $p$ be a prime other than $2$ and $5$. Prove that $p$ divides
+  infinitely many of the numbers $9,\,99,\,999,\,9999,\ldots$ \partpts{4}
+  \item Verify that $2^{10}=3\cdot341+1$, and deduce that
+  $2^{340}\equiv1\pmod{341}$. Yet $341=11\cdot31$ is not prime. Does this
+  contradict Fermat's theorem? Finally, use Fermat modulo $31$ to show that
+  $3^{340}\not\equiv1\pmod{341}$, and explain how this congruence alone
+  proves that $341$ is composite. \partpts{5}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Fermat with $p=5$ gives $n^5\equiv n\pmod5$ directly. Modulo $3$,
+  Fermat gives $n^3\equiv n$, so $n^5=n^3\cdot n^2\equiv n\cdot n^2=n^3\equiv n$.
+  Modulo $2$, $n^2\equiv n$ gives $n^5=(n^2)^2n\equiv n^2\cdot n\equiv n\cdot n
+  \equiv n$. Thus $2$, $3$, and $5$ each divide $n^5-n$. Since
+  $\gcd(2,3)=1$, their product $6$ divides $n^5-n$; since $\gcd(6,5)=1$,
+  so does $30$. (Award full credit for the factorization
+  $n^5-n=(n-1)n(n+1)(n^2+1)$ with a complete case analysis modulo $5$.)
+  \item The number with $m$ nines is $10^m-1$. Since $p\nmid10$, Fermat
+  gives $10^{p-1}\equiv1\pmod p$, hence $10^{k(p-1)}\equiv1$ for every
+  $k\ge1$. Thus $p$ divides $10^{k(p-1)}-1$, the number with $k(p-1)$
+  nines, for every $k\ge1$; these are infinitely many different numbers.
+  \item $3\cdot341=1023=2^{10}-1$. Hence $2^{10}\equiv1$ and
+  $2^{340}=(2^{10})^{34}\equiv1\pmod{341}$. \partpts{2} There is no
+  contradiction: Fermat's theorem says that primes satisfy the
+  congruence; it does not say that only primes do. The \emph{converse} of
+  Fermat's theorem is false. \partpts{1} For base $3$: by Fermat,
+  $3^{30}\equiv1\pmod{31}$, and $340=30\cdot11+10$, so
+  $3^{340}\equiv3^{10}\pmod{31}$. Now $3^3=27\equiv-4$, so
+  $3^9\equiv-64\equiv-2$ and $3^{10}\equiv-6\equiv25\pmod{31}$.
+  If $3^{340}$ were $1$ modulo $341$, it would also be $1$ modulo the
+  divisor $31$; it is not. Finally, if $341$ were prime, Fermat (with
+  $341\nmid3$) would force $3^{340}\equiv1\pmod{341}$. The failure of this
+  congruence proves compositeness without exhibiting a factor.
+  \partpts{2} (In fact $3^{340}\equiv56\pmod{341}$.)
+\end{enumerate}
+\end{solution}
+
+\studentbreak
+\topic{III. Continued fractions of quadratic surds}
+
+\problem{Running the integer-state algorithm}{14}
+\begin{enumerate}
+  \item Make a table of $n$, $P_n$, $Q_n$, $x_n$, $a_n$ for $x_0=\sqrt7$,
+  continuing until a state $(P_n,Q_n)$ repeats. State the continued
+  fraction of $\sqrt7$. \partpts{6}
+  \item Let $x=(1+\sqrt2)/3$. Explain why $(P_0,Q_0)=(1,3)$ with $D=2$ is
+  not a legal starting state. Show that $x=(3+\sqrt{18})/9$ is legal, and
+  run the algorithm to find the continued fraction of $x$. \partpts{6}
+  \item Which of the complete quotients $x_0,x_1,x_2,\ldots$ in (b) are
+  reduced? Compare with where the period begins. \partpts{2}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Every floor follows from $2<\sqrt7<3$.
+  \begin{center}
+  \begin{tabular}{@{}ccccc@{}}
+  \toprule
+  $n$ & $P_n$ & $Q_n$ & $x_n$ & $a_n$\\
+  \midrule
+  $0$ & $0$ & $1$ & $\sqrt7$ & $2$\\
+  $1$ & $2$ & $3$ & $(2+\sqrt7)/3$ & $1$\\
+  $2$ & $1$ & $2$ & $(1+\sqrt7)/2$ & $1$\\
+  $3$ & $1$ & $3$ & $(1+\sqrt7)/3$ & $1$\\
+  $4$ & $2$ & $1$ & $2+\sqrt7$ & $4$\\
+  $5$ & $2$ & $3$ & $(2+\sqrt7)/3$ & $1$\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  For instance, $4<2+\sqrt7<5$ gives $4/3<x_1<5/3$, so $a_1=1$; then
+  $P_2=1\cdot3-2=1$ and $Q_2=(7-1)/3=2$. Since $x_5=x_1$,
+  \[
+  \sqrt7=[2;\per{1,1,1,4}].
+  \]
+  \item A legal state needs $Q_0\mid D-P_0^2$, but $3\nmid2-1=1$; the
+  recurrence would produce the non-integer $Q_1$. Multiplying numerator
+  and denominator by $3$ gives $x=(3+\sqrt{18})/9$, and
+  $9\mid18-9=9$. \partpts{2} Using $4<\sqrt{18}<5$:
+  \begin{center}
+  \begin{tabular}{@{}ccccc@{}}
+  \toprule
+  $n$ & $P_n$ & $Q_n$ & $x_n$ & $a_n$\\
+  \midrule
+  $0$ & $3$ & $9$ & $(3+\sqrt{18})/9$ & $0$\\
+  $1$ & $-3$ & $1$ & $-3+\sqrt{18}$ & $1$\\
+  $2$ & $4$ & $2$ & $(4+\sqrt{18})/2$ & $4$\\
+  $3$ & $4$ & $1$ & $4+\sqrt{18}$ & $8$\\
+  $4$ & $4$ & $2$ & $(4+\sqrt{18})/2$ & $4$\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  Here $7/9<x_0<8/9$, $1<x_1<2$, $4<x_2<9/2$, and $8<x_3<9$. Since
+  $x_4=x_2$,
+  \[
+  \frac{1+\sqrt2}{3}=[0;1,\per{4,8}].\quad\partpts{4}
+  \]
+  \item $x_0<1$ is not reduced. $x_1>1$, but its conjugate
+  $-3-\sqrt{18}$ is below $-1$, so $x_1$ is not reduced. The conjugate of
+  $x_2$ is $(4-\sqrt{18})/2$, which lies in $(-1/2,0)$, and the conjugate
+  of $x_3$ is $4-\sqrt{18}\in(-1,0)$; both exceed $1$, so both are reduced,
+  as is every later $x_n$. The reduced complete quotients are exactly the
+  ones inside the period, as Galois's theorem requires: $x_n$ is purely
+  periodic precisely for $n\ge2$.
+\end{enumerate}
+\end{solution}
+
+\problem{From a period back to a surd}{12}
+\begin{enumerate}
+  \item Let $x=[\per{3,1}]$. Find a quadratic equation with integer
+  coefficients satisfied by $x$, and write $x$ in the form
+  $(P+\sqrt D)/Q$. Confirm directly that $x$ is reduced. \partpts{5}
+  \item Use the reversal corollary to find $t=[\per{1,3}]$ in closed form,
+  and then find $y=[2;\per{1,3}]$. \partpts{4}
+  \item Your answers should satisfy $y=x-1$. Explain this by looking only
+  at the digits. Is $y$ purely periodic? Reconcile your answer with
+  Galois's theorem. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Removing one period leaves $x$ again:
+  \[
+  x=3+\cfrac1{1+\cfrac1x}=3+\frac{x}{x+1}=\frac{4x+3}{x+1}.
+  \]
+  (In matrix form, $D(3)D(1)=\begin{psmallmatrix}4&3\\1&1\end{psmallmatrix}$.)
+  Hence $x^2-3x-3=0$. Since $x>0$,
+  \[
+  x=\frac{3+\sqrt{21}}2.
+  \]
+  From $4<\sqrt{21}<5$ we get $7/2<x<4$, so $x>1$, and
+  $x'=(3-\sqrt{21})/2$ lies between $-1$ and $-1/2$. Thus $x$ is reduced.
+  \item By the corollary,
+  \[
+  t=-\frac1{x'}=\frac{2}{\sqrt{21}-3}
+   =\frac{2(\sqrt{21}+3)}{12}=\frac{3+\sqrt{21}}6.
+  \]
+  Then
+  \[
+  y=2+\frac1t=2+\frac{6}{3+\sqrt{21}}
+   =2+\frac{6(\sqrt{21}-3)}{12}=\frac{1+\sqrt{21}}2.
+  \]
+  \item Writing out the period, $x=[3;1,3,1,3,\ldots]=[3;\per{1,3}]$,
+  whereas $y=[2;\per{1,3}]$. The two expansions have the same tail
+  $t$ and first digits differing by one: $x=3+1/t$ and $y=2+1/t$.
+  \partpts{1} The number $y$ is not purely periodic: the conjugate
+  $y'=(1-\sqrt{21})/2$ satisfies $y'<(1-4)/2<-1$, so $y$ is not reduced,
+  and Galois's theorem excludes pure periodicity. \partpts{2} (Contrast
+  the lecture example $[2;\per{1,2}]=[\per{2,1}]$, where the displayed
+  prefix was not a genuine preperiod. Here it is genuine: a purely
+  periodic expansion of $y$ with first digit $2$ would have to be
+  $[\per{2,1,3,\ldots}]$, and uniqueness of the expansion would force the
+  digit $2$ to recur.)
+\end{enumerate}
+\end{solution}
+
+\problem{Galois's test and two infinite families}{10}
+\begin{enumerate}
+  \item Without computing any continued fractions, decide which of
+  \[
+  2+\sqrt7,\qquad \frac{3+\sqrt5}2,\qquad \frac{2+\sqrt7}3,\qquad
+  \frac{1+\sqrt7}4
+  \]
+  have purely periodic continued fractions. Then read off the expansions of
+  the purely periodic ones from your table in Problem 6(a). \partpts{4}
+  \item Let $n\ge1$. Prove that $\sqrt{n^2+1}=[n;\per{2n}]$. \partpts{3}
+  \item Let $n\ge1$. Find and prove a formula for the continued fraction of
+  $\sqrt{n^2+2}$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+  \item Use $2<\sqrt7<3$ and $2<\sqrt5<3$.
+  \begin{center}
+  \begin{tabular}{@{}llll@{}}
+  \toprule
+  $x$ & $x>1$? & $x'$ & Reduced?\\
+  \midrule
+  $2+\sqrt7$ & yes & $2-\sqrt7\in(-1,0)$ & yes\\
+  $(3+\sqrt5)/2$ & yes & $(3-\sqrt5)/2>0$ & no\\
+  $(2+\sqrt7)/3$ & yes, $x>4/3$ & $(2-\sqrt7)/3\in(-1/3,0)$ & yes\\
+  $(1+\sqrt7)/4$ & no, $x<1$ & & no\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  The reduced ones are the complete quotients $x_4$ and $x_1$ of $\sqrt7$.
+  Reading the digits from those rows onward,
+  \[
+  2+\sqrt7=[\per{4,1,1,1}],\qquad \frac{2+\sqrt7}3=[\per{1,1,1,4}].
+  \]
+  \item Put $D=n^2+1$. From $n^2<D<(n+1)^2$ we get $n<\sqrt D<n+1$, so
+  $a_0=n$ and
+  \[
+  x_1=\frac1{\sqrt D-n}=\frac{\sqrt D+n}{D-n^2}=\sqrt D+n .
+  \]
+  Since $2n<x_1<2n+1$, $a_1=2n$ and $x_2=1/(\sqrt D-n)=x_1$. Every later
+  digit is therefore $2n$.
+  \item The formula is $\sqrt{n^2+2}=[n;\per{n,2n}]$. Put $D=n^2+2$. Since
+  $n\ge1$ gives $n^2<D<n^2+2n+1$, again $n<\sqrt D<n+1$ and $a_0=n$.
+  The states are
+  \[
+  (P_1,Q_1)=(n,2),\quad x_1=\frac{n+\sqrt D}2\in\Bigl(n,\,n+\tfrac12\Bigr),
+  \quad a_1=n;
+  \]
+  \[
+  (P_2,Q_2)=\Bigl(2n-n,\ \frac{D-n^2}{2}\Bigr)=(n,1),\quad
+  x_2=n+\sqrt D\in(2n,2n+1),\quad a_2=2n;
+  \]
+  and then $(P_3,Q_3)=(2n-n,\,(D-n^2)/1)=(n,2)=(P_1,Q_1)$. The states
+  repeat with period two. For $n=1$ this recovers
+  $\sqrt3=[1;\per{1,2}]$, and $n=2$ gives $\sqrt6=[2;\per{2,4}]$.
+\end{enumerate}
+\end{solution}
+
+\par\addvspace{12pt}\Needspace{7\baselineskip}
+{\bfseries\color{teal}Optional challenge: the period of $\sqrt D$ is a palindrome}
+\pts{10 extra}
+
+Let $D$ be a positive nonsquare integer and $a_0=\floor{\sqrt D}$. Prove that
+\[
+  \sqrt D=[a_0;\per{a_1,a_2,\ldots,a_{\ell-1},2a_0}]
+  \qquad\text{with}\qquad a_i=a_{\ell-i}\quad(1\le i\le\ell-1).
+\]
+Compare with $\sqrt7$ in Problem 6. \emph{Hint:} apply Galois's theorem and
+the reversal corollary to $x=a_0+\sqrt D$. You may use the fact that an
+irrational number has only one simple continued fraction expansion.
+\begin{solution}
+Let $x=a_0+\sqrt D$. Then $x>1$, and $x'=a_0-\sqrt D\in(-1,0)$ because
+$a_0<\sqrt D<a_0+1$. By Galois's theorem $x$ is purely periodic, and its
+first digit is $\floor x=2a_0$. Let $\ell$ be a period length and write
+\[
+  x=[\per{2a_0,a_1,\ldots,a_{\ell-1}}].
+\]
+Subtracting $a_0$ changes only the first digit, so
+$\sqrt D=[a_0;a_1,\ldots,a_{\ell-1},2a_0,a_1,\ldots]
+=[a_0;\per{a_1,\ldots,a_{\ell-1},2a_0}]$, which is the first claim.
+
+Now compute $-1/x'$ in two ways. Directly,
+$-1/x'=1/(\sqrt D-a_0)$, which is the first complete quotient of $x$;
+deleting the first digit of $x$ gives
+\[
+  -\frac1{x'}=[\per{a_1,a_2,\ldots,a_{\ell-1},2a_0}].
+\]
+By the reversal corollary applied to $x$,
+\[
+  -\frac1{x'}=[\per{a_{\ell-1},\ldots,a_2,a_1,2a_0}].
+\]
+By uniqueness of the expansion, the two digit sequences agree term by term:
+$a_i=a_{\ell-i}$ for $1\le i\le\ell-1$. For $\sqrt7=[2;\per{1,1,1,4}]$ the
+palindrome is $1,1,1$ and the last digit is $4=2\cdot2$.
+
+\textbf{Suggested credit:} $x$ is reduced, hence purely periodic with first
+digit $2a_0$ (3); shape of the expansion of $\sqrt D$ (2); two expressions
+for $-1/x'$ (3); comparison by uniqueness (2).
+\end{solution}
+
+\end{document}

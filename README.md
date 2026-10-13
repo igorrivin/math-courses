@@ -16,6 +16,7 @@ instructor material and history.
 | Editable book and notebooks | [Book sources](number-theory/book/) | [Book sources](probability-statistics/book/) |
 | Problem sets and solutions | [Problem sets](number-theory/problem-sets/) | [Problem sets](probability-statistics/problem-sets/) |
 | Weekly quizzes and keys | [Quizzes](number-theory/quizzes/) | [Quizzes](probability-statistics/quizzes/) |
+| Midterm study guide | Not yet prepared | [Through continuous distributions](probability-statistics/study-guides/midterm/probability_midterm_study_guide.pdf) |
 | Website source | [Interactive companion](number-theory/website/) | [Interactive companion](probability-statistics/website/) |
 | Lecture presentations | [Two continued-fraction lectures](number-theory/lectures/continued-fractions/) | Not yet prepared |
 
