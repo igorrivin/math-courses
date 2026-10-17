@@ -1,0 +1,425 @@
+\teachcover{Explaining\\Fibonacci periods}{1}{
+The field containing the roots controls the powers
+\[
+\pi(11)=10,\qquad\pi(7)=16.
+\]
+}{
+The first three lectures supplied fields, coordinates, cyclic
+multiplicative groups, and counts of GL and SL. Today returns to
+Fibonacci with a full 50 minutes for the order argument and Frobenius.
+The prime binomial identity and Fermat's theorem are the remaining
+prerequisites. Keep the calculation break before the modulo-11 example.
+}
+
+\teachslide{The structures we now understand}{2}{
+For a finite field $K$ with $q$ elements, $K^\times$ is cyclic of order $q-1$.
+\[
+|\SL_2(\F_p)|=p(p^2-1).
+\]
+For Fibonacci, with $A=\mat1110$,
+\[
+\det A=-1,\qquad A^2=A+I.
+\]
+\key{For odd $p$, apply Lagrange to $A^2\in\SL_2(\F_p)$.}
+}{
+Recall that a primitive element has order $q-1$; not every element
+is primitive. Matrix groups need not be cyclic. The determinant
+of $A$ is -1, so its square rather than $A$ itself lies in SL.
+Our field-group theorem is about multiplication of nonzero scalars.
+}
+
+\teachslide{The Fibonacci period is the matrix order}{4}{
+For $t\ge1$,
+\[
+A^t=\begin{pmatrix}F_{t+1}&F_t\\F_t&F_{t-1}\end{pmatrix}.
+\]
+Since $F_{t-1}=F_{t+1}-F_t$,
+\[
+A^t=I\iff(F_t,F_{t+1})=(0,1)\pmod p.
+\]
+\[
+\key{\pi(p)=\ord(A).}
+\]
+}{
+The displayed power formula follows by induction from the recurrence,
+and is the students' existing matrix approach. The equivalence needs
+both state coordinates, not merely $F_t=0$. If a student asks why an
+orbit period should equal the whole matrix order, this identity is
+the specific Fibonacci justification; that equality need not hold for
+an arbitrary matrix and arbitrary starting vector.
+}
+
+\teachslide{A first bound from $\SL_2$}{2}{
+Let $p$ be odd. If $A^t=I$, determinants give $(-1)^t=1$.
+
+Thus $\pi(p)$ is even, and
+\[
+\ord(A^2)=\frac{\pi(p)}2.
+\]
+Lagrange gives
+\[
+\key{\pi(p)\mid2p(p^2-1).}
+\]
+Can the roots of $X^2-X-1$ give a sharper answer?
+}{
+For an element of even order $t$, the least positive $r$ with $A^{2r}=I$
+is $t/2$, because $t$ must divide $2r$. This proves the order identity.
+The broad group-size divisibility uses no splitting information.
+Its purpose is to motivate exploiting the special matrix, rather
+than presenting the group size as an exact Fibonacci period.
+}
+
+\teachslide{Choose a field containing the roots}{3}{
+Assume $p\ne2,5$.
+\begin{itemize}
+\item If $5$ is square in $\F_p$, use $K=\F_p$.
+\item Otherwise, use $K=\{a+bs:s^2=5\}$ over $\F_p$.
+\end{itemize}
+\[
+\alpha=\frac{1+s}{2},\qquad\beta=\frac{1-s}{2}.
+\]
+\[
+\alpha+\beta=1,\quad\alpha\beta=-1,\quad\alpha\ne\beta.
+\]
+}{
+In the split case, $s$ is an existing square root, not a new symbol.
+In the nonsplit case, the proof from Lecture 2 generalizes directly
+from $7$ to any odd $p$: $a^2-5b^2$ cannot vanish for a nonzero pair.
+The prime $5$ is excluded because the roots coincide, and $2$ because
+division by $2$ is unavailable. Both roots are nonzero since their
+product is $-1$.
+}
+
+\teachslide{Diagonalize in the field where it makes sense}{4}{
+For either root $r$, since $r^2=r+1$,
+\[
+A\begin{pmatrix}r\\1\end{pmatrix}
+=r\begin{pmatrix}r\\1\end{pmatrix}.
+\]
+\[
+P=\begin{pmatrix}\alpha&\beta\\1&1\end{pmatrix},
+\qquad \det P=\alpha-\beta\ne0.
+\]
+\[
+P^{-1}AP=\operatorname{diag}(\alpha,\beta),\qquad
+\key{A^t=I\iff\alpha^t=\beta^t=1.}
+\]
+}{
+Compute the product $(r+1,r)^{\mathsf T}$ and use the root equation.
+This explicitly proves the eigenvectors and invertibility of the
+eigenvector matrix, so no general diagonalization theorem is needed.
+Changing the field lets us find $P$; it does not change whether a
+power of the original matrix equals $I$. Its entries still lie in
+the embedded prime field. This also gives the lcm of the two root orders.
+}
+
+\teachslide{A period is a simultaneous order}{2}{
+We have shown
+\[
+A^t=I\iff\alpha^t=\beta^t=1.
+\]
+If $\ord(\alpha)=r$ and $\ord(\beta)=s$, the return times are
+the common multiples of $r$ and $s$.
+\[
+\key{\pi(p)=\operatorname{lcm}(r,s).}
+\]
+}{
+An element's return times are exactly the multiples of its order,
+by division with remainder. We need both eigenvalues to return to 1.
+This lcm statement is about simultaneous return, not the order of
+the product of arbitrary elements. The coprime-product lemma from
+Lecture 3 had an additional coprimality hypothesis.
+}
+
+\teachslide{Case one: the roots are in $\F_p$}{3}{
+If $5$ is a square in $\F_p$, both roots lie in $\F_p^\times$.
+
+Fermat's theorem gives
+\[
+\alpha^{p-1}=\beta^{p-1}=1.
+\]
+Therefore
+\[
+\key{A^{p-1}=I,\qquad\pi(p)\mid p-1.}
+\]
+}{
+Remind students that the roots are nonzero, so Fermat applies.
+The conclusion is divisibility, not equality. The new bound is
+much sharper than the broad SL group-size bound because we have
+used the eigenvalues of this particular matrix.
+}
+
+\teachslide{Your turn: roots modulo eleven}{3}{
+In $\F_{11}$, use $s=4$ and $2^{-1}=6$.
+\begin{enumerate}
+\item Compute $\alpha=(1+s)/2$ and $\beta=(1-s)/2$.
+\item Compute $\alpha^2$ and $\alpha^5$ by repeated squaring.
+\item Which proper divisors of $10$ could still be the period?
+\end{enumerate}
+\spacer
+\key{We already know that the period divides $10$.}
+}{
+Give students a minute to calculate before discussing. Expected
+roots are 8 and 4; $8^2=9$, $8^4=4$, $8^5=-1$. These rule out
+both 2 and 5 as return times, and therefore all proper divisors of
+10. The next page reveals the answers and exact period.
+}
+
+\teachslide{Modulo eleven: an exact period}{2}{
+Choose $s=4$ in $\F_{11}$. Then
+\[
+\alpha=8,\qquad\beta=4,\qquad\pi(11)\mid10.
+\]
+But
+\[
+8^5=-1,\qquad8^2=9\ne1\pmod{11}.
+\]
+Every proper divisor of $10$ divides $5$ or $2$.
+\[
+\key{\pi(11)=10.}
+\]
+}{
+Compute $2^{-1}=6$ modulo $11$, giving roots $5\cdot6=8$ and
+$(-3)\cdot6=4$. To check the powers, $8^2=9$, $8^4=4$, and
+$8^5=32=-1$. If $A^5$ or $A^2$ were $I$, the corresponding power
+of $8$ would be $1$. We have ruled out every proper divisor of the
+known multiple $10$. The order of the other root need not be computed.
+}
+
+\teachslide{A Fibonacci root need not be primitive}{3}{
+Modulo $11$, $\alpha=8$ has order $10$ and generates $\F_{11}^\times$.
+
+Modulo $7$, the roots live in $\F_{49}$, where
+\[
+|\F_{49}^\times|=48.
+\]
+But $\alpha=4+4s$ satisfies $\alpha^8=-1$ and $\alpha^{16}=1$.
+\[
+\key{\ord(\alpha)=16,\quad\text{so it is not a multiplicative generator}.}
+\]
+}{
+This comparison connects cyclicity directly to the order problem.
+In the field from Lecture 2, $\alpha^2=5+4s$, $\alpha^4=5s$,
+and $\alpha^8=(5s)^2=125=-1$. Thus its exact order is 16.
+Nevertheless $s=2\alpha-1$, so $\alpha$ does generate this field
+over $\F_7$. Generating the extension field and generating its
+multiplicative group are different requirements. Frobenius will
+explain the order bound without needing these special calculations.
+}
+
+\teachslide{A new symmetry: Frobenius}{4}{
+In characteristic $p$,
+\[
+\key{(u+v)^p=u^p+v^p.}
+\]
+The intermediate binomial coefficients are divisible by $p$.
+
+Also $(uv)^p=u^pv^p$ and $1^p=1$.
+
+On a finite field, $u\mapsto u^p$ is injective, hence bijective:
+\[
+u^p=v^p\quad\Longrightarrow\quad(u-v)^p=0\quad\Longrightarrow\quad u=v.
+\]
+}{
+Recall why $p$ divides $\binom pj$ for $0<j<p$: the numerator
+contains a factor $p$, while $j!$ is prime to $p$. The power map
+preserves the field operations and is a bijection, so it is a field
+automorphism, called Frobenius. A nonzero field element cannot have
+a zero power. Finiteness is needed for the injective-to-surjective
+step; no infinite-field claim is required.
+}
+
+\teachslide{Which elements does Frobenius fix?}{3}{
+Every $a\in\F_p$ satisfies $a^p=a$.
+
+The fixed elements are roots of
+\[
+X^p-X.
+\]
+A nonzero polynomial of degree $p$ has at most $p$ roots.
+
+The prime field already supplies $p$ roots.
+\[
+\key{u^p=u\iff u\in\F_p.}
+\]
+}{
+For nonzero prime-field elements use Fermat; zero is immediate.
+Recall the polynomial root bound proved in Lecture 3. The polynomial is nonzero
+since its leading coefficient is $1$, even in characteristic $p$.
+This argument identifies the fixed elements in our extension without
+assuming the desired conjugation rule.
+}
+
+\teachslide{Case two: Frobenius exchanges the roots}{3}{
+Suppose $5$ is nonsquare in $\F_p$, with $s^2=5$ in $K$.
+\[
+(s^p)^2=5^p=5.
+\]
+Thus $s^p$ is $s$ or $-s$.
+
+It cannot be $s$, because $s\notin\F_p$.
+\[
+\key{s^p=-s,\qquad\alpha^p=\beta,\qquad\beta^p=\alpha.}
+\]
+}{
+The factorization $X^2-5=(X-s)(X+s)$ in $K$ and absence of zero
+divisors give exactly those two square roots. They are distinct since
+$p$ is odd and $s\ne0$. If $s^p=s$, the preceding fixed-element result
+would put $s$ in the prime field, contradicting nonsquareness.
+Frobenius fixes $1$ and $2^{-1}$, so applying it to the formulas for
+$\alpha,\beta$ interchanges them.
+}
+
+\teachslide{The minus sign tells us the return time}{3}{
+\[
+\alpha^{p+1}=\alpha\beta=-1,
+\qquad\beta^{p+1}=-1.
+\]
+Diagonalization gives
+\[
+\key{A^{p+1}=-I,\qquad A^{2(p+1)}=I.}
+\]
+Therefore
+\[
+\pi(p)\mid2(p+1),\qquad\pi(p)\nmid p+1.
+\]
+At time $p+1$, $(F_{p+1},F_{p+2})=(0,-1)$.
+}{
+Conjugating the scalar matrix $-I$ leaves it unchanged. Since the
+characteristic is odd, $-I\ne I$. Applying the matrix to $(1,0)$
+gives $(F_{p+2},F_{p+1})=(-1,0)$, hence the displayed state in the
+usual order. This connects the minus sign to the earlier warning
+that a Fibonacci zero alone is not a restart.
+}
+
+\teachslide{Modulo seven: the other exact period}{3}{
+Since $5$ is nonsquare modulo $7$,
+\[
+A^8=-I,\qquad A^{16}=I.
+\]
+Thus $\pi(7)\mid16$ but $\pi(7)\nmid8$.
+
+Every proper divisor of $16$ divides $8$.
+\[
+\key{\pi(7)=16.}
+\]
+}{
+This exact-order argument avoids a long power calculation in the
+extension. Ask students why $A^8\ne I$ rules out every proper divisor
+of $16$. For a direct Frobenius check in the field constructed last
+time, $s^7=s(s^2)^3=125s=-s$. The general proof explains why this
+calculation is not a coincidence.
+}
+
+\teachslide{What the algebra explained}{2}{
+For primes $p\ne2,5$,
+\[
+\begin{array}{c|c}
+5\text{ is square in }\F_p&\pi(p)\mid p-1\\\hline
+5\text{ is nonsquare in }\F_p&\pi(p)\mid2(p+1)
+\end{array}
+\]
+\begin{itemize}
+\item Group size supplies a broad order bound.
+\item The field containing the roots supplies a sharper bound.
+\item Further power checks identify the least period.
+\end{itemize}
+}{
+Recap the distinction between existence of a period, a known multiple,
+and the least period. The matrix construction proves existence for
+all moduli; group structure and the root field give increasingly
+specific information for prime moduli. Prime $29$ is an optional
+example where the bound is not attained.
+}
+
+\teachslide{Exit question}{3}{
+Suppose $p$ is odd and $5$ is nonsquare modulo $p$.
+
+A student argues: ``$F_{p+1}=0$, so the period is $p+1$.''
+
+What is missing, and what does the matrix actually tell us?
+\spacer
+\key{Use both entries of the Fibonacci state.}
+}{
+Expected answer: a restart requires $(F_{p+1},F_{p+2})=(0,1)$,
+but the state is $(0,-1)$ because $A^{p+1}=-I$. The period divides
+$2(p+1)$ and does not divide $p+1$; it need not equal $2(p+1)$.
+End the main lecture here at minute 50. Use optional slides only
+if time remains or as material for a subsequent meeting.
+}
+
+\backups
+\backupslide{Why the prime five is different}{
+Modulo $5$, $X^2-X-1=(X-3)^2$.
+\[
+A=3I+N,\qquad N=\mat3112,\qquad N^2=0.
+\]
+For $t\ge1$,
+\[
+A^t=3^tI+t3^{t-1}N.
+\]
+$A^t=I$ requires $5\mid t$ and $4\mid t$.
+\[
+\key{\pi(5)=20.}
+\]
+}{
+Compute $A-3I$ modulo $5$ to get the displayed nonzero nilpotent matrix.
+The off-diagonal entry in $A^t$ forces $t=0$ in the field, hence
+$5\mid t$, because $3$ is nonzero. Then $A^t=3^tI$ and $3$ has
+order $4$ modulo $5$: $3^2=-1$ and $3^4=1$. These two divisibilities
+are also sufficient, giving least time $20$. The repeated root
+produces a nilpotent term instead of two independent eigenvectors.
+}
+
+\backupslide{The prime two}{
+Modulo $2$, the successive Fibonacci states are
+\[
+(0,1)\ \longmapsto\ (1,1)\ \longmapsto\ (1,0)
+\ \longmapsto\ (0,1).
+\]
+\[
+\key{\pi(2)=3.}
+\]
+Here $-1=1$, and division by $2$ is unavailable.
+}{
+The short state cycle gives the exact answer immediately. This also
+explains why the odd-characteristic parity argument and the root
+formula with denominator $2$ were explicitly restricted.
+}
+
+\backupslide{A bound need not be the least period}{
+Modulo $29$, $11^2=5$, so $\pi(29)\mid28$.
+
+The roots are $\alpha=6$ and $\beta=24$.
+\[
+6^7=-1,\quad6^2=7\ne1;
+\qquad24^7=1,\quad24\ne1.
+\]
+Their orders are $14$ and $7$.
+\[
+\key{\pi(29)=\operatorname{lcm}(14,7)=14.}
+\]
+}{
+Check $6^7=-1$ by repeated squaring: $6^2=7$, $6^4=20$,
+$6^7=20\cdot7\cdot6=28$. Thus $6$ has order $14$, since every
+proper divisor of $14$ divides $7$ or $2$. The other root is
+$-6^{-1}$, so $24^7=(-1)^7(6^7)^{-1}=1$; since $7$ is prime
+and $24\ne1$, its order is $7$. This is a concrete proper-divisor
+example, not just a caution about the word divides.
+}
+
+\backupslide{An exact-period procedure}{
+Start with a proven multiple $B$ of $\pi(p)$.
+\begin{enumerate}
+\item Set $t=B$ and factor $t$.
+\item For each prime divisor $q$ of $t$, test $A^{t/q}=I$.
+\item If the test succeeds, replace $t$ by $t/q$ and repeat.
+\end{enumerate}
+When no prime factor can be removed, $t=\pi(p)$.
+}{
+Matrix repeated squaring performs the tests efficiently. At every
+stage the true order divides $t$. If $t$ were still larger than
+the order, some prime factor of $t/\pi(p)$ could be removed while
+leaving a multiple of the order. Thus the stopping rule is exact.
+For $29$, start at $28$ and remove one factor $2$ to reach $14$.
+}

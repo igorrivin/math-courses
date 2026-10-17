@@ -1,0 +1,125 @@
+\teachslide{Could two bases have different lengths?}{1}{
+A basis gives unique coordinates.
+
+But before defining dimension, we must prove that its length
+does not depend on the chosen basis.
+\spacer
+Our key comparison:
+\[
+\key{\text{independent list length}\ \le\ \text{spanning list length}.}
+\]
+}{
+Make the logical issue explicit. Existence and uniqueness of
+coordinates refer to one chosen basis. They do not yet compare two
+different bases. The following argument works over any field,
+including infinite fields; it does not use the count $p^d$.
+Only finite lists are involved in the comparison theorem.
+}
+
+\teachslide{Exchange one vector}{2}{
+Suppose $w_1,\ldots,w_m$ span $V$ and $v\ne0$.
+\[
+v=a_1w_1+\cdots+a_mw_m.
+\]
+Some coefficient is nonzero; relabel so $a_1\ne0$.
+\[
+\key{w_1=a_1^{-1}\bigl(v-a_2w_2-\cdots-a_mw_m\bigr).}
+\]
+Thus $v,w_2,\ldots,w_m$ still span $V$.
+}{
+Explain both inclusions of spans. Each vector in the new list lies
+in the old span. The solved equation puts the discarded $w_1$ in
+the new span, and all other old vectors remain. Hence the spans are
+equal. The spanning list need not be independent. Relabeling just
+moves a nonzero coefficient to the first position. Dividing by it
+is valid because the scalars form a field.
+}
+
+\teachslide{An exchange in $\F_3^2$}{2}{
+Start with $e_1=(1,0)$ and $e_2=(0,1)$.
+
+Insert $u=(1,1)=e_1+e_2$.
+\[
+e_1=u-e_2,\qquad \key{u,e_2\text{ still span}.}
+\]
+Now insert $v=(1,2)=u+e_2$.
+\[
+e_2=v-u,\qquad \key{u,v\text{ still span}.}
+\]
+}{
+Ask students to supply each subtraction. Over $\F_3$ a minus sign
+means adding twice that vector. Each exchange preserves the number
+of vectors and the span. The general proof will also need to ensure
+we can always remove an old $w$, rather than a vector already inserted
+from the independent list. This example anticipates the retained
+basis exercise later in the lecture.
+}
+
+\teachslide{Repeat the exchange}{3}{
+Let $v_1,\ldots,v_r$ be independent and $w_1,\ldots,w_m$ span $V$.
+
+After inserting $v_1,\ldots,v_k$, the list still spans and has
+\[
+v_1,\ldots,v_k,\quad m-k\text{ remaining old vectors}.
+\]
+Express $v_{k+1}$ in this list.
+
+\key{Some remaining old vector has a nonzero coefficient.}
+
+Otherwise $v_{k+1}\in\Span(v_1,\ldots,v_k)$, contradicting independence.
+}{
+Start with $k=0$. Since the list spans, such an expression exists.
+If all coefficients of the remaining old vectors vanished, moving
+$v_{k+1}$ to the other side would give a relation among the $v_i$
+with its coefficient -1, contradicting independence. Therefore
+solve for an old vector having nonzero coefficient and replace that
+vector by $v_{k+1}$. The earlier exchange formula preserves spanning
+and never removes an already inserted $v_i$.
+}
+
+\teachslide{An independent list cannot be longer}{2}{
+Every insertion replaces one remaining old vector.
+
+After $m$ insertions, the spanning list would be
+\[
+v_1,\ldots,v_m.
+\]
+If $r>m$, then $v_{m+1}$ would be in their span, contradicting independence.
+\[
+\key{r\le m.}
+\]
+This is the \key{Steinitz exchange argument}.
+}{
+The contradiction is the rigorous reason the process cannot outlast
+the original spanning list. If fewer than $m$ independent vectors
+were given, the process stops earlier and the inequality already
+holds. If $m=0$, the space is $\{0\}$ and any nonempty independent
+list is impossible, so the assertion remains true. The argument
+also shows an independent finite list can be extended to a basis
+when a finite spanning list is available: keep the inserted vectors
+and remove any remaining redundancies.
+}
+
+\teachslide{Dimension is well defined}{2}{
+Suppose $B$ and $C$ are bases, of lengths $r$ and $m$.
+\begin{itemize}
+\item $B$ independent, $C$ spanning: $r\le m$.
+\item $C$ independent, $B$ spanning: $m\le r$.
+\end{itemize}
+Therefore \key{$r=m$}.
+
+For a space with a finite basis, this common length is its dimension:
+\[
+\dim_k V=r.
+\]
+}{
+Only now define dimension. Such a space is called finite-dimensional.
+The result proves independence from the choice of basis, not
+independence from the choice of scalar field. The theorem compares
+finite bases. It also rules out an infinite independent basis when
+a finite spanning list exists, since an arbitrarily long finite
+sublist would violate the inequality. No Gaussian elimination was
+needed, though elimination supplies another proof of the same
+comparison theorem. The zero space has the empty basis and dimension
+zero. The next slide specializes to finite-field coordinates.
+}

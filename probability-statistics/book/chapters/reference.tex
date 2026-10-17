@@ -72,6 +72,12 @@ For independent copies with mean $m$ and variance $v$, their $r$-term
 average has mean $m$ and variance $v/r$.
 For the correct-hat count, the mean is one for $n\ge1$ and the variance
 is one for $n\ge2$ (zero for $n=1$).
+For a uniform permutation, the record count has mean $H_n$ and the
+inversion count has mean $n(n-1)/4$. Uniform matching of the $2n$ free
+ends of $n$ spaghetti strands gives mean loop count
+$\sum_{j=1}^n(2j-1)^{-1}=H_{2n}-H_n/2$.
+Independent fair vertex colors give expected cut size half the edge count;
+some cut therefore attains at least that value.
 
 \section*{Coupon collection}
 For independent uniform draws from $n\ge1$ types, let $T_n$ be the
@@ -87,6 +93,36 @@ $M_K\sim\Bin(n,e^{-t/n})$ and
 $\P(T_n\le K)=(1-e^{-t/n})^n$.
 This product uses a random number of draws; see
 Section~\ref{sec:coupon-collector} for the fixed-draw formula.
+
+For positive unequal probabilities $p_i$ summing to one, put
+$p_A=\sum_{i\in A}p_i$. Then
+\begin{align*}
+\E[T]&=\sum_{\varnothing\ne A}\frac{(-1)^{|A|+1}}{p_A},\\
+\E[T^2]&=\sum_{\varnothing\ne A}(-1)^{|A|+1}\frac{2-p_A}{p_A^2},\\
+\E[M_m]&=\sum_i(1-p_i)^m,\qquad
+\P(T>m)\le\min\{1,\sum_i(1-p_i)^m\}.
+\end{align*}
+All subsets are of the required type set. A zero-probability required
+type makes completion impossible. For the same number of types, uniform
+probabilities minimize the mean, giving $\E[T]\ge nH_n$.
+
+\section*{Poissonization and clocks}
+An independent total $K\sim\Pois(t)$ and i.i.d. labels of probabilities
+$p_i$ give independent counts $C_i\sim\Pois(tp_i)$. Therefore
+\[
+\P(T\le K)=\prod_i(1-e^{-tp_i}).
+\]
+Conditioning on $K=m$ returns the original fixed-total model; its
+multinomial counts are dependent when $n\ge2,m\ge1$.
+Independent rate-one exponential gaps give
+a continuous collection time $\tau$ equal to the maximum of independent
+exponentials of rates $p_i$, with
+\[
+\E[\tau]=\E[T],\qquad \Var(\tau)=\Var(T)+\E[T].
+\]
+The product formula and the fixed-total CDF are different. The
+de-Poissonization bounds in Section~\ref{sec:depoissonization} compare
+them with explicit Poisson-tail errors.
 
 \section*{Calculus used in the course}
 \begin{align*}
@@ -123,6 +159,8 @@ worked integrations, and quantitative error estimates.
 The hypergeometric row uses $N\ge2$ population objects, $K$ marked,
 $m$ sampled without replacement, and $p=K/N$.
 Its feasible counts are given in Section~\ref{sec:hypergeometric}.
+The negative-binomial row counts trials through success $r$, and the
+gamma row uses an integer shape $r\ge1$ and a rate $\lambda>0$.
 \begin{center}\small
 \begin{tabular}{llll}
 \toprule
@@ -133,14 +171,23 @@ Bernoulli$(p)$ & $\{0,1\}$ & $p$ & $p(1-p)$ \\
 Binomial$(n,p)$ & $0,\ldots,n$ & $np$ & $np(1-p)$ \\
 Hypergeometric & feasible $k$ & $mp$ & $mp(1-p)(N-m)/(N-1)$ \\
 Geometric$(p)$ & $1,2,\ldots$ & $1/p$ & $(1-p)/p^2$ \\
+Neg. binomial (trials) & $r,r+1,\ldots$ & $r/p$ & $r(1-p)/p^2$ \\
 Poisson$(\lambda)$ & $0,1,\ldots$ & $\lambda$ & $\lambda$ \\
 Uniform$(a,b)$ & $[a,b]$ & $(a+b)/2$ & $(b-a)^2/12$ \\
 Exponential$(\lambda)$ & $[0,\infty)$ & $1/\lambda$ & $1/\lambda^2$ \\
+Gamma$(r,\text{rate }\lambda)$ & $[0,\infty)$ & $r/\lambda$ & $r/\lambda^2$ \\
 Normal$(\mu,\sigma^2)$ & $\R$ & $\mu$ & $\sigma^2$ \\
 Beta$(\alpha,\beta)$ & $[0,1]$ & $\alpha/(\alpha+\beta)$ & $\alpha\beta/[(\alpha+\beta)^2(\alpha+\beta+1)]$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+Distribution mechanisms: fixed trials give binomial counts; a fixed success
+target gives negative-binomial waits; fixed time in a Poisson stream gives
+Poisson counts; exponential gaps give gamma arrival times. The $k$th smallest
+of $m$ independent uniform points has Beta$(k,m+1-k)$ law. Normal limits of
+sums require the central limit theorem's hypotheses; they are approximations
+unless normality is separately part of the model.
 
 \needspace{14\baselineskip}
 \section*{Inference checklist}

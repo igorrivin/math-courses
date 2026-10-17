@@ -19,8 +19,11 @@ For each, identify the possible values, calculate their probabilities,
 then find the mean and variance.
 Geometric waiting times and Poisson counts come next as countably infinite
 examples. The coupon collector then brings waiting times, expectation,
-variance, and inclusion--exclusion together. The continuous section is
-for later, after the calculus refresher.
+variance, and inclusion--exclusion together, first for uniform types and
+then for different probabilities. The continuous section is for later,
+after the calculus refresher. Additional examples derive negative-binomial,
+gamma, and beta laws, followed by a full section on Poissonization and
+its connection to independent exponential clocks.
 \end{bigidea}
 
 \section{A uniform choice from a finite list}
@@ -361,33 +364,16 @@ At $m=0$ the completion probability is zero and $M_0=n$.
 For a die, the formula gives $\P(T_6\le15)\approx.6442$:
 a deadline close to the mean is far from a guarantee.
 
-\subsection*{Bonus: a Poisson number of draws}
-There is also a direct connection to the Poisson distribution, entirely
-within discrete probability. Choose $K\sim\Pois(t)$, where $t>0$,
-independently of the coupon draws, and collect exactly $K$ coupons.
-Let $C_i$ be the number of coupons of type $i$.
-For nonnegative integers $c_1,\ldots,c_n$ with sum $s$, first condition
-on $K=s$, then count the orderings of those coupon labels:
-\begin{align*}
- \P(C_1=c_1,\ldots,C_n=c_n)
- &=\frac{e^{-t}t^s}{s!}\,
-   \frac{s!}{c_1!\cdots c_n!}\left(\frac1n\right)^s\\
- &=\prod_{i=1}^n e^{-t/n}\frac{(t/n)^{c_i}}{c_i!}.
-\end{align*}
-The joint probability factors into Poisson probabilities. Thus the
-$C_i$ are independent Poisson variables of mean $t/n$.
-Each type is missing with probability $e^{-t/n}$, independently of
-the other types. Hence
-\[
- M_K\sim\Bin(n,e^{-t/n}),\qquad
- \P(T_n\le K)=\P(M_K=0)=\left(1-e^{-t/n}\right)^n.
-\]
-This trick is called \emph{Poissonization}. With a fixed number $m$ of
-draws, the counts sum to $m$ and are dependent when $n\ge2$ and $m\ge1$.
-Randomizing their total in this particular way makes them independent.
-The product formula is exact for a Poisson number of draws; it is not
-the fixed-$m$ answer in~\eqref{eq:coupon-cdf}.
-No continuous waiting-time model is needed for this argument.
+\input{chapters/unequal_coupon_collection}
+
+\subsection*{A Poisson total points forward}
+If the number of uniform draws is an independent $K\sim\Pois(t)$,
+then the type counts become independent Poisson variables of mean $t/n$.
+Consequently $M_K\sim\Bin(n,e^{-t/n})$ and
+$\P(T_n\le K)=(1-e^{-t/n})^n$. This is a different experiment from
+exactly $m$ draws. Section~\ref{sec:poissonization} proves and generalizes
+the identity; its splitting argument uses only discrete probabilities,
+before its later continuous-clock interpretation.
 
 \section{Practice: choose and use a discrete model}
 \label{sec:discrete-distribution-exercises}
@@ -484,6 +470,51 @@ experiment and its formulas then answer questions about that experiment.
  \item If $X\sim\Normal(10,9)$, express $\P(8<X<13)$ using the
  standard normal CDF. \exlevel{Fluency}
  \item Derive the mean and variance of Uniform$(a,b)$ for $a<b$.
+ \exlevel{Reasoning}
+\end{enumerate}
+\end{exercisebox}
+
+\input{chapters/distribution_provenance}
+\input{chapters/poissonization}
+
+\begin{exercisebox}[title={Further practice: mechanisms and Poissonization}]
+\begin{enumerate}[start=18,itemsep=1pt,parsep=0pt]
+ \interlinepenalty=10000
+ \item Coupon types have probabilities $1/2,1/4,1/4$. Find the mean
+ and variance of the complete collection time and the expected remaining
+ draws if only types 2 and 3 are missing. \exlevel{Reasoning}
+ \item Two coupon types have probabilities $1/10,9/10$. Find the
+ exact mean and compare with the bounds $1/p_{\min}$ and $\sum_i1/p_i$.
+ What changes if a required type has probability zero? \exlevel{Fluency}
+ \item Draw an independent $K\sim\Pois(12)$ coupons with probabilities
+ $1/2,1/4,1/4$. Give the joint law of the three type counts, the mean
+ missing-type count, and the complete-collection probability. Is the missing
+ count binomial? What is the first type's count conditional on $K=12$?
+ \exlevel{Reasoning}
+ \item Independent attempts succeed with probability $1/3$. Find the
+ probability that success number two occurs on attempt four, the mean
+ and variance of its attempt number, and the mean failure count.
+ \exlevel{Fluency}
+ \item With independent exponential gaps of rate 3 per minute, find the
+ density, mean, variance, and probability of exceeding one minute for
+ the wait to arrival number two. \exlevel{Fluency}
+ \item Find the density, mean, variance, and probability of exceeding
+ $1/2$ for the second smallest of four independent Uniform$(0,1)$ points.
+ Derive the last probability by counting points below $1/2$.
+ \exlevel{Reasoning}
+ \item Send a Poisson$(4)$ number of requests independently to two
+ equally likely boxes. Find the probability that neither box receives
+ more than one request. Compare with exactly four requests.
+ \exlevel{Reasoning}
+ \item Attach independent rate-one exponential gaps to the coupon
+ sequence in Exercise 18. Find the mean and variance of its continuous
+ completion time. Repeat with arrival rate 2. \exlevel{Reasoning}
+ \item For two equally likely coupon types, use the de-Poissonization
+ bounds with $m=2,t_-=1,t_+=4$ and exact Poisson tails. Write explicit
+ lower and upper bounds and check them against $F(2)=1/2$.
+ \exlevel{Synthesis}
+ \item For $B\sim\Bin(25,1/2)$, give exact and continuity-corrected normal
+ expressions for $\P(10\le B\le15)$. Identify the exact model.
  \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}

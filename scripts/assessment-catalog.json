@@ -1,6 +1,14 @@
 {
   "number-theory": [
     {
+      "id": "midterm-review", "kind": "problem-set", "label": "Midterm review",
+      "title": "From Euclid to finite fields",
+      "description": "Cumulative practice through finite-fields Lecture 2: integers, continued fractions, congruences, arithmetic functions, valuations, primes, bases, and quadratic extensions. Two optional enrichment problems follow.",
+      "details": "16 core problems + 2 optional · 160 practice points · 5–7 hours", "studentFile": "midterm-review.pdf",
+      "studentSource": "problem-sets/midterm-review/number_theory_midterm_review_student.pdf",
+      "instructorSource": "problem-sets/midterm-review/number_theory_midterm_review_instructor.pdf"
+    },
+    {
       "id": "problem-set-01", "kind": "problem-set", "label": "Problem Set 1",
       "title": "Euclid and the architecture of the integers",
       "description": "Divisibility, greatest common divisors, Bézout identities, prime factorization, and the infinitude of primes.",
@@ -58,6 +66,14 @@
     }
   ],
   "probability-statistics": [
+    {
+      "id": "midterm-review-quiz", "kind": "quiz", "label": "Midterm review",
+      "title": "Cumulative review through continuous distributions",
+      "description": "Timed practice in counting, conditioning, dependent indicators, discrete and continuous laws, coupon collection, density calculations, and Chebyshev's inequality.",
+      "details": "50 minutes · 50 points", "studentFile": "midterm-review-quiz.pdf",
+      "studentSource": "quizzes/midterm-review/probability_midterm_review_quiz_student.pdf",
+      "instructorSource": "quizzes/midterm-review/probability_midterm_review_quiz_instructor.pdf"
+    },
     {
       "id": "problem-set-01", "kind": "problem-set", "label": "Problem Set 1",
       "title": "The geometry of events",

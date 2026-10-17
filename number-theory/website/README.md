@@ -28,8 +28,12 @@ necklace argument from length 9 to prime powers, then use CRT to prove
 Euler's theorem and the totient product formula without inclusion–exclusion.
 The necklace lab links this argument and distinguishes the sum formula over
 the prime field from the polynomial identity that holds
-in extensions. Optional Appendix D builds quadratic-extension arithmetic
-before using Frobenius to compute Fibonacci periods. Notebook 2 follows
+in extensions. Optional Appendix D now develops rings, characteristic,
+bases and dimension, quadratic extensions, cyclic multiplicative groups,
+and existence and uniqueness of finite fields up to isomorphism. Matrix
+counts, Frobenius, automorphisms, and subfields lead to Fibonacci periods.
+A final bonus proves that every finite division ring is a field using
+Witt's cyclotomic argument. It has 18 exercises with solutions. Notebook 2 follows
 the same teaching order and also runs in standard Python; its marked `.sage`
 source is converted and mirrored by `scripts/sync-notebooks.py`.
 

@@ -1,0 +1,155 @@
+\section{Bonus: every finite division ring is a field}
+\label{sec:wedderburn}
+
+The field axioms require multiplication to commute. Could a finite
+arithmetic allow division by every nonzero element while having $ab\ne ba$?
+Wedderburn's theorem says no. This is a bonus beyond the finite-fields
+lectures. The proof below uses the cyclotomic argument of
+\href{https://nonagon.org/ExLibris/sites/default/files/pdf/Uber-Kommutativitat-endlicher-Schiefkorper-Ernst-Witt.pdf}{Ernst Witt};
+see also Andr\'e Weil, \emph{Basic Number Theory}, Chapter I, \S1.
+We develop the two extra ingredients before using them.
+
+\subsection*{Conjugation partitions a group}
+
+For an element $a$ of a group $G$, its \emph{conjugacy class} is
+$\{gag^{-1}:g\in G\}$, and its \emph{centralizer} is the subgroup
+\[
+C_G(a)=\{g\in G:ga=ag\}.
+\]
+Two elements $g,h$ give the same conjugate exactly when
+$h^{-1}g\in C_G(a)$. Thus the class is in bijection with the left
+cosets of $C_G(a)$, so its size is $|G|/|C_G(a)|$.
+The \emph{center} $Z(G)$ consists of elements commuting with all of $G$;
+these are exactly the one-element conjugacy classes. Since conjugacy
+classes partition $G$, choosing one $a_i$ from each noncentral class gives
+the \emph{class equation}
+\[
+|G|=|Z(G)|+\sum_i\frac{|G|}{|C_G(a_i)|}.
+\]
+This is another use of counting by equal-sized cosets.
+
+\subsection*{The integer factor that will not fit}
+
+Among the complex $n$th roots of $1$, call a root \emph{primitive} if
+its multiplicative order is exactly $n$. They are the points
+$\exp(2\pi i k/n)$ with $\gcd(k,n)=1$, so there are $\varphi(n)$ of them.
+Define the cyclotomic polynomial
+\[
+\Phi_n(X)=\prod_{\zeta\text{ primitive of order }n}(X-\zeta).
+\]
+For example $\Phi_1=X-1$, $\Phi_2=X+1$,
+$\Phi_3=X^2+X+1$, and $\Phi_4=X^2+1$.
+Only the elementary geometry of roots of unity is needed here;
+irreducibility of cyclotomic polynomials is not needed.
+
+\begin{lemma}
+\label{lem:wedderburn-cyclotomic}
+The polynomials $\Phi_n$ are monic with integer coefficients and
+\[
+X^n-1=\prod_{d\mid n}\Phi_d(X).
+\]
+If $d$ is a proper positive divisor of $n$, then
+\[
+\Phi_n(X)\divides\frac{X^n-1}{X^d-1}\quad\text{in }\Z[X].
+\]
+For integers $q\ge2$ and $n>1$, $|\Phi_n(q)|>q-1$.
+\end{lemma}
+\begin{proof}
+Every $n$th root has a unique order $d\mid n$, giving the product
+identity over the complex numbers. To obtain integer coefficients,
+induct on $n$, starting with $\Phi_1=X-1$. The product over proper
+divisors is monic with integer coefficients by induction. Dividing
+$X^n-1$ by it by monic long division produces an integer quotient
+and remainder. Over the complex numbers the division is exact with
+quotient $\Phi_n$, so the remainder is zero and $\Phi_n\in\Z[X]$.
+
+If $d\mid n$, cancel the factors indexed by divisors of $d$ from the
+product for $X^n-1$. When $d<n$, the factor $\Phi_n$ remains, proving
+the polynomial divisibility and hence its integer-valued version at $q$.
+
+For the inequality, each primitive $n$th root $\zeta$ is different from
+$1$ when $n>1$, and lies on the unit circle. Consequently
+\[
+|q-\zeta|^2=q^2-2q\operatorname{Re}(\zeta)+1>(q-1)^2.
+\]
+Taking the product of these distances gives
+$|\Phi_n(q)|>(q-1)^{\varphi(n)}\ge q-1$, since $q-1\ge1$
+and $\varphi(n)\ge1$.
+\end{proof}
+
+\begin{theorem}[Wedderburn's little theorem]
+\label{thm:little-wedderburn}
+Every finite division ring is commutative, and therefore is a field.
+\end{theorem}
+\begin{proof}
+Let $D$ be a finite division ring and let
+\[
+Z=\{z\in D:zx=xz\text{ for every }x\in D\}
+\]
+be its center. This is a field: it is closed under the ring operations,
+its multiplication commutes, and the inverse of a central nonzero
+element is central, as follows by multiplying $zx=xz$ by $z^{-1}$
+on both sides. Write $|Z|=q\ge2$. Addition and multiplication by
+central scalars make $D$ a vector space over $Z$; a finite basis exists
+by the earlier basis-building argument. If its dimension is $n$, then
+$|D|=q^n$. We will show $n=1$.
+
+For $a\in D$, put
+\[
+C_D(a)=\{x\in D:xa=ax\}.
+\]
+This set contains $Z$ and is a vector subspace over $Z$, so it has
+$q^d$ elements for some $d\ge1$. It is closed under multiplication
+and under inverses of nonzero elements: if $xa=ax$, multiplying by
+$x^{-1}$ shows $x^{-1}a=ax^{-1}$. Thus its nonzero elements form
+a subgroup of $D^\times$ of order $q^d-1$. We do not assume that
+this centralizer is commutative. If $a$ is noncentral, the subspace
+is proper and $d<n$.
+
+Lagrange gives $q^d-1\mid q^n-1$. This implies $d\mid n$:
+write $n=kd+r$, $0\le r<d$. Reduction modulo $q^d-1$ gives
+$q^n-1\equiv q^r-1$. If $r>0$, this would be a positive multiple
+of $q^d-1$ strictly smaller than $q^d-1$, impossible. Thus $r=0$.
+
+Apply the class equation to $G=D^\times$. Its center is $Z\setminus\{0\}$,
+because commuting with every nonzero element is the same as commuting
+with all of $D$. Each group centralizer is
+$C_D(a)\setminus\{0\}$. Therefore
+\[
+q^n-1=q-1+\sum_i\frac{q^n-1}{q^{d_i}-1},
+\qquad d_i\mid n,\quad d_i<n,
+\]
+where the sum runs over one representative of each noncentral
+conjugacy class.
+
+Suppose $n>1$. By Lemma~\ref{lem:wedderburn-cyclotomic}, the integer
+$\Phi_n(q)$ divides $q^n-1$ and every term in this sum. Hence it
+divides $q-1$. But $|\Phi_n(q)|>q-1>0$, which is impossible for a
+divisor of $q-1$. It follows that $n=1$, so $D=Z$ is a field.
+\end{proof}
+
+\begin{bigidea}
+The contradiction joins linear algebra, group theory, and integer
+divisibility. Dimensions turn centralizers into powers of $q$; conjugation
+turns their sizes into a sum; cyclotomic factors divide every large term
+but are too large to divide the leftover $q-1$.
+\end{bigidea}
+
+\begin{corollary}
+A finite ring with $1\ne0$ and no zero divisors is a field, even if
+commutativity was not assumed. Thus every finite division ring is,
+up to isomorphism, one of the Galois fields $\F_{p^n}$.
+\end{corollary}
+\begin{proof}
+For nonzero $a$, both maps $x\mapsto ax$ and $x\mapsto xa$ are
+injective and hence surjective. Choose $b,c$ with $ab=1$ and $ca=1$.
+Then $c=c(ab)=(ca)b=b$, so each nonzero element has a two-sided inverse.
+The ring is a division ring, to which Wedderburn applies. The finite-field
+classification gives the last assertion.
+\end{proof}
+
+Finiteness matters. The real quaternions form an infinite division ring
+with $ij=k$ and $ji=-k$. Conversely, a finite matrix ring need not be a
+division ring: in $M_2(\F_2)$ the nonzero matrices
+$\operatorname{diag}(1,0)$ and $\operatorname{diag}(0,1)$ have product zero.
+Neither example contradicts the theorem.

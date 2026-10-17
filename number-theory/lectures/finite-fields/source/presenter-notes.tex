@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.85in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,mathtools,amssymb,booktabs,xcolor}
+\usepackage{hyperref,xurl,fancyhdr,needspace}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{167D82}
+\color{ink}
+\hypersetup{colorlinks=true,urlcolor=teal,linkcolor=teal,
+pdftitle={Presenter notes: finite fields and Fibonacci, four 50-minute lectures},
+pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite fields and Fibonacci: presenter notes}
+\fancyhead[R]{\small Four 50-minute lectures}
+\fancyfoot[C]{\thepage}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\mat}[4]{\begin{pmatrix}#1&#2\\#3&#4\end{pmatrix}}
+\newcounter{slide}
+\newcounter{elapsed}
+\newcounter{backup}
+\newcommand{\teachslide}[4]{%
+  \stepcounter{slide}\Needspace{8\baselineskip}
+  \subsection*{\theslide.\ #1}
+  {\small\color{teal}\textbf{Minutes \theelapsed\ to
+  \number\numexpr\value{elapsed}+#2\relax}\par}
+  \addtocounter{elapsed}{#2}#4\par}
+\let\teachcover\teachslide
+\newcommand{\backups}{%
+  \typeout{LECTURE DURATION: \theelapsed\space minutes; CORE SLIDES: \theslide}
+  \ifnum\value{elapsed}=50\else\errmessage{Lecture timing is not 50 minutes}\fi
+  \setcounter{backup}{0}
+  \Needspace{8\baselineskip}\section*{Optional slides after the 50-minute stopping point}}
+\newcommand{\backupslide}[3]{%
+  \stepcounter{backup}\Needspace{8\baselineskip}
+  \subsection*{Backup \thebackup.\ #1}#3\par}
+\begin{document}
+{\huge\bfseries Finite fields and Fibonacci\par}
+{\Large Presenter notes for four 50-minute lectures\par}
+\vspace{10pt}
+These lectures begin with the matrix method for Fibonacci periodicity,
+develop rings, fields, characteristic, and vector spaces, prove cyclicity
+of finite-field multiplication, and return to the prime-modulus period
+through matrix groups and a quadratic extension.
+The visual style follows the earlier continued-fraction lectures.
+
+\textbf{Before Lecture 1.}
+Students should know modular arithmetic, Bezout's identity, modular
+inverses, $2\times2$ matrix multiplication and determinants, and the
+Fibonacci recurrence. The slides review their relevant consequences.
+The vector-space reminder assumes only some prior contact with linear
+algebra and develops span, independence, bases, coordinates, and dimension.
+Lecture 2 proves that dimension is well defined by the exchange argument
+before using dimension to count elements. Gaussian elimination is an
+optional alternative proof, not a prerequisite.
+
+\textbf{Before Lecture 3.}
+Recall Lagrange's theorem for finite groups and Bezout's identity.
+The deck proves the polynomial root bound and the coprime-order product
+lemma used to construct a generator. No classification theorem for
+finite abelian groups or general Galois theory is used.
+
+\textbf{Before Lecture 4.}
+Recall Fermat's little theorem and divisibility of the intermediate
+binomial coefficients $\binom pj$ by a prime $p$. The deck supplies
+explicit eigenvectors and proves the Frobenius argument, using Lecture 3's
+polynomial root bound to identify the fixed elements.
+
+\textbf{Conventions.}
+Our rings are commutative with identity and $1\ne0$. A field has
+characteristic $0$ or a prime; a finite field necessarily has prime
+characteristic. We use $d$ for a vector-space dimension to avoid
+confusing it with an integer modulus $n$. We use
+$A=\begin{psmallmatrix}1&1\\1&0\end{psmallmatrix}$ and order the matrix
+state as $(F_{n+1},F_n)^{\mathsf T}$. A restart is still described by
+$(F_n,F_{n+1})=(0,1)$. For odd $p$, $A$ has determinant $-1$ and
+$A^2$ belongs to $\SL_2(\F_p)$.
+
+\textbf{Virtual delivery.}
+Share the slide PDF window and keep these notes separate. Each question
+page precedes its answer page, so advancing the PDF reveals the answer.
+Give students quiet calculation time before inviting chat or spoken
+responses. The suggested minute allocations include that work. No
+animations, browser applications, or live network access are needed.
+
+\textbf{Pacing and recovery.}
+Each main route totals 50 minutes, including its cover and exit question.
+Lecture 1 reaches vector spaces after 32 minutes. Lecture 2 reaches the
+field construction after 36 minutes. Its main slides 7--12 spend minutes
+12--24 on well-definedness of dimension, including a worked exchange.
+Lecture 3 completes cyclicity at minute 28 and uses the next 20
+minutes to count GL and SL; the exit question finishes the session.
+Lecture 4 reaches Frobenius at minute 29, leaving room for its proof
+and both period examples.
+These are pacing guides, not deadlines for students. If Lecture 1 runs
+long, shorten the recap and answer reveals, keeping student work. If
+Lecture 2 runs long, shorten the opening recap or the repeated pair
+example, keeping the exchange proof and the basis exercise. The
+extension-arithmetic exercise is already optional; the main route
+uses a worked multiplication and retains the inverse proof.
+In Lecture 3, the coprime-order lemma and
+polynomial argument are the essential new proofs; omit the general
+matrix count or the modulo-two exercise if students need more time.
+In Lecture 4, shorten the recap and the primitive-element comparison
+before shortening the Frobenius argument.
+
+\textbf{The optional prime-power connection.}
+Lecture 3's extra slides compare $\F_{p^n}$ with $\Z/p^n\Z$. The latter
+is a different object: for $n>1$ it has zero divisors, yet its unit group
+is cyclic when $p$ is odd. The slides give a binomial primitive-root
+lifting proof and state the exact exception for powers of $2$.
+Unit groups modulo $2$ and $4$ are cyclic; modulo $2^n$ for $n\ge3$ they
+are $C_2\times C_{2^{n-2}}$. The notes justify that classification using
+$-1$ and $5$. Budget another 15--20 minutes if teaching the entire
+optional proof; it is outside the four 50-minute main routes.
+
+\section*{Lecture 1: Changing the arithmetic}
+\input{lecture-1-content}
+\clearpage
+\setcounter{slide}{0}\setcounter{elapsed}{0}
+\section*{Lecture 2: Counting and building finite fields}
+\input{lecture-2-content}
+\clearpage
+\setcounter{slide}{0}\setcounter{elapsed}{0}
+\section*{Lecture 3: Cyclic groups and counting matrices}
+\input{lecture-3-content}
+\clearpage
+\setcounter{slide}{0}\setcounter{elapsed}{0}
+\section*{Lecture 4: Explaining Fibonacci periods}
+\input{lecture-4-content}
+\clearpage
+\section*{Course connections and scope}
+The primary materials are the local number-theory course book:
+\texttt{chapters/modular\_fibonacci.tex} for reversible states and period
+definitions, \texttt{chapters/finite\_fields.tex} for quadratic extension
+arithmetic, Frobenius, and Fibonacci root orders, and
+\texttt{chapters/matrix\_algebra.tex} for the matrix toolkit.
+The group and binomial chapters supply the prerequisites for Lectures 3 and 4.
+The ring and vector-space development and the ordered-basis count expand
+that route for these lectures.
+
+The lectures prove that every finite field has prime-power order. They
+construct the quadratic fields required when $5$ is nonsquare over an
+odd prime field. They prove cyclicity of finite-field multiplicative groups, using
+Lagrange, the polynomial root bound, and a coprime-order product lemma.
+They do not prove existence and uniqueness of finite fields of every
+prime-power size or quadratic reciprocity. Those classification results
+are not needed for the displayed Fibonacci divisibilities. The exact-period examples use
+only powers and known multiples of the order.
+\end{document}

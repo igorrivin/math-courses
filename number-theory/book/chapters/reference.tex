@@ -13,6 +13,7 @@ $\gcd(a,b)$ & greatest positive common divisor \\
 $a\congr b\pmod n$ & $n\divides(a-b)$ \\
 $(\Z/n\Z)^\times$ & invertible residue classes modulo $n$ \\
 $\F_p$ & the field $\Z/p\Z$ for prime $p$ \\
+$\F_q=\operatorname{GF}(q)$ & the field of $q=p^n$ elements, unique up to isomorphism \\
 $\varphi(n)$ & number of units modulo $n$ \\
 $v_p(m)$ & exponent of $p$ in $m$ \\
 $\pi(x)$ & number of primes at most $x$ \\
@@ -279,7 +280,36 @@ For coprime $m,n$, $\pi(mn)=\operatorname{lcm}(\pi(m),\pi(n))$.
 Here $\pi(m)$ denotes a Fibonacci period, distinct from the
 prime-counting function $\pi(x)$ used in Chapter~8.
 
-\textbf{Frobenius and period computation later.} On $\F_p$, Fermat
+\textbf{Finite fields.} Every finite field has prime characteristic $p$
+and is a vector space over its prime field. Exchange makes dimension
+well defined, and $d$ coordinates over $\F_q$ give $q^d$ vectors.
+For every $q=p^n$ there is exactly one field up to isomorphism:
+the roots of $X^q-X$ in a splitting extension form such a field,
+and a minimal polynomial of a multiplicative generator gives an
+isomorphism between any two fields of size $q$. Its multiplicative
+group is cyclic of order $q-1$. Uniqueness does not specify a unique
+isomorphism. The ring $\Z/p^n\Z$ is not $\F_{p^n}$ for $n>1$.
+
+\textbf{Automorphisms, subfields, and matrices.} Frobenius $a\mapsto a^p$
+generates the cyclic automorphism group of $\F_{p^n}$, of order $n$.
+For each $m\mid n$, its unique subfield of size $p^m$ is the root set
+of $X^{p^m}-X$; there are no others. Choosing independent columns gives
+\[
+|\operatorname{GL}_d(\F_q)|=\prod_{r=0}^{d-1}(q^d-q^r),\qquad
+|\operatorname{SL}_2(\F_q)|=q(q^2-1).
+\]
+
+\textbf{Wedderburn's bonus theorem.} Every finite division ring is a
+field. For a division ring with center of size $q$ and dimension $n$
+over its center, the multiplicative class equation is
+\[
+q^n-1=q-1+\sum_i\frac{q^n-1}{q^{d_i}-1},\qquad d_i\mid n,\ d_i<n.
+\]
+If $n>1$, the integer $\Phi_n(q)$ divides the left side and every
+summand, so it divides $q-1$; its absolute value is greater than $q-1$,
+a contradiction. Thus the whole division ring equals its center.
+
+\textbf{Frobenius and period computation.} On $\F_p$, Fermat
 makes $u\mapsto u^p$ the identity. The binomial coefficient proof of
 $(X+Y)^p=X^p+Y^p$ makes it an automorphism of every finite extension.
 In $\F_p(s)$ with $s^2=d$ nonsquare and $p$ odd, it sends $a+bs$ to

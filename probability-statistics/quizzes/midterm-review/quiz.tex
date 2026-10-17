@@ -1,0 +1,287 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.7in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,booktabs,array,enumitem,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Probability Midterm Review Quiz: Through Continuous Distributions},
+  pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student quiz\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[4]{\par\addvspace{8pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points} $\cdot$ about #4 minutes}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{.8in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Midterm review}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{quiz-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+{\LARGE\bfseries\color{indigo}Midterm Review Quiz}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 50 points
+  \quad $\bullet$ \quad Through continuous distributions}\par
+\ifanswers
+\textbf{Grading note.} Award method credit after an earlier error;
+avoid repeated arithmetic deductions. Suggested times total 45 minutes,
+leaving 5 minutes to check work.
+\else
+\smallskip
+\textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+\textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all five problems and show the essential
+reasoning. No calculator is needed. Exact expressions, including factorials,
+exponentials, and values of the standard normal CDF $\Phi$, are acceptable.
+You may quote standard distribution and moment formulas. Geometric variables
+count trials \emph{including the first success}; exponential parameters
+are \emph{rates}. Reserve the final 5 minutes for checking.
+
+\problem{1}{A random permutation}{10}{9}
+Four travelers' luggage tags are shuffled uniformly among all $4!$
+assignments, one tag per traveler. Let $I_i$ indicate that traveler $i$
+gets the correct tag, and let $X=I_1+I_2+I_3+I_4$.
+\begin{enumerate}
+\item Find $\Prob(X=0)$ using inclusion--exclusion. Show your count or sum.
+\partpts{4}
+\begin{solution}[.9in]
+Let $A_i=\{I_i=1\}$. Fixing a specified set of $k$ travelers leaves
+$(4-k)!$ assignments. Hence
+\[
+\Prob(X=0)=\frac{4!-\binom41 3!+\binom42 2!-\binom43 1!+\binom44 0!}{4!}
+=\frac{24-24+12-4+1}{24}=\frac38.
+\]
+\credit{Uniform denominator: 1; intersection counts: 1; alternating sum: 1;
+evaluation: 1.}
+\end{solution}
+\item Find $\E[X]$ by using the indicators. Does this calculation
+require the indicators to be independent? \partpts{2}
+\begin{solution}[.65in]
+Each traveler has probability $1/4$ of receiving the right tag, so
+$\E[X]=\sum_{i=1}^4\E[I_i]=4(1/4)=1$. Linearity needs no independence.
+\credit{Indicator calculation: 1; no independence requirement: 1.}
+\end{solution}
+\item For $i\ne j$, find $\Prob(I_i=I_j=1)$ and decide whether $I_i,I_j$
+are independent. Then compute $\Var(X)$, keeping the cross terms.
+\partpts{4}
+\begin{solution}[1.05in]
+Fixing two tags leaves $2!$ permutations, so
+$\E[I_iI_j]=2!/4!=1/12$, different from $(1/4)^2=1/16$.
+Thus the indicators are dependent. Using $I_i^2=I_i$ gives
+\[
+\E[X^2]=4\cdot\frac14+2\binom42\frac1{12}=2,
+\qquad \Var(X)=2-1^2=1.
+\]
+\credit{Pair probability: 1; independence comparison: 1;
+second moment with cross terms: 1; variance: 1.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{2}{One hidden choice, two observations}{10}{8}
+A machine is selected once: machine $A$ with probability $1/3$ and machine
+$B$ with probability $2/3$. The selected machine produces two items.
+Conditional on the selected machine, defect indicators for the items are
+independent. Each item from $A$ is defective with probability $1/4$;
+each from $B$ is defective with probability $1/8$.
+Let $D_1,D_2$ be the events that the first and second items are defective.
+\begin{enumerate}
+\item Find $\Prob(D_1)$. \partpts{3}
+\begin{solution}[1.25in]
+By total probability,
+\[
+\Prob(D_1)=\frac13\cdot\frac14+\frac23\cdot\frac18
+=\frac1{12}+\frac1{12}=\frac16.
+\]
+\credit{Two weighted branches: 2; total: 1.}
+\end{solution}
+\item Given that the first item is defective, find the probability that
+machine $A$ was selected. \partpts{3}
+\begin{solution}[1.4in]
+Bayes' rule gives
+\[
+\Prob(A\mid D_1)=\frac{\Prob(D_1\mid A)\Prob(A)}{\Prob(D_1)}
+=\frac{(1/4)(1/3)}{1/6}=\frac12.
+\]
+\credit{Correct Bayes numerator and denominator: 2; evaluation: 1.}
+\end{solution}
+\item Find $\Prob(D_2\mid D_1)$. Are $D_1,D_2$ independent without
+conditioning on the machine? Justify your answer numerically. \partpts{4}
+\begin{solution}[1.8in]
+Conditional independence within each machine and the updated weights give
+\[
+\Prob(D_2\mid D_1)=\frac12\cdot\frac14+\frac12\cdot\frac18
+=\frac3{16}.
+\]
+Unconditionally $\Prob(D_2)=1/6$, by the same calculation as (a).
+Since $3/16\ne1/6$, the events are dependent.
+Equivalently $\Prob(D_1\cap D_2)=(1/3)(1/4)^2+(2/3)(1/8)^2=1/32$,
+which differs from $1/36$.
+\credit{Conditional mixture or joint-event method: 2; value: 1;
+numerical independence comparison: 1.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{Counts, waits, and a complete collection}{10}{9}
+Each pack contains one of three sticker types, independently and uniformly.
+Packs may duplicate previously seen types.
+\begin{enumerate}
+\item Let $N$ count type-1 stickers in the first four packs. State its
+distribution and parameters, and find $\Prob(N=2)$ and $\E[N]$.
+\partpts{3}
+\begin{solution}[1.25in]
+$N\sim\operatorname{Bin}(4,1/3)$, with
+\[
+\Prob(N=2)=\binom42(1/3)^2(2/3)^2=\frac8{27},
+\qquad \E[N]=\frac43.
+\]
+\credit{Family and parameters: 1; binomial probability: 1; mean: 1.}
+\end{solution}
+\item Exactly two distinct types have been collected. Let $G$ be the
+number of \emph{additional} packs through the first pack containing the
+missing type. State its distribution and parameter, and find $\E[G]$
+and $\Prob(G>2)$. \partpts{3}
+\begin{solution}[1.35in]
+Each additional pack contains the missing type with probability $1/3$,
+so $G\sim\operatorname{Geom}(1/3)$, on $1,2,\ldots$.
+Thus $\E[G]=3$ and $\Prob(G>2)=(2/3)^2=4/9$.
+\credit{Geometric model with parameter: 1; mean: 1; tail: 1.}
+\end{solution}
+\item Starting with no stickers, let $T$ be the number of packs through
+the first complete collection. Split $T$ into the waits for the first,
+second, and third distinct types, and compute $\E[T]$. Explain why
+$T$ itself is not one geometric random variable. \partpts{4}
+\begin{solution}[1.8in]
+Let $G_k$ be the wait for a new type after exactly $k$ types have been seen,
+for $k=0,1,2$. The success probabilities are $1,2/3,1/3$ and the
+means are $1,3/2,3$. Since $T=G_0+G_1+G_2$, linearity gives
+\[
+\E[T]=1+\frac32+3=\frac{11}{2}.
+\]
+The chance of obtaining a new type changes from stage to stage; also
+$T\ge3$, whereas a geometric variable on $1,2,\ldots$ has positive
+probability of being $1$. Stage independence is not needed for this mean.
+\credit{Stage probabilities: 1; means: 1; sum: 1;
+reason the full collection time is not geometric: 1.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{4}{Choose the law and use its parameters}{10}{9}
+\begin{enumerate}
+\item Calls arrive with Poisson counts: an interval of length $t$ hours
+contains $\operatorname{Poisson}(3t)$ calls, and disjoint intervals have
+independent counts. Let $M$ count calls in the next 20 minutes.
+State its distribution and parameter, and find $\Prob(M\ge2)$.
+\partpts{3}
+\begin{solution}[1in]
+Twenty minutes is $1/3$ hour, so $M\sim\operatorname{Poisson}(1)$.
+Then $\Prob(M\ge2)=1-e^{-1}-e^{-1}=1-2e^{-1}$.
+\credit{Family and converted parameter: 1; complement: 1; value: 1.}
+\end{solution}
+\item For the same call model, let $W$ be the time in hours until the
+next call. Use the probability of zero calls to find $\Prob(W>t)$ for
+$t\ge0$. Identify the distribution of $W$ and find
+$\Prob(W>2\mid W>1)$. \partpts{3}
+\begin{solution}[1.1in]
+$\Prob(W>t)=\Prob(\operatorname{Poisson}(3t)=0)=e^{-3t}$.
+Thus $W\sim\operatorname{Exp}(\text{rate }3)$, and
+$\Prob(W>2\mid W>1)=e^{-6}/e^{-3}=e^{-3}$.
+\credit{Zero-count argument and survival function: 1;
+family and rate: 1; conditional probability: 1.}
+\end{solution}
+\item A separate task's duration $Y$ is normal with mean $10$ and
+\emph{variance} $4$. Express $\Prob(8<Y<13)$ using $\Phi$.
+\partpts{2}
+\begin{solution}[.9in]
+The standard deviation is $2$, so
+$\Prob(8<Y<13)=\Phi(3/2)-\Phi(-1)$.
+\credit{Standardization with standard deviation $2$: 1;
+CDF difference with correct endpoints: 1.}
+\end{solution}
+\item Let $U$ be uniform on $[0,4]$. Find $\Prob(U>3\mid U>2)$ and
+compare it with $\Prob(U>1)$. Does $U$ have the memoryless property?
+\partpts{2}
+\begin{solution}[.85in]
+$\Prob(U>3\mid U>2)=(1/4)/(2/4)=1/2$, whereas
+$\Prob(U>1)=3/4$. The unequal probabilities disprove memorylessness.
+\credit{Conditional probability: 1; comparison and conclusion: 1.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{5}{From a density to a bound}{10}{10}
+A continuous random variable $X$ has density
+\[
+f(x)=\begin{cases}cx,&0<x<2,\\0,&\text{otherwise}.
+\end{cases}
+\]
+\begin{enumerate}
+\item Determine $c$. \partpts{2}
+\begin{solution}[.9in]
+Normalization requires $1=\int_0^2 cx\,dx=2c$, so $c=1/2$.
+The resulting density is nonnegative.
+\credit{Normalization integral: 1; value: 1.}
+\end{solution}
+\item Find the CDF $F(x)$ for every real $x$, and use it to find
+$\Prob(1<X<2)$. \partpts{2}
+\begin{solution}[1.15in]
+\[
+F(x)=\begin{cases}0,&x\le0,\\x^2/4,&0<x<2,\\1,&x\ge2.
+\end{cases}
+\qquad \Prob(1<X<2)=1-F(1)=\frac34.
+\]
+\credit{Complete piecewise CDF: 1; interval probability: 1.}
+\end{solution}
+\item Compute $\E[X]$, $\E[X^2]$, and $\Var(X)$. \partpts{4}
+\begin{solution}[1.4in]
+\[
+\E[X]=\int_0^2 x\frac{x}{2}\,dx=\frac43,\qquad
+\E[X^2]=\int_0^2 x^2\frac{x}{2}\,dx=2.
+\]
+Therefore $\Var(X)=2-(4/3)^2=2/9$.
+\credit{First moment: 1; second moment: 1;
+variance identity: 1; variance value: 1.}
+\end{solution}
+\item Use Chebyshev's inequality to give an upper bound for
+$\Prob(|X-4/3|\ge2/3)$. State why the inequality applies.
+\partpts{2}
+\begin{solution}[1in]
+The variable has finite mean and variance (it is bounded). Chebyshev gives
+\[
+\Prob(|X-4/3|\ge2/3)\le\frac{2/9}{(2/3)^2}=\frac12.
+\]
+\credit{Finite-variance hypothesis and correct inequality: 1;
+evaluated bound: 1. This is an upper bound, not an asserted exact probability.}
+\end{solution}
+\end{enumerate}
+\label{quiz-last-page}
+\end{document}

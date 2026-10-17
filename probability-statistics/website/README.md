@@ -23,13 +23,23 @@ of the PDF. It covers elementary counting and the binomial theorem,
 probability spaces built from events and weights, full birthday and
 derangement arguments, and random variables with concrete threshold events.
 The `#expectation` reading link leads to finite weighted averages, linearity,
-indicators, variance, independent sums, and 18 discrete exercises with worked
-answers. The `#distributions` link continues with uniform, Bernoulli, binomial,
+indicators, variance, independent sums, and 18 core discrete exercises with worked
+answers. It now also develops records, inversions, spaghetti loops under a
+uniform free-end matching model, and random cuts, with five further exercises.
+The `#distributions` link continues with uniform, Bernoulli, binomial,
 and hypergeometric examples; geometric and Poisson laws follow. The
 `#coupon-collector` reading link leads to geometric stages, harmonic numbers,
-the expected collection time and its variance, completion deadlines, and a discrete
-Poissonization bonus. Four new exercises have worked solutions. Continuous
-models and their exercises are marked as later reading in the book.
+the expected collection time and its variance, completion deadlines, and unequal
+type probabilities with exact subset formulas, a missing-set recursion, and
+rare-type bounds. A full Poissonization section derives independent type counts,
+exponential clocks, the clock-versus-count variance correction, and explicit
+de-Poissonization bounds. It proves uniform probabilities minimize the mean and
+includes an optional completion-window limit. Further distribution examples
+derive negative-binomial success waits, gamma arrival times, and beta order
+statistics; normal approximations are distinguished from exact sampling laws.
+Chapter 5 has 27 exercises with worked solutions. Existing PDF section
+destinations and original exercise numbers are preserved. Continuous models
+and the additional named-law derivations are marked as later or enrichment reading.
 
 Appendix A is a calculus refresher with worked examples and 18 exercises
 with answers. It covers limits, derivatives, likelihood optimization,

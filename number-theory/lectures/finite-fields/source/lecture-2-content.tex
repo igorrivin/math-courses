@@ -1,0 +1,451 @@
+\teachcover{Counting and building\\finite fields}{1}{
+Bases turn algebra into counting
+\[
+\F_7\subset\F_{49}
+\]
+}{
+This lecture finishes the vector-space reminder, proves the necessary
+prime-power size theorem, and constructs the quadratic extension needed
+for Fibonacci modulo $7$. The construction proves existence for this
+example, not for every prime power. The main route now proves that
+dimension is well defined by a six-slide exchange argument. Keep the
+basis calculation break; the extra extension-arithmetic exercise is
+optional material after the exit question.
+}
+
+\teachslide{Recall: scalars determine the combinations}{1}{
+In $\F_3^2$, let $u=(1,2)$.
+\[
+\Span(u)=\{0u,1u,2u\}
+=\{(0,0),(1,2),(2,1)\}.
+\]
+With $e_1=(1,0)$ and $e_2=(0,1)$,
+\[
+(a,b)=ae_1+be_2.
+\]
+\key{How can we tell whether coordinates are unique?}
+}{
+Retrieve rather than re-lecture: ask for $2u$, and ask how to express
+$(2,1)$ in the standard coordinate vectors. A spanning list expresses
+every vector, but could express the same vector in different ways.
+The next two slides isolate that issue.
+}
+
+\teachslide{A redundant spanning list}{2}{
+In $\F_3^2$, put $w=e_1+e_2$.
+
+The list $e_1,e_2,w$ spans the space, but
+\[
+w=0e_1+0e_2+1w=1e_1+1e_2+0w.
+\]
+The difference gives a nontrivial relation:
+\[
+\key{e_1+e_2-w=0.}
+\]
+}{
+Point out two distinct coefficient triples for the same vector.
+Modulo $3$, the coefficients in the relation are $1,1,2$, so they
+are not all zero. The problem is redundancy, not lack of spanning.
+Ask which vector can be removed without changing the span.
+}
+
+\teachslide{Linear independence}{3}{
+Vectors $v_1,\ldots,v_d$ are \key{linearly independent} if
+\[
+a_1v_1+\cdots+a_dv_d=0
+\quad\Longrightarrow\quad a_1=\cdots=a_d=0.
+\]
+Then two expressions for the same vector have the same coefficients:
+\[
+\sum a_iv_i=\sum b_iv_i
+\ \Longrightarrow\ \sum(a_i-b_i)v_i=0.
+\]
+}{
+Finish the second line verbally: independence forces every $a_i-b_i=0$.
+Conversely, unique expressions of zero force independence. Give the
+standard pair $e_1,e_2$ as the basic example: $(a,b)=0$ implies both
+coordinates are zero. Distinguish a nontrivial relation from one whose
+coefficients all vanish.
+}
+
+\teachslide{A basis gives existence and uniqueness}{2}{
+A \key{basis} is a linearly independent spanning list.
+
+Every $v\in V$ has a unique expression
+\[
+\key{v=a_1v_1+\cdots+a_dv_d.}
+\]
+\begin{itemize}
+\item Spanning gives existence of the coefficients.
+\item Independence gives uniqueness.
+\end{itemize}
+}{
+Have students supply which hypothesis does which job. An ordered basis
+also specifies the order of coordinates. The standard basis of $k^d$
+is the list of coordinate vectors. We will count ordered bases when
+we count matrices in Lecture 3.
+}
+
+\teachslide{Build a basis one vector at a time}{3}{
+Start with no vectors; their span is $\{0\}$.
+
+If the current span is not all of $V$, choose a vector outside it.
+
+Adding that vector preserves independence.
+\spacer
+\key{In a finite space, this process must stop.}
+
+At stopping, the chosen vectors form a basis.
+}{
+Prove the key step. If $a_1v_1+\cdots+a_rv_r+bw=0$ and $b\ne0$,
+then division by $b$ expresses $w$ in the old span, contradicting its
+choice. Thus $b=0$, and old independence makes all other coefficients
+zero. Finiteness makes the strictly increasing sequence of spans stop.
+This proof specifically establishes the finite basis needed below.
+}
+
+\input{dimension-content}
+
+\teachslide{Count coordinate choices}{3}{
+Suppose $v_1,\ldots,v_d$ is a basis over $\F_p$.
+\[
+v=a_1v_1+\cdots+a_dv_d,
+\qquad a_i\in\F_p.
+\]
+Each of the $d$ coordinates has $p$ choices.
+
+Uniqueness means that different choices give different vectors.
+\[
+\key{|V|=p^d.}
+\]
+}{
+The coordinate map from $\F_p^d$ to $V$ is onto by spanning and
+one-to-one by independence. Thus the product rule counts the vectors
+exactly, not merely bounds their number. In particular, a span of
+$r$ independent vectors has $p^r$ elements. If two bases have lengths
+$d,e$, this count gives $p^d=p^e$ and hence $d=e$.
+}
+
+\teachslide{Your turn: is this a basis?}{3}{
+In $\F_3^2$, let $u=(1,1)$ and $v=(1,2)$.
+\begin{enumerate}
+\item Solve $au+bv=(0,0)$.
+\item Express $(2,0)$ as $au+bv$.
+\item How many vectors are in $\Span(u,v)$?
+\end{enumerate}
+\spacer
+\key{Write the two coordinate equations.}
+}{
+Give time to write $a+b=0$ and $a+2b=0$. Subtract the first from
+the second to get $b=0$, then $a=0$. For $(2,0)$, use $a+b=2$,
+$a+2b=0$. A suggestion for students stuck in real-number habits:
+$-2=1$ in $\F_3$. The answer appears on the next page.
+}
+
+\teachslide{Basis exercise: answers}{1}{
+\[
+a+b=0,\quad a+2b=0\quad\Longrightarrow\quad b=0, a=0.
+\]
+So $u,v$ are independent.
+\[
+\key{(2,0)=u+v.}
+\]
+Their span has $3^2=9$ elements, all of $\F_3^2$.
+
+Thus $u,v$ form a basis.
+}{
+There are nine elements in the ambient space, so the nine-element
+span is the whole space. We have checked both requirements for a
+basis without silently assuming that independence implies spanning
+in arbitrary spaces. Coordinates depend on the chosen basis:
+$(2,0)$ has coordinates $(1,1)$ in this basis.
+}
+
+\teachslide{A field can be a vector space}{3}{
+Let $K$ be a finite field of characteristic $p$.
+
+It contains $\F_p$. Regard
+\begin{itemize}
+\item elements of $K$ as vectors;
+\item elements of $\F_p$ as scalars;
+\item multiplication in $K$ as scalar multiplication.
+\end{itemize}
+\[
+a(u+v)=au+av,\qquad a(bu)=(ab)u.
+\]
+}{
+Check all the vector-space axioms, not just the two displayed ones:
+addition in $K$ is an abelian group operation, $(a+b)u=au+bu$, and
+$1u=u$. These are field laws restricted to the scalar subfield.
+This is not making $K$ a vector space over the real numbers.
+Here a vector can also be multiplied by another vector because $K$
+has additional field structure; the vector-space definition alone
+does not supply that multiplication.
+}
+
+\teachslide{Every finite field has prime-power size}{2}{
+Finiteness gives a basis of $K$ over its prime field $\F_p$.
+\[
+\key{|K|=p^d,\qquad p\text{ prime},\quad d\ge1.}
+\]
+\begin{itemize}
+\item Characteristic gives the prime $p$.
+\item A basis over $\F_p$ gives the exponent $d$.
+\end{itemize}
+\spacer
+There is no field with $6$ elements.
+
+A field with $49$ elements would have characteristic $7$.
+}{
+Ask students to rule out $6$ as a prime power. For $49$, unique prime
+factorization gives $p=7,d=2$. We have proved a necessary condition;
+we have not proved existence or uniqueness for arbitrary $p^d$.
+The next construction supplies a particular missing example.
+To justify a finite basis, apply the earlier basis-building process
+to the finite set $K$. The strictly increasing spans must stop.
+Since $1\ne0$, its dimension over $\F_p$ is at least one. Thus
+finiteness first gave prime characteristic and now gives a finite basis.
+}
+
+\teachslide{Build the missing square root}{2}{
+Over $\F_7$, $5$ is not a square.
+
+Introduce a symbol $s$ with $s^2=5$, and use formal pairs
+\[
+\key{K=\{a+bs:a,b\in\F_7\}.}
+\]
+Two elements are equal exactly when their two coefficients agree.
+\[
+(a+bs)+(c+es)=(a+c)+(b+e)s.
+\]
+}{
+Define the elements as pairs first, so uniqueness of this representation
+is built in. The symbol $s$ is not an ordinary real square root.
+We are defining new finite arithmetic. Write $s=(0,1)$ and embed
+$a\in\F_7$ as $(a,0)$. There are already $7^2$ candidate elements;
+we still must prove this arithmetic is a field.
+}
+
+\teachslide{Multiply, then replace $s^2$ by $5$}{3}{
+\[
+(a+bs)(c+es)=(ac+5be)+(ae+bc)s.
+\]
+For example,
+\[
+\begin{aligned}
+(2+s)(3+2s)&=6+7s+2s^2\\
+&=16+7s\\
+&=2.
+\end{aligned}
+\]
+All coefficients are reduced modulo $7$.
+}{
+Explain the four terms from distribution. This is polynomial arithmetic
+with the relation $s^2=5$; the ring laws hold. If requested, associativity
+can be checked from the pair formula, or justified by reducing products
+of polynomials modulo $X^2-5$. A backup slide introduces that notation.
+The product $2$ is an element of the embedded $\F_7$.
+}
+
+\teachslide{Why every nonzero element has an inverse}{3}{
+\[
+(a+bs)(a-bs)=a^2-5b^2.
+\]
+For $(a,b)\ne(0,0)$, this denominator is nonzero:
+\begin{itemize}
+\item If $b=0$, then $a^2\ne0$.
+\item If $b\ne0$, its vanishing would give $(a/b)^2=5$.
+\end{itemize}
+Therefore
+\[
+\key{(a+bs)^{-1}=\frac{a-bs}{a^2-5b^2}.}
+\]
+}{
+The second case contradicts that $5$ is nonsquare in $\F_7$. The
+denominator is a nonzero element of the original field, so its inverse
+exists there. This proves the new ring is a field. Explain the division
+notation as multiplication by that inverse. If $5$ were a square, the
+same formal construction could have nonzero zero divisors; a backup
+slide gives the example modulo $11$.
+}
+
+\teachslide{A field with forty-nine elements}{2}{
+We have built a field $K$, which we call $\F_{49}$.
+\[
+\key{\{1,s\}\text{ is a basis over }\F_7.}
+\]
+Every element is a unique $a\cdot1+b\cdot s$.
+\[
+|K|=7^2=49,\qquad \dim_{\F_7}K=2.
+\]
+Its characteristic is $7$.
+}{
+Spanning follows from the definition as pairs, and independence follows
+because $a+bs=0$ means both coordinates are zero. Seven copies of $1$
+sum to zero; no smaller positive number does. Thus the characteristic
+is $7$, although the number of elements is $49$. The same construction
+works over an odd prime with any nonsquare $d$ replacing $5$.
+}
+
+\teachslide{$\F_{49}$ and $\Z/49\Z$ are different}{2}{
+\[
+\begin{array}{c|c|c}
+&\F_{49}&\Z/49\Z\\\hline
+\text{Elements}&49&49\\
+\text{Characteristic}&7&49\\
+\text{Every nonzero element a unit?}&\text{Yes}&\text{No}
+\end{array}
+\]
+In $\Z/49\Z$, the nonzero residue $7$ satisfies $7^2=0$.
+
+In $\F_{49}$, seven copies of $1$ already give $0$.
+}{
+Read the two columns slowly. The symbol $7$ denotes different things
+in the two arithmetics: a nonzero residue in one and the sum $7\cdot1=0$
+in the other. Equal cardinality is far weaker than equal arithmetic.
+This is the main misconception to address before moving on.
+}
+
+\teachslide{Exit question}{2}{
+Suppose $K$ is a field with $25$ elements.
+\begin{enumerate}
+\item What is its characteristic?
+\item What is its dimension over its prime field?
+\item Why is $K$ not $\Z/25\Z$?
+\end{enumerate}
+}{
+Expected answers: characteristic $5$, dimension $2$ over $\F_5$, and
+$\Z/25\Z$ has characteristic $25$ and the nonzero zero divisor $5$.
+The question assumes a field with $25$ elements; it does not rely on
+a general finite-field existence theorem. This is the 50-minute stop.
+}
+
+\backups
+\backupslide{Polynomial notation for the construction}{
+\[
+\key{\F_{49}=\F_7[X]/(X^2-5).}
+\]
+Two polynomials represent the same element when their difference
+is a multiple of $X^2-5$.
+
+Polynomial division gives a unique remainder $a+bX$.
+
+The class of $X$ is our element $s$, and $s^2=5$.
+}{
+This is the polynomial analogue of integer residues. Addition and
+multiplication descend from polynomial arithmetic, so the ring laws
+follow. Polynomial division by the monic quadratic gives unique
+remainders of degree at most one. The main lecture proves the field
+property directly, so a general quotient-field theorem is unnecessary.
+}
+
+\backupslide{What if the chosen number is already a square?}{
+Try the same formal-pair construction over $\F_{11}$, with $s^2=5$.
+
+Since $4^2=5$,
+\[
+(s-4)(s+4)=s^2-16=0.
+\]
+Both factors are nonzero formal pairs.
+\spacer
+\key{This construction gives a ring with zero divisors, not a field.}
+}{
+The coefficient of $s$ is $1$ in both factors, so neither is the
+zero pair. This makes the nonsquare hypothesis in the inverse proof
+concrete. There is no need to construct an extension when the roots
+already lie in the original field.
+}
+
+\backupslide{Your turn: calculate in the new arithmetic}{
+In $K$, where $s^2=5$ and coefficients lie in $\F_7$, compute
+\[
+(1+2s)(3+s).
+\]
+Then compute
+\[
+(2+s)(2-s).
+\]
+\key{Distribute first; reduce afterward.}
+}{
+Allow a minute of quiet work. Ask students to show intermediate
+expressions so that an error in reduction can be distinguished from
+an error in expansion. The second calculation prepares the conjugate
+inverse formula and should not be described as complex conjugation.
+}
+
+
+\backupslide{Two products}{
+\[
+(1+2s)(3+s)=3+7s+2s^2=13=6.
+\]
+\[
+\key{(2+s)(2-s)=4-s^2=4-5=6.}
+\]
+Since $6^{-1}=6$ in $\F_7$,
+\[
+(2+s)^{-1}=6(2-s)=5+s.
+\]
+}{
+Verify $6\cdot6=1\pmod7$. Multiplying the second identity by $6$
+gives the inverse of this one element. Do not yet claim that every
+element is invertible; the next slide proves that general statement.
+For a quick check, $(2+s)(5+s)=15+7s=1$.
+}
+
+
+\backupslide{The roots now exist}{
+In $\F_{49}$, division by $2$ is allowed, and
+\[
+\alpha=\frac{1+s}{2},\qquad\beta=\frac{1-s}{2}.
+\]
+\[
+\alpha+\beta=1,\qquad\alpha\beta=-1.
+\]
+Both solve $X^2-X-1=0$.
+\spacer
+Next: \key{multiplicative orders, matrices, and the period.}
+}{
+Modulo $7$, $2^{-1}=4$, so $\alpha=4+4s$ and $\beta=4-4s$.
+Their sum and product verify the factorization
+$(X-\alpha)(X-\beta)=X^2-X-1$. The roots are distinct because $s\ne0$.
+This reconnects the construction to the original motivating question.
+Lecture 3 supplies cyclicity and matrix counts; Lecture 4 uses the
+roots' powers to finish the period argument.
+}
+
+
+\backupslide{A bridge to matrices}{
+An invertible matrix has columns that form an ordered basis.
+\[
+\key{\text{Counting invertible matrices = counting ordered bases.}}
+\]
+We will count the column choices one at a time.
+}{
+Ask students to remember how many elements are in the span of one
+nonzero vector over $\F_p$: exactly $p$. That is the key number for
+the next lecture's second column. This optional bridge previews
+Lecture 3; the main route already ended at the exit question.
+}
+
+\backupslide{Gaussian elimination gives another proof}{
+Suppose $w_1,\ldots,w_m$ span and $v_1,\ldots,v_r$ are independent.
+
+Choose coefficients $v_i=\sum_{j=1}^m c_{ji}w_j$; let $C=(c_{ji})$.
+
+If $r>m$, elimination in the homogeneous system $Cx=0$
+leaves a free variable, hence a nonzero solution.
+\[
+\sum_{i=1}^r x_iv_i=\sum_{j=1}^m(Cx)_jw_j=0,
+\]
+contradicting independence.
+}{
+$C$ has $m$ rows and $r$ columns. Elimination produces at most $m$
+pivots, so when $r>m$ a variable is free. Set one free variable to 1,
+the others to 0, and solve backwards for the pivot variables. Row
+operations preserve the solutions, and division by a nonzero pivot
+is allowed over a field. The coefficients $c_{ji}$ need not be unique:
+the original $w_j$ merely span, and any chosen expressions suffice.
+Thus this proof does not assume the dimension theorem or rank-nullity.
+It is an alternative to the main exchange proof, not a prerequisite.
+}
+

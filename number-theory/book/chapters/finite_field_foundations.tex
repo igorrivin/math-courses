@@ -1,0 +1,152 @@
+\section{Rings, fields, and the prime field}
+\label{sec:finite-field-foundations}
+
+Changing a modulus changes the rules of division. In $\Z/7\Z$ every
+nonzero residue has an inverse; in $\Z/8\Z$, $2\cdot4=0$ although
+neither factor is zero. We begin by naming the structures that distinguish
+these examples.
+
+\begin{definition}
+A \emph{ring} has an abelian group operation called addition, an associative
+multiplication with identity $1\ne0$, and both distributive laws
+\[
+a(b+c)=ab+ac,\qquad (a+b)c=ac+bc.
+\]
+Multiplication need not commute. A \emph{unit} is an element with a
+two-sided multiplicative inverse. A \emph{division ring} is a ring in
+which every nonzero element is a unit. A \emph{field} is a commutative
+division ring. A nonzero element $a$ is a \emph{zero divisor} if
+$ab=0$ or $ba=0$ for some nonzero $b$.
+\end{definition}
+
+The integers are a commutative ring, but not a field. The rational numbers
+are a field. Residues modulo $n$ form a commutative ring whose units are
+exactly the classes coprime to $n$. Matrices give familiar noncommutative
+rings: matrix multiplication distributes over addition but generally
+$AB\ne BA$. A unit cannot be a zero divisor, because multiplying by its
+inverse would force the other factor to be zero.
+
+\begin{proposition}
+A finite commutative ring with no zero divisors is a field. In particular,
+for $n\ge2$, $\Z/n\Z$ is a field exactly when $n$ is prime.
+\end{proposition}
+\begin{proof}
+Fix a nonzero $a$. If $ax=ay$, then $a(x-y)=0$, so $x=y$.
+Multiplication by $a$ is therefore injective on a finite set and hence
+surjective. In particular $ab=1$ for some $b$, which is an inverse by
+commutativity. For prime $p$, Euclid's lemma excludes zero divisors modulo
+$p$; alternatively, B\'ezout gives each inverse. For composite $n=ab$,
+with $1<a,b<n$, the nonzero residues of $a,b$ have product zero.
+\end{proof}
+
+\begin{definition}
+The \emph{characteristic} of a ring is the least positive integer $m$
+such that $m\cdot1=0$, if such an integer exists; otherwise it is $0$.
+Here $m\cdot1$ means repeated addition, not exponentiation.
+\end{definition}
+
+\begin{proposition}
+Every finite field has prime characteristic $p$ and contains a distinguished
+copy of $\F_p$, called its \emph{prime field}.
+\end{proposition}
+\begin{proof}
+Finiteness makes two of $0,1,1+1,\ldots$ equal, so a positive multiple
+of $1$ is zero. Let $m$ be the least such multiple. If $m=ab$ with
+$1<a,b<m$, then $(a\cdot1)(b\cdot1)=0$ has two nonzero factors,
+impossible in a field. Also $m\ne1$, so $m=p$ is prime. The map
+$\Z\to K$, $a\mapsto a\cdot1$, respects both operations and has kernel
+$p\Z$. Thus its image is a subfield identified with $\Z/p\Z=\F_p$.
+\end{proof}
+
+\section{Coordinates, exchange, and dimension}
+\label{sec:finite-field-dimension}
+
+A vector space over a field $k$ is an abelian group $(V,+)$ with scalar
+multiplication satisfying
+\[
+a(u+v)=au+av,\quad (a+b)v=av+bv,\quad
+(ab)v=a(bv),\quad 1v=v.
+\]
+The scalars belong to $k$, and the vectors belong to $V$. For example,
+in $\F_3^2$, $2(1,2)=(2,1)$. If a field $K$ contains $k$, its own
+elements form a vector space over $k$: scalar multiplication is the
+field multiplication restricted to scalars in $k$.
+
+\begin{definition}
+The \emph{span} of $v_1,\ldots,v_r$ is the set of their linear
+combinations $\sum a_iv_i$. The list is \emph{linearly independent} if
+$\sum a_iv_i=0$ implies every $a_i=0$. A \emph{basis} is an independent
+spanning list. Its coordinates express every vector uniquely:
+spanning gives existence, and subtracting two expressions and using
+independence gives uniqueness.
+\end{definition}
+
+An empty list spans $\{0\}$. If an independent list does not yet span,
+choose $w$ outside its span. The enlarged list remains independent:
+in a relation $\sum a_iv_i+bw=0$, a nonzero $b$ would put $w$ in the old
+span. Thus $b=0$, and all the $a_i$ also vanish. In a finite vector
+space this construction stops, because each span strictly enlarges.
+It produces a basis.
+
+Before defining dimension we must know that different bases have the
+same length. Counting coordinates will prove this for finite fields,
+but the following argument works over any field.
+
+\begin{lemma}[Exchange]
+If $v_1,\ldots,v_r$ are independent and $w_1,\ldots,w_m$ span $V$,
+then $r\le m$.
+\end{lemma}
+\begin{proof}
+Insert the $v_i$ one at a time into the spanning list. After $k$
+insertions, suppose the list consists of $v_1,\ldots,v_k$ and $m-k$
+old vectors and still spans. Express $v_{k+1}$ in this list. Some old
+vector has nonzero coefficient; otherwise $v_{k+1}$ is in the span of
+the previous $v_i$, contradicting independence. Solve for that old
+vector by dividing by its coefficient. Replacing it by $v_{k+1}$
+preserves spanning, since the solved equation recovers the discarded
+vector. Previously inserted vectors are retained.
+
+If $r>m$, after $m$ insertions $v_1,\ldots,v_m$ would span, forcing
+$v_{m+1}$ into their span, again contradicting independence. Thus
+$r\le m$. If $m=0$, $V=\{0\}$ has no nonempty independent list,
+so the conclusion also holds.
+\end{proof}
+
+\begin{corollary}
+Any two finite bases of a vector space have the same length. This length
+is its \emph{dimension} over the scalar field, denoted $\dim_kV$.
+\end{corollary}
+\begin{proof}
+Use each basis as the independent list and the other as the spanning
+list. The two inequalities force equality.
+\end{proof}
+
+\begin{example}[Coordinates over a prime field]
+In $\F_3^2$, put $u=(1,1)$ and $v=(1,2)$. The equations
+$au+bv=0$ give $a+b=0$ and $a+2b=0$, hence $a=b=0$.
+For an arbitrary $(x,y)$, the same equations with right sides $x,y$
+give $b=y-x$ and $a=2x-y$. Thus $u,v$ are a basis, and
+$(2,0)=u+v$ has coordinates $(1,1)$ in this basis.
+The redundant list $u,v,u+v$ still spans but is not independent.
+\end{example}
+
+\begin{theorem}[The necessary size of a finite field]
+\label{thm:finite-field-size}
+A $d$-dimensional vector space over a field with $q$ elements has $q^d$
+elements. In particular, every finite field has $p^d$ elements for a
+prime $p$ and integer $d\ge1$.
+\end{theorem}
+\begin{proof}
+Choose a basis. Each of its $d$ coordinates has $q$ choices, and the
+coordinate map $k^d\to V$ is bijective by existence and uniqueness.
+For a finite field $K$, use its prime field $\F_p$ as scalars. The
+basis-building procedure above stops because $K$ is finite, so
+$|K|=p^d$. Since $1\ne0$, $d\ge1$.
+\end{proof}
+
+Thus there is no field with $6$ or $12$ elements. A field with $81$
+elements must have characteristic $3$ and dimension $4$ over $\F_3$.
+At this point prime-power size is only a necessary condition. We will
+construct every prime-power size and prove uniqueness in
+Section~\ref{sec:finite-field-classification}. First, a quadratic example
+makes the arithmetic concrete.

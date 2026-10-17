@@ -374,6 +374,8 @@ Several matching pairs may occur together; an expected count and the
 probability of at least one occurrence answer different questions.
 \end{example}
 
+\input{chapters/linearity_examples}
+
 \section{When variances of sums add}
 \label{sec:variance-sums}
 
@@ -564,6 +566,7 @@ Although $f_X(3/4)=3/2$, the probability of the single value $3/4$ is zero.
 Where the density is continuous, $F_X'=f_X$.
 \end{example}
 
+\needspace{11\baselineskip}
 \begin{exercisebox}[title={Later practice: continuous models}]
 \begin{enumerate}[start=19]
  \item A density is proportional to $x$ on $[0,2]$ and zero elsewhere.
@@ -582,3 +585,27 @@ $M_X^{(k)}(0)=\E[X^k]$.
 For finite-valued variables this follows by differentiating a finite sum.
 Neither this tool nor continuous densities are needed for the discrete
 expectation and variance calculations in this chapter.
+
+\begin{exercisebox}[title={Further practice: linearity in action}]
+\begin{enumerate}[start=21]
+ \item Eight distinct scores arrive in a uniformly random order.
+ Find the expected total number of records and the expected number
+ of records in positions 5 through 8. \exlevel{Fluency}
+ \item In a uniform permutation of five labels, find the expected
+ number of inversions and the expected number of adjacent descents
+ $\pi(i)>\pi(i+1)$. Why are these different counts? \exlevel{Reasoning}
+ \item Enumerate the three matchings of the four ends of two strands.
+ Find the distribution and mean of the loop count. For general $n\ge1$,
+ find the expected number of loops containing exactly one original strand.
+ \exlevel{Reasoning}
+ \item In $n\ge1$ independent tosses with heads probability $p$, a
+ head run is a maximal consecutive block of heads. Prove its expected
+ count is $p+(n-1)p(1-p)$. Check $p=0,1$ and ten fair tosses.
+ \exlevel{Reasoning}
+ \item Color a triangle's vertices independently red or blue with
+ equal probabilities. Find the crossing-edge count's distribution and
+ mean; show its three edge indicators are not mutually independent.
+ Extend the half-the-edges existence argument to nonnegative edge weights.
+ \exlevel{Synthesis}
+\end{enumerate}
+\end{exercisebox}

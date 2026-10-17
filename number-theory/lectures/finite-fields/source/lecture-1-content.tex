@@ -1,0 +1,458 @@
+\teachcover{Changing the arithmetic}{1}{
+Rings, fields, and vectors
+\[
+X^2-X-1=0\qquad\text{modulo }p
+\]
+}{
+The students already know Fibonacci periodicity via a matrix. Today names
+the arithmetic they have been using and begins the vector-space reminder.
+The goal is not diagonalization yet. Allow calculation time at slides 8
+and 20. All rings in these lectures are commutative with identity, with
+$1\ne0$. A field has the additional inverse property.
+}
+
+\teachslide{The matrix we already know}{2}{
+\[
+A=\mat1110,\qquad
+\begin{pmatrix}F_{n+1}\\F_n\end{pmatrix}
+=A^n\begin{pmatrix}1\\0\end{pmatrix}.
+\]
+\[
+\det A=-1,\qquad A^2=A+I.
+\]
+Modulo any integer $m\ge2$, the step is reversible.
+
+\key{Today: what arithmetic are these entries using?}
+}{
+Use $F_0=0,F_1=1$. This matrix orders the state as $(F_{n+1},F_n)$;
+the book sometimes uses the reversed state and the conjugate matrix.
+They give the same period. Ask students to multiply $A$ by itself.
+The determinant is a unit modulo every modulus, so the inverse exists.
+Do not confuse invertibility of this particular matrix with every
+nonzero residue being invertible.
+}
+
+\teachslide{Where are the roots?}{2}{
+\[
+\det(XI-A)=X^2-X-1.
+\]
+Over the real numbers, its roots are
+\[
+\frac{1+\sqrt5}{2},\qquad \frac{1-\sqrt5}{2}.
+\]
+\key{Modulo $11$:}\quad $4^2=5$.
+
+\key{Modulo $7$:}\quad squares are $0,1,2,4$.
+}{
+Reduce $16$ modulo $11$. For $7$, list the squares of $0,1,2,3$;
+the remaining inputs give the same squares. Stress that writing a
+square-root symbol does not manufacture a residue with that property.
+Division by $2$ will make sense for odd primes. Prime $2$ is exceptional
+and can wait until Lecture 3's optional material.
+}
+
+\teachslide{Residues are numbers with arithmetic}{2}{
+\[
+\Z/n\Z=\{[0],[1],\ldots,[n-1]\}.
+\]
+\[
+[a]+[b]=[a+b],\qquad [a][b]=[ab].
+\]
+For example, in $\Z/6\Z$,
+\[
+[4]+[5]=[3],\qquad [4][5]=[2].
+\]
+We usually omit the brackets once the modulus is fixed.
+}{
+The objects are residue classes, not just chosen representatives.
+Recall that replacing $a$ by $a+kn$ changes neither the sum class nor
+the product class. This is the well-definedness behind modular arithmetic.
+Ask for the two reductions on the slide before displaying the next page.
+}
+
+\teachslide{The ring rules}{3}{
+A \key{commutative ring with identity} has addition and multiplication.
+\begin{itemize}
+\item Addition is associative and commutative; it has $0$ and negatives.
+\item Multiplication is associative and commutative; it has $1\ne0$.
+\item Multiplication distributes over addition.
+\end{itemize}
+\[
+a(b+c)=ab+ac.
+\]
+}{
+State closure under both operations. Say explicitly that $a+0=a$,
+$a+(-a)=0$, and $a\cdot1=a$. Associativity allows us to omit parentheses.
+Integers and residue classes are the running examples; real numbers also
+form a ring. These are the commutative rings with identity used in the
+course; other conventions exist. Do not add the field inverse axiom yet.
+The calculations inherited from integer arithmetic justify the axioms
+for $\Z/n\Z$.
+}
+
+\teachslide{A new phenomenon: zero divisors}{2}{
+In $\Z/6\Z$,
+\[
+\key{2\cdot3=0,\qquad 2\ne0,\quad3\ne0.}
+\]
+A \key{zero divisor} is a nonzero element $a$ for which
+\[
+ab=0\quad\text{for some nonzero }b.
+\]
+Cancellation can fail:
+\[
+2\cdot1=2\cdot4,\qquad 1\ne4.
+\]
+}{
+Check both products in the last equation: $2$ and $8$ have the same
+residue modulo $6$. Link cancellation failure to $2(1-4)=0$.
+Ask whether this could happen in the rational numbers. The point is
+that the arithmetic laws remain valid while familiar cancellation
+requires extra hypotheses.
+}
+
+\teachslide{Which elements can we divide by?}{2}{
+A \key{unit} is an element $u$ with a multiplicative inverse:
+\[
+uv=1\quad\text{for some }v.
+\]
+In $\Z/n\Z$,
+\[
+\key{[a]\text{ is a unit}\iff\gcd(a,n)=1.}
+\]
+In $\Z/6\Z$, the units are $1$ and $5$.
+}{
+Recall Bezout: $ax+ny=1$ supplies the inverse $[x]$. Conversely,
+$ax\equiv1\pmod n$ gives an integer equation $ax+ny=1$, forcing the gcd
+to be $1$. Thus inverses are not a new computational trick: extended
+Euclid already computes them. A unit cannot be a zero divisor, since
+multiplication by its inverse would force $b=0$.
+}
+
+\teachslide{Your turn: modulo eight}{3}{
+Work in $\Z/8\Z$.
+\begin{enumerate}
+\item Which of $1,2,\ldots,7$ are units?
+\item Find the inverse of $3$.
+\item Find two nonzero elements whose product is $0$.
+\end{enumerate}
+\spacer
+\key{Take one minute; then compare answers.}
+}{
+Keep this page visible while students calculate. Give a minute of
+quiet work, then invite answers in chat or aloud. If needed, suggest
+using the gcd test rather than trying every product. Ask students to
+reduce $3^2$ and $2\cdot4$. The following page contains the answers.
+}
+
+\teachslide{Modulo eight: answers}{1}{
+\[
+\text{Units: }1,3,5,7.
+\]
+\[
+3^{-1}=3,\qquad 3\cdot3=9=1\pmod8.
+\]
+\[
+2\cdot4=0\pmod8.
+\]
+\key{Being nonzero does not guarantee an inverse.}
+}{
+Confirm that every odd residue is coprime to $8$. The nonzero even
+residues are zero divisors. This is also a useful reminder that an
+element may be its own inverse without equaling $1$.
+}
+
+\teachslide{A field allows division}{2}{
+A \key{field} is a commutative ring with identity in which
+\[
+\text{every nonzero element has a multiplicative inverse.}
+\]
+Examples: $\Q$, $\R$, and $\Z/7\Z$.
+
+A field has no zero divisors:
+\[
+ab=0,\ a\ne0\quad\Longrightarrow\quad b=a^{-1}0=0.
+\]
+}{
+Division by $a\ne0$ means multiplication by $a^{-1}$. Zero has no
+inverse because $0b=0\ne1$. Integers are a ring but are not a field;
+for example $2$ has no integer inverse. Do not claim the converse
+that every ring without zero divisors is a field: the integers refute it.
+}
+
+\teachslide{Why prime moduli give fields}{3}{
+\[
+\key{\Z/n\Z\text{ is a field}\iff n\text{ is prime}.}
+\]
+If $n=p$ is prime, then $1\le a<p$ implies $\gcd(a,p)=1$.
+
+So every nonzero class has an inverse.
+\spacer
+If $n=rs$ with $1<r,s<n$, then
+\[
+[r][s]=[0]\qquad\text{with }[r],[s]\ne[0].
+\]
+We write $\F_p=\Z/p\Z$.
+}{
+Give both directions. In the composite case, $r$ cannot be invertible,
+since an inverse would turn $rs=0$ into $s=0$. The statement assumes
+$n\ge2$. Use $p=7$ and $n=8$ as the examples students have just seen.
+Introduce the blackboard-bold F notation slowly: this is the same
+familiar residue arithmetic, now recognized as a field.
+}
+
+\teachslide{Characteristic: count copies of one}{2}{
+Write $m\cdot1$ for the sum of $m$ copies of $1$.
+
+The \key{characteristic} is the least positive $m$ such that
+\[
+m\cdot1=0.
+\]
+If no such $m$ exists, the characteristic is $0$.
+\[
+\operatorname{char}(\Q)=0,\qquad
+\operatorname{char}(\Z/n\Z)=n.
+\]
+}{
+Distinguish repeated addition from an external scalar multiplication
+that has not yet been defined. Characteristic zero means that no
+positive number of copies of $1$ is zero, not that zero copies sum to
+zero. In residues the least positive return is exactly the modulus.
+Characteristic is defined for our rings as well as fields.
+}
+
+\teachslide{A field's positive characteristic is prime}{3}{
+Suppose the characteristic of a field is $m=rs$, with $1<r,s<m$.
+\[
+(r\cdot1)(s\cdot1)=m\cdot1=0.
+\]
+Minimality of $m$ gives
+\[
+r\cdot1\ne0,\qquad s\cdot1\ne0.
+\]
+This contradicts the absence of zero divisors.
+\spacer
+\key{A field has characteristic $0$ or a prime.}
+}{
+Use distributivity to explain why the product of the two repeated sums
+is the repeated sum with $rs$ terms. The minimality step is essential:
+neither factor is zero since both indices are smaller than $m$.
+Remind students that $m=1$ is excluded by $1\ne0$. The ring
+$\Z/6\Z$ shows why the field hypothesis is needed.
+}
+
+\teachslide{A finite field cannot have characteristic zero}{2}{
+In a finite field $K$, the list
+\[
+0,\ 1,\ 2\cdot1,\ 3\cdot1,\ldots
+\]
+must contain a repetition.
+
+If $r\cdot1=s\cdot1$ with $r<s$, subtract:
+\[
+(s-r)\cdot1=0.
+\]
+\key{Therefore $\operatorname{char}(K)=p$ for some prime $p$.}
+}{
+This uses finiteness and subtraction, then the preceding theorem.
+Do not assume the field's number of elements equals its characteristic.
+That tempting assumption is exactly what Lecture 2 will disprove.
+Here we know only that the characteristic is some positive prime.
+}
+
+\teachslide{Every finite field contains a prime field}{2}{
+If $\operatorname{char}(K)=p$, the elements
+\[
+0,\ 1,\ 2\cdot1,\ldots,(p-1)\cdot1
+\]
+form a copy of $\F_p$ inside $K$.
+
+Addition and multiplication agree with arithmetic modulo $p$.
+\spacer
+\key{$K$ may have more elements than these $p$ elements.}
+}{
+The map $[a]\mapsto a\cdot1$ is well defined modulo $p$, respects the
+two operations, and is injective by minimality of the characteristic.
+The nonzero elements have inverses within this copy by the same Bezout
+argument as before. This copy is called the prime subfield. Prepare
+the next step: elements of this smaller field can act as scalars on $K$.
+}
+
+\teachslide{Vectors and scalars}{2}{
+A \key{vector space over a field $k$} has
+\begin{itemize}
+\item vectors $u,v,\ldots$ that we can add;
+\item scalars $a,b,\ldots\in k$ that multiply vectors.
+\end{itemize}
+\[
+v\longmapsto av.
+\]
+Examples: $\R^2$ over $\R$ and $\F_3^2$ over $\F_3$.
+}{
+Always name both the vector space and its scalar field. Vectors need
+not be arrows and scalars need not be real numbers. For now use pairs
+to keep every operation visible. Later the vectors will be elements
+of a larger field. Scalar multiplication is an operation with one
+scalar input and one vector input, rather than two vector inputs.
+}
+
+\teachslide{The vector-space rules}{3}{
+Vector addition has the usual associative and commutative laws,
+a zero vector, and additive inverses.
+
+For $a,b\in k$ and $u,v\in V$,
+\[
+\begin{aligned}
+a(u+v)&=au+av, & (a+b)v&=av+bv,\\
+a(bv)&=(ab)v, & 1v&=v.
+\end{aligned}
+\]
+\key{The field $k$ supplies the scalar arithmetic.}
+}{
+State closure under vector addition and scalar multiplication.
+Read each law aloud and say which symbols are scalars and which are
+vectors. The zero vector is distinct in type from the scalar $0$,
+even when we use the same symbol. In coordinate spaces these axioms
+hold because the field laws hold in every coordinate. This is a
+definition, not an assertion that vectors can be multiplied together.
+}
+
+\teachslide{A familiar calculation over a different field}{2}{
+In $\F_3^2$, let $u=(1,2)$ and $v=(2,2)$.
+\[
+u+v=(0,1),\qquad 2u=(2,1).
+\]
+\[
+2u+v=(1,0).
+\]
+All coordinates are reduced modulo $3$.
+\spacer
+\key{Same vector rules; different scalar arithmetic.}
+}{
+Calculate each coordinate before reducing: $(3,4)$, $(2,4)$, and
+$(4,3)$. Ask students to verify $2(u+v)=2u+2v=(0,2)$.
+Three copies of any vector in this example sum to the zero vector.
+Contrast that with $\R^2$ without relying on a geometric picture.
+}
+
+\teachslide{Linear combinations and span}{3}{
+A \key{linear combination} of $v_1,\ldots,v_r$ is
+\[
+a_1v_1+\cdots+a_rv_r,\qquad a_i\in k.
+\]
+Their \key{span} is the set of all such combinations.
+
+In $\F_3^2$, for $u=(1,2)$,
+\[
+\Span(u)=\{(0,0),(1,2),(2,1)\}.
+\]
+}{
+There are three scalar choices here. The span includes zero and the
+original vector, and is closed under addition and scalar multiplication.
+For pairs $e_1=(1,0)$, $e_2=(0,1)$, every $(a,b)$ equals $ae_1+be_2$.
+Mention this as a contrast: one vector need not span the whole space.
+Independence and uniqueness of coordinates are Lecture 2's task.
+}
+
+\teachslide{Your turn: a span over $\F_2$}{3}{
+In $\F_2^2$, let $u=(1,1)$ and $v=(1,0)$.
+\begin{enumerate}
+\item List the vectors in $\Span(u)$.
+\item List all vectors $au+bv$ with $a,b\in\F_2$.
+\item Can $(0,1)$ be written as $au+bv$?
+\end{enumerate}
+\spacer
+\key{Remember: the only scalars are $0$ and $1$.}
+}{
+Give at least a minute of quiet calculation. Encourage a four-row
+table for $(a,b)=(0,0),(1,0),(0,1),(1,1)$. For the third question,
+ask for coefficients, not merely a yes. This exercise prepares the
+coordinate-counting argument without introducing independence early.
+}
+
+\teachslide{Four coefficient choices, four vectors}{1}{
+\[
+\begin{array}{c|c}
+(a,b)&au+bv\\\hline
+(0,0)&(0,0)\\
+(1,0)&(1,1)\\
+(0,1)&(1,0)\\
+(1,1)&(0,1)
+\end{array}
+\]
+\[
+\Span(u)=\{(0,0),(1,1)\},\qquad (0,1)=u+v.
+\]
+}{
+The table shows both spanning and uniqueness in this example.
+We will name the combination of those properties a basis next time.
+Do not generalize distinct coefficient choices giving distinct
+vectors to an arbitrary spanning list: independence is needed.
+}
+
+\teachslide{What we have built today}{2}{
+\begin{itemize}
+\item Residue arithmetic gives rings; prime moduli give fields.
+\item Every finite field contains some $\F_p$.
+\item Vector spaces can use $\F_p$ as their scalar field.
+\end{itemize}
+\spacer
+Next time: \key{bases, counting, and a field with $49$ elements.}
+}{
+Ask students to explain the distinction between a unit and a nonzero
+element. Then connect the three bullets: the copy of $\F_p$ supplies
+scalars for a vector space whose vectors are elements of the larger
+field. We will check its vector-space rules next time rather than
+asking them to accept the slogan on faith.
+}
+
+\teachslide{Exit question}{2}{
+Why is $\Z/6\Z$ a ring but not a field?
+
+Why can it not serve as the scalar \emph{field} in our definition
+of a vector space?
+\spacer
+\key{Give a specific arithmetic obstruction.}
+}{
+Expected answer: $2\cdot3=0$ with both factors nonzero, so $2$ and $3$
+cannot have inverses. Our vector-space definition requires a field
+of scalars. Addition and scalar multiplication over a ring can still
+be studied; those objects are modules, an optional observation on the
+backup slide. End here at minute 50.
+}
+
+\backups
+\backupslide{Rings as scalars: a glimpse beyond vector spaces}{
+One can use a ring of scalars and keep the vector-space identities.
+
+The resulting object is called a \key{module}.
+
+Over $\Z/6\Z$, $2v=0$ need not imply $v=0$:
+\[
+v=3,\qquad 2v=0.
+\]
+Our next lectures use fields, where nonzero scalars are invertible.
+}{
+Use only if a student asks whether the ring case is meaningless.
+It is meaningful, but some basis and dimension facts change. The
+example uses the ring itself as a module over itself. Avoid developing
+module theory during the main lecture.
+}
+
+\backupslide{One set, two different scalar fields}{
+The complex numbers form a vector space over $\R$:
+\[
+z=a+bi,\qquad a,b\in\R.
+\]
+The same set forms a vector space over $\mathbb C$:
+\[
+z=z\cdot1.
+\]
+\key{Changing the scalars can change the dimension.}
+}{
+This example is optional because complex numbers may not be familiar.
+Over the reals, $1,i$ form a basis; over the complex numbers, $1$ alone
+does. Lecture 2 supplies the precise basis definition. The example
+anticipates $\F_{49}$ over $\F_7$ without implying any embedding into
+the ordinary real or complex fields.
+}

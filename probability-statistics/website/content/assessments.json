@@ -1,5 +1,14 @@
 [
   {
+    "id": "midterm-review-quiz",
+    "kind": "quiz",
+    "label": "Midterm review",
+    "title": "Cumulative review through continuous distributions",
+    "description": "Timed practice in counting, conditioning, dependent indicators, discrete and continuous laws, coupon collection, density calculations, and Chebyshev's inequality.",
+    "details": "50 minutes · 50 points",
+    "studentFile": "midterm-review-quiz.pdf"
+  },
+  {
     "id": "problem-set-01",
     "kind": "problem-set",
     "label": "Problem Set 1",

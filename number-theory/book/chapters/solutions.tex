@@ -739,7 +739,7 @@ $[1;\overline1]$.
 \textbf{7.} The nominal count gains $0.08$ day per cycle, hence $0.4$ day
 after $5$ cycles, $5.2$ days after $65$, and $52$ days after $650$.
 
-\section*{Appendix \ref{app:finite-fields}: extension arithmetic and periods}
+\section*{Appendix \ref{app:finite-fields}: finite fields and division rings}
 
 \textbf{1.} The product is $13+7s=6$. Since
 $1-5\cdot2^2=-19=2$ in $\F_7$, its inverse is
@@ -771,3 +771,87 @@ multiples are $8,16,10,28,28$ and the respective least periods are
 $8,16,10,28,14$. The exceptional primes $2,5$ have periods $3,20$.
 The modular arithmetic notebook gives implementations of direct pair
 iteration, fast doubling, and factor removal for comparison.
+
+\textbf{7.} The units modulo $9$ are $1,2,4,5,7,8$, and the
+characteristic is $9$. In $\F_3(s)$, $s^2=2$, the characteristic is
+$3$ and all eight nonzero elements are units: $2$ is nonsquare in
+$\F_3$, so the conjugate inverse formula applies. Both rings have
+nine elements, but different characteristics and different unit counts.
+
+\textbf{8.} The equations $a+2b=0$, $2a+b=0$ give $-3b=0$ in
+$\F_5$, hence $b=a=0$. For any target $(x,y)$, solving these two
+equations gives unique coefficients, so the pair spans as well as
+being independent. In particular $(3,4)=4v$, with coordinates $(0,4)$.
+The list $u,v,u+v$ spans but has the nontrivial relation
+$u+v-(u+v)=0$ among its three listed vectors. Coordinates in that
+list are not unique: the third vector is also the sum of the first two.
+
+\textbf{9.} The size $18$ is impossible because it is not a prime
+power. Sizes $27=3^3$ and $64=2^6$ are possible by the existence part
+of Theorem~\ref{thm:galois-field-uniqueness}; their characteristics and
+dimensions are $(3,3)$ and $(2,6)$. The necessary-size theorem alone
+would not prove existence.
+
+\textbf{10.} The squares in $\F_5$ are $0,1,4$. Thus for a nonzero
+pair $(a,b)$, the scalar $a^2-2b^2$ cannot vanish: if $b\ne0$, that
+would make $2$ a square, and if $b=0$, it would force $a=0$.
+The conjugate formula gives $(1+s)^{-1}=(1-s)/(-1)=4+s$;
+indeed $(1+s)(4+s)=1$. Under the alternative relation,
+$(s-2)(s+2)=0$ with two nonzero formal pairs, so the ring is not a field.
+
+\textbf{11.} Every field element is $a+bs$, so $s$ generates the
+extension. But $s^2=-1$ and $s^4=1$, with $s^2\ne1$, so its order
+is $4$, not $8$. For $g=1+s$, $g^2=2s$, $g^4=2=-1$, and $g^8=1$.
+Its order is therefore $8$. A power $g^r$ generates precisely when
+$\gcd(r,8)=1$. The four primitive elements $g,g^3,g^5,g^7$ are,
+respectively, $1+s,1+2s,2+2s,2+s$.
+
+\textbf{12.} Each cubic has value $1$ at both $0$ and $1$, so it
+has no root in $\F_2$. A reducible cubic over a field has a linear
+factor, so both are irreducible. In $L$, $t^3+t^2+1=0$, whence
+$t^{-1}=t^2+t$. Dividing the cubic relation by $t^3$ gives
+$(t^{-1})^3+t^{-1}+1=0$. Thus evaluation $s\mapsto t^{-1}$ defines
+a homomorphism $K\to L$. It preserves $1$, so is injective since
+$K$ is a field; both fields have eight elements, so it is an isomorphism.
+
+\textbf{13.} The formal derivative of $X^{p^n}-X$ is $-1$, so a
+repeated root, which would also be a root of the derivative, is
+impossible. In contrast, $X^p-1=(X-1)^p$ in characteristic $p$ has
+only the root $1$, with multiplicity $p$. Splitting a degree-$p^n$
+polynomial only counts $p^n$ roots with multiplicity; distinctness is
+what gives a set of exactly $p^n$ elements in the existence proof.
+
+\textbf{14.} Every automorphism fixes $\F_3$ and sends $s$ to a
+root of $X^2-2$, hence to $s$ or $-s$. Both maps work: they are
+the identity and Frobenius $a+bs\mapsto a-bs$. They are distinct.
+The classification identifies an isomorphism class of fields, while
+the choice of isomorphism may still vary by an automorphism.
+
+\textbf{15.} Since $4096=2^{12}$, the divisors $1,2,3,4,6,12$
+give the subfield sizes $2,4,8,16,64,4096$, each occurring exactly
+once. Both the $16$-element and the $64$-element subfield contain
+the unique four-element subfield, by the subfield theorem applied
+inside each. Their intersection is a field of size $2^d$ with $d$
+dividing both $4$ and $6$. Thus $d\le2$, and the contained four-element
+field forces $d=2$. Their intersection is $\F_4$.
+
+\textbf{16.} The counts are $(9-1)(9-3)=48$, $48/(3-1)=24$, and
+$(8-1)(8-2)(8-4)=168$. For the last count, the spans excluded at the
+three stages have sizes $1,2,4$. Over $\F_2$, the only nonzero
+determinant value is $1$, so every invertible matrix has that determinant.
+
+\textbf{17.} Dividing $X^6-1$ by
+$\Phi_1\Phi_2\Phi_3$ gives $\Phi_6=X^2-X+1$. Here $q=2,n=6$.
+For a noncentral element, the centralizer dimension is a proper divisor
+$d=1,2,3$ of $6$, so its class has size $63,21,9$, respectively.
+All are divisible by $\Phi_6(2)=3$. But the class equation would give
+$63=1+$ a sum of these multiples of $3$, impossible modulo $3$.
+
+\textbf{18.} The cyclicity proof uses the polynomial root bound
+over a commutative field. That bound is not yet available for a
+division ring; factoring off one root and evaluating at another
+cannot use commutative polynomial arithmetic. In the quaternions,
+$i^2=j^2=k^2=-1$, so the degree-two polynomial $X^2+1$ already has
+at least three distinct roots. Thus the degree bound can fail despite
+every nonzero element being invertible. Wedderburn establishes the
+commutativity needed for the finite-field argument.

@@ -1,21 +1,30 @@
-\chapter{New numbers for old recurrences}
+\chapter{Finite fields and their arithmetic}
 \label{app:finite-fields}
-\chaptertag{An optional later route: extensions, Frobenius, and Fibonacci periods}
+\chaptertag{Coordinates, classification, and applications}
 
 \begin{bigidea}
-Chapter~\ref{chap:modular} proves Fibonacci periodicity using only
-reversible pairs of residues. This appendix answers the later question:
-how can the roots of $X^2-X-1$ help compute a period when those roots
-are not in $\F_p$? First we build a field containing them and learn its
-arithmetic. Only then do we use Frobenius and multiplicative orders.
+Finite fields are the possible finite arithmetics in which every nonzero
+element can be divided by. Coordinates show why their sizes are prime
+powers. Polynomial constructions and cyclic multiplicative groups show
+that every prime-power size occurs and determines the arithmetic up to
+isomorphism. These tools then explain the Fibonacci periods first seen
+in Chapter~\ref{chap:modular}. A final bonus proves that even dropping
+commutativity from finite division does not produce any new examples.
 \end{bigidea}
 
 Read this after modular inverses and interpolation
 (Chapter~\ref{chap:modular}), Fermat's theorem
 (Chapter~\ref{chap:necklaces}), orders in finite groups
 (Chapter~\ref{chap:groups}), and the prime binomial identity
-(Chapter~\ref{chap:binomial}). The current modular-arithmetic course can
-stop at the reversible-pair proof and return here later.
+(Chapter~\ref{chap:binomial}). The first three sections develop the
+material through finite-fields Lecture 2. Cyclicity, matrix counts, and
+Fibonacci periods follow in the order of Lectures 3--4, with the finite-field
+classification inserted after cyclicity. Frobenius also describes all
+automorphisms and subfields. Section~\ref{sec:wedderburn} is independent
+bonus reading once dimensions and Lagrange's theorem are available;
+it supplies its own additional lemmas.
+
+\input{chapters/finite_field_foundations}
 
 \section{Build an extension before taking powers in it}
 \label{sec:quadratic-field-arithmetic}
@@ -83,6 +92,8 @@ Equivalently, $X^2-d$ has no root in $\F_p$, so, being quadratic,
 it is irreducible. If a chosen polynomial factors, its quotient need
 not be a field; irreducibility is doing the work.
 
+\input{chapters/finite_field_structure}
+
 \section{Frobenius moves the new elements}
 \label{sec:frobenius}
 
@@ -131,6 +142,65 @@ It cannot be $s$, since $s$ is not in the fixed prime field.
 Therefore $(a+bs)^p=a-bs$ in this quadratic extension as well.
 Finiteness was essential to the surjectivity argument; no assertion
 about arbitrary infinite fields is needed here.
+
+\subsection*{All automorphisms and all subfields}
+
+For $K=\F_{p^n}$, every element satisfies $a^{p^n}=a$, so
+$\operatorname{Fr}^n$ is the identity. No power
+$\operatorname{Fr}^r$ with $0<r<n$ is the identity: otherwise the
+degree-$p^r$ polynomial $X^{p^r}-X$ would have all $p^n$ elements as roots.
+Thus Frobenius has order exactly $n$.
+
+\begin{proposition}
+The automorphisms of $\F_{p^n}$ are exactly
+$\operatorname{id},\operatorname{Fr},\ldots,\operatorname{Fr}^{n-1}$.
+For each positive divisor $m$ of $n$, there is exactly one subfield
+with $p^m$ elements, namely
+\[
+\{a\in\F_{p^n}:a^{p^m}=a\}.
+\]
+There are no other subfields.
+\end{proposition}
+\begin{proof}
+Every field automorphism fixes $1$ and hence $\F_p$. A multiplicative
+generator $g$ generates the whole field, so its image determines the
+automorphism. Its minimal polynomial has degree $n$: evaluation gives
+an isomorphism $\F_p[X]/(m_g)\simeq K$, and comparison of cardinalities
+gives $\deg m_g=n$. The image of $g$ must be one of its at most $n$
+roots. We have already found $n$ distinct Frobenius powers, so these
+are all the automorphisms. Their group is cyclic of order $n$.
+
+If $m\mid n$, then $p^m-1\mid p^n-1$. In the cyclic group
+$K^\times$ of order $p^n-1$, there are exactly $p^m-1$ solutions of
+$a^{p^m-1}=1$: for a generator $g$, they are the powers whose exponents
+are multiples of $(p^n-1)/(p^m-1)$. Adjoining zero gives $p^m$
+solutions of $a^{p^m}=a$. As in the existence proof, these roots form
+a field. Any subfield with $p^m$ elements consists entirely of such
+roots by Lagrange, so it must be this field.
+
+Conversely, any subfield contains $\F_p$ and has size $p^m$ for some
+$m$. Regard $K$ as a vector space over it, with a finite basis of
+length $r$. Counting coordinates gives $p^n=(p^m)^r$, so $n=mr$.
+Thus $m\mid n$, as claimed.
+\end{proof}
+
+For example, the subfield sizes in $\F_{64}$ are $2,4,8,64$, because
+the positive divisors of $6$ are $1,2,3,6$. The subfields of sizes $4$
+and $8$ are not contained in one another. The two automorphisms of
+$\F_{49}$ are precisely the identity and the conjugation $a+bs\mapsto a-bs$.
+
+\begin{center}
+\begin{tikzpicture}[every node/.style={draw=teal,rounded corners,
+fill=mist,minimum width=15mm,minimum height=8mm},thick]
+\node (f2) at (0,0) {$\F_2$};
+\node (f4) at (-1.5,1) {$\F_4$};
+\node (f8) at (1.5,1) {$\F_8$};
+\node (f64) at (0,2) {$\F_{64}$};
+\draw[teal] (f2)--(f4)--(f64)--(f8)--(f2);
+\end{tikzpicture}
+
+\small The subfields of $\F_{64}$, with larger fields above smaller ones.
+\end{center}
 
 \section{Return to the Fibonacci roots}
 \label{sec:fibonacci-field-periods}
@@ -282,6 +352,8 @@ For small moduli, simply following the pair orbit remains a complete
 method and requires none of the later field theory.
 \end{checkpoint}
 
+\input{chapters/finite_division_rings}
+
 \begin{exercisebox}
 \begin{enumerate}
   \item In $\F_7(s)$ with $s^2=5$, compute $(1+2s)(3+s)$ and
@@ -307,5 +379,51 @@ method and requires none of the later field theory.
   period procedure with direct pair iteration for several small
   primes. Treat $2$ and $5$ separately, and report candidate multiples
   as well as the least periods. \exlevel{Exploration}
+  \item Find the units and characteristic of $\Z/9\Z$. Compare them
+  with those of $\F_3(s)$, $s^2=2$. Why does the number of elements
+  alone not identify a ring? \exlevel{Fluency}
+  \item In $\F_5^2$, show $u=(1,2),v=(2,1)$ form a basis and find
+  the coordinates of $(3,4)$. Give a spanning list that is not a basis,
+  and explain which coordinate property fails. \exlevel{Fluency}
+  \item Could a field have $18$, $27$, or $64$ elements? For each
+  possible size, give the characteristic and dimension over the prime
+  field, and identify the result that guarantees existence.
+  \exlevel{Reasoning}
+  \item Construct the field $\F_5(s)$ with $s^2=2$. Prove the
+  nonvanishing needed for division, and find $(1+s)^{-1}$. What fails
+  if the relation is changed to $s^2=4$ on formal pairs?
+  \exlevel{Reasoning}
+  \item In $\F_9=\F_3(s)$, $s^2=2$, show that $s$ generates the field
+  but not its multiplicative group. Show $1+s$ has order $8$ and
+  find all primitive elements. \exlevel{Reasoning}
+  \item The cubics $X^3+X+1$ and $X^3+X^2+1$ over $\F_2$ give
+  fields $K=\F_2(s)$ and $L=\F_2(t)$, respectively. Prove they are
+  irreducible and exhibit an explicit isomorphism $K\to L$.
+  \emph{Hint:} use $s\mapsto t^{-1}$. \exlevel{Synthesis}
+  \item Explain why $X^{p^n}-X$ has no repeated roots in any extension
+  of $\F_p$. Contrast this with $X^p-1$ in characteristic $p$.
+  Why does the existence proof need the distinct-root assertion?
+  \exlevel{Reasoning}
+  \item Find every automorphism of $\F_9=\F_3(s)$, $s^2=2$.
+  Explain why uniqueness of a finite field up to isomorphism does not
+  imply uniqueness of the isomorphism. \exlevel{Reasoning}
+  \item List all subfield sizes in $\F_{4096}$ and determine the
+  intersection of its subfields of sizes $16$ and $64$. Justify both
+  the existence and the uniqueness used in your answer.
+  \exlevel{Synthesis}
+  \item Compute $|\operatorname{GL}_2(\F_3)|$,
+  $|\operatorname{SL}_2(\F_3)|$, and
+  $|\operatorname{GL}_3(\F_2)|$ by choosing columns. Why does every
+  invertible matrix over $\F_2$ have determinant $1$?
+  \exlevel{Fluency}
+  \item Compute $\Phi_6(X)$ by factoring $X^6-1$. In a hypothetical
+  division ring of $64$ elements with center $\F_2$, list the possible
+  sizes of noncentral conjugacy classes from the proof. Show directly
+  that its class equation cannot hold. \exlevel{Synthesis}
+  \item Why cannot the finite-field cyclicity proof simply be applied
+  to a finite division ring before proving Wedderburn? Locate the field
+  property it uses. In the real quaternions, check that $i,j,k$ are
+  distinct roots of $X^2+1$. What familiar polynomial assertion fails?
+  \exlevel{Reasoning}
 \end{enumerate}
 \end{exercisebox}

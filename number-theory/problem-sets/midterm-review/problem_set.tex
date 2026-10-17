@@ -1,0 +1,467 @@
+\input{../inversion-style}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\setname}{Midterm review problem set}
+\newcommand{\per}[1]{\overline{#1}}
+\DeclareMathOperator{\ord}{ord}
+\hypersetup{pdftitle={Number Theory: Midterm Review through Finite Fields, Lecture 2}}
+\begin{document}
+\handouttitle{From Euclid to finite fields}
+{16 review problems \textbar\ 160 practice points + 20 optional
+\textbar\ Suggested time: 5--7 hours over several sittings}
+{Earlier lectures and assignments, ending with finite-fields Lecture 2:
+independence, bases, dimension, prime-power cardinalities, and quadratic extensions.}
+
+\textbf{How to use this set.} This is a review bank, not a timed mock exam.
+Try each problem before reading a solution; explain every use of a theorem.
+Write on separate paper. The point values indicate relative weight.
+You may quote results proved in class except when explicitly asked to prove
+them. The final two optional problems revisit the earlier enrichment set.
+Finite-field cyclicity, matrix counts, Frobenius, and Fibonacci period
+arguments from Lectures 3--4 are outside this set's scope.
+
+\textbf{Notation.} $v_p(m)$ is the exponent of the prime $p$ in a nonzero
+integer $m$; extend it to nonzero rationals by
+$v_p(a/b)=v_p(a)-v_p(b)$. The functions $\varphi,\tau,\sigma$ count units,
+count positive divisors, and sum positive divisors, respectively.
+The M\"obius function satisfies $\mu(1)=1$, vanishes on integers divisible
+by a prime square, and equals $(-1)^r$ on a product of $r$ distinct primes.
+
+\ifsolutions
+\textbf{Instructor note.} Each core problem is worth 10 practice points;
+subpart allocations are shown. Accept equivalent arguments and award method
+credit after carried arithmetic errors. Suggested time is an estimate, not
+a classroom-tested completion time. Coverage follows the earlier assignments;
+the finite-field cutoff follows the main route of Lecture 2.
+\fi
+
+\topic{I. Integers and continued fractions}
+\problem{Euclid gives a certificate}{10}
+\begin{enumerate}
+\item Compute $\gcd(252,165)$ by Euclid and express it as an integer
+linear combination of $252$ and $165$. \partpts{5}
+\item Find all solutions of $165x\equiv6\pmod{252}$, giving the distinct
+residues modulo $252$. Explain why there are exactly that many. \partpts{5}
+\end{enumerate}
+\begin{solution}
+The successive nonzero remainders are $87,78,9,6,3$, so the gcd is $3$.
+Back substitution gives $3=19\cdot252-29\cdot165$.
+Multiplying by $2$ gives a solution $x=-58$. Dividing the congruence
+by $3$ gives $55x\equiv2\pmod{84}$, with a unique solution modulo $84$
+because $\gcd(55,84)=1$. Thus $x\equiv26\pmod{84}$, or
+$x\equiv26,110,194\pmod{252}$. These three classes exhaust the solutions.
+\end{solution}
+
+\problem{What factorization proves}{10}
+\begin{enumerate}
+\item Prove that $\sqrt{72}$ is irrational by comparing prime exponents
+in a hypothetical equality $a^2=72b^2$, with $a,b$ nonzero integers.
+\partpts{4}
+\item Prove there are infinitely many primes congruent to $3$ modulo $4$.
+\emph{Hint:} given a proposed complete list $p_1,\ldots,p_r$, consider
+$N=4p_1\cdots p_r-1$. Explain why some prime divisor of $N$ is $3$ modulo $4$;
+do not assume $N$ is prime. \partpts{6}
+\end{enumerate}
+\begin{solution}
+In $a^2=2^3 3^2 b^2$, the exponent of $2$ is even on the left and odd
+on the right, contradicting unique factorization. For the second part,
+the list is nonempty since $3$ is such a prime. The positive odd integer
+$N\equiv3\pmod4$ has only odd prime factors. If all were $1\pmod4$,
+their product with multiplicities would be $1\pmod4$. Thus some prime
+$q\mid N$ is $3\pmod4$. But $N\equiv-1\pmod{p_i}$ for each $i$, so
+$q$ is absent from the list, a contradiction.
+\end{solution}
+
+\problem{A finite continued fraction remembers B\'ezout}{10}
+\begin{enumerate}
+\item Find the simple continued fraction of $157/68$ and all of its
+convergents. Use the convention that the last digit is at least $2$.
+\partpts{4}
+\item Multiply the digit matrices
+$D(a)=\begin{psmallmatrix}a&1\\1&0\end{psmallmatrix}$.
+Use the determinant of their product to find the inverse of $68$ modulo $157$.
+\partpts{4}
+\item Compute exactly $157/68-30/13$. \partpts{2}
+\end{enumerate}
+\begin{solution}
+Euclid gives $157=2\cdot68+21$, $68=3\cdot21+5$,
+$21=4\cdot5+1$, $5=5\cdot1$. Thus $157/68=[2;3,4,5]$,
+with convergents $2/1,7/3,30/13,157/68$.
+The product is $\begin{psmallmatrix}157&30\\68&13\end{psmallmatrix}$,
+of determinant $1$. Consequently $157\cdot13-68\cdot30=1$, so
+$68^{-1}\equiv-30\equiv127\pmod{157}$.
+Finally $157/68-30/13=(2041-2040)/884=1/884$.
+\end{solution}
+
+\studentbreak
+\problem{Periodic is not always purely periodic}{10}
+For $x_n=(P_n+\sqrt D)/Q_n$ and $a_n=\lfloor x_n\rfloor$, recall
+\[
+P_{n+1}=a_nQ_n-P_n,\qquad Q_{n+1}=(D-P_{n+1}^2)/Q_n.
+\]
+\begin{enumerate}
+\item Run this recurrence for $\sqrt{11}$ until a state repeats, and
+give its continued fraction. Justify the floors with integer bounds.
+\partpts{5}
+\item Decide which of $\sqrt{11}$, $3+\sqrt{11}$, and
+$(3+\sqrt{11})/2$ have purely periodic expansions. Use Galois's
+criterion $x>1$ and $-1<x'<0$, where $x'$ is the conjugate.
+Read off the purely periodic expansions from (a). \partpts{5}
+\end{enumerate}
+\begin{solution}
+The states $(P_n,Q_n,a_n)$ are
+$(0,1,3),(3,2,3),(3,1,6),(3,2,3)$.
+Indeed $3<\sqrt{11}<4$, so
+$3<(3+\sqrt{11})/2<7/2$ and $6<3+\sqrt{11}<7$.
+Thus $\sqrt{11}=[3;\per{3,6}]$.
+Its conjugate is $-\sqrt{11}<-1$, so it is not purely periodic.
+The other two numbers exceed $1$, and their conjugates lie in $(-1,0)$.
+Their expansions are $3+\sqrt{11}=[\per{6,3}]$ and
+$(3+\sqrt{11})/2=[\per{3,6}]$.
+\end{solution}
+
+\topic{II. Congruences, powers, and arithmetic functions}
+\problem{Reassemble residues, and check cancellation}{10}
+\begin{enumerate}
+\item Solve $x\equiv3\pmod8$, $x\equiv4\pmod9$, and justify uniqueness
+modulo $72$. \partpts{5}
+\item Find every solution of $x^2\equiv1\pmod{15}$ using reduction
+modulo $3$ and $5$. Why does the argument
+``$(x-1)(x+1)=0$, so one factor is zero'' fail modulo $15$? \partpts{5}
+\end{enumerate}
+\begin{solution}
+Set $x=3+8k$. Modulo $9$, $3-k\equiv4$, so $k\equiv8$ and
+$x\equiv67\pmod{72}$. A difference of two solutions is divisible by
+both $8$ and $9$, hence by $72$; adding multiples of $72$ preserves both
+congruences. Modulo each prime $3,5$, the roots are $\pm1$.
+The four CRT combinations yield $1,4,11,14$ modulo $15$.
+Modulo $15$ there are nonzero zero divisors: for $x=4$,
+both $x-1=3$ and $x+1=5$ are nonzero, but their product is zero.
+\end{solution}
+
+\problem{Fermat and inverse pairing}{10}
+\begin{enumerate}
+\item Compute $7^{222}\pmod{13}$ efficiently. \partpts{3}
+\item Prove Wilson's theorem $(p-1)!\equiv-1\pmod p$ for a prime $p$
+by pairing inverses. Account for $p=2$. \partpts{5}
+\item The composite number $341$ satisfies $2^{340}\equiv1\pmod{341}$.
+Explain why this is consistent with Fermat's little theorem. \partpts{2}
+\end{enumerate}
+\begin{solution}
+Since $222\equiv6\pmod{12}$, Fermat gives $7^{222}\equiv7^6$.
+Now $7^2\equiv10$, $7^3\equiv5$, and $7^6\equiv25\equiv12$.
+For odd $p$, each nonzero residue has a unique inverse. The self-inverse
+ones solve $(a-1)(a+1)=0$ in $\F_p$, so are exactly $1,-1$.
+All other factors pair to $1$, leaving product $-1$.
+For $p=2$, $1!=1\equiv-1$. Fermat gives a necessary condition for
+primality, not a sufficient one; its converse is false.
+\end{solution}
+
+\problem{Orders explain exponent reduction}{10}
+\begin{enumerate}
+\item Find the orders of $2$ modulo $5$, modulo $7$, and modulo $35$.
+Justify the relation between the three orders. \partpts{4}
+\item Find $\varphi(35)$ and compute $2^{1000}\pmod{35}$. \partpts{3}
+\item Explain how Lagrange's theorem applied to $(\Z/n\Z)^\times$
+proves Euler's theorem. State the hypothesis on the base. \partpts{3}
+\end{enumerate}
+\begin{solution}
+The powers modulo $5$ give order $4$; modulo $7$, $2,4,1$ give order $3$.
+The congruence $2^k\equiv1\pmod{35}$ holds precisely when it holds
+modulo both $5$ and $7$, or when $4\mid k$ and $3\mid k$.
+Thus the order is $12$. Also $\varphi(35)=4\cdot6=24$ and
+$1000\equiv4\pmod{12}$, so $2^{1000}\equiv16\pmod{35}$.
+For $\gcd(a,n)=1$, the residue of $a$ is in the unit group of size
+$\varphi(n)$. Its cyclic subgroup has size $\ord_n(a)$, which divides
+$\varphi(n)$ by Lagrange. Hence $a^{\varphi(n)}\equiv1\pmod n$.
+\end{solution}
+
+\problem{Work one prime at a time}{10}
+\begin{enumerate}
+\item Factor $360$ and compute $\tau(360),\sigma(360),\varphi(360)$,
+$\mu(360)$, and $\mu(30)$. Show the prime-power calculations. \partpts{5}
+\item Prove that if $f$ is multiplicative, then
+$F(n)=\sum_{d\mid n}f(d)$ is multiplicative. Explain precisely where
+coprimality is used. \partpts{5}
+\end{enumerate}
+\begin{solution}
+Since $360=2^3 3^2 5$,
+\[
+\tau(360)=4\cdot3\cdot2=24,\quad
+\sigma(360)=15\cdot13\cdot6=1170,\quad
+\varphi(360)=360(1-1/2)(1-1/3)(1-1/5)=96.
+\]
+Also $\mu(360)=0$ and $\mu(30)=-1$.
+For $\gcd(m,n)=1$, unique factorization gives a bijection
+between $d\mid mn$ and pairs $a\mid m,b\mid n$, via $d=ab$.
+Every such pair is coprime, so $f(ab)=f(a)f(b)$. Therefore
+$F(mn)=\sum_{a\mid m}\sum_{b\mid n}f(a)f(b)=F(m)F(n)$.
+Also $F(1)=f(1)=1$, as required by the normalized definition.
+\end{solution}
+
+\studentbreak
+\problem{Invert divisor sums and count exact periods}{10}
+\begin{enumerate}
+\item Suppose $\sum_{d\mid n}f(d)=n^2$. Use M\"obius inversion to
+give a formula for $f(n)$, and evaluate $f(12)$. \partpts{4}
+\item Let $A(n)$ count labeled binary words of length $n$ with least
+rotational period exactly $n$. Explain why
+$2^n=\sum_{d\mid n}A(d)$. Find $A(6)$ and the number of binary necklaces
+of length $6$ with least period $6$, where rotations are identified.
+Explain the final division. \partpts{6}
+\end{enumerate}
+\begin{solution}
+Inversion gives $f(n)=\sum_{d\mid n}\mu(d)(n/d)^2$.
+At $12$, only $d=1,2,3,6$ contribute, giving $144-36-16+4=96$.
+Every length-$n$ word has a unique least period $d\mid n$ and is obtained
+by repeating a unique length-$d$ word of least period $d$. Thus the
+divisor sum holds. Inverting it gives
+$A(6)=2^6-2^3-2^2+2=54$.
+A word of least period $6$ has six distinct rotations, so there are
+$54/6=9$ such necklaces. Words of smaller period would have smaller
+rotation classes, which is why the least-period restriction matters.
+\end{solution}
+
+\topic{III. Valuations, primes, and $p$-adic distance}
+\problem{Count prime factors without expanding factorials}{10}
+\begin{enumerate}
+\item State Legendre's formula. Use it to find $v_2(40!)$ and the
+number of trailing decimal zeros of $40!$. \partpts{3}
+\item Put $B_n=\binom{2n}{n}$. Prove that each summand in
+\[
+v_p(B_n)=\sum_{j\ge1}\left(
+\left\lfloor\frac{2n}{p^j}\right\rfloor-
+2\left\lfloor\frac{n}{p^j}\right\rfloor\right)
+\]
+is $0$ or $1$, and deduce $B_n\mid\operatorname{lcm}(1,\ldots,2n)$.
+\partpts{4}
+\item For prime $p$, prove $p\mid\binom pk$ when $0<k<p$.
+Deduce $(X+Y)^p=X^p+Y^p$ as a polynomial identity in characteristic $p$.
+\partpts{3}
+\end{enumerate}
+\begin{solution}
+Legendre gives $v_p(n!)=\sum_{j\ge1}\lfloor n/p^j\rfloor$.
+Thus $v_2(40!)=20+10+5+2+1=38$, while $v_5(40!)=8+1=9$;
+there are $\min(38,9)=9$ trailing zeros.
+Writing $n/p^j=q+t$, $0\le t<1$, makes each summand $\lfloor2t\rfloor$,
+which is $0$ or $1$. Only powers $p^j\le2n$ can contribute, so
+$v_p(B_n)\le\max\{j:p^j\le2n\}$, the valuation of the lcm (zero
+if $p>2n$). Compare valuations for all primes.
+Finally $p!$ has one factor $p$ and neither $k!$ nor $(p-k)!$ has any.
+Thus $v_p\binom pk=1$. The binomial theorem in characteristic $p$
+loses all intermediate coefficients, proving the polynomial identity.
+\end{solution}
+
+\problem{Recover the scale of the primes}{10}
+Let $\pi(x)=\#\{p\le x:p\text{ prime}\}$ and
+$\vartheta(x)=\sum_{p\le x}\log p$, with natural logarithms.
+\begin{enumerate}
+\item Explain why the central binomial coefficient is the largest in
+its row, and prove $4^n/(2n+1)\le B_n<4^n$ for $n\ge1$. \partpts{3}
+\item Use Problem 10 to prove \partpts{4}
+\[
+\pi(2n)\ge\frac{2n\log2-\log(2n+1)}{\log(2n)}.
+\]
+\item You may use the lecture estimate $\vartheta(x)\le Ax$ for a fixed
+constant $A>0$ and all $x\ge2$. Show
+$\pi(x)\le\sqrt x+2Ax/\log x$.
+Explain why these estimates give $\pi(x)\asymp x/\log x$ but do not
+give $\pi(x)\sim x/\log x$. \partpts{3}
+\end{enumerate}
+\begin{solution}
+Consecutive coefficients have ratio $(2n-k)/(k+1)$, so they increase
+to the center and then decrease. Their sum is $4^n$; the largest is at
+least the average and strictly less than the sum.
+By Problem 10, $B_n$ divides $L=\operatorname{lcm}(1,\ldots,2n)$.
+For each prime $p\le2n$, its factor in $L$ is at most $2n$, whence
+$\log B_n\le\log L\le\pi(2n)\log(2n)$.
+Combine this with the lower central bound.
+There are at most $\sqrt x$ primes at most $\sqrt x$. Each larger prime
+up to $x$ contributes at least $\tfrac12\log x$ to $\vartheta(x)$,
+giving the stated upper bound. For general sufficiently large $x$,
+set $n=\lfloor x/2\rfloor$ in the lower bound and use
+$\pi(x)\ge\pi(2n)$. The resulting lower ratio tends to $\log2>0$;
+also $\sqrt x=o(x/\log x)$. Thus fixed positive lower and upper
+constants work eventually. Such bounds do not identify the limiting
+ratio as $1$, or even prove that a limiting ratio exists.
+\end{solution}
+
+\problem{Close in a different arithmetic}{10}
+For nonzero rational $r$, define $|r|_3=3^{-v_3(r)}$; set $|0|_3=0$
+and $d_3(x,y)=|x-y|_3$.
+\begin{enumerate}
+\item Compute $|27/20|_3$ and $d_3(1/4,7/4)$. \partpts{2}
+\item Prove $|x+y|_3\le\max(|x|_3,|y|_3)$ for rational $x,y$.
+Prove equality if $|x|_3\ne|y|_3$. \partpts{4}
+\item Find the $3$-adic limit in $\Q$ of $S_n=\sum_{j=0}^n3^j$ by
+computing the distance to your proposed limit. Does $S_n$ have a finite
+real limit? \partpts{4}
+\end{enumerate}
+\begin{solution}
+The values are $1/27$ and $|-3/2|_3=1/3$.
+For nonzero $x,y$, write $x=3^a u$, $y=3^b v$, where $u,v$ are
+rationals with numerator and denominator prime to $3$, and suppose $a\le b$.
+Then $x+y=3^a(u+3^{b-a}v)$ has valuation at least $a$ (or is zero).
+If $a<b$, putting the parenthesis over a denominator prime to $3$
+shows its numerator is not divisible by $3$, so the valuation is exactly
+$a$. Cases involving zero are immediate. Taking $3$ to the negative
+valuation proves both assertions.
+The geometric sum is $S_n=(3^{n+1}-1)/2$, so the proposed limit is
+$-1/2$ and $d_3(S_n,-1/2)=|3^{n+1}/2|_3=3^{-(n+1)}\to0$.
+As real numbers these positive sums grow without bound.
+\end{solution}
+
+\studentbreak
+\topic{IV. Finite fields: through Lecture 2}
+\problem{Units, zero divisors, and characteristic}{10}
+\begin{enumerate}
+\item List the units of $\Z/12\Z$ and exhibit two nonzero residues
+whose product is zero. \partpts{2}
+\item Prove that a finite field has prime characteristic. Explain
+how its multiples of $1$ form a copy of $\F_p$. \partpts{4}
+\item A finite commutative ring $R$ has $1\ne0$ and no nonzero zero
+divisors. Prove it is a field by considering multiplication by a fixed
+nonzero element. Where is finiteness used? \partpts{4}
+\end{enumerate}
+\begin{solution}
+The units are $1,5,7,11$; for instance $2\cdot6=0$ modulo $12$.
+In a finite field, two distinct nonnegative multiples of $1$ coincide,
+so a positive multiple is zero. Let $m$ be the least positive such
+integer. If $m=ab$ with $1<a,b<m$, then
+$(a\cdot1)(b\cdot1)=0$ has two nonzero factors, impossible in a field.
+Thus $m=p$ is prime. The map $\Z\to K$, $a\mapsto a\cdot1$, has
+kernel $p\Z$ and identifies its image with $\F_p$.
+For fixed $a\ne0$ in $R$, $ax=ay$ implies $a(x-y)=0$, hence $x=y$.
+Multiplication by $a$ is injective, and finiteness makes it surjective.
+In particular, $ab=1$ for some $b\in R$. This holds for every nonzero $a$.
+\end{solution}
+
+\problem{Why dimension is well defined}{10}
+\begin{enumerate}
+\item In $\F_5^2$, show that $u=(1,2)$ and $v=(2,1)$ form a basis.
+Find the coordinates of $(3,4)$ in this basis. \partpts{3}
+\item Let $v_1,\ldots,v_r$ be independent and let $w_1,\ldots,w_m$
+span a vector space over a field. Reproduce the exchange argument
+proving $r\le m$: after inserting the first $k$ independent vectors,
+why can the next insertion remove an old $w$ rather than a previously
+inserted $v$? Deduce that any two finite bases have the same length.
+\partpts{7}
+\end{enumerate}
+\begin{solution}
+If $au+bv=0$, then $a+2b=0$ and $2a+b=0$, hence $-3b=0$ in $\F_5$,
+so $b=a=0$. The map $(a,b)\mapsto au+bv$ is injective on a set of
+$25$ elements into $\F_5^2$, also of size $25$; it is onto, so this is
+a basis. Also $(3,4)=4v$, giving coordinates $(0,4)$.
+After $k$ exchanges, the list $v_1,\ldots,v_k$ and $m-k$ old vectors
+still spans. Write $v_{k+1}$ as a combination of this list. Some old
+vector has a nonzero coefficient, since otherwise $v_{k+1}$ would lie
+in the span of $v_1,\ldots,v_k$, contrary to independence. Solve for
+that old vector by dividing by its coefficient; replacing it by
+$v_{k+1}$ preserves the span. If $r>m$, after $m$ insertions the
+spanning list is $v_1,\ldots,v_m$, forcing $v_{m+1}$ into its span,
+a contradiction. Thus $r\le m$. Apply the inequality in both directions
+to two bases to obtain equality of their lengths.
+\end{solution}
+
+\problem{Count coordinates, not residue classes}{10}
+\begin{enumerate}
+\item Prove every finite field $K$ has $p^d$ elements for some prime
+$p$ and integer $d\ge1$. Explain why a basis over $\F_p$ exists and
+why counting its coordinates counts each element exactly once. \partpts{6}
+\item If a field has $81$ elements, determine its characteristic and its
+dimension over its prime field. Can a field have $12$ elements?
+Does the prime-power argument by itself construct a field of every
+prime-power size? \partpts{4}
+\end{enumerate}
+\begin{solution}
+By Problem 13, $K$ contains its prime field $\F_p$ and is a vector
+space over it using field addition and multiplication by scalars in
+$\F_p$. Start with the empty independent list and repeatedly add a
+vector outside its span. Such an addition preserves independence:
+a relation with nonzero coefficient of the new vector would put it
+in the old span. Each addition strictly enlarges the span, so finiteness
+forces the procedure to stop at a spanning independent list, a basis.
+If it has length $d$, spanning gives existence and independence gives
+uniqueness of coordinates in $\F_p^d$. Thus $|K|=p^d$; since $1\ne0$,
+$d\ge1$. For $81=3^4$, the characteristic is $3$ and dimension $4$.
+The integer $12$ is not a prime power, so no field has that cardinality.
+The argument proves necessity; a general existence theorem has not
+been proved by this counting argument.
+\end{solution}
+
+\problem{Build a field with twenty-five elements}{10}
+Use formal pairs $a+bs$ with $a,b\in\F_5$, and the relation $s^2=2$.
+Addition is coefficientwise and multiplication is distributive with
+$s^2$ replaced by $2$. You may use the resulting commutative ring laws.
+\begin{enumerate}
+\item List the squares in $\F_5$. Prove that every nonzero $a+bs$
+has inverse $(a-bs)/(a^2-2b^2)$, explaining why the denominator is
+nonzero. \partpts{4}
+\item Compute $(1+s)(2+3s)$ and $(1+s)^{-1}$, and check the inverse
+by multiplication. \partpts{2}
+\item Give a basis over $\F_5$, the cardinality, and the characteristic
+of this field. Explain why it differs from $\Z/25\Z$. \partpts{2}
+\item If we instead imposed $t^2=4$ on formal pairs over $\F_5$,
+would the resulting ring be a field? Give explicit evidence. \partpts{2}
+\end{enumerate}
+\begin{solution}
+The squares are $0,1,4$, so $2$ is nonsquare. The product of $a+bs$
+with $a-bs$ is $a^2-2b^2$. If $b=0$ and $a\ne0$, this is nonzero.
+If $b\ne0$, its vanishing would give $(a/b)^2=2$, a contradiction.
+Division by this nonzero scalar gives the inverse.
+The product is $2+5s+3s^2=8=3$ in $\F_5$.
+The inverse is $(1-s)/(1-2)=4+s$; indeed
+$(1+s)(4+s)=6+5s=1$.
+The basis is $1,s$, since formal pairs have unique coefficients.
+The field has $25$ elements and characteristic $5$.
+The ring $\Z/25\Z$ has characteristic $25$ and nonzero zero divisor $5$.
+For the alternative construction, $(t-2)(t+2)=t^2-4=0$, but both
+factors are nonzero formal pairs, so this ring is not a field.
+\end{solution}
+
+\studentbreak
+\topic{Optional review of earlier enrichment}
+These two problems review the assignment explicitly labeled optional
+enrichment; they do not introduce a later finite-fields lecture.
+
+\challenge{Inclusion--exclusion as inversion}
+In a group of $40$ people, the numbers in activities $A,B,C$ are
+$20,18,15$; the pairwise intersection counts are $9,7,6$, and the triple
+intersection count is $3$. Pairwise counts include the triple intersection.
+Find the number in exactly one activity, exactly two activities, and no
+activities. Explain the alternating signs as recovering exact counts
+from counts that include additional memberships.
+\begin{solution}
+The counts in only $A,B,C$ are respectively
+$20-9-7+3=7$, $18-9-6+3=6$, and $15-7-6+3=5$.
+Thus exactly one has count $18$. Exactly two has count
+$(9-3)+(7-3)+(6-3)=13$. The union has
+$20+18+15-9-7-6+3=34$, so none has count $6$.
+For instance, subtracting $A\cap B$ and $A\cap C$ from $A$ subtracts
+the triple intersection twice, so it must be added back once.
+Suggested credit: exact single counts 4; exact double counts 2; none 2;
+explanation of inversion 2.
+\end{solution}
+
+\challenge{Interpolation and a finite Fourier transform}
+In $\F_5$, let $\omega=2$, whose powers are $1,2,4,3$.
+A polynomial $f$ of degree at most $3$ satisfies
+$f(1)=1$, $f(2)=0$, $f(4)=0$, $f(3)=0$.
+Recover $f$ using either Lagrange interpolation or
+\[
+c_k=4^{-1}\sum_{j=0}^3f(\omega^j)\omega^{-jk},
+\qquad f(X)=\sum_{k=0}^3c_kX^k.
+\]
+Check all four values. Why is the degree restriction necessary for
+uniqueness? Give another polynomial of higher degree with the same values.
+\begin{solution}
+Only $j=0$ contributes, so each $c_k=4^{-1}=4$ in $\F_5$.
+Thus $f(X)=4(1+X+X^2+X^3)$.
+At $1$ this gives $16=1$; at $2,4,3$, respectively, the parenthesized
+sums are $1+2+4+3$, $1+4+1+4$, and $1+3+4+2$, all zero modulo $5$.
+Two degree-at-most-$3$ polynomials agreeing at four distinct points
+have difference zero by the polynomial root bound. Without that
+restriction, $f(X)+(X^4-1)$ has the same four values and is different.
+Suggested credit: coefficients 4; checks 2; uniqueness argument 2;
+counterexample 2.
+\end{solution}
+\end{document}

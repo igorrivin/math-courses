@@ -1,0 +1,231 @@
+\teachcover{Cyclic groups\\and counting matrices}{1}{
+Multiplication in a finite field has a generator
+\[
+K^\times=\{1,g,g^2,\ldots,g^{q-2}\},\qquad |K|=q.
+\]
+}{
+This lecture proves cyclicity of a finite field's multiplicative group
+and then counts ordered bases and determinant fibers. Recall Lagrange's
+theorem and the definition of element order. We prove the polynomial
+root bound before using it. The group-size-one case is included.
+The optional slides compare finite fields with units of prime-power
+residue rings; they are not part of the 50-minute main route.
+}
+
+\teachslide{The nonzero elements form a group}{2}{
+Let $K$ be a field with $q$ elements.
+\[
+K^\times=K\setminus\{0\},\qquad |K^\times|=N=q-1.
+\]
+Multiplication is commutative; the identity is $1$;
+every element has an inverse.
+\[
+\key{\ord(a)\mid N,\qquad a^N=1\quad(a\in K^\times).}
+\]
+}{
+Closure follows from absence of zero divisors: the product of two
+nonzero elements cannot be zero. Inverses are nonzero. Lagrange
+gives the displayed order divisibility. Define order as the least
+positive exponent returning to $1$. The task is to find one element
+of order $N$, which is stronger than all orders dividing $N$.
+}
+
+\teachslide{What cyclic means}{2}{
+In $\F_5$, the powers of $2$ are
+\[
+\begin{array}{c|rrrr}
+t&0&1&2&3\\\hline
+2^t&1&2&4&3
+\end{array}
+\qquad 2^4=1.
+\]
+Every nonzero element is a power of $2$.
+\spacer
+A group is \key{cyclic} if one element generates the whole group.
+}{
+Calculate the last power by reducing $8$ modulo $5$. A generator of
+a finite group of size $N$ has order $N$, and conversely an element
+of order $N$ supplies all $N$ elements by its distinct powers.
+There may be several generators. Our aim is to prove at least one
+exists in every finite field, not to identify a canonical generator.
+}
+
+\teachslide{A polynomial cannot have too many roots}{2}{
+Over a field, if $f(a)=0$, then
+\[
+f(X)=(X-a)h(X).
+\]
+Any other root $b\ne a$ is a root of $h$:
+\[
+0=(b-a)h(b)\quad\Longrightarrow\quad h(b)=0.
+\]
+Induction gives:
+\[
+\key{\deg f=d,\ f\ne0\quad\Longrightarrow\quad\text{at most }d\text{ roots}.}
+\]
+}{
+Recall polynomial division by $X-a$. The constant nonzero case has
+no roots. Each root factors off one linear term; cancellation works
+since $b-a$ is a nonzero field element. This proof is the specific
+place field arithmetic enters the cyclicity theorem. The root bound
+can fail over a ring with zero divisors.
+}
+
+\teachslide{Build the order one prime at a time}{2}{
+Factor $N=q-1$:
+\[
+N=\ell_1^{r_1}\cdots\ell_t^{r_t}.
+\]
+We will construct, for each prime factor $\ell$,
+\[
+\key{g_\ell\text{ with order }\ell^r,\qquad \ell^r\parallel N.}
+\]
+Then multiply these elements.
+
+If $N=1$, the group $\{1\}$ is already cyclic.
+}{
+Explain the double-bar notation: $\ell^r$ divides $N$, but the next
+power does not. Distinct primes have relatively prime powers. The
+product step requires both coprime orders and commutativity, proved
+below. For $K=\F_2$, $N=1$ and $1$ is a generator of the trivial group.
+}
+
+\teachslide{Find an element with the required prime factor}{3}{
+Fix $\ell^r\parallel N$.
+
+The polynomial
+\[
+X^{N/\ell}-1
+\]
+has at most $N/\ell<N$ roots.
+
+It cannot vanish at every element of $K^\times$.
+\[
+\key{\text{Choose }a\in K^\times\text{ with }a^{N/\ell}\ne1.}
+\]
+}{
+Do not assume a generator to choose $a$: the root bound proves that
+at least one of the $N$ nonzero elements fails this equation. The
+chosen $a$ can depend on $\ell$, which is fine. Its order must include
+the full $\ell$-power of $N$, but the next slide proves the needed
+statement directly through powers rather than invoking an order formula.
+}
+
+\teachslide{Isolate the prime-power order}{3}{
+Set $M=N/\ell^r$ and $g_\ell=a^M$.
+\[
+g_\ell^{\ell^r}=a^N=1,
+\qquad g_\ell^{\ell^{r-1}}=a^{N/\ell}\ne1.
+\]
+Its order divides $\ell^r$, but does not divide $\ell^{r-1}$.
+
+Every proper divisor of $\ell^r$ divides $\ell^{r-1}$.
+\[
+\key{\ord(g_\ell)=\ell^r.}
+\]
+}{
+Read both exponent products aloud. If $x^m=1$, its order divides
+$m$: divide $m$ by the least positive return time and use minimality
+of the remainder. This fact is more precise than Lagrange and also
+applies here to a known exponent. The prime-power divisor observation
+is what forces the exact order without computing it by trial.
+}
+
+\teachslide{Combine two coprime orders}{4}{
+Suppose $a,b$ commute, with orders $r,s$ and $\gcd(r,s)=1$.
+\[
+(ab)^{rs}=1.
+\]
+If $(ab)^t=1$, put $z=a^t=b^{-t}$. Then
+\[
+z^r=z^s=1\quad\Longrightarrow\quad z=1
+\]
+by Bezout's identity. Thus $r\mid t$ and $s\mid t$, so $rs\mid t$.
+\[
+\key{\ord(ab)=rs.}
+\]
+}{
+This lemma deserves the full four minutes. If $ur+vs=1$, then
+$z=z^{ur+vs}=(z^r)^u(z^s)^v=1$; negative exponents use inverses.
+Hence $a^t=b^t=1$. The order-divides-return-time fact forces both
+divisibilities, whose coprimality gives $rs\mid t$. We already know
+$rs$ is a return time, so it is the least. Commutativity is needed
+for $(ab)^t=a^tb^t$. The result does not claim that arbitrary
+products have the lcm of their factors' orders.
+}
+
+\teachslide{One element of full order}{3}{
+The prime-power orders $\ell_i^{r_i}$ are pairwise coprime.
+
+By repeatedly applying the lemma,
+\[
+g=g_{\ell_1}\cdots g_{\ell_t}
+\quad\text{has order}\quad
+\ell_1^{r_1}\cdots\ell_t^{r_t}=N.
+\]
+Its $N$ distinct powers exhaust $K^\times$.
+\[
+\key{\text{The multiplicative group of every finite field is cyclic.}}
+\]
+}{
+Check that a partial product's order remains coprime to the next
+prime-power order, so induction applies. An element of order $N$
+has exactly $N$ distinct powers from exponent $0$ through $N-1$;
+there are only $N$ elements in the group. The proof has used Lagrange,
+the polynomial root bound, Bezout, and commutativity, with no general
+classification theorem for finite abelian groups.
+}
+
+\teachslide{Primitive elements}{2}{
+A generator $g$ of $K^\times$ is called a \key{primitive element}.
+\[
+K^\times=\{1,g,\ldots,g^{q-2}\},\qquad \ord(g)=q-1.
+\]
+If $K$ has characteristic $p$, then
+\[
+\key{K=\F_p(g):\text{ the field is generated by one element}.}
+\]
+Every nonzero element is a power of $g$.
+}{
+In this finite-field context primitive means generator of the
+multiplicative group. Such an element also generates the extension
+field, since a field containing it contains all its powers and zero.
+The converse need not hold: generating a field extension does not
+necessarily mean having multiplicative order $q-1$. In particular,
+the Fibonacci root modulo $7$ will have order $16$, not $48$.
+}
+
+\teachslide{Your turn: combine orders in $\F_7$}{3}{
+In $\F_7^\times$,
+\[
+\ord(6)=2,\qquad\ord(4)=3.
+\]
+Verify these orders, then answer:
+\begin{enumerate}
+\item What is the order of $6\cdot4$?
+\item Which residue is therefore a primitive element?
+\end{enumerate}
+}{
+Give a minute of calculation. Students should find $6^2=1$ with
+$6\ne1$, and $4^2=2$, $4^3=1$ with $4\ne1$. Coprimality lets us
+combine the orders. This is a concrete version of the theorem's
+final construction, not a search through all six possible generators.
+}
+
+\teachslide{A generator modulo seven}{1}{
+\[
+6\cdot4=3\pmod7,
+\qquad \ord(3)=2\cdot3=6.
+\]
+\[
+\begin{array}{c|rrrrrr}
+t&0&1&2&3&4&5\\\hline
+3^t&1&3&2&6&4&5
+\end{array}
+\]
+\key{One element generates all six nonzero residues.}
+}{
+The table verifies the conclusion independently. We used the lemma
+to know the order before listing all powers. This ends the cyclicity
+portion at minute 28. The rest of this lecture counts matrix groups.
+}

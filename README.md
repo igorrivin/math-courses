@@ -17,13 +17,18 @@ instructor material and history.
 | Problem sets and solutions | [Problem sets](number-theory/problem-sets/) | [Problem sets](probability-statistics/problem-sets/) |
 | Weekly quizzes and keys | [Quizzes](number-theory/quizzes/) | [Quizzes](probability-statistics/quizzes/) |
 | Midterm study guide | Not yet prepared | [Through continuous distributions](probability-statistics/study-guides/midterm/probability_midterm_study_guide.pdf) |
+| Midterm review | [Problem bank through finite-fields Lecture 2](number-theory/problem-sets/midterm-review/number_theory_midterm_review_student.pdf) | [50-minute practice quiz](probability-statistics/quizzes/midterm-review/probability_midterm_review_quiz_student.pdf) |
 | Website source | [Interactive companion](number-theory/website/) | [Interactive companion](probability-statistics/website/) |
 | Lecture presentations | [Two continued-fraction lectures](number-theory/lectures/continued-fractions/) | Not yet prepared |
 
 The continued-fraction lectures each have a 50-minute route, PDF slides,
 presenter notes, and editable [LaTeX sources](number-theory/lectures/continued-fractions/source/).
-The latest number theory book includes the elementary Lagrange/Galois proofs;
-the probability book includes the de Finetti exchangeability chapter.
+The latest number theory book includes the elementary Lagrange/Galois proofs,
+the finite-fields lectures, existence and uniqueness of Galois fields, and
+a bonus proof that every finite division ring is a field. The probability
+book includes equal- and unequal-probability coupon collection, spaghetti
+loops and other linearity examples, distribution mechanisms, Poissonization,
+and the de Finetti exchangeability chapter.
 
 ## Work from another computer
 

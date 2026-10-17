@@ -7,7 +7,7 @@ This folder contains an adaptable one-semester introductory number theory course
 - `main.tex`: master LaTeX source.
 - `chapters/`: course design, nine teaching chapters, appendices on matrix
   algebra, Gosper's continued-fraction arithmetic, and Venus's astronomical
-  cycles, and finite-field extensions, selected solutions, and reference sheets.
+  cycles, finite fields and division rings, selected solutions, and reference sheets.
 - `notebooks/`: six optional SageMath/Jupyter labs. The first includes the
   sieve, extended-Euclidean/convergent correspondence, alternating bounds,
   Khinchin--Levy experiments, Gosper's homographic matrix updates, and exact
@@ -22,6 +22,11 @@ Run from this folder:
 ```sh
 latexmk -pdf main.tex
 ```
+
+If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode
+-halt-on-error main.tex` three times to resolve the contents and references.
+Copy the finished `main.pdf` to `patterns_proofs_primes.pdf` and to
+`../website/public/course-packet.pdf` together.
 
 The source uses standard TeX Live packages: TikZ, tcolorbox, amsmath, hyperref, booktabs, and related dependencies.
 
@@ -118,11 +123,37 @@ Some commands in the other notebooks require Sage.
   from Fermat. Chapter 7 distinguishes this equality of values
   from the formal polynomial identity, whose binomial proof allows
   substitution in extension fields.
-- Appendix D first constructs arithmetic in a quadratic extension, including
-  inverses. Frobenius then becomes a nontrivial automorphism. Only at this
-  later stage do Fibonacci roots, multiplicative orders, and fast doubling
-  yield systematic period computations. The primes 2 and 5 are treated
-  separately. This appendix is optional and follows Chapters 4–7.
+- Appendix D develops the four finite-fields lectures in book form. It
+  starts with rings, units, fields, prime characteristic, vector spaces,
+  a full exchange proof of well-defined dimension, and prime-power
+  cardinalities. Explicit quadratic-extension arithmetic follows.
+  The multiplicative group is proved cyclic by combining prime-power
+  orders, using the polynomial root bound.
+- The same appendix proves existence and uniqueness up to isomorphism
+  of every Galois field `GF(p^n)`. Root adjunction by polynomial Euclid
+  supplies a splitting extension; the distinct roots of `X^(p^n)-X`
+  form a field. A primitive element and its minimal polynomial give
+  the uniqueness proof without assuming the general uniqueness theorem
+  for splitting fields or the fundamental theorem of Galois theory.
+  It distinguishes a unique isomorphism class from a unique isomorphism.
+- Counts of GL and SL, Frobenius, all finite-field automorphisms, and
+  existence and uniqueness of subfields lead to the existing Fibonacci
+  period computations. The primes 2 and 5 are treated separately.
+  A four-node diagram displays the subfields of the 64-element field.
+- A final bonus section proves Wedderburn's little theorem: every finite
+  division ring is a field. It develops conjugacy classes and the class
+  equation, proves the needed cyclotomic integrality, divisibility, and
+  size lemmas, then gives Witt's argument. Centralizers are treated as
+  division rings, without assuming their commutativity. References include
+  Witt's original paper, Weil's *Basic Number Theory*, Chapter I, §1, and
+  Milne's field-theory notes. There are 18 exercises with selected solutions,
+  retaining the original six extension/Fibonacci exercises as 1–6.
+  This appendix remains an optional route following Chapters 4–7.
+- Editable sources are `chapters/finite_fields.tex` (the main route and
+  exercises), `chapters/finite_field_foundations.tex`,
+  `chapters/finite_field_structure.tex`, and
+  `chapters/finite_division_rings.tex`; the worked answers are in
+  `chapters/solutions.tex`.
 - Notebook 2 follows the same order: extended gcd, congruences, CRT,
   interpolation, reversible pairs, necklaces, and Euler, followed by clearly marked
   optional extension and exact-period sections. All computations use exact

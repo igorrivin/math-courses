@@ -1,0 +1,103 @@
+\subsection{Different probabilities: the rare type matters}
+\label{sec:unequal-coupon-collector}
+
+Now the $n$ types have probabilities $p_1,\ldots,p_n>0$, summing to
+one; successive purchases are still independent. Let $T$ be the number
+of purchases to collect all types, and write $p_A=\sum_{i\in A}p_i$.
+If some required type has probability zero, completion is impossible
+and $T=+\infty$; the finite formulas below assume positive probabilities.
+
+The uniform stage argument needs revision. After collecting the set $S$,
+the next-new-type probability is $1-\sum_{i\in S}p_i$. Its value depends
+on the identities of the collected types, not just their number. For
+probabilities $1/2,1/3,1/6$, a first coupon of type 1 leaves new-type
+probability $1/2$, whereas a first coupon of type 3 leaves $5/6$.
+There is no single geometric parameter determined only by the stage index.
+
+\begin{proposition}[Exact unequal-probability collection formulas]
+\label{prop:unequal-coupon-formulas}
+For integers $m\ge0$,
+\begin{align*}
+\P(T>m)&=\sum_{\varnothing\ne A\subseteq\{1,\ldots,n\}}
+(-1)^{|A|+1}(1-p_A)^m,\\
+\E[T]&=\sum_{\varnothing\ne A\subseteq\{1,\ldots,n\}}
+\frac{(-1)^{|A|+1}}{p_A}.
+\end{align*}
+In the tail formula at $m=0$, every $(1-p_A)^0$ means $1$, including
+the full-set term: before any draw every specified set is missing.
+\end{proposition}
+\begin{proof}
+For each type $i$, let $A_i$ be the event that it is missing after $m$
+draws. A specified nonempty set $A$ is entirely missing with probability
+$(1-p_A)^m$. The event $T>m$ is the union of the $A_i$;
+inclusion--exclusion gives the tail formula. At zero draws the alternating
+coefficients sum to one, as required.
+
+Use $\E[T]=\sum_{m\ge0}\P(T>m)$. There are finitely many subsets,
+and each geometric series converges because $p_A>0$. Summing each
+series gives $\sum_{m\ge0}(1-p_A)^m=1/p_A$ and the stated mean.
+This also proves that the mean is finite and completion is almost sure.
+\end{proof}
+
+\begin{example}[Three rarities]
+For $(p_1,p_2,p_3)=(1/2,1/3,1/6)$,
+\[
+\E[T]=2+3+6-\left(\frac65+\frac32+2\right)+1
+=\frac{73}{10}.
+\]
+For three equally likely types the mean is $3H_3=11/2$.
+With only two types of probabilities $p,1-p$,
+\[
+\E[T]=\frac1p+\frac1{1-p}-1=\frac1{p(1-p)}-1\ge3,
+\]
+with equality exactly at $p=1/2$. As $p$ tends to zero the mean
+diverges. A very common first type does not compensate for a very rare
+last type.
+\end{example}
+
+The same calculation gives a second moment. Since
+$T^2=\sum_{m=0}^{T-1}(2m+1)$,
+\[
+\E[T^2]=\sum_{\varnothing\ne A}(-1)^{|A|+1}
+\frac{2-p_A}{p_A^2},\qquad
+\Var(T)=\E[T^2]-(\E[T])^2.
+\]
+Indeed $\sum_{m\ge0}(2m+1)(1-p)^m=(2-p)/p^2$.
+The sums involve finitely many convergent geometric series, so the
+calculation is justified without assuming independent first-appearance times.
+
+\subsection{Remaining waits and practical bounds}
+
+Let $R(S)$ be the expected additional draws when precisely the types
+in $S$ are still missing. Its boundary value is $R(\varnothing)=0$.
+For nonempty $S$, first-step conditioning gives
+\[
+R(S)=1+(1-p_S)R(S)+\sum_{i\in S}p_iR(S\setminus\{i\}),
+\]
+and hence the positive recursion
+\[
+\boxed{R(S)=\frac{1+\sum_{i\in S}p_iR(S\setminus\{i\})}{p_S}.}
+\]
+For the three-rarity example, if types 2 and 3 are missing, the remaining
+mean is $3+6-2=7$ draws. Knowing only that two types are missing is
+insufficient. The subset formula for the mean applies to a missing set
+as well, with the original, unnormalized probabilities: already collected
+types still use up draws. The recursion provides another exact way to
+compute these means, using only smaller missing sets.
+
+Let $p_{\min}=\min_i p_i$. Waiting for the rarest type gives a lower
+bound, while the maximum of the individual first-appearance times is
+at most their sum. Thus
+\[
+\frac1{p_{\min}}\le\E[T]\le\sum_{i=1}^n\frac1{p_i}.
+\]
+For deadlines, linearity of missing-type indicators and the union bound give
+\[
+\E[M_m]=\sum_i(1-p_i)^m,\qquad
+\P(T>m)\le\min\left\{1,\sum_i(1-p_i)^m\right\}
+\le\min\{1,ne^{-mp_{\min}}\}.
+\]
+When $p_i=1/n$, the exact formulas reduce to the uniform formulas above;
+group the subsets by cardinality. Section~\ref{sec:poissonization} gives
+a second derivation and proves that the uniform choice minimizes the
+expected completion time among all positive probability vectors.

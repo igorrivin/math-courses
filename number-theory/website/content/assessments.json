@@ -1,5 +1,14 @@
 [
   {
+    "id": "midterm-review",
+    "kind": "problem-set",
+    "label": "Midterm review",
+    "title": "From Euclid to finite fields",
+    "description": "Cumulative practice through finite-fields Lecture 2: integers, continued fractions, congruences, arithmetic functions, valuations, primes, bases, and quadratic extensions. Two optional enrichment problems follow.",
+    "details": "16 core problems + 2 optional · 160 practice points · 5–7 hours",
+    "studentFile": "midterm-review.pdf"
+  },
+  {
     "id": "problem-set-01",
     "kind": "problem-set",
     "label": "Problem Set 1",

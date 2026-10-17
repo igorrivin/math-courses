@@ -1,0 +1,190 @@
+\section{Poissonization: randomize a total to reveal independence}
+\label{sec:poissonization}
+
+With exactly $m\ge1$ draws from $n\ge2$ positive-probability coupon
+types, the counts add to $m$ and are dependent. Poissonization replaces
+that fixed total by an independent
+Poisson total. The resulting independence is exact for the new experiment;
+returning to a fixed total requires conditioning or a separate comparison.
+The argument also applies to balls in boxes, requests sent to servers,
+and other independent categorical choices.
+
+\subsection{Split a Poisson count}
+
+Let $K\sim\Pois(t)$, $t>0$, independently of an i.i.d. sequence of
+type labels with probabilities $p_1,\ldots,p_n>0$. Among the first $K$
+labels, let $C_i$ count type $i$. For nonnegative integers $c_i$ with
+sum $s$, conditioning on the total gives
+\begin{align*}
+\P(C_1=c_1,\ldots,C_n=c_n)
+&=\frac{e^{-t}t^s}{s!}\frac{s!}{\prod_i c_i!}\prod_i p_i^{c_i}\\
+&=\prod_i e^{-tp_i}\frac{(tp_i)^{c_i}}{c_i!}.
+\end{align*}
+Thus all the $C_i$ are independent Poisson variables with means $tp_i$.
+This is the \emph{Poisson splitting} or \emph{thinning} identity.
+Conversely, conditioning these independent counts on $\sum_i C_i=m$
+recovers the multinomial probabilities
+$m!\prod_i p_i^{c_i}/\prod_i c_i!$. For $n\ge2$ and $m\ge1$,
+conditioning reintroduces dependence. With one type or zero draws,
+the fixed-total count vector is constant instead.
+
+Let $M_K$ count the missing types. The missing indicators are now
+independent Bernoulli variables with probabilities $e^{-tp_i}$, so
+\[
+\E[M_K]=\sum_i e^{-tp_i},\qquad
+\Var(M_K)=\sum_i e^{-tp_i}(1-e^{-tp_i}),\qquad
+\boxed{\P(T\le K)=\prod_i(1-e^{-tp_i}).}
+\]
+The missing count is binomial for uniform probabilities,
+$M_K\sim\Bin(n,e^{-t/n})$; with unequal probabilities it is generally
+a sum of Bernoulli variables with different parameters.
+
+\begin{example}[A load limit for every box]
+Send a Poisson$(t)$ number of independent requests to boxes with routing
+probabilities $p_i$. For integer $b\ge0$, independence gives
+\[
+\P(\text{every box has at most }b\text{ requests})
+=\prod_i\left[e^{-tp_i}\sum_{j=0}^b\frac{(tp_i)^j}{j!}\right].
+\]
+The expected occupied-box count is $\sum_i(1-e^{-tp_i})$.
+With a fixed total $m$ its expectation instead is
+$\sum_i[1-(1-p_i)^m]$, by linearity; the corresponding occupancy
+indicators generally are dependent.
+\end{example}
+
+\subsection{Exponential clocks for a collection}
+
+Give the original label sequence independent time gaps
+$E_1,E_2,\ldots\sim\text{Exponential}(1)$, also independent of all labels.
+The arrival times $S_m=\sum_{j=1}^mE_j$ construct a rate-one Poisson
+stream, by Section~\ref{sec:gamma-waits}. It also has independent counts
+in disjoint intervals. Indeed, conditional on the completed arrival
+history up to a fixed time, memorylessness leaves a fresh rate-one
+exponential residual gap, and subsequent gaps are still independent.
+Repeating this argument at successive fixed interval boundaries proves
+the independent-increment assertion.
+
+Mark each arrival with its coupon label. Splitting in each interval
+makes the type-$i$ stream have rate $p_i$. To check that their first
+arrival times $Y_i$ really are independent, fix thresholds $t_i\ge0$
+and subdivide $[0,\max_i t_i]$ at those thresholds. In each subinterval,
+the event $Y_i>t_i$ forbids labels whose threshold has not yet passed.
+The probability of zero forbidden arrivals is the exponential of minus
+the subinterval length times the sum of those labels' probabilities.
+Independence between intervals therefore gives
+\[
+\P(Y_i>t_i\text{ for all }i)=\exp\!\left(-\sum_i p_i t_i\right)
+=\prod_i e^{-p_it_i}.
+\]
+This joint survival factorization proves that
+$Y_1,\ldots,Y_n$ are independent exponentials of rates $p_1,\ldots,p_n$.
+The time $\tau$ when the collection is complete is their maximum, hence
+\[
+\P(\tau\le t)=\prod_i(1-e^{-tp_i}),\qquad t\ge0.
+\]
+
+There is an exact bridge back to the \emph{number} of draws. Since
+$T$ depends only on labels and all the gaps are independent of those labels,
+\[
+\tau=\sum_{j\ge1}E_j\ind_{\{T\ge j\}},\qquad
+\E[\tau]=\sum_{j\ge1}\E[E_j]\P(T\ge j)=\E[T].
+\]
+The interchange follows by truncating the nonnegative sum and taking an
+increasing limit. This proves the equality of means directly; no optional
+stopping theorem is being assumed. With arrival rate $\lambda$, the
+same argument gives $\E[\tau]=\E[T]/\lambda$.
+
+For a nonnegative variable, integrating its tail gives its expectation:
+write its value as $\int_0^\infty\ind_{\{\tau>t\}}\,dt$ and average
+nonnegative areas. Thus
+\begin{align*}
+\E[T]=\E[\tau]
+&=\int_0^\infty\left[1-\prod_i(1-e^{-tp_i})\right]\,dt\\
+&=\sum_{\varnothing\ne A}(-1)^{|A|+1}\int_0^\infty e^{-tp_A}\,dt
+=\sum_{\varnothing\ne A}\frac{(-1)^{|A|+1}}{p_A}.
+\end{align*}
+This recovers the unequal-coupon formula. For uniform probabilities,
+the substitution $u=e^{-t/n}$ instead gives
+\[
+\E[T_n]=n\int_0^1\frac{1-(1-u)^n}{u}\,du
+=n\sum_{j=0}^{n-1}\int_0^1(1-u)^j\,du=nH_n.
+\]
+
+\begin{warningbox}
+Equal means do not make the clock time and the draw count identically
+distributed. Conditional on $T=r$, the clock time is Gamma$(r,1)$,
+with second moment $r(r+1)$. Therefore
+$\Var(\tau)=\Var(T)+\E[T]$. For one coupon, $T=1$ deterministically,
+whereas $\tau$ is exponential. Treating their variances as equal would
+lose the randomness added by the clock.
+\end{warningbox}
+
+\subsection{Why uniform probabilities minimize the mean}
+
+For fixed $t>0$, the function $g(x)=\log(1-e^{-tx})$ on $x>0$ has
+\[
+g''(x)=-\frac{t^2e^{tx}}{(e^{tx}-1)^2}<0.
+\]
+It is strictly concave. The concavity inequality for a finite average
+gives $n^{-1}\sum_i g(p_i)\le g(1/n)$, so
+\[
+\prod_i(1-e^{-tp_i})\le(1-e^{-t/n})^n.
+\]
+For completeness, that finite-average inequality follows by repeated
+application of the two-point chord inequality for a concave function;
+negative second derivative proves the chord inequality by elementary
+calculus. If $n\ge2$, equality holds exactly when all $p_i=1/n$.
+Comparing the integrated survival functions and using the equality of
+clock and draw means proves
+\[
+\boxed{\E[T]\ge nH_n,}
+\]
+strictly for a nonuniform vector. The comparison just proved is a
+stochastic comparison of \emph{clock times}, together with a comparison
+of draw-count means. It does not, by itself, establish a comparison of
+fixed-draw completion probabilities.
+
+\subsection{Return to a fixed total: de-Poissonization}
+\label{sec:depoissonization}
+
+Write $F(m)=\P(T\le m)$ and $\widetilde F(t)=\P(T\le K_t)$ for an
+independent $K_t\sim\Pois(t)$. Conditioning gives the exact transform
+\[
+\widetilde F(t)=e^{-t}\sum_{m\ge0}F(m)\frac{t^m}{m!}.
+\]
+For two equally likely types, $F(2)=1/2$, whereas
+$\widetilde F(2)=(1-e^{-1})^2$. Replacing $K_t$ by its mean is not an
+exact operation.
+
+Monotonicity provides a rigorous comparison. For an integer $m\ge1$
+and $0<t_-<m<t_+$, couple both experiments to the same label sequence.
+The pointwise inequalities
+$F(K_{t_-})\le F(m)+\ind_{\{K_{t_-}>m\}}$ and
+$F(m)\le F(K_{t_+})+\ind_{\{K_{t_+}<m\}}$ give
+\[
+\boxed{\widetilde F(t_-)-\P(K_{t_-}>m)
+\le F(m)\le
+\widetilde F(t_+)+\P(K_{t_+}<m).}
+\]
+Intersect these bounds with $[0,1]$. Exact Poisson tails can be used,
+or Chebyshev bounds them by $t_-/(m-t_-)^2$ and
+$t_+/(t_+-m)^2$, respectively. The comparison states the error rather
+than silently equating two sampling models.
+
+\begin{example}[The completion window, as optional asymptotics]
+For uniform coupons, at clock time $t=n(\log n+c)$, fixed real $c$,
+\[
+\widetilde F(t)=\left(1-\frac{e^{-c}}n\right)^n
+\longrightarrow \exp(-e^{-c}).
+\]
+This holds for all sufficiently large $n$, when $t>0$.
+It also describes the fixed-draw experiment. Set
+$m=\lfloor n\log n+cn\rfloor$ and $t_\pm=m\pm n^{3/4}$.
+Both Poisson-tail errors above tend to zero, since they are at most
+$(m+n^{3/4})/n^{3/2}$, of order $\log n/\sqrt n$.
+Also $t_\pm/n-\log n\to c$, so both product bounds tend to the same
+$\exp(-e^{-c})$. Squeezing gives
+$\P(T_n\le\lfloor n\log n+cn\rfloor)\to\exp(-e^{-c})$.
+Poissonization made the coordinates independent; de-Poissonization
+justified transferring the limit back to a fixed number of draws.
+\end{example}

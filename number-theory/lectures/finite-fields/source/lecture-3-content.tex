@@ -1,0 +1,203 @@
+\input{cyclicity-content}
+
+\teachslide{From field elements to matrices}{2}{
+Over $\F_p$, the span of $r$ independent vectors has $p^r$ elements.
+\spacer
+An invertible matrix has columns forming an ordered basis.
+\[
+\key{\text{Count invertible matrices by choosing their columns.}}
+\]
+}{
+Retrieve the coordinate count from Lecture 2. The remaining 20 minutes
+count GL and SL, providing the group-size bounds we will use for the
+Fibonacci matrix in Lecture 4. The cyclicity theorem concerns field
+elements under multiplication, not a claim that GL or SL is cyclic.
+}
+
+\teachslide{Invertible matrices and ordered bases}{2}{
+For a matrix with columns $v_1,\ldots,v_d$,
+\[
+M\begin{pmatrix}a_1\\\vdots\\a_d\end{pmatrix}
+=a_1v_1+\cdots+a_dv_d.
+\]
+$M$ is invertible exactly when every output has unique coordinates.
+\spacer
+\key{Its columns must form an ordered basis of $\F_p^d$.}
+}{
+Connect matrix invertibility to the bijectivity of its linear map.
+A basis supplies existence and uniqueness of solutions to $Mx=y$.
+Conversely, an invertible map makes the columns spanning and independent.
+Over a field this also agrees with nonzero determinant. Order matters:
+exchanging columns usually gives another matrix.
+}
+
+\teachslide{Choose the first column}{2}{
+In $\F_p^2$, there are $p^2$ vectors.
+
+The first basis vector can be anything except zero.
+\[
+\key{p^2-1\text{ choices}.}
+\]
+\[
+v_1\ne\begin{pmatrix}0\\0\end{pmatrix}.
+\]
+}{
+Ask students why a zero column prevents invertibility. A singleton
+list containing a nonzero vector is independent because a nonzero
+scalar has an inverse. This will matter when we count its span.
+}
+
+\teachslide{Choose the second column}{3}{
+Once $v_1\ne0$ is fixed, its span has $p$ elements:
+\[
+\Span(v_1)=\{av_1:a\in\F_p\}.
+\]
+Choose $v_2$ outside that span:
+\[
+\key{p^2-p\text{ choices}.}
+\]
+Therefore
+\[
+|\GL_2(\F_p)|=(p^2-1)(p^2-p).
+\]
+}{
+The scalar multiples are distinct because $v_1$ is nonzero. Being
+outside the span gives independence, by the basis-extension argument
+from Lecture 2. Two independent vectors in $\F_p^2$ span it: their
+span has $p^2$ elements, the full ambient size. The number of allowed
+second columns does not depend on which first column was chosen.
+}
+
+\teachslide{Your turn: count modulo two}{2}{
+How many invertible $2\times2$ matrices are there over $\F_2$?
+
+Fix the first column to be
+\[
+v_1=\begin{pmatrix}1\\0\end{pmatrix}.
+\]
+Which second columns are allowed?
+}{
+Give quiet work time, then ask for both the total count and the actual
+two allowed columns for this fixed choice. Students should list the
+four vectors and exclude $0$ and $v_1$. This reinforces the reason
+for subtraction in the count.
+}
+
+\teachslide{Six invertible matrices}{1}{
+\[
+|\GL_2(\F_2)|=(4-1)(4-2)=6.
+\]
+With $v_1=(1,0)^{\mathsf T}$, the allowed second columns are
+\[
+\begin{pmatrix}0\\1\end{pmatrix},\qquad
+\begin{pmatrix}1\\1\end{pmatrix}.
+\]
+The span we excluded is $\{(0,0),(1,0)\}$.
+}{
+Confirm that zero and the first column are exactly the forbidden
+vectors. Over $\F_2$, every nonzero determinant is $1$, so GL and
+SL will have the same size. Mention this only as an anticipation.
+}
+
+\teachslide{The same count in dimension $d$}{2}{
+After $r$ independent columns, the span has $p^r$ vectors.
+
+The next column has $p^d-p^r$ choices.
+\[
+\key{|\GL_d(\F_p)|=\prod_{r=0}^{d-1}(p^d-p^r).}
+\]
+The first factor is $p^d-1$; the last is $p^d-p^{d-1}$.
+}{
+The span of the empty list has size $1$, accounting for the first
+factor when $r=0$. Multiplying the independent choices counts ordered
+bases. Do not expand or simplify the product: the unsimplified form
+records the argument. Most lecture time stays with $d=2$.
+}
+
+\teachslide{The determinant groups matrices by value}{2}{
+\[
+\det:\GL_d(\F_p)\longrightarrow\F_p^\times.
+\]
+\[
+\det(MN)=\det(M)\det(N).
+\]
+Every nonzero $a\in\F_p$ occurs:
+\[
+D_a=\operatorname{diag}(a,1,\ldots,1),\qquad\det D_a=a.
+\]
+\key{$\SL_d(\F_p)$ is the set with determinant $1$.}
+}{
+Define $\F_p^\times$ as the multiplicative group of nonzero field
+elements, of size $p-1$. The determinant is a surjective group
+homomorphism. Quotient-group notation is optional; the next slide
+uses a concrete bijection between determinant fibers.
+}
+
+\teachslide{Every determinant fiber has the same size}{2}{
+Multiplication by $D_a$ gives a bijection
+\[
+\SL_d(\F_p)\longrightarrow\{M:\det M=a\},
+\qquad S\longmapsto D_aS.
+\]
+The inverse is $M\longmapsto D_a^{-1}M$.
+
+There are $p-1$ nonzero determinant values, so
+\[
+\key{|\SL_d(\F_p)|=\frac{|\GL_d(\F_p)|}{p-1}.}
+\]
+}{
+Verify the two determinants: $\det(D_aS)=a$ and
+$\det(D_a^{-1}M)=a^{-1}a=1$. Fibers are disjoint and exhaust GL.
+This establishes the count without assuming the first isomorphism
+theorem. If that theorem is familiar, the quotient is on a backup slide.
+}
+
+\teachslide{In dimension two}{2}{
+\[
+\begin{aligned}
+|\SL_2(\F_p)|
+&=\frac{(p^2-1)(p^2-p)}{p-1}\\
+&=\key{p(p^2-1)}.
+\end{aligned}
+\]
+Lagrange's theorem: the order of a group element divides the group size.
+\spacer
+\key{Next time: apply this count to Fibonacci.}
+}{
+Factor $p^2-p=p(p-1)$ before cancelling. Briefly recall the element-order
+definition: the least positive exponent giving the identity. Lagrange
+applies to the cyclic subgroup generated by an element. This assumes
+the course's earlier group material rather than reproving Lagrange.
+}
+
+\teachslide{Exit question}{2}{
+For a field $K$ with $q$ elements, which group have we proved is cyclic?
+
+What is its order?
+
+Why does this not say that every nonzero element generates it?
+}{
+Expected answers: $K^\times$, with multiplication, of order $q-1$.
+The proof finds an element of full order; many other elements can have
+smaller orders, including $1$ when $q>2$. Ask students also to recall
+the size $p(p^2-1)$ of SL(2,p). End at minute 50.
+}
+
+\backups
+
+\backupslide{The determinant quotient}{
+The determinant is surjective, with kernel $\SL_d(\F_p)$.
+\[
+\key{\GL_d(\F_p)/\SL_d(\F_p)\cong\F_p^\times.}
+\]
+A coset is determined by the common determinant of its matrices.
+
+Multiplication of cosets corresponds to multiplication of determinants.
+}{
+This is the first isomorphism theorem. Kernel subgroups are normal,
+so the quotient is defined. The explicit fiber bijection in the main
+deck already proved the group-size formula without needing quotient
+terminology. This optional slide answers the literal GL/SL question.
+}
+\input{prime-power-units-content}
+

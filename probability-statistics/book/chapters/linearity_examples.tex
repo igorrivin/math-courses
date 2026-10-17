@@ -1,0 +1,114 @@
+\subsection{Small indicators, large answers}
+\label{sec:linearity-examples}
+
+The difficult step is often choosing what to count. The following examples
+use the same identity, $\E[\sum I_j]=\sum\P(I_j=1)$, on very different
+objects. Each proof uses a finite probability space.
+
+\begin{example}[Records in a random order]
+Shuffle $n$ distinct scores uniformly and reveal them one at a time.
+The $j$th score is a \emph{record} if it exceeds every previous score;
+the first score is always a record. Among the first $j$ scores, symmetry
+makes each position equally likely to hold the largest. Thus its record
+indicator $I_j$ has mean $1/j$. The number $R_n$ of records satisfies
+\[
+\E[R_n]=\sum_{j=1}^n\frac1j=H_n,
+\]
+where $H_0=0$ and $H_n$ is the $n$th harmonic number. For example,
+four distinct scores give mean $H_4=25/12$, although an individual
+ordering has an integer number of records. We did not need to count
+orderings with each possible record total.
+\end{example}
+
+\begin{example}[Inversions in a shuffle]
+In a uniform permutation $\pi$ of $1,\ldots,n$, an \emph{inversion}
+is a pair $i<j$ with $\pi(i)>\pi(j)$. For each of the $\binom n2$
+pairs, swapping the two values pairs the greater-first and smaller-first
+cases, so the inversion probability is $1/2$. Therefore
+\[
+\E[\text{number of inversions}]=\frac12\binom n2=\frac{n(n-1)}4.
+\]
+Indicators sharing a position need not be independent; linearity still
+applies. For $n=1$ the empty sum is zero.
+\end{example}
+
+\subsection{Spaghetti loops: count the closures}
+\label{sec:spaghetti-loops}
+
+Start with $n\ge1$ separate strands, each with two distinguishable ends.
+Pair all $2n$ ends uniformly at random and tie each pair together. There
+are $(2n-1)(2n-3)\cdots1$ perfect matchings: choose the partner of a
+specified end, remove those two ends, and repeat. Equivalently, repeatedly
+choose any specified free end and choose its partner uniformly among
+the other free ends. Every full matching has the same product probability.
+Closed loops stay closed; only \emph{free} ends can be selected.
+
+At any intermediate stage, every unfinished component is an open chain
+with exactly two free ends. If there are $m$ open chains, there are
+$2m$ free ends. Tying two ends has just two possibilities:
+
+\begin{center}
+\begin{tikzpicture}[thick,scale=.9]
+\begin{scope}
+\draw[mint,very thick] (-1,0) to[bend left=40] (1,0);
+\draw[rose,dashed,very thick] (-1,0) to[bend right=40] (1,0);
+\fill (-1,0) circle (2pt); \fill (1,0) circle (2pt);
+\node[align=center,text width=5cm] at (0,-1)
+{Same chain:\\one loop closes};
+\end{scope}
+\begin{scope}[xshift=7cm]
+\draw[mint,very thick] (-1.5,0)--(-.5,0);
+\draw[mint,very thick] (.5,0)--(1.5,0);
+\draw[rose,dashed,very thick] (-.5,0)--(.5,0);
+\foreach \x in {-1.5,-.5,.5,1.5}{\fill (\x,0) circle (2pt);}
+\node[align=center,text width=5cm] at (0,-1)
+{Different chains:\\one longer chain remains};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+Either operation reduces the number of open chains by one. Given any
+completed history with $m$ chains remaining, the selected end has
+$2m-1$ possible partners, exactly one of which is the other end of
+its own chain. The chance that this tie closes a loop is therefore
+$1/(2m-1)$, regardless of the history.
+
+Let $J_m$ indicate closure at the tie made with $m$ chains remaining.
+Since the conditional probability has the same value for every possible
+history, total probability gives $\E[J_m]=1/(2m-1)$.
+Every final loop was closed by exactly one tie, so the loop count $L_n$ is
+$\sum_{m=1}^nJ_m$. Hence
+\[
+\boxed{\E[L_n]=\sum_{m=1}^n\frac1{2m-1}
+=H_{2n}-\frac12H_n.}
+\]
+For $n=1,2,3$ the means are $1,4/3,23/15$, respectively. With no
+strands there are no loops, consistent with the empty sum at $n=0$.
+The indicators refer to \emph{closure steps}, not to original strands:
+one loop may contain several original strands. No independence assertion
+is needed for the expectation calculation. This classical example also
+appears in the Stanford EE 178/278A expectation notes listed in the references.
+
+\subsection{An average proves that a good cut exists}
+\label{sec:random-cut}
+
+A finite graph consists of vertices and edges joining distinct vertices.
+Suppose it has $e$ edges. Color each vertex red or blue independently
+with equal probabilities. An edge crosses the resulting \emph{cut} if
+its ends have different colors. For each edge this probability is
+$2(1/2)(1/2)=1/2$, so
+\[
+\E[\text{number of crossing edges}]=e/2.
+\]
+At least one coloring has at least $e/2$ crossing edges: otherwise every
+value, and hence their average, would be smaller than $e/2$.
+Thus every such graph has a cut containing at least half its edges.
+On a triangle the edge indicators are not mutually independent, since
+the number of crossing edges can only be zero or two. Their dependence
+does not obstruct the average argument.
+
+\begin{bigidea}[title={Choose what contributes one}]
+For records, count successful positions. For inversions, count pairs.
+For loops, count closing ties. For a cut, count crossing edges.
+The right decomposition can make a complicated distribution unnecessary.
+\end{bigidea}
