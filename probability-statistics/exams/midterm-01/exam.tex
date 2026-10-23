@@ -1,0 +1,290 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.75in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,enumitem,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Probability Midterm 1},pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student paper\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[3]{\par\addvspace{9pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points}}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{1in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Midterm 1}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{exam-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+{\LARGE\bfseries\color{indigo}Probability Midterm 1}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 100 points
+  \quad $\bullet$ \quad Six problems}\par
+\ifanswers
+\textbf{Grading note.} Award method credit after an earlier error; do not
+deduct twice for the same mistake. Suggested working times for Problems
+1--6 are 5, 5, 6, 8, 10, and 9 minutes, leaving 7 minutes to check.
+\else
+\smallskip
+\textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+\textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all six problems and show your reasoning.
+Exact answers are acceptable; binomial coefficients need not be evaluated.
+No calculator is needed. Use the spaces provided; clearly label any work
+continued on the back. In Problem 6, use the guided steps rather than
+quoting a coupon-collector formula. Reserve time to check your work.
+
+\problem{1}{Sets}{10}
+Let $U=\{1,2,\ldots,10\}$, $A=\{2,4,6,8,10\}$, and
+$B=\{1,2,3,4\}$. Take all complements relative to $U$.
+\begin{enumerate}
+\item Find $A\cap B$, $A\setminus B$, and $(A\cup B)^c$.
+\partpts{6}
+\begin{solution}[.85in]
+\[
+A\cap B=\{2,4\},\qquad A\setminus B=\{6,8,10\},\qquad
+(A\cup B)^c=\{5,7,9\}.
+\]
+\credit{2 points per correct set; allow partial credit for a single entry error.}
+\end{solution}
+\item For these sets $A,B$, is the following statement true for every
+$C\subseteq U$? Justify your answer with a proof or a counterexample.
+\partpts{4}
+\[
+C\subseteq A\cup B\quad\Longrightarrow\quad
+C\subseteq A\ \text{or}\ C\subseteq B.
+\]
+\begin{solution}[.85in]
+False. Take $C=\{1,6\}$. Both elements lie in $A\cup B$, so
+$C\subseteq A\cup B$. But $1\notin A$ and $6\notin B$;
+therefore $C\nsubseteq A$ and $C\nsubseteq B$.
+\credit{False: 1; valid counterexample: 1; verifying containment in the union: 1;
+verifying both failed containments: 1. Accept any valid counterexample.}
+\end{solution}
+\end{enumerate}
+
+\problem{2}{A probability space}{10}
+Let $\Omega=\{a,b,c,d\}$, with every subset of $\Omega$ an event.
+The probabilities of the individual outcomes $a,b,c,d$ are
+$k,2k,3k,4k$, respectively.
+\begin{enumerate}
+\item Find $k$, explaining the probability axiom you use.
+\partpts{4}
+\begin{solution}[.6in]
+The disjoint singleton events partition $\Omega$, and $\Prob(\Omega)=1$.
+Finite additivity gives $k+2k+3k+4k=1$, so $k=1/10$.
+All four probabilities are nonnegative.
+\credit{Normalization/additivity explanation: 2; equation: 1; $k=1/10$: 1.}
+\end{solution}
+\item Let $E=\{a,c\}$ and $F=\{b,c\}$.
+Find $\Prob(E)$, $\Prob(E\cap F)$, and $\Prob(E^c)$.
+\partpts{6}
+\begin{solution}[.85in]
+Since $E\cap F=\{c\}$ and $E^c=\{b,d\}$,
+\[
+\Prob(E)=\frac{1+3}{10}=\frac25,\qquad
+\Prob(E\cap F)=\frac3{10},\qquad
+\Prob(E^c)=\frac{2+4}{10}=\frac35.
+\]
+\credit{2 points per probability. If $k$ was incorrect in (a), award full
+method credit for $4k,3k,6k$, or a consistently justified complement.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{Inclusion--exclusion}{15}
+In a class of 40 students, 18 study French, 16 Spanish, and 12 German.
+Seven study both French and Spanish, five both French and German,
+and four both Spanish and German. Two study all three languages.
+\textbf{The pairwise counts include students who study all three.}
+\begin{enumerate}
+\item How many students study at least one of these languages?
+Show your inclusion--exclusion calculation. \partpts{11}
+\begin{solution}[.95in]
+Writing $F,S,G$ for the three sets, inclusion--exclusion gives
+\begin{align*}
+|F\cup S\cup G|
+&=|F|+|S|+|G|-|F\cap S|-|F\cap G|-|S\cap G|
+  +|F\cap S\cap G|\\
+&=18+16+12-7-5-4+2=32.
+\end{align*}
+\credit{Adding the three individual counts: 3; subtracting each pairwise
+intersection: 3; restoring the triple intersection once: 3; result 32: 2.}
+\end{solution}
+\item How many students study none of these languages? \partpts{4}
+\begin{solution}[.65in]
+There are $40-|F\cup S\cup G|=40-32=8$ such students.
+\credit{Complement subtraction: 3; answer 8: 1. Carry forward an earlier error.}
+\end{solution}
+\end{enumerate}
+
+\problem{4}{Balls in an urn}{20}
+An urn contains five red, four blue, and three green balls. Four balls
+are selected uniformly without replacement: every four-ball subset
+of the twelve individual balls is equally likely.
+\begin{enumerate}
+\item Find the probability of selecting exactly two red, one blue,
+and one green ball. \partpts{10}
+\begin{solution}[1.25in]
+There are $\binom{12}{4}$ equally likely subsets. Choose two of the
+five red balls, one of the four blue balls, and one of the three green balls:
+\[
+\Prob(\text{two red, one blue, one green})
+=\frac{\binom52\binom41\binom31}{\binom{12}4}
+=\frac{120}{495}=\frac8{33}.
+\]
+\credit{Uniform denominator: 3; red choice: 2; blue and green choices: 2;
+multiplying the counts and forming the ratio: 3. No numerical simplification needed.}
+\end{solution}
+\item Find the probability of selecting at least one green ball.
+\partpts{10}
+\begin{solution}[1.25in]
+There are nine non-green balls. The complementary event selects all
+four balls from these nine, so
+\[
+\Prob(\text{at least one green})
+=1-\frac{\binom94}{\binom{12}4}
+=1-\frac{126}{495}=\frac{41}{55}.
+\]
+\credit{Complement event: 3; count $\binom94$: 3; denominator: 2;
+subtracting the ratio from 1: 2. Accept an equivalent direct count.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{5}{A density, its mean, and its variance}{25}
+A continuous random variable $X$ has probability density
+\[
+f(x)=\begin{cases}
+cx^3,&0\le x\le1,\\
+0,&\text{otherwise},
+\end{cases}
+\]
+where $c$ is a constant. Show the integrals you use.
+\begin{enumerate}
+\item Find $c$. \partpts{5}
+\begin{solution}[1.4in]
+A density must integrate to 1:
+\[
+1=\int_{-\infty}^{\infty}f(x)\,dx
+=c\int_0^1 x^3\,dx
+=c\left[\frac{x^4}{4}\right]_0^1=\frac c4.
+\]
+Thus $c=4$, which also makes $f$ nonnegative.
+\credit{Normalization integral: 2; integral value: 2; $c=4$: 1.}
+\end{solution}
+\item Compute $\E[X]$. \partpts{8}
+\begin{solution}[1.5in]
+Using $f(x)=4x^3$ on $[0,1]$,
+\[
+\E[X]=\int_{-\infty}^{\infty}x f(x)\,dx
+=4\int_0^1 x^4\,dx
+=4\left[\frac{x^5}{5}\right]_0^1=\frac45.
+\]
+\credit{Moment integral with the extra factor $x$: 4;
+antiderivative and limits: 3; result: 1. Carry forward an earlier value of $c$.}
+\end{solution}
+\item Compute $\E[X^2]$, and hence $\Var(X)$. \partpts{12}
+\begin{solution}[2in]
+\[
+\E[X^2]=\int_{-\infty}^{\infty}x^2 f(x)\,dx
+=4\int_0^1 x^5\,dx
+=4\left[\frac{x^6}{6}\right]_0^1=\frac23.
+\]
+Consequently,
+\[
+\Var(X)=\E[X^2]-(\E[X])^2
+=\frac23-\left(\frac45\right)^2
+=\frac{50-48}{75}=\frac2{75}.
+\]
+\credit{Second-moment integral: 4; evaluating it: 3;
+variance identity: 3; substitution and arithmetic: 2.
+Accept a correctly evaluated direct variance integral as an alternative.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{6}{Collecting four toy types}{20}
+Each cereal box contains one toy. There are four toy types, each equally
+likely, and different boxes have independent contents. Duplicates are possible.
+Starting with no toys, let $T$ be the number of boxes opened up to and
+including the first box that completes the collection of all four types.
+\begin{enumerate}
+\item After exactly $k$ distinct types have been collected, let $p_k$
+be the probability that the next box contains a new type. Find
+$p_0,p_1,p_2,p_3$, and explain your reasoning. \partpts{6}
+\begin{solution}[1.3in]
+Exactly $4-k$ of the four types are new, so $p_k=(4-k)/4$.
+Thus
+\[
+p_0=1,\qquad p_1=\frac34,\qquad p_2=\frac12,\qquad p_3=\frac14.
+\]
+\credit{Counting the missing types and dividing by four: 2;
+four correct probabilities: 1 each.}
+\end{solution}
+\item Let $W_k$ be the number of additional boxes needed to go from
+exactly $k$ collected types to $k+1$ collected types, including the
+box containing the new type. Find $\E[W_k]$ for $k=0,1,2,3$.
+\partpts{8}
+
+\textit{You may use:} A geometric waiting time that counts trials
+through the first success, with success probability $p$, has mean $1/p$.
+\begin{solution}[1.6in]
+Until a new type appears, the set of missing types stays the same.
+Independence of boxes makes this a geometric wait with success
+probability $p_k$. For $k=0$, the first box always supplies a new type.
+Therefore
+\[
+\E[W_0]=1,\qquad \E[W_1]=\frac43,\qquad
+\E[W_2]=2,\qquad \E[W_3]=4.
+\]
+\credit{2 points per correctly obtained mean. Carry forward earlier
+probabilities when the reciprocal rule is applied consistently.}
+\end{solution}
+\item Express $T$ in terms of $W_0,W_1,W_2,W_3$ and compute $\E[T]$.
+State the expectation rule you use. \partpts{6}
+\begin{solution}[1.8in]
+The four successive stages partition all boxes opened, so
+$T=W_0+W_1+W_2+W_3$. Linearity of expectation gives
+\[
+\E[T]=\sum_{k=0}^3\E[W_k]
+=1+\frac43+2+4=\frac{25}{3}.
+\]
+This is an expected number of boxes, not a probability, so it need not
+be an integer. Independence of the $W_k$ is not needed to apply linearity.
+\credit{Stage decomposition: 2; linearity and the sum of stage means: 2;
+evaluation: 2. Do not require a proof of independence of the waits.}
+\end{solution}
+\end{enumerate}
+\vfill
+\begin{center}\small\color{muted}End of paper. Check that you have answered all six problems.\end{center}
+\label{exam-last-page}
+\end{document}
