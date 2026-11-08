@@ -30,6 +30,23 @@ Copy the finished `main.pdf` to `patterns_proofs_primes.pdf` and to
 
 The source uses standard TeX Live packages: TikZ, tcolorbox, amsmath, hyperref, booktabs, and related dependencies.
 
+## Final projects
+
+Chapter 9 (`chapters/09_capstone.tex`) offers fourteen final-project
+choices. The original four cover Pell equations, necklaces, Pascal's
+triangle modulo a prime, and prime counting. Ten further options cover
+RSA, the history of Fermat's Last Theorem, Smith normal form, Shamir
+secret sharing, Reed--Solomon codes, Carmichael numbers, Gaussian integers,
+quadratic reciprocity, Hensel lifting, and Farey fractions/Ford circles.
+
+Each added option includes preparation notes, a required mathematical core,
+an optional extension, and a linked starting reference. The chapter retains
+the four-to-six page exposition, complete proof, original visual,
+one-page proof map, five-minute oral explanation, and existing rubric.
+It also asks students to supply their own worked example and locate the
+arguments they use in their references. Historical and computational
+projects share the same proof requirement.
+
 ## Suggested variants
 
 - **10-week course:** omit the Pell extension, compress CRT, and assign Chebyshev's proof as a guided capstone.

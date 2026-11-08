@@ -18,6 +18,7 @@ instructor material and history.
 | Weekly quizzes and keys | [Quizzes](number-theory/quizzes/) | [Quizzes](probability-statistics/quizzes/) |
 | Midterm study guide | Not yet prepared | [Through continuous distributions](probability-statistics/study-guides/midterm/probability_midterm_study_guide.pdf) |
 | Midterm review | [Problem bank through finite-fields Lecture 2](number-theory/problem-sets/midterm-review/number_theory_midterm_review_student.pdf) | [50-minute practice quiz](probability-statistics/quizzes/midterm-review/probability_midterm_review_quiz_student.pdf) |
+| Makeup midterm | [Student paper and instructor key](number-theory/exams/midterm-01-makeup/) | [Student paper and instructor key](probability-statistics/exams/midterm-01-makeup/) |
 | Website source | [Interactive companion](number-theory/website/) | [Interactive companion](probability-statistics/website/) |
 | Lecture presentations | [Two continued-fraction lectures](number-theory/lectures/continued-fractions/) | Not yet prepared |
 

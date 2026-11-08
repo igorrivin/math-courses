@@ -43,6 +43,16 @@ and Fourier inversion as interpolation at roots of unity. Notebook 6 checks
 the counts and both kinds of inversion using exact arithmetic in SageMath
 or standard Python. The companion links these sections and all six notebooks.
 
+## Pythagorean triples and descent
+
+The `/pythagorean-descent` web lesson classifies primitive triples, includes an
+interactive parameter explorer, proves `x^4+y^4=z^2` impossible by descent on z,
+and proves the cubic Fermat case through Eisenstein integers and descent on a
+prime exponent. It supplies prerequisites, explicit proof details, eight
+exercises with answers, and primary exposition links. `descent-math.mjs` contains
+the exact small-integer arithmetic used by the interactive component and tests.
+This lesson is a web supplement; the existing book PDF is unchanged.
+
 ## Problem sets, quizzes, and instructor editions
 
 `/assessments` lists the student PDFs; `/instructors` requires the shared

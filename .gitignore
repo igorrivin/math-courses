@@ -41,6 +41,7 @@ main.pdf
 
 # Local caches, previews, and older working backups
 .DS_Store
+._*
 .ipynb_checkpoints/
 __pycache__/
 *.pyc

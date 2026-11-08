@@ -402,7 +402,7 @@ export default function Home() {
       <nav className="topbar">
         <a className="brand" href="#top" aria-label="Patterns, Proofs, and Primes home"><span>PP</span><b>Patterns, Proofs,<br />and Primes</b></a>
         <button className="menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu}>Menu</button>
-        <div className={menu ? "navlinks open" : "navlinks"}><a href="#course">Course</a><a href="#labs">Labs</a><a href="#practice">Practice</a><a href="/assessments">Problem sets & quizzes</a><a href="#sage">Sage</a><a className="pdf-link" href="/course-packet.pdf">PDF edition ↗</a></div>
+        <div className={menu ? "navlinks open" : "navlinks"}><a href="#course">Course</a><a href="#labs">Labs</a><a href="/pythagorean-descent">Triples & descent</a><a href="#practice">Practice</a><a href="/assessments">Problem sets & quizzes</a><a href="#sage">Sage</a><a className="pdf-link" href="/course-packet.pdf">PDF edition ↗</a></div>
       </nav>
 
       <header className="hero" id="top">
@@ -417,6 +417,8 @@ export default function Home() {
         <div className="chapter-grid">{chapters.map((c) => <article className={`chapter-card ${c.accent}`} key={c.n}><span>{c.n}</span><p>{c.topic}</p><h3>{c.title}</h3><em>{c.blurb}</em></article>)}</div>
         <div className="course-cta"><div><strong>Designed for a first proof-oriented course</strong><span>Two 75-minute meetings per week · no calculus or abstract algebra required</span></div><a href="/course-packet.pdf">Download the expanded course packet</a></div>
       </section>
+
+      <section className="section practice-section" aria-labelledby="descent-intro"><div className="course-cta"><div><p className="eyebrow">New proof journey</p><strong id="descent-intro">Pythagorean triples and infinite descent</strong><span>Classify integer right triangles, then prove the quartic and cubic Fermat cases. Includes a triple generator, complete descent arguments, and eight exercises with answers.</span></div><a href="/pythagorean-descent">Open the triples & descent lesson →</a></div></section>
 
       <section className="section labs-section" id="labs">
         <div className="section-heading light"><div><p className="eyebrow">Interactive companion</p><h2>Touch the structure.</h2></div><p>Every experiment is paired with a proof question. Computation is the microscope—not the oracle.</p></div>

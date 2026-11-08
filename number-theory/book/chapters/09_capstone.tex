@@ -1,9 +1,24 @@
 \chapter{Capstone studio}
+\label{chap:capstone}
 \chaptertag{Choose a thread, extend it, and explain it}
 
 The capstone is not a miniature research paper. It is a carefully explained mathematical journey: a motivating question, small examples, one substantial proof, and a clear account of how course ideas connect.
 
+\newenvironment{capstoneproject}{%
+  \par\addvspace{\medskipamount}\noindent
+  \begin{minipage}{\textwidth}\setlength{\parskip}{5pt}%
+}{\end{minipage}\par\addvspace{\medskipamount}}
+
 \section{Project menu}
+
+Choose one project. Projects A--D develop familiar course threads;
+Projects E--N introduce further applications, history, and theory.
+Each of the new options has a required core and an optional extension.
+The core should fit the four-to-six page exposition described below;
+an extension is an opportunity to go further after completing it.
+Preparation notes identify useful background, including material that
+can be learned as part of the project. Programming is optional unless
+you choose an extension that calls for it.
 
 \subsection*{A. Rational approximation and Pell equations}
 Choose a nonsquare $d$. Compute the continued fraction of $\sqrt d$, identify convergents that solve $x^2-dy^2=\pm1$, and prove at least one recurring pattern. Include a number-line or lattice illustration.
@@ -17,6 +32,257 @@ Visualize Pascal's triangle modulo $p$. Develop and prove a digit rule (Lucas's 
 \subsection*{D. Prime-counting laboratory}
 Compare $\pi(x)$ with $x/\log x$, $\operatorname{Li}(x)$, and the Chebyshev bounds over a range your computer can handle. Explain which plots are evidence and which claims are proved. Reconstruct one link in Chebyshev's proof in full detail.
 
+\begin{capstoneproject}
+\subsection*{E. RSA: construction, correctness, and weaknesses}
+\textbf{Preparation.} Modular inverses, Fermat's theorem, and the Chinese
+remainder theorem (Chapter~\ref{chap:modular}).
+
+\textbf{Core.} Choose distinct odd primes $p,q$, set $n=pq$, and choose
+$1<e<\varphi(n)$ relatively prime to $\varphi(n)$. Explain how extended
+Euclid finds a positive $d$ with $ed\congr1\pmod{\varphi(n)}$.
+Describe encryption and decryption
+and prove that
+\[
+  (m^e)^d\congr m\pmod n
+\]
+for \emph{every} message residue $m$, including those not relatively prime
+to $n$. Give a complete numerical example. Explain how knowing the
+factorization of $n$ gives a private exponent, and demonstrate a weak
+choice of modulus, such as a product of nearby primes that can be found
+by a difference-of-squares search. Distinguish the correctness proof
+from an argument about the difficulty of recovering a message.
+
+\textbf{Extension.} Implement the example using repeated squaring, or
+explain why $\operatorname{lcm}(p-1,q-1)$ can replace $\varphi(n)$ when
+choosing $d$.
+
+\textbf{Starting point.}
+\href{https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/resources/mit18_781s12_lec6/}{MIT 18.781 notes on primality, factoring, and RSA}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{F. Fermat's Last Theorem: how the methods changed}
+\textbf{Preparation.} Divisibility, Pythagorean triples, and proof by
+infinite descent; an interest in mathematical history.
+
+\textbf{Core.} Organize a historical account around a few decisive changes
+of method, such as Fermat's descent, Kummer's work on factorization, and
+the route through elliptic curves and modularity that led to Wiles's
+proof. Explain the mathematical obstacle each development addressed.
+Include a complete proof of the exponent-four case using infinite
+descent. State clearly which later theorems you quote; the modern proof
+should be explained through its main implications, with their precise
+scope, while the elementary case supplies the fully worked proof.
+Support historical claims with identifiable sources.
+
+\textbf{Extension.} Analyze the two factorizations
+$6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})$ in $\Z[\sqrt{-5}]$.
+Prove that the displayed factors are irreducible and explain why unique
+factorization cannot simply be assumed in a larger number system.
+
+\textbf{Starting point.}
+\href{https://abelprize.no/abel-prize-laureates/2016}{The Abel Prize's
+Wiles materials}, including its account of the exponent-four proof.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{G. Smith normal form and integer equations}
+\textbf{Preparation.} The Euclidean algorithm, integer matrices, and
+elementary row and column operations.
+
+\textbf{Core.} Prove that an integer matrix $A$ can be transformed to a
+diagonal matrix $D=UAV$, where $U,V$ are square integer matrices of
+determinant $\pm1$. If $r$ is the rank of $A$, the $r$ nonzero diagonal
+entries are positive and satisfy
+\[
+  d_1\divides d_2\divides\cdots\divides d_r.
+\]
+Explain why the reduction terminates and why each operation is reversible
+over the integers. Work out a $3\times3$ example, keeping track of the
+operations, and use the resulting form to decide when $Ax=b$ has an
+integer solution and describe all its solutions.
+
+\textbf{Extension.} Prove uniqueness of the diagonal entries using gcds
+of minors, or explain how the form describes
+$\Z^m/A\Z^n$ and leads to the classification of finitely generated
+abelian groups.
+
+\textbf{Starting point.}
+\href{https://ocw.mit.edu/courses/res-18-012-algebra-ii-student-notes-spring-2022/mit18_702s22_lect21.pdf}{MIT Algebra II, Lecture 21: Smith Normal Form}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{H. Shamir secret sharing}
+\textbf{Preparation.} Finite-field arithmetic and Lagrange interpolation
+(Section~\ref{sec:crt-interpolation}).
+
+\textbf{Core.} Explain a $t$-out-of-$n$ sharing scheme, with
+$2\le t\le n<p$ and $p$ prime. To share $s\in\F_p$, choose
+$a_1,\ldots,a_{t-1}$ independently and uniformly from $\F_p$ and set
+\[
+  f(X)=s+a_1X+\cdots+a_{t-1}X^{t-1}.
+\]
+Participant $i$ receives $(i,f(i))$, for $1\le i\le n$.
+Prove that any $t$ shares reconstruct $s$, and use a counting argument
+to prove that the distribution of any fewer than $t$ shares is the same
+for every possible secret. Work out a three-out-of-five example over
+$\F_{17}$. Notice that the degree is \emph{at most} $t-1$: zero leading
+coefficients must remain among the random choices.
+
+\textbf{Extension.} Write a small sharing and reconstruction program,
+or connect the scheme to the polynomial codes in Project I.
+
+\textbf{Starting point.}
+\href{https://65610.csail.mit.edu/2025/lec/l11-ss.pdf}{Yael Kalai's MIT
+notes on secret sharing}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{I. Reed--Solomon error-correcting codes}
+\textbf{Preparation.} Finite fields, polynomial root bounds, and
+interpolation (Section~\ref{sec:crt-interpolation} and
+Appendix~\ref{app:finite-fields}).
+
+\textbf{Core.} Choose $n$ distinct points in $\F_q$, with
+$1\le k\le n\le q$, and encode a polynomial of degree less than $k$
+by its values at these points. Define the distance between two codewords
+as the number of positions where they differ. Prove that the minimum
+distance between distinct codewords is $n-k+1$, and deduce how many
+erasures or errors can be recovered uniquely. Distinguish an erasure
+(a known missing position) from an error (an incorrect value at an
+unknown position). Give an example using five evaluation points over
+$\F_7$ and degree at most two: recover two missing values, then work a
+separate example with one incorrect value. Explain how you locate and
+check that error.
+
+\textbf{Extension.} Implement a decoder or explain the
+Berlekamp--Welch decoding method.
+
+\textbf{Starting point.}
+\href{https://homes.cs.washington.edu/~anuprao/pubs/codingtheory/lecture4.pdf}{Anup Rao's notes on Reed--Solomon codes}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{J. When Fermat's primality test lies}
+\textbf{Preparation.} Fermat's theorem, CRT, and multiplicative orders;
+cyclicity of $\F_p^\times$ is useful for the main criterion.
+
+\textbf{Core.} Define a Fermat pseudoprime to a specified coprime base,
+and define a Carmichael number as a composite $n>1$ for which
+$a^{n-1}\congr1\pmod n$ for every $a$ relatively prime to $n$.
+Prove that $561=3\cdot11\cdot17$ has this property. Prove Korselt's
+criterion: a composite integer $n$ is Carmichael exactly when it is
+squarefree and $p-1\divides n-1$ for every prime divisor $p$ of $n$.
+Use the criterion to check further examples and explain why passing a
+Fermat test does not certify primality.
+
+\textbf{Extension.} Explain the Miller--Rabin test and exhibit a witness
+that rejects $561$, or investigate how the criterion guides a search
+for other Carmichael numbers.
+
+\textbf{Starting point.}
+\href{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/carmichaelkorselt.pdf}{Keith Conrad, \emph{Carmichael Numbers and Korselt's Criterion}}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{K. Gaussian integers and sums of two squares}
+\textbf{Preparation.} Complex-number arithmetic, the Euclidean algorithm,
+and unique factorization in the ordinary integers.
+
+\textbf{Core.} Introduce $\Z[i]$ and the multiplicative norm
+$N(a+bi)=a^2+b^2$. Prove Euclidean division by choosing a nearest
+Gaussian integer to a quotient, and explain how the Euclidean algorithm
+gives gcds and the factorization properties you use. Then prove that an
+odd prime $p$ is a sum of two integer squares if and only if
+$p\congr1\pmod4$. Include explicit divisions and factorizations that
+show the method in action.
+
+\textbf{Extension.} Derive the criterion for a general positive integer
+to be a sum of two squares, or explain how different Gaussian
+factorizations yield different representations of the same integer.
+
+\textbf{Starting point.}
+\href{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/Zinotes.pdf}{Keith Conrad, \emph{The Gaussian Integers}}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{L. Quadratic reciprocity}
+\textbf{Preparation.} Congruences modulo primes and Euler's criterion.
+This is an ambitious option centered on a substantial proof.
+
+\textbf{Core.} Define the Legendre symbol and state quadratic reciprocity
+for distinct odd primes. Present one complete proof, developing the
+lemmas it needs; a route through Gauss's lemma and lattice-point counting
+is a natural choice. Explain the roles of the supplementary laws for
+$-1$ and $2$, and use reciprocity to decide several explicitly chosen
+quadratic-residue questions. Make clear which results are proved in the
+project and which established facts are being quoted.
+
+\textbf{Extension.} Compare the main idea with a second proof, or explain
+the Jacobi symbol and why a Jacobi symbol of $1$ does not always imply
+that a number is a square modulo a composite modulus.
+
+\textbf{Starting point.}
+\href{https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/resources/mit18_781s12_lec9/}{MIT 18.781 notes on quadratic residues and reciprocity}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{M. Hensel lifting: solving congruences one digit at a time}
+\textbf{Preparation.} Congruences modulo prime powers, polynomial
+arithmetic, and the formal derivative of a polynomial.
+
+\textbf{Core.} Let $p$ be prime, $f\in\Z[X]$, and $a\in\Z$. Suppose
+$f(a)\congr0\pmod p$ but $f'(a)\not\congr0\pmod p$.
+Prove that for each $k\ge1$ the chosen root $a$ has exactly one lift
+modulo $p^k$. Derive the next-digit equation by substituting
+$a_k+tp^k$ into $f$ and reducing modulo $p^{k+1}$.
+Starting with $a=3$ modulo $7$, calculate successive solutions of
+$x^2\congr2\pmod{7^k}$. Contrast this with $x^2\congr3\pmod3$,
+whose root does not lift modulo $9$, and explain the failed hypothesis.
+
+\textbf{Extension.} Interpret the compatible digits as a $p$-adic root,
+or investigate an example in which a root with vanishing derivative
+has more than one lift.
+
+\textbf{Starting point.}
+\href{https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/resources/mit18_781s12_lec6/}{MIT 18.781 notes on Hensel's lemma}.
+
+\end{capstoneproject}
+
+\begin{capstoneproject}
+\subsection*{N. Farey fractions and Ford circles}
+\textbf{Preparation.} Reduced fractions, B\'ezout's identity, and
+elementary coordinate geometry. This is a particularly visual option.
+
+\textbf{Core.} Define the Farey sequence of order $N$ as the reduced
+fractions in $[0,1]$ with denominator at most $N$, listed in increasing
+order. Prove that neighbors $a/b<c/d$ satisfy $bc-ad=1$, and explain
+the role of their mediant $(a+c)/(b+d)$ as the order increases.
+Associate to $a/b$ the circle with center $(a/b,1/(2b^2))$ and radius
+$1/(2b^2)$. Prove that two distinct such circles are tangent exactly
+when the corresponding fractions satisfy the determinant condition
+$\abs{ad-bc}=1$. Draw and explain an example that displays both the
+arithmetic and the geometry.
+
+\textbf{Extension.} Connect the construction to continued fractions,
+or prove that the Stern--Brocot tree contains every positive rational
+number exactly once.
+
+\textbf{Starting point.}
+\href{https://www.maths.ed.ac.uk/~v1ranick/papers/ford.pdf}{L. R. Ford,
+``Fractions,'' \emph{American Mathematical Monthly} \textbf{45}
+(1938), 586--601}, especially its opening sections.
+
+\end{capstoneproject}
+
 \section{Required deliverables}
 
 \begin{enumerate}
@@ -27,11 +293,18 @@ Compare $\pi(x)$ with $x/\log x$, $\operatorname{Li}(x)$, and the Chebyshev boun
   \item A five-minute oral explanation, followed by questions.
 \end{enumerate}
 
+Include a worked example of your own and references with enough detail
+to locate the arguments you used. A historical project has the same
+complete-proof requirement; a computational project must explain why
+its method works. Define unfamiliar objects, identify the main theorem
+early, and complete the core before adding an extension. The references
+above are starting points; reading an entire source is not required.
+
 \section{Evaluation rubric}
 
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{p{.22\textwidth}Xr}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{.22\textwidth}Xr}
 \toprule
 Criterion & Evidence of strong work & Weight \\
 \midrule

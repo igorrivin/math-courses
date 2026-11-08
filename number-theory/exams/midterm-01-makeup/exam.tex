@@ -1,0 +1,244 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.75in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,enumitem,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Number Theory Makeup Midterm},pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student paper\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[3]{\par\addvspace{9pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points}}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{1in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Number Theory \textbar\ Makeup Midterm}
+\fancyhead[R]{\small\color{muted}Patterns, Proofs, and Primes}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{exam-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+{\LARGE\bfseries\color{indigo}Number Theory Makeup Midterm}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 100 points
+  \quad $\bullet$ \quad Six problems}\par
+\ifanswers
+\textbf{Grading note.} Award method credit after earlier errors. Suggested
+working times for Problems 1--6 are 7, 7, 7, 7, 6, and 10 minutes,
+leaving 6 minutes to check. Coverage is based on the midterm review bank.
+\else
+\smallskip
+\textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+\textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all six problems and show your reasoning.
+No calculator is needed. You may quote results proved in class unless a
+proof is requested. Use the spaces provided; clearly label any work
+continued on the back. Reserve time to check your work.
+
+\problem{1}{Euclid and a linear congruence}{15}
+\begin{enumerate}
+\item Use the Euclidean algorithm to find $\gcd(195,84)$. \partpts{5}
+\begin{solution}[.7in]
+$195=2\cdot84+27$, $84=3\cdot27+3$, $27=9\cdot3$.
+The last nonzero remainder is $3$, so the gcd is $3$.
+\credit{Correct divisions: 4; identifying the gcd: 1.}
+\end{solution}
+\item Express this gcd as an integer linear combination of $195$ and $84$.
+\partpts{5}
+\begin{solution}[.65in]
+$3=84-3\cdot27=84-3(195-2\cdot84)=7\cdot84-3\cdot195$.
+\credit{Back substitution: 3; correct coefficients: 2. Accept any valid pair.}
+\end{solution}
+\item Find all solutions of $84x\equiv6\pmod{195}$. Give the distinct
+residues modulo $195$ and explain why your list is complete. \partpts{5}
+\begin{solution}[.8in]
+Doubling (b) gives $x=14$ as a solution. Dividing the congruence by $3$
+gives $28x\equiv2\pmod{65}$. Since $28$ is coprime to $65$, this has one
+class modulo $65$, namely $14$. The three classes modulo $195$ are
+$14,79,144$.
+\credit{A solution: 2; all three classes: 2; completeness: 1.}
+\end{solution}
+\end{enumerate}
+
+\problem{2}{Continued fractions and an inverse}{15}
+Let $D(a)=\begin{psmallmatrix}a&1\\1&0\end{psmallmatrix}$.
+\begin{enumerate}
+\item Find the simple continued fraction of $139/60$ and all its
+convergents. Use a final digit at least $2$. \partpts{6}
+\begin{solution}[.85in]
+Euclid gives remainders $19,3,1,0$ and quotients $2,3,6,3$.
+Thus $139/60=[2;3,6,3]$, with convergents
+$2/1,7/3,44/19,139/60$.
+\credit{Digits: 2; convergents: 1 each.}
+\end{solution}
+\item Multiply the digit matrices for your expansion. Use the determinant
+of their product to find the inverse of $60$ modulo $139$. \partpts{9}
+\begin{solution}[1.05in]
+\[
+D(2)D(3)D(6)D(3)=\begin{pmatrix}139&44\\60&19\end{pmatrix}.
+\]
+The determinant is $(-1)^4=1$, hence $139\cdot19-60\cdot44=1$.
+Therefore $60^{-1}\equiv-44\equiv95\pmod{139}$.
+\credit{Matrix: 5; determinant/B\'ezout identity: 2; inverse: 2.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{Reassembling residues and reducing powers}{15}
+\begin{enumerate}
+\item Solve $x\equiv2\pmod5$ and $x\equiv4\pmod7$.
+Justify uniqueness modulo $35$. \partpts{7}
+\begin{solution}[1.25in]
+Write $x=2+5k$. Modulo $7$, $5k\equiv2$, so $k\equiv6$.
+Thus $x\equiv32\pmod{35}$. A difference of solutions is divisible by
+both $5$ and $7$, hence by $35$, and adding $35$ preserves both residues.
+\credit{Substitution and solution: 4; coprimality and uniqueness: 3.}
+\end{solution}
+\item Find the multiplicative order of $3$ modulo $7$ and use it to
+compute $3^{100}\pmod7$. Show why your order is the least possible.
+\partpts{8}
+\begin{solution}[1.25in]
+The successive powers $3^1,\ldots,3^6$ modulo $7$ are
+$3,2,6,4,5,1$. The first occurrence of $1$ is at exponent $6$,
+so the order is $6$. Since $100\equiv4\pmod6$,
+$3^{100}\equiv3^4\equiv4\pmod7$.
+\credit{Order with minimality justification: 5; exponent reduction and result: 3.}
+\end{solution}
+\end{enumerate}
+
+\problem{4}{Prime factors and divisor sums}{15}
+Here $\tau(n)$ counts positive divisors, $\varphi(n)$ counts units modulo
+$n$, and $\mu$ is the M\"obius function.
+\begin{enumerate}
+\item Factor $180$ and compute $\tau(180)$, $\varphi(180)$,
+and $\mu(180)$. Show the prime-factor calculations. \partpts{6}
+\begin{solution}[1in]
+$180=2^2 3^2 5$. Hence
+\[
+\tau(180)=3\cdot3\cdot2=18,\qquad
+\varphi(180)=180\left(1-\frac12\right)\left(1-\frac13\right)
+\left(1-\frac15\right)=48.
+\]
+Since a prime square divides $180$, $\mu(180)=0$.
+\credit{Factorization: 1; divisor count: 2; totient: 2; M\"obius value: 1.}
+\end{solution}
+\item Suppose $f$ satisfies $\sum_{d\mid n}f(d)=n$ for every positive
+integer $n$. Use M\"obius inversion to give a formula for $f(n)$ and
+compute $f(12)$. \partpts{9}
+\begin{solution}[1.2in]
+Inversion gives
+\[
+f(n)=\sum_{d\mid n}\mu(d)\frac nd.
+\]
+At $n=12$, only $d=1,2,3,6$ contribute, so
+$f(12)=12-6-4+2=4$.
+\credit{Correct inversion formula: 5; nonzero terms: 3; value: 1.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{5}{Valuations and a $5$-adic limit}{15}
+For a prime $p$, let $v_p(r)$ denote the exponent of $p$ in a nonzero
+rational $r$, with $v_p(a/b)=v_p(a)-v_p(b)$. Define
+$|r|_5=5^{-v_5(r)}$ for $r\ne0$, $|0|_5=0$, and $d_5(x,y)=|x-y|_5$.
+\begin{enumerate}
+\item State Legendre's formula for $v_p(n!)$ and use it to compute
+$v_3(30!)$. \partpts{5}
+\begin{solution}[1.45in]
+\[
+v_p(n!)=\sum_{j\ge1}\left\lfloor\frac{n}{p^j}\right\rfloor,
+\qquad v_3(30!)=10+3+1=14.
+\]
+Terms vanish once $p^j>n$.
+\credit{Formula: 2; summands: 2; result: 1.}
+\end{solution}
+\item Compute $|125/14|_5$ and $d_5(1/3,16/3)$. \partpts{5}
+\begin{solution}[1.45in]
+Since $v_5(125/14)=3$, $|125/14|_5=1/125$.
+Also $1/3-16/3=-5$, of valuation $1$, so the distance is $1/5$.
+\credit{First valuation and norm: 2; difference, valuation, and distance: 3.}
+\end{solution}
+\item Let $S_n=\sum_{j=0}^n5^j$. Find its $5$-adic limit in
+$\mathbb Q$ and justify your answer by computing the distance to the limit.
+\partpts{5}
+\begin{solution}[2in]
+The geometric sum is $S_n=(5^{n+1}-1)/4$. Thus the limit is $-1/4$,
+since
+\[
+d_5(S_n,-1/4)=\left|\frac{5^{n+1}}4\right|_5
+=5^{-(n+1)}\longrightarrow0.
+\]
+\credit{Geometric sum and proposed limit: 2; exact distance: 2; convergence: 1.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{6}{A field of formal pairs}{25}
+Use formal pairs $a+bs$ with $a,b\in\mathbb F_7$ and the relation $s^2=3$.
+Addition is coefficientwise; multiplication is distributive with $s^2$
+replaced by $3$. You may use the resulting commutative ring laws.
+All scalar arithmetic in this problem is modulo $7$.
+\begin{enumerate}
+\item List the squares in $\mathbb F_7$. Show that $a^2-3b^2\ne0$
+whenever $(a,b)\ne(0,0)$, and deduce that every nonzero pair has inverse
+$(a-bs)/(a^2-3b^2)$. \partpts{11}
+\begin{solution}[1.65in]
+The squares are $0,1,2,4$, so $3$ is nonsquare. If $b=0$, then $a\ne0$
+and $a^2\ne0$. If $b\ne0$, vanishing of $a^2-3b^2$ would give
+$(a/b)^2=3$, a contradiction. Since
+$(a+bs)(a-bs)=a^2-3b^2$, division by this nonzero scalar supplies an inverse.
+Thus the ring is a field.
+\credit{Squares/nonsquare: 4; denominator proof (both cases): 5; inverse: 2.}
+\end{solution}
+\item Compute $(2+s)(3+2s)$ and $(1+s)^{-1}$. Check the inverse by
+multiplication. \partpts{8}
+\begin{solution}[1.5in]
+\[
+(2+s)(3+2s)=6+7s+2s^2=12=5.
+\]
+Also $(1+s)^{-1}=(1-s)/(1-3)=3(1-s)=3+4s$.
+Checking: $(1+s)(3+4s)=3+7s+4s^2=15=1$.
+\credit{Product: 4; inverse: 2; multiplication check: 2.}
+\end{solution}
+\item Give a basis over $\mathbb F_7$, the cardinality, and the
+characteristic. Explain why this field differs from $\mathbb Z/49\mathbb Z$.
+\partpts{6}
+\begin{solution}[1.3in]
+The basis is $1,s$: formal pairs have unique coefficients in
+$\mathbb F_7$. There are $7^2=49$ elements and the characteristic is $7$.
+In $\mathbb Z/49\mathbb Z$, the characteristic is $49$ and the nonzero
+class $7$ has square zero, so that ring is not a field.
+\credit{Basis and justification: 2; cardinality: 1; characteristic: 1;
+valid distinction from the residue ring: 2.}
+\end{solution}
+\end{enumerate}
+\vfill
+\begin{center}\small\color{muted}End of paper. Check that you have answered all six problems.\end{center}
+\label{exam-last-page}
+\end{document}

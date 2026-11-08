@@ -1,0 +1,322 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.7in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,enumitem,fancyhdr,hyperref}
+
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Estimation and Limit Theorems: 50-minute Quiz},
+  pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student quiz\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[4]{\par\addvspace{8pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points} $\cdot$ about #4 minutes}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{1in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Estimation and limit theorems}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{quiz-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+
+\begin{document}
+
+{\LARGE\bfseries\color{indigo}Estimation and Limit Theorems}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 50 points
+  \quad $\bullet$ \quad \edition}\par
+\ifanswers
+  \textbf{Grading note.} Award method credit for correct reasoning after an
+  earlier error; avoid repeated deductions for the same arithmetic mistake.
+  Suggested working time is 45 minutes, leaving 5 minutes for checking.\par
+\else
+  \smallskip
+  \textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+  \textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all four problems and show your reasoning.
+No calculator is needed; exact fractions are acceptable. Any needed normal
+probabilities are supplied. You may quote Chebyshev's inequality, but must
+derive the law of large numbers in Problem 2. Use the spaces provided;
+clearly label any work continued on the back. Reserve 5 minutes to check.
+
+\problem{1}{Estimating a mean and variance}{10}{8}
+A random sample of six observations from a population with finite mean
+$\mu$ and variance $\sigma^2$ gives the data
+\[
+  4,\quad 6,\quad 6,\quad 8,\quad 8,\quad 10.
+\]
+\begin{enumerate}
+  \item Estimate $\mu$ using the sample mean $\bar x$. Show your
+  calculation. \partpts{3}
+  \begin{solution}[1.1in]
+    The sum is $42$, so $\bar x=42/6=7$.
+    \credit{Sum of the observations: 1; division by $6$: 1; value: 1.}
+  \end{solution}
+
+  \item Calculate the sum of squared deviations from your sample mean,
+  $\sum_{i=1}^{6}(x_i-\bar x)^2$. \partpts{3}
+  \begin{solution}[1.4in]
+    The deviations are $-3,-1,-1,1,1,3$, so
+    \[
+      \sum_{i=1}^{6}(x_i-\bar x)^2=9+1+1+1+1+9=22.
+    \]
+    Alternatively, $\sum x_i^2=316$ and $316-6\cdot7^2=22$.
+    \credit{Correct deviations or equivalent computational identity: 1;
+    squared terms: 1; sum: 1.}
+  \end{solution}
+
+  \item Estimate $\sigma^2$ using the \emph{unbiased sample variance}
+  (divide the sum in part (b) by $n-1$). Also report the mean squared
+  deviation (divide by $n$). Label the two answers. \partpts{4}
+  \begin{solution}[1.35in]
+    The unbiased variance estimate is $s^2=22/(6-1)=22/5$.
+    The mean squared deviation is $22/6=11/3$.
+    \credit{Unbiased estimate: 2; mean squared deviation: 2.
+    Give full method credit for correctly using an earlier computed sum.
+    A proof of unbiasedness is not required.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{2}{Chebyshev's law of large numbers}{14}{12}
+Let $X_1,X_2,\ldots$ be independent and identically distributed, with
+$\E[X_i]=\mu$ and $\Var(X_i)=\sigma^2<\infty$. Put
+$\bar X_n=\frac1n\sum_{i=1}^n X_i$.
+\begin{enumerate}
+  \item Find $\E[\bar X_n]$ and $\Var(\bar X_n)$.
+  Show the calculation, and identify where independence is used.
+  \partpts{4}
+  \begin{solution}[1.4in]
+    By linearity,
+    $\E[\bar X_n]=n^{-1}\sum_i\E[X_i]=\mu$.
+    Independence makes the variances add, so
+    \[
+      \Var(\bar X_n)=\frac1{n^2}\sum_{i=1}^n\Var(X_i)
+                   =\frac{\sigma^2}{n}.
+    \]
+    Linearity of expectation itself does not require independence.
+    \credit{Mean with calculation: 1; $1/n^2$ scaling: 1;
+    variance addition justified by independence: 1; final variance: 1.}
+  \end{solution}
+
+  \item Apply Chebyshev's inequality to prove that, for every fixed
+  $\varepsilon>0$,
+  \[
+    \Prob\bigl(|\bar X_n-\mu|\ge\varepsilon\bigr)\longrightarrow0
+       \qquad\text{as }n\longrightarrow\infty.
+  \]
+  State what this says about the mode of convergence of $\bar X_n$.
+  \partpts{6}
+  \begin{solution}[2.05in]
+    Chebyshev and part (a) give
+    \[
+      0\le\Prob\bigl(|\bar X_n-\mu|\ge\varepsilon\bigr)
+         \le\frac{\Var(\bar X_n)}{\varepsilon^2}
+         =\frac{\sigma^2}{n\varepsilon^2}\longrightarrow0.
+    \]
+    Here $\sigma^2$ is finite and $\varepsilon$ is fixed and positive.
+    Thus $\bar X_n\to\mu$ in probability, which is the weak law of
+    large numbers. This argument does not establish almost-sure convergence.
+    \credit{Apply Chebyshev to the sample mean: 2; substitute
+    $\sigma^2/n$: 1; limit for every fixed positive $\varepsilon$: 2;
+    identify convergence in probability: 1.}
+  \end{solution}
+
+  \item Suppose $\sigma^2=4$. Find the smallest integer $n$ for which
+  \emph{the Chebyshev bound} guarantees the following. \partpts{4}
+  \[
+    \Prob\bigl(|\bar X_n-\mu|\ge\tfrac12\bigr)\le0.05.
+  \]
+  \begin{solution}[1.25in]
+    The bound is $4/[n(1/2)^2]=16/n$. Solve
+    $16/n\le1/20$ to obtain $n\ge320$; the requested integer is $320$.
+    This is sufficient by Chebyshev, not necessarily the smallest sample
+    size for the actual distribution.
+    \credit{Bound $16/n$: 2; solve inequality: 1; integer $320$: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{The central limit theorem}{12}{11}
+\begin{enumerate}
+  \item State the usual central limit theorem for i.i.d.\ random
+  variables with mean $\mu$ and variance $\sigma^2$.
+  Give the assumption on $\sigma^2$, the standardized random variable,
+  and its limiting distribution. A proof is not required. \partpts{4}
+  \begin{solution}[1.6in]
+    If $0<\sigma^2<\infty$, then
+    \[
+      \frac{\sqrt n(\bar X_n-\mu)}{\sigma}
+      =\frac{\sum_{i=1}^n X_i-n\mu}{\sigma\sqrt n}
+      \xrightarrow{d}N(0,1).
+    \]
+    The convergence is in distribution; the individual observations
+    need not have a normal distribution.
+    \credit{Finite positive variance: 1; correct centering: 1;
+    correct scaling: 1; standard normal limit in distribution: 1.}
+  \end{solution}
+
+  \item Independent service times $X_1,\ldots,X_{100}$ have the same
+  exponential distribution, with mean $2$ minutes and variance $4$
+  minutes squared. Use the CLT to approximate
+  \[
+    \Prob\bigl(1.6\le\bar X_{100}\le2.4\bigr).
+  \]
+  You may use $\Phi(2)\approx0.9772$ and $\Phi(-2)\approx0.0228$, where
+  $\Phi(z)=\Prob(Z\le z)$ for $Z\sim N(0,1)$.
+  Show the standard error and both standardized endpoints. \partpts{5}
+  \begin{solution}[1.7in]
+    The standard error is $\sigma/\sqrt n=2/10=0.2$ minutes.
+    The endpoints become $(1.6-2)/0.2=-2$ and $(2.4-2)/0.2=2$.
+    Hence
+    \[
+      \Prob(1.6\le\bar X_{100}\le2.4)
+      \approx\Phi(2)-\Phi(-2)\approx0.9772-0.0228=0.9544.
+    \]
+    \credit{Standard error: 1; each standardized endpoint: 1;
+    normal probability difference: 1; approximate value: 1.
+    Also accept $0.9545$ from more precise normal probabilities.}
+  \end{solution}
+
+  \item Chebyshev's inequality gives
+  \[
+    \Prob\bigl(|\bar X_{100}-2|\ge0.4\bigr)
+        \le\frac{4}{100(0.4)^2}=0.25.
+  \]
+  Translate this into a lower bound for the interval probability in
+  part (b). Explain why that bound and your CLT answer are compatible,
+  and identify which is a guaranteed bound and which is an approximation.
+  \partpts{3}
+  \begin{solution}[1.4in]
+    Chebyshev guarantees probability at least $1-0.25=0.75$ in the
+    open interval $(1.6,2.4)$, hence also in the closed interval in
+    part (b). The CLT suggests about $0.9544$, which is above this lower
+    bound. Chebyshev is a valid finite-sample bound; the CLT supplies
+    an asymptotic approximation, not an exact finite-sample probability
+    or error guarantee.
+    \credit{Lower bound $0.75$: 1; explain compatibility: 1;
+    correctly distinguish guarantee from approximation: 1.}
+  \end{solution}
+\end{enumerate}
+
+\newpage
+\problem{4}{A heavy-tailed distribution}{14}{14}
+Let $X_1,X_2,\ldots$ be i.i.d.\ with density
+\[
+  f(x)=\begin{cases}
+    \dfrac{1}{2x^{3/2}},&x\ge1,\\[4pt]
+    0,&x<1.
+  \end{cases}
+\]
+This is a Pareto distribution. Write
+$\bar X_n=\frac1n\sum_{i=1}^n X_i$ and
+$M_n=\max\{X_1,\ldots,X_n\}$.
+\begin{enumerate}
+  \item Verify that $f$ integrates to $1$, and calculate
+  $\Prob(X_1>t)$ for $t\ge1$. \partpts{4}
+  \begin{solution}[.8in]
+    The density is nonnegative and
+    \[
+      \int_1^\infty\frac{dx}{2x^{3/2}}
+        =[-x^{-1/2}]_1^\infty=1,
+      \qquad
+      \Prob(X_1>t)=\int_t^\infty\frac{dx}{2x^{3/2}}
+        =\frac1{\sqrt t}.
+    \]
+    \credit{Normalization integral and value: 2; tail integral and value: 2.}
+  \end{solution}
+
+  \item Evaluate the improper integral for $\E[X_1]$.
+  Explain why the law proved in Problem 2 does not apply.
+  \partpts{3}
+  \begin{solution}[.85in]
+    Since $X_1\ge0$,
+    \[
+      \E[X_1]=\int_1^\infty x\,f(x)\,dx
+        =\frac12\int_1^\infty x^{-1/2}\,dx
+        =\lim_{R\to\infty}(\sqrt R-1)=+\infty.
+    \]
+    There is no finite population mean; the finite-moment hypotheses
+    of the Chebyshev law are not satisfied.
+    \credit{Expectation integral: 1; divergence: 1;
+    identify the missing finite mean: 1.}
+  \end{solution}
+
+  \item Fix any $A>0$ and take $n$ large enough that $nA\ge1$.
+  Use independence and part (a) to find $\Prob(M_n\le nA)$.
+  \partpts{3}
+  \begin{solution}[.85in]
+    All $n$ observations must be at most $nA$, so
+    \[
+      \Prob(M_n\le nA)
+        =\prod_{i=1}^n\Prob(X_i\le nA)
+        =\left(1-\frac1{\sqrt{nA}}\right)^n.
+    \]
+    \credit{Intersection of all $n$ events: 1;
+    product justified by independence: 1; final expression: 1.}
+  \end{solution}
+
+  \item Use part (c) to prove
+  $\Prob(\bar X_n\le A)\to0$ for every fixed $A>0$.
+  What does this say about convergence of $\bar X_n$ to a finite constant?
+  \partpts{4}
+
+  \emph{Hint:} All observations are nonnegative, so
+  $\bar X_n\ge M_n/n$. You may use $1-u\le e^{-u}$ for $0\le u\le1$.
+  \begin{solution}[1.15in]
+    The event $\{\bar X_n\le A\}$ implies $M_n\le nA$. Thus
+    \[
+      0\le\Prob(\bar X_n\le A)
+      \le\left(1-\frac1{\sqrt{nA}}\right)^n
+      \le e^{-\sqrt{n/A}}\longrightarrow0.
+    \]
+    Therefore $\Prob(\bar X_n>A)\to1$ for every fixed $A>0$:
+    the sample average tends to $+\infty$ in probability, and cannot
+    converge in probability to any finite constant. Indeed, convergence
+    to a finite $c$ would give $\Prob(\bar X_n\le A)\to1$ for any
+    $A>\max\{c,0\}$.
+    \credit{Correct event inclusion and probability bound: 1;
+    exponential bound with correct exponent: 1; limit: 1;
+    no finite constant limit: 1.}
+  \end{solution}
+\end{enumerate}
+
+\ifanswers
+  {\footnotesize\color{muted}\textbf{Conceptual note.}
+  Infinite variance alone would not make the i.i.d.\ LLN fail: a finite
+  absolute first moment is sufficient. Here the infinite mean is accompanied
+  by an explicit proof of divergence. Part (b) alone establishes only that
+  the theorem from Problem 2 is unavailable.}
+\fi
+
+\label{quiz-last-page}
+\end{document}

@@ -54,6 +54,17 @@ identical to `../book/chance_data_decisions.pdf` after rebuilding.
 handouts. Instructor editions are stored in `private/` and served through
 the authenticated instructor library.
 
+## Expanded laws of large numbers
+
+The `/laws-of-large-numbers` web lesson expands the brief Chapter 7 discussion.
+It compares twelve versions, four convergence modes, iid integrability versus
+variance assumptions, nonidentical and pairwise-independent observations,
+martingale differences, ergodicity, triangular arrays, weights, and a uniform
+law. Worked examples distinguish infinite variance, Cauchy failure, a weak law
+without a strong law, and the shared hidden coin. Three seeded trajectories and
+80 repeated experiments contrast paths with fixed-time errors. Nine exercises
+have worked answers. The downloadable book PDF is unchanged.
+
 ## Local development
 
 Run `npm run dev` and open the printed local URL. Run `npm run build` for a deployment build.

@@ -1,0 +1,268 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.75in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,enumitem,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{222834}
+\definecolor{indigo}{HTML}{25355D}
+\definecolor{muted}{HTML}{505A6B}
+\definecolor{keyink}{HTML}{205D52}
+\color{ink}
+\hypersetup{colorlinks=true,linkcolor=indigo,urlcolor=indigo,
+  pdftitle={Probability Midterm 1: Makeup},pdfauthor={Igor Rivin}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{6pt}
+\setlength{\belowdisplayskip}{6pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist[enumerate]{label=(\alph*),leftmargin=1.7em,
+  itemsep=4pt,topsep=5pt,parsep=2pt}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\edition}{\ifanswers Instructor key\else Student paper\fi}
+\newcommand{\partpts}[1]{\unskip\nobreak\hspace{.3em}%
+  \mbox{\small\color{muted}(#1 points)}}
+\newcommand{\credit}[1]{\par{\footnotesize\color{muted}\textit{Credit:} #1}}
+\newcommand{\problem}[3]{\par\addvspace{9pt}%
+  {\large\bfseries\color{indigo}#1.\ #2}\hfill
+  {\small\color{muted}\textbf{#3 points}}\par\nobreak}
+\NewDocumentEnvironment{solution}{O{1in}+b}{%
+  \ifanswers
+    \par\begingroup\small\color{keyink}\textbf{Solution.} #2\par\endgroup
+  \else
+    \par\nobreak\vspace*{#1}
+  \fi
+}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Probability \textbar\ Midterm 1 Makeup}
+\fancyhead[R]{\small\color{muted}Chance, Data, and Decisions}
+\fancyfoot[L]{\footnotesize\color{muted}\edition}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage\ of \pageref*{exam-last-page}}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+{\LARGE\bfseries\color{indigo}Probability Midterm 1: Makeup}\par
+{\small\color{muted}50 minutes \quad $\bullet$ \quad 100 points
+  \quad $\bullet$ \quad Six problems}\par
+\ifanswers
+\textbf{Grading note.} Award method credit after an earlier error; do not
+deduct twice for the same mistake. Suggested working times for Problems
+1--6 are 5, 5, 6, 8, 10, and 9 minutes, leaving 7 minutes to check.
+\else
+\smallskip
+\textbf{Name:}\ \rule{.49\linewidth}{.4pt}\hfill
+\textbf{Date:}\ \rule{.20\linewidth}{.4pt}\par
+\fi
+\textbf{Instructions.} Answer all six problems and show your reasoning.
+Exact answers are acceptable; binomial coefficients need not be evaluated.
+No calculator is needed. Use the spaces provided; clearly label any work
+continued on the back. In Problem 6, use the guided steps rather than
+quoting a coupon-collector formula. Reserve time to check your work.
+
+\problem{1}{Sets}{10}
+Let $U=\{1,2,\ldots,12\}$, $A=\{1,3,5,7,9,11\}$, and
+$B=\{1,2,3,4,5\}$. Take all complements relative to $U$.
+\begin{enumerate}
+\item Find $A\cap B$, $A\setminus B$, and $(A\cup B)^c$. \partpts{6}
+\begin{solution}[.85in]
+\[
+A\cap B=\{1,3,5\},\quad A\setminus B=\{7,9,11\},\quad
+(A\cup B)^c=\{6,8,10,12\}.
+\]
+\credit{2 per correct set; allow partial credit for a single entry error.}
+\end{solution}
+\item For these sets $A,B$, is the following statement true for every
+$C\subseteq U$? Justify with a proof or a counterexample. \partpts{4}
+\[
+C\subseteq A\cup B\quad\Longrightarrow\quad
+C\subseteq A\ \text{or}\ C\subseteq B.
+\]
+\begin{solution}[.85in]
+False: take $C=\{2,7\}$. Both elements belong to $A\cup B$, but
+$2\notin A$ and $7\notin B$. Hence neither containment on the right holds.
+\credit{False: 1; valid example: 1; union containment: 1;
+both failed containments: 1. Accept any valid counterexample.}
+\end{solution}
+\end{enumerate}
+
+\problem{2}{A probability space}{10}
+Let $\Omega=\{a,b,c,d\}$, with every subset an event. The probabilities
+of $a,b,c,d$ are $2k,3k,4k,5k$, respectively.
+\begin{enumerate}
+\item Find $k$, explaining the probability axiom you use. \partpts{4}
+\begin{solution}[.6in]
+The disjoint singletons partition $\Omega$. Additivity and
+$\Prob(\Omega)=1$ give $14k=1$, so $k=1/14$. The probabilities are nonnegative.
+\credit{Normalization/additivity explanation: 2; equation: 1; value: 1.}
+\end{solution}
+\item Let $E=\{a,c\}$ and $F=\{b,c\}$. Find $\Prob(E)$,
+$\Prob(E\cap F)$, and $\Prob(E^c)$. \partpts{6}
+\begin{solution}[.85in]
+Since $E\cap F=\{c\}$ and $E^c=\{b,d\}$,
+\[
+\Prob(E)=\frac6{14}=\frac37,\qquad
+\Prob(E\cap F)=\frac4{14}=\frac27,\qquad
+\Prob(E^c)=\frac8{14}=\frac47.
+\]
+\credit{2 per probability. Carry forward an earlier error in $k$:
+accept the correctly obtained expressions $6k,4k,8k$.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{3}{Inclusion--exclusion}{15}
+In a group of 45 students, 20 play tennis, 17 play basketball, and 13 play
+volleyball. Eight play both tennis and basketball, six both tennis and
+volleyball, and five both basketball and volleyball. Three play all three.
+\textbf{The pairwise counts include students who play all three sports.}
+\begin{enumerate}
+\item How many students play at least one of these sports? Use
+inclusion--exclusion. \partpts{11}
+\begin{solution}[.95in]
+Writing $T,B,V$ for the three sets,
+\begin{align*}
+|T\cup B\cup V|
+&=|T|+|B|+|V|-|T\cap B|-|T\cap V|-|B\cap V|
+ +|T\cap B\cap V|\\
+&=20+17+13-8-6-5+3=34.
+\end{align*}
+\credit{Individual counts: 3; subtracting pairwise intersections: 3;
+restoring the triple intersection: 3; result: 2.}
+\end{solution}
+\item How many students play none of these sports? \partpts{4}
+\begin{solution}[.65in]
+There are $45-34=11$ such students.
+\credit{Complement subtraction: 3; result: 1. Carry forward an earlier error.}
+\end{solution}
+\end{enumerate}
+
+\problem{4}{Balls in an urn}{20}
+An urn contains six red, three blue, and four green balls. Four balls are
+selected uniformly without replacement: every four-ball subset of the
+thirteen individual balls is equally likely.
+\begin{enumerate}
+\item Find the probability of selecting exactly two red, one blue,
+and one green ball. \partpts{10}
+\begin{solution}[1.25in]
+Choose the required number of each color and divide by the total number
+of four-ball subsets:
+\[
+\Prob(\text{two red, one blue, one green})
+=\frac{\binom62\binom31\binom41}{\binom{13}4}
+=\frac{180}{715}=\frac{36}{143}.
+\]
+\credit{Uniform denominator: 3; red choice: 2; blue and green choices: 2;
+product and ratio: 3. No numerical simplification needed.}
+\end{solution}
+\item Find the probability of selecting at least one green ball. \partpts{10}
+\begin{solution}[1.25in]
+The nine non-green balls give the complementary count:
+\[
+\Prob(\text{at least one green})
+=1-\frac{\binom94}{\binom{13}4}
+=1-\frac{126}{715}=\frac{589}{715}.
+\]
+\credit{Complement event: 3; favorable complement count: 3;
+denominator: 2; subtracting from 1: 2. Accept an equivalent direct count.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{5}{A density, its mean, and its variance}{25}
+A continuous random variable $X$ has probability density
+\[
+f(x)=\begin{cases}cx^2,&0\le x\le1,\\0,&\text{otherwise},\end{cases}
+\]
+where $c$ is a constant. Show the integrals you use.
+\begin{enumerate}
+\item Find $c$. \partpts{5}
+\begin{solution}[1.4in]
+Normalization requires
+\[
+1=c\int_0^1x^2\,dx=c\left[\frac{x^3}{3}\right]_0^1=\frac c3.
+\]
+Thus $c=3$, which also makes the density nonnegative.
+\credit{Normalization integral: 2; integral value: 2; constant: 1.}
+\end{solution}
+\item Compute $\E[X]$. \partpts{8}
+\begin{solution}[1.5in]
+\[
+\E[X]=\int_0^1x(3x^2)\,dx
+=3\left[\frac{x^4}{4}\right]_0^1=\frac34.
+\]
+\credit{Moment integral including the factor $x$: 4;
+antiderivative and limits: 3; result: 1. Carry forward an earlier value of $c$.}
+\end{solution}
+\item Compute $\E[X^2]$, and hence $\Var(X)$. \partpts{12}
+\begin{solution}[2in]
+\[
+\E[X^2]=\int_0^1x^2(3x^2)\,dx
+=3\left[\frac{x^5}{5}\right]_0^1=\frac35.
+\]
+Therefore
+\[
+\Var(X)=\E[X^2]-(\E[X])^2
+=\frac35-\left(\frac34\right)^2
+=\frac{48-45}{80}=\frac3{80}.
+\]
+\credit{Second-moment integral: 4; evaluation: 3; variance identity: 3;
+substitution and arithmetic: 2. Accept a correct direct variance integral.}
+\end{solution}
+\end{enumerate}
+
+\newpage
+\problem{6}{Collecting five sticker types}{20}
+Each packet contains one sticker. There are five sticker types, each equally
+likely, and different packets have independent contents. Duplicates are
+possible. Starting with no stickers, let $T$ be the number of packets opened
+up to and including the first packet that completes the collection of all
+five types.
+\begin{enumerate}
+\item After exactly $k$ distinct types have been collected, let $p_k$ be
+the probability that the next packet contains a new type. Find
+$p_0,p_1,p_2,p_3,p_4$, and explain your reasoning. \partpts{6}
+\begin{solution}[1.3in]
+There are $5-k$ missing types out of five equally likely types, so
+\[
+p_k=\frac{5-k}{5},\qquad
+(p_0,p_1,p_2,p_3,p_4)=\left(1,\frac45,\frac35,\frac25,\frac15\right).
+\]
+\credit{Missing-type counting argument: 1; five correct probabilities: 1 each.}
+\end{solution}
+\item Let $W_k$ be the number of additional packets needed to go from
+exactly $k$ collected types to $k+1$ collected types, including the packet
+containing the new type. Find $\E[W_k]$ for $k=0,1,2,3,4$. \partpts{8}
+
+\textit{You may use:} A geometric waiting time that counts trials through
+the first success, with success probability $p$, has mean $1/p$.
+\begin{solution}[1.6in]
+Until a new type appears, the missing set stays fixed. Independent packets
+therefore give a geometric wait with success probability $p_k$ (the first
+wait is deterministically one). Thus
+\[
+\bigl(\E[W_0],\E[W_1],\E[W_2],\E[W_3],\E[W_4]\bigr)
+=\left(1,\frac54,\frac53,\frac52,5\right).
+\]
+\credit{Applying the geometric reciprocal rule: 3; five means: 1 each.
+Carry forward earlier probabilities when reciprocals are taken consistently.}
+\end{solution}
+\item Write $T$ as a sum of the waiting times and find $\E[T]$.
+Name the expectation rule used. \partpts{6}
+\begin{solution}[1.8in]
+The stages partition all packets opened, so $T=\sum_{k=0}^4W_k$.
+Linearity of expectation gives
+\[
+\E[T]=1+\frac54+\frac53+\frac52+5=\frac{137}{12}.
+\]
+Independence of the waiting times is not required for linearity.
+\credit{Stage decomposition: 2; linearity and sum: 2; evaluation: 2.
+Accept the exact unevaluated sum.}
+\end{solution}
+\end{enumerate}
+\vfill
+\begin{center}\small\color{muted}End of paper. Check that you have answered all six problems.\end{center}
+\label{exam-last-page}
+\end{document}
